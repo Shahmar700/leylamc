@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'AvantGarde';
+    font-weight: bold;
+    src: url('/src/assets/fonts/AVGARDD_2.TTF') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'AvantGarde';
+    font-weight: normal;
+    src: url('/src/assets/fonts/AVGARDO_2.TTF') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'AvantGarde';
+    font-style: italic;
+    src: url('/src/assets/fonts/AVGARDN_2.TTF') format('truetype');
+  }
+  *{
+    scroll-behavior: smooth;
+  }
+.greenBtn {
+  font-size: 18px;
+  background-color: #6bb52b;
+  color: #fff;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.greenBtn:hover{
+  color: #6bb52b;
+  background-color: #fff;
+  border-color: #6bb52b;
+}
+
+.router-link-active {
+  /* border-bottom: 2px solid #6bb52b; */
+  color: #6bb52b !important;
+}
+
+
+.header-white {
+  background-color: white;
+}
+
+.header-gray {
+  background-color: #fafafa;
+}
