@@ -63,26 +63,31 @@ const router = createRouter({
     {
       path: '/about',
       redirect: '/about/our-history',
+      meta: { breadcrumb: 'Haqqımızda' },
       children: [
         {
-          path: 'our-history',
+          path: '/about/our-history',
           name: 'our-history',
           component: OurHistoryView,
+          meta: { breadcrumb: 'Tariximiz' },
         },
         {
-          path: 'our-vision',
+          path: '/about/our-vision',
           name: 'our-vision',
           component: OurVisionView,
+          meta: { breadcrumb: 'Vizyonumuz' },
         },
         {
-          path: 'our-mission',
+          path: '/about/our-mission',
           name: 'our-mission',
           component: OurMissionView,
+          meta: { breadcrumb: 'Missiyazmız' },
         },
         {
           path: '/about/our-relations',
           name: 'our-relations',
           component: OurRelations,
+          meta: { breadcrumb: 'Beynəlxalq əlaqələrimiz' },
         },
         {
           path: '/our-in-media',

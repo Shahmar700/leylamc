@@ -9,9 +9,9 @@
           <img :src="image" alt="slideImage" class="slide-image" />
         </div>
       </div>
-      <button class="nav-button left" @click="prevSlide"><span>‹</span></button>
-      <button class="nav-button right" @click="nextSlide"><span>›</span></button>
-      <div class="dots absolute bottom-32">
+      <button class="nav-button left top-[20%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
+      <button class="nav-button right top-[20%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
+      <div class="dots absolute bottom-[455px] md:bottom-[350px] xl:bottom-32">
         <span
           v-for="(image, index) in images"
           :key="index"
@@ -82,8 +82,6 @@
   
   .nav-button {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     background: white;
     opacity: 0.7;
     color: #EF7C00;
@@ -91,8 +89,6 @@
     cursor: pointer;
     z-index: 10;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -29,6 +29,7 @@
           />
         </div>
         </div>
+      
       </div>
     <!-- ** E-SERVİCES ** ----   -->
      <div class="bg-secondary pt-[72px] pb-24">

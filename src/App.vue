@@ -2,6 +2,7 @@
   <div>
     <header-top />
     <header-main />
+    <breadcrumb />
     <RouterView />
     <footer-main />
       <img src="@/assets/icons/scroll-up.svg"
@@ -19,6 +20,7 @@ import { RouterView } from 'vue-router'
 import HeaderTop from './components/HeaderTop.vue'
 import HeaderMain from './components/HeaderMain.vue'
 import FooterMain from './components/FooterMain.vue'
+import Breadcrumb from './components/Breadcrumb.vue'
 
 const showScrollUp = ref(false)
 
