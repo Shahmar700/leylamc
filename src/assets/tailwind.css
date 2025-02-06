@@ -39,7 +39,6 @@
 }
 
 .router-link-active {
-  /* border-bottom: 2px solid #6bb52b; */
   color: #6bb52b !important;
 }
 

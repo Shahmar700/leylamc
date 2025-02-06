@@ -1,6 +1,6 @@
 <template>
-    <div>
-        News
+    <div class="container">
+        DOCTOR ARTICLES PAGE
     </div>
 </template>
 

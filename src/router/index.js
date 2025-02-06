@@ -51,6 +51,7 @@ import OutpatientExaminationView from '@/views/medical_services/OutpatientExamin
 import CheckUpView from '@/views/medical_services/CheckUpView.vue'
 import ActionsView from '@/views/medical_services/ActionsView.vue'
 import VaccView from '@/views/medical_services/VaccView.vue'
+import DoctorArticles from '@/views/DoctorArticles.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,30 +93,36 @@ const router = createRouter({
         {
           path: '/our-in-media',
           redirect: '/about/our-in-media/news',
+          meta: { breadcrumb: 'Mediada Biz' },
           children: [
             {
               path: '/about/our-in-media/news',
               name: 'news',
               component: NewsView,
+              meta: { breadcrumb: 'Xəbərlər' },
             },
             {
               path: '/about/our-in-media/kiv-writes',
               name: 'kiv-writes',
               component: KivWritesView,
+              meta: { breadcrumb: 'KİV yazanlar' },
             },
             {
               path: '/about/our-in-media/gallery',
               redirect: '/about/our-in-media/gallery/photos-view',
+              meta: { breadcrumb: 'Qalereya' },
               children: [
                 {
                   path: '/about/our-in-media/gallery/photos-view',
                   name: 'photos-view',
                   component: PhotosView,
+                  meta: { breadcrumb: 'Foto' },
                 },
                 {
                   path: '/about/our-in-media/gallery/videos-view',
                   name: 'videos-view',
                   component: VideosView,
+                  meta: { breadcrumb: 'Video' },
                 }
               ],
             },
@@ -123,55 +130,78 @@ const router = createRouter({
               path: '/about/our-in-media/health-kiosk',
               name: 'health-kiosk',
               component: HealthKioskView,
+              meta: { breadcrumb: 'Sağlıq köşkü' },
             },
             {
               path: '/about/our-in-media/vacancies',
               name: 'vacancies',
               component: VacanciesView,
+              meta: { breadcrumb: 'Vakansiya' },
             },
             {
               path: '/about/our-in-media/latest-updates',
               name: 'latest-updates',
               component: LatestUpdatesView,
+              meta: { breadcrumb: 'Son yeniliklər' },
             }
           ],
         },
         {
           path: '/about/director-office',
           name: 'director-office',
-          component: DirectorOfficeView
+          component: DirectorOfficeView,
+          meta: { breadcrumb: 'Direktor kabineti' },
         },
         {
           path: '/about/satisfaction-form',
           name: 'satisfaction-form',
           component: SatisfactionFormView,
+          meta: { breadcrumb: 'Məmnunluq anketi' },
         },
         {
           path: '/about/quality-policy',
           name: 'quality-policy',
           component: QualityPolicyView,
+          meta: { breadcrumb: 'Keyfiyyət siyasəti' },
         },
         {
           path: '/about/quality-control',
           name: 'quality-control',
           component: QualityControlView,
+          meta: { breadcrumb: 'Keyfiyyətə nəzarət' },
         },
         {
           path: '/about/certificates',
           name: 'certificates',
           component: CertificatesView,
+          meta: { breadcrumb: 'Sertifikatlar' },
         },
         {
           path: '/about/training-center',
           name: 'training-center',
           component: TrainingCenterView,
+          meta: { breadcrumb: 'Təllim Mərkəzi' },
         }
       ],
     },
     {
       path: '/doctors',
-      name: 'doctors',
-      component: DoctorsView,
+      redirect: '/doctors/list',
+      meta: { breadcrumb: 'Həkimlər' },
+      children: [
+        {
+          path: 'list',
+          name: 'doctors',
+          component: DoctorsView,
+          meta: { breadcrumb: 'Həkimlərimiz' },
+        },
+        {
+          path: 'articles',
+          name: 'doctor-articles',
+          component: DoctorArticles,
+          meta: { breadcrumb: 'Həkim məqalələri' },
+        }
+      ]
     },
     {
       path: '/doctor/:id',
