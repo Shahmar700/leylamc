@@ -195,7 +195,7 @@
                     </ul>
                 </li>
                 <li class="headerParent relative group">
-                    <router-link to="/medical-services/ambulance" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi xidmətlər</router-link>
+                    <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi xidmətlər</router-link>
                     <!-- MEDİCAL SERVİCES  -->
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
                       <li class="mb-2 px-6">
@@ -425,7 +425,9 @@ a:hover::after {
   transition: 0.3s;
   border-radius: 15px;
 }
-
+.surgeryDropdown{
+  right: -200px;
+}
 .mediaParent:hover .mediaDropdown{
   right: -200px;
   top: 0px;

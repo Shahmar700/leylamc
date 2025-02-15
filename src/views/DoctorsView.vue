@@ -1,53 +1,46 @@
 <template>
     <div class="container mt-17">
+      <div>
+         <!-- Doctor Filters  -->
+          <form action="" class="flex gap-4 mt-5 items-center text-base lg:text-lg">
+            <div class="flex flex-col w-full ">
+              <label for="name" class="mb-1 !text-main-text">Həkimin Adı, Soyadı</label>
+              <input type="text" id="name" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Həkimin Adı, Soyadı">
+            </div>
+            <!-- Specializations -->
+            <div class="flex flex-col w-full ">
+              <label for="specializations" class="mb-1 !text-main-text">İxtisas seçin</label>
+              <multiselect v-model="selectedSpecializations" :options="specializations" :multiple="true"  placeholder="İxtisas seçin" label="name" track-by="name" class="rounded-md !h-[47px]"></multiselect>
+            </div>
+            <!-- Select a department  -->
+            <div class="flex flex-col w-full ">
+              <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
+              <multiselect v-model="selectedDepartments" :options="departments" :multiple="true" placeholder="Şöbə seçin" label="name" track-by="name" class="rounded-md !h-[47px]"></multiselect>
+            </div>
+            <div class="w-full">
+              <button type="submit" class="greenBtn mt-8 !py-2 !px-6 !rounded-lg">Axtar</button>
+            </div>
+          </form>
+      </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Doctor
-           class="mt-6"
-           :image="Dr1"
-           name="Op.Dr. Aynurə Abdullayeva"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('1')"
-          />
-          <Doctor
-           class="mt-6"
-           :image="Dr2"
-           name="Op.Dr. Natiq Məhərrəmov"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('2')"
-          />
-          <Doctor
-           class="mt-6"
-           :image="Dr3"
-           name="T.Ü.F.D. Op.Dr. Nigar Əlizadə"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('3')"
-          />
-          <Doctor
-           class="mt-6"
-           :image="Dr1"
-           name="Op.Dr. Aynurə Abdullayeva"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('4')"
-          />
-          <Doctor
-           class="mt-6"
-           :image="Dr2"
-           name="Op.Dr. Natiq Məhərrəmov"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('5')"
-          />
-          <Doctor
-           class="mt-6"
-           :image="Dr3"
-           name="T.Ü.F.D. Op.Dr. Nigar Əlizadə"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('6')"
+            v-for="doctor in filteredDoctors"
+            :key="doctor.id"
+            :image="doctor.image"
+            :name="doctor.name"
+            :position="doctor.specializations.join(', ')"
+            @click="goToDoctor(doctor.id)"
+            class="mt-6"
           />
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
+
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -61,6 +54,50 @@ import Doctor from '@/components/DoctorCard.vue'
 import Dr1 from "@/assets/images/Dr1.jpg"
 import Dr2 from "@/assets/images/Dr2.jpg"
 import Dr3 from "@/assets/images/Dr3.jpg"
+
+
+// State variables
+const selectedSpecializations = ref([]);
+const selectedDepartments = ref([]);
+
+const specializations = ref([
+  { name: 'Cərrah' },
+  { name: 'Allerqoloq' },
+  { name: 'Endokrinoloq' },
+
+]);
+
+const departments = ref([
+  { name: 'Cərrahiyyə' },
+  { name: 'Allerqologiya' },
+  { name: 'Endokrinologiya' },
+
+]);
+
+const doctors = ref([
+  { id: 1, name: 'Op.Dr. Aynurə Abdullayeva', specializations: ['Cərrah'], department: 'Cərrahiyyə', image: Dr1 },
+  { id: 2, name: 'Op.Dr. Natiq Məhərrəmov', specializations: ['Allerqoloq'], department: 'Allerqologiya', image: Dr2 },
+  { id: 3, name: 'T.Ü.F.D. Op.Dr. Nigar Əlizadə', specializations: ['Endokrinoloq'], department: 'Endokrinologiya', image: Dr3 },
+  { id: 4, name: 'Op.Dr. Aynurə Abdullayeva', specializations: ['Cərrah'], department: 'Cərrahiyyə', image: Dr1 },
+  { id: 5, name: 'Op.Dr. Natiq Məhərrəmov', specializations: ['Allerqoloq'], department: 'Allerqologiya', image: Dr2 },
+  { id: 6, name: 'T.Ü.F.D. Op.Dr. Nigar Əlizadə', specializations: ['Endokrinoloq'], department: 'Endokrinologiya', image: Dr3 },
+  // Daha çox həkim əlavə edə bilərsiniz
+]);
+
+const filteredDoctors = computed(() => {
+  return doctors.value.filter(doctor => {
+    const matchesName = name.value ? doctor.name.toLowerCase().includes(name.value.toLowerCase()) : true;
+    const matchesSpecializations = selectedSpecializations.value.length ? selectedSpecializations.value.some(spec => doctor.specializations.includes(spec.name)) : true;
+    const matchesDepartments = selectedDepartments.value.length ? selectedDepartments.value.some(dep => doctor.department === dep.name) : true;
+
+    return matchesName && matchesSpecializations && matchesDepartments;
+  });
+});
+
+const filterDoctors = () => {
+  // Bu funksiya form submit edildikdə filteredDoctors computed property-ni yeniləyəcək
+};
+
 </script>
 
 <style scoped>
