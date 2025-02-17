@@ -8,7 +8,7 @@
                         <p class="text-base sm:text-lg mt-2">{{ checkup.checkupName }}</p>
                     </div>
                 </div>
-                <div class="pagination mt-4 flex justify-start">
+                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
                     <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">First</button>
                     <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">Previous</button>
                     <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>

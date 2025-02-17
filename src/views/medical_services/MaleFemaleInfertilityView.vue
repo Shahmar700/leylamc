@@ -32,7 +32,7 @@
                 <p class="text-base sm:text-lg mt-4">Genetik pozğunluqlar 5-15% hallarda kişi sonsuzluğuna səbəb olur. Onları yalnız dərin diaqnostika zamanı tapmaq olur.</p>
                 <br>
                 <p class="text-base sm:text-lg mt-4">Əsas genetik sindromlar:</p>
-                <ol class="ml-7 list-disc">
+                <ul class="ml-7 list-disc">
                     <li class="font-normal text-base sm:text-lg">
                         46 XX kariotipi
                     </li>
@@ -42,7 +42,7 @@
                     <li class="font-normal text-base sm:text-lg">
                         Y-xromosomun delesiyaları.
                     </li>
-                </ol>
+                </ul>
                 <br>
                 <h4 class="text-lg lg:text-xl font-extrabold my-4">QADIN SONSUZLUĞU:</h4>
                 <br>

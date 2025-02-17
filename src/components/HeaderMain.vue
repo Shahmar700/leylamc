@@ -146,9 +146,6 @@
                             <router-link :to="{name: 'laboratory'}" class="block w-full h-full">Laboratoriya</router-link>
                           </li>
                           <li class="mb-2 px-6">
-                            <router-link :to="{name: 'laboratory'}" class="block w-full h-full">Travmotologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
                             <router-link :to="{name: 'traumatology'}" class="block w-full h-full">Travmotologiya</router-link>
                           </li>
                           <li class="mb-2 px-6">
@@ -229,7 +226,7 @@
                         <router-link :to="{name: 'actions'}" class="block w-full h-full">Aksiyalar</router-link>
                       </li>
                       <li class="mb-2 px-6">
-                        <router-link :to="{name: 'vacc'}" class="block w-full h-full">Peyvəndlər</router-link>
+                        <a href="#" @click.prevent="openPdf" class="block w-full h-full">Peyvəndlər</a>
                       </li>
                     </ul>
                 </li>
@@ -281,9 +278,9 @@
                     <li class="mb-2 px-6">
                       <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Əlaqə</router-link>
                     </li>
-                    <li class=" px-8">
+                    <!-- <li class=" px-8">
                       <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Çıxış</router-link>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
             </div>
@@ -309,6 +306,11 @@ import searchIconOther from '../assets/icons/search2.svg';
 const searchIcon = computed(() => {
   return route.path === '/' ? searchIconHome : searchIconOther;
 });
+
+// OPEN VACCINES PDF
+const openPdf = () => {
+  window.open('/src/assets/peyvend/peyvend-kitabcasi.pdf', '_blank');
+};
 </script>
 
 <style scoped>
