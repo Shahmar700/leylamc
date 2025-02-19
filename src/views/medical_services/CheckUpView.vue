@@ -9,11 +9,11 @@
                     </div>
                 </div>
                 <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
-                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">First</button>
-                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">Previous</button>
+                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
                     <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">Next</button>
-                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">Last</button>
+                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
                 </div>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
@@ -108,42 +108,5 @@ const goToLastPage = () => {
 ul {
     list-style: disc;
 }
-button {
-    margin: 0 5px;
-    background-color: #6bb52b;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-button:disabled {
-    background-color: #a5d6a7;
-    cursor: not-allowed;
-}
-span {
-    margin: 0 5px;
-    cursor: pointer;
-}
-.font-bold {
-    font-weight: bold;
-}
-.active-page {
-    background-color: #6bb52b;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.inactive-page {
-    color: #a5d6a7;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.pagination {
-    position: sticky;
-    bottom: 0;
-    background-color: white;
-    padding: 5px 10px;
-    width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
+
 </style>

@@ -261,7 +261,7 @@
                       <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Check Up</a>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi Xidmətlər</router-link>
+                      <router-link to="/linkk" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi Xidmətlər</router-link>
                     </li>
                     <li class="mb-2 px-6">
                       <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Onlayn Xidmətlər</router-link>

@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-16 text-main-text">
-        <div class="flex flex-col md:flex-row items-center sm:justify-between">
+        <div class="flex flex-col md:flex-row items-start sm:justify-between">
             <div class="w-full sm:w-3/4">
                 <h1 class="text-main-text text-2xl lg:text-3xl my-6">Təlim Mərkəzi</h1>
                 <p class="font-normal text-base sm:text-lg mt-4">Referans Medical Group daxilində fəaliyyət göstərən Leyla Medical Center yeni bir uğura imza atdı.</p>
