@@ -1,14 +1,163 @@
 <template>
-    <div class="container">
-        DOCTOR ARTICLES PAGE
+    <div class="container mt-16 text-main-text">
+        <div class="flex flex-col md:flex-row items-start sm:justify-between">
+            <div class="w-full sm:w-3/4">
+                <!-- Articles Filters  -->
+                <form @submit.prevent="filterArticles" class="flex gap-4 mt-5 items-center text-base lg:text-lg">
+                    <div class="flex flex-col w-full">
+                        <label for="author" class="mb-1 !text-main-text">Müəllif Adı</label>
+                        <input type="text" id="author" v-model="author" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Müəllif Adı">
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <label for="itemsPerPage" class="mb-1 !text-main-text">Göstəriləcək Məqalə Sayı</label>
+                        <select id="itemsPerPage" v-model="itemsPerPage" class="border border-gray-300 p-2 rounded-md !h-[47px]">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                            <option value="all">Hamısı</option>
+                        </select>
+                    </div>
+                    <!-- <div class="w-full">
+                        <button type="submit" class="greenBtn mt-8 !py-2 !px-6 !rounded-lg">Filter</button>
+                    </div> -->
+                </form>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-200 text-left">
+                                <th class="px-6 py-3 border-b border-gray-200">Başlıq</th>
+                                <th class="px-6 py-3 border-b border-gray-200">Nəşr tarixi</th>
+                                <th class="px-6 py-3 border-b border-gray-200">Müəllif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(article, index) in paginatedArticles" :key="article.id" class="hover:bg-green-50" :class="{'bg-gray-50': index % 2 === 0, 'bg-white': index % 2 !== 0}">
+                                <td class="px-6 py-4 border-b border-gray-200">
+                                    <a :href="article.articleLink" class="text-primary hover:underline">{{ article.articleHeader }}</a>
+                                </td>
+                                <td class="px-6 py-4 border-b border-gray-200">{{ article.articleDate }}</td>
+                                <td class="px-6 py-4 border-b border-gray-200">{{ article.articleAuthor }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
+                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
+                    <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
+                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+                </div>
+            </div>
+            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+                <SideBanners class="mb-4" /> 
+                <SideBanners2 class="mb-4" /> 
+            </div>
+        </div>
+        <Maps class="mt-14 sm:mt-24"/>
     </div>
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
 
+const tableArticles = ref([
+    {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn', articleLink: 'https://example.com/article1'},
+    {id: 2, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Samirə Nəsibova', articleLink: 'https://example.com/article2'},
+    {id: 3, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Lalə Həsənova', articleLink: 'https://example.com/article3'},
+    {id: 4, articleHeader: 'Miqren xəstəliyi', articleDate: '30-01-2020', articleAuthor: 'Xanoğlan Qəmbərov', articleLink: 'https://example.com/article4'},
+    {id: 5, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-10-2020', articleAuthor: 'Leyla Ələkbərova', articleLink: 'https://example.com/article5'},
+    {id: 6, articleHeader: 'Vertigo şikayəti olan xəstələrə otonevrolojı yanaşma', articleDate: '28-11-2020', articleAuthor: 'Nigar Muradova', articleLink: 'https://example.com/article6'},
+    {id: 7, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Nübar İsmayılova', articleLink: 'https://example.com/article7'},
+    {id: 8, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '20-12-2020', articleAuthor: 'Mədinə Dilbazi', articleLink: 'https://example.com/article8'},
+    {id: 9, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '15-12-2020', articleAuthor: 'Leyla Süleymanova', articleLink: 'https://example.com/article9'},
+    {id: 10, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Almaz Nəbiyeva', articleLink: 'https://example.com/article10'},
+]);
+
+const author = ref('');
+const itemsPerPage = ref('all');
+const currentPage = ref(1);
+
+const filteredArticles = computed(() => {
+    let filtered = tableArticles.value;
+
+    if (author.value) {
+        filtered = filtered.filter(article => article.articleAuthor.toLowerCase().includes(author.value.toLowerCase()));
+    }
+
+    return filtered;
+});
+
+const totalPages = computed(() => {
+    if (itemsPerPage.value === 'all') {
+        return 1;
+    }
+    return Math.ceil(filteredArticles.value.length / parseInt(itemsPerPage.value));
+});
+
+const paginatedArticles = computed(() => {
+    if (itemsPerPage.value === 'all') {
+        return filteredArticles.value;
+    }
+    const start = (currentPage.value - 1) * parseInt(itemsPerPage.value);
+    const end = start + parseInt(itemsPerPage.value);
+    return filteredArticles.value.slice(start, end);
+});
+
+const pages = computed(() => {
+    const total = totalPages.value;
+    const current = currentPage.value;
+    if (total <= 5) {
+        return Array.from({ length: total }, (_, i) => i + 1);
+    } else if (current <= 3) {
+        return [1, 2, 3, 4, 5, '...'];
+    } else if (current >= total - 2) {
+        return ['...', total - 4, total - 3, total - 2, total - 1, total];
+    } else {
+        return ['...', current - 1, current, current + 1, '...'];
+    }
+});
+
+const goToPage = (page) => {
+    if (page === '...') return;
+    currentPage.value = page;
+};
+
+const goToFirstPage = () => {
+    currentPage.value = 1;
+};
+
+const goToPreviousPage = () => {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+    }
+};
+
+const goToNextPage = () => {
+    if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+    }
+};
+
+const goToLastPage = () => {
+    currentPage.value = totalPages.value;
+};
+
+const filterArticles = () => {
+    currentPage.value = 1; // Filtrləmə zamanı ilk səhifəyə qayıt
+};
+
+import SideBanners from "@/components/SideBanners.vue";
+import SideBanners2 from "@/components/SideBanners2.vue";
+import Maps from "@/components/Maps.vue";
 </script>
 
 <style scoped>
-
+ul{
+    list-style: disc;
+}
 
 </style>
