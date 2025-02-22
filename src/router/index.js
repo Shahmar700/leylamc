@@ -52,6 +52,8 @@ import CheckUpView from '@/views/medical_services/CheckUpView.vue'
 import ActionsView from '@/views/medical_services/ActionsView.vue'
 import VaccView from '@/views/medical_services/VaccView.vue'
 import DoctorArticles from '@/views/DoctorArticles.vue'
+import CheckUpInnerView from '@/views/medical_services/CheckUpInnerView.vue'
+import DoctorArticlesInner from '@/views/DoctorArticlesInner.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -200,6 +202,13 @@ const router = createRouter({
           name: 'doctor-articles',
           component: DoctorArticles,
           meta: { breadcrumb: 'Həkim məqalələri' },
+        },
+        {
+          path: '/articles/:id',
+          name: 'article-detail',
+          component: DoctorArticlesInner,
+          props: true,
+          meta: { breadcrumb: 'Məqalə Detalları' },
         }
       ]
     },
@@ -406,6 +415,13 @@ const router = createRouter({
           name: 'check-up',
           component: CheckUpView,
           meta: { breadcrumb: 'Check-up' },
+        },
+        {
+          path: '/medical-services/check-up/:id',
+          name: 'check-up-inner',
+          component: CheckUpInnerView,
+          props: route => ({ checkup: JSON.parse(route.query.checkup) }),
+          meta: { breadcrumb: 'Check-up Detalları' },
         },
         {
           path: '/medical-services/actions',

@@ -20,7 +20,7 @@
 
         <!-- GALLERY SIDE  -->
         <div class="mt-10">
-           <GallerySection />
+           <GallerySection :images="images" />
          </div>
 
         <Maps class="mt-14 sm:mt-24"/>
@@ -32,6 +32,18 @@ import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 import GallerySection from "@/components/GallerySection.vue";
+
+
+// Gallery General Surgery 
+import gs1 from "@/assets/images/general_surgery/gs1.jpg"
+import gs2 from "@/assets/images/general_surgery/gs2.jpg"
+
+const images = [
+  { src: gs1, alt: 'Image 1' },
+  { src: gs2, alt: 'Image 2' },
+  { src: gs1, alt: 'Image 3' },
+  { src: gs2, alt: 'Image 4' },
+];
 </script>
 
 <style scoped>

@@ -3,9 +3,12 @@
         <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="(checkup, index) in paginatedCheckups" :key="index" class="mb-4">
+                    <div v-for="(checkup, index) in paginatedCheckups" :key="index" class="relative mb-4" @click="goToCheckUp(checkup)">
                         <img :src="checkup.img" :alt="checkup.checkupName" class="w-full h-auto rounded-md">
                         <p class="text-base sm:text-lg mt-2">{{ checkup.checkupName }}</p>
+                        <div v-if="isExpired(checkup.endDate)" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold">
+                            VAXTI BİTİB
+                        </div>
                     </div>
                 </div>
                 <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
@@ -27,6 +30,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useRouter } from 'vue-router';
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
@@ -37,31 +41,39 @@ import checkup2 from "@/assets/images/checkups/checkup2.jpg";
 import checkup3 from "@/assets/images/checkups/checkup3.jpg";
 
 const checkups = ref([
-    { id: 1, img: checkup1, checkupName: 'Terapevtik check up' },
-    { id: 2, img: checkup2, checkupName: 'Kardioloji check up' },
-    { id: 3, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 4, img: checkup3, checkupName: 'Terapevtik check up' },
-    { id: 5, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 6, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 7, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 8, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 9, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 10, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 11, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 12, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 13, img: checkup3, checkupName: 'Onkoloji check up' },
-    { id: 14, img: checkup3, checkupName: 'Onkoloji check up' },
+    { id: 1, img: checkup1, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 2, img: checkup2, checkupName: 'Kardioloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 3, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '20.02.2025', },
+    { id: 4, img: checkup3, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '20.02.2025', },
+    { id: 5, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 6, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 7, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 8, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 9, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 10, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 11, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 12, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 13, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 14, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
 ]);
 
 const itemsPerPage = 9;
 const currentPage = ref(1);
 
-const totalPages = computed(() => Math.ceil(checkups.value.length / itemsPerPage));
+const today = new Date().toISOString().split('T')[0];
+
+const filteredCheckups = computed(() => {
+    return checkups.value.filter(checkup => {
+        return checkup.startDate <= today;
+    });
+});
+
+const totalPages = computed(() => Math.ceil(filteredCheckups.value.length / itemsPerPage));
 
 const paginatedCheckups = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    return checkups.value.slice(start, end);
+    return filteredCheckups.value.slice(start, end);
 });
 
 const pages = computed(() => {
@@ -102,6 +114,17 @@ const goToNextPage = () => {
 const goToLastPage = () => {
     currentPage.value = totalPages.value;
 };
+
+const isExpired = (endDate) => {
+    return endDate < today;
+};
+
+const router = useRouter();
+
+const goToCheckUp = (checkup) => {
+    router.push({ name: 'check-up-inner', params: { id: checkup.id }, query: { checkup: JSON.stringify(checkup) } });
+};
+
 </script>
 
 <style scoped>

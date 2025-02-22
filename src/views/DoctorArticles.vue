@@ -20,9 +20,6 @@
                             <option value="all">Hamısı</option>
                         </select>
                     </div>
-                    <!-- <div class="w-full">
-                        <button type="submit" class="greenBtn mt-8 !py-2 !px-6 !rounded-lg">Filter</button>
-                    </div> -->
                 </form>
                 <div class="overflow-x-auto mt-4">
                     <table class="min-w-full bg-white border border-gray-200">
@@ -35,8 +32,8 @@
                         </thead>
                         <tbody>
                             <tr v-for="(article, index) in paginatedArticles" :key="article.id" class="hover:bg-green-50" :class="{'bg-gray-50': index % 2 === 0, 'bg-white': index % 2 !== 0}">
-                                <td class="px-6 py-4 border-b border-gray-200">
-                                    <a :href="article.articleLink" class="text-primary hover:underline">{{ article.articleHeader }}</a>
+                                <td class="px-6 py-4 border-b border-gray-200" @click="goToArticle(article)">
+                                    <span class="text-primary hover:underline cursor-pointer">{{ article.articleHeader }}</span>
                                 </td>
                                 <td class="px-6 py-4 border-b border-gray-200">{{ article.articleDate }}</td>
                                 <td class="px-6 py-4 border-b border-gray-200">{{ article.articleAuthor }}</td>
@@ -63,18 +60,19 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
 const tableArticles = ref([
-    {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn', articleLink: 'https://example.com/article1'},
-    {id: 2, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Samirə Nəsibova', articleLink: 'https://example.com/article2'},
-    {id: 3, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Lalə Həsənova', articleLink: 'https://example.com/article3'},
-    {id: 4, articleHeader: 'Miqren xəstəliyi', articleDate: '30-01-2020', articleAuthor: 'Xanoğlan Qəmbərov', articleLink: 'https://example.com/article4'},
-    {id: 5, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-10-2020', articleAuthor: 'Leyla Ələkbərova', articleLink: 'https://example.com/article5'},
-    {id: 6, articleHeader: 'Vertigo şikayəti olan xəstələrə otonevrolojı yanaşma', articleDate: '28-11-2020', articleAuthor: 'Nigar Muradova', articleLink: 'https://example.com/article6'},
-    {id: 7, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Nübar İsmayılova', articleLink: 'https://example.com/article7'},
-    {id: 8, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '20-12-2020', articleAuthor: 'Mədinə Dilbazi', articleLink: 'https://example.com/article8'},
-    {id: 9, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '15-12-2020', articleAuthor: 'Leyla Süleymanova', articleLink: 'https://example.com/article9'},
-    {id: 10, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Almaz Nəbiyeva', articleLink: 'https://example.com/article10'},
+    {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn'},
+    {id: 2, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Samirə Nəsibova'},
+    {id: 3, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Lalə Həsənova'},
+    {id: 4, articleHeader: 'Miqren xəstəliyi', articleDate: '30-01-2020', articleAuthor: 'Xanoğlan Qəmbərov'},
+    {id: 5, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-10-2020', articleAuthor: 'Leyla Ələkbərova'},
+    {id: 6, articleHeader: 'Vertigo şikayəti olan xəstələrə otonevrolojı yanaşma', articleDate: '28-11-2020', articleAuthor: 'Nigar Muradova'},
+    {id: 7, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Nübar İsmayılova'},
+    {id: 8, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '20-12-2020', articleAuthor: 'Mədinə Dilbazi'},
+    {id: 9, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '15-12-2020', articleAuthor: 'Leyla Süleymanova'},
+    {id: 10, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Almaz Nəbiyeva'},
 ]);
 
 const author = ref('');
@@ -150,6 +148,12 @@ const filterArticles = () => {
     currentPage.value = 1; // Filtrləmə zamanı ilk səhifəyə qayıt
 };
 
+const router = useRouter();
+
+const goToArticle = (article) => {
+    router.push({ name: 'article-detail', params: { id: article.id } });
+};
+
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
@@ -159,5 +163,42 @@ import Maps from "@/components/Maps.vue";
 ul{
     list-style: disc;
 }
-
+.pagination-button {
+    margin: 0 5px;
+    background-color: #6bb52b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.pagination-button:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+}
+span {
+    margin: 0 5px;
+    cursor: pointer;
+}
+.font-bold {
+    font-weight: bold;
+}
+.active-page {
+    background-color: #6bb52b;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.inactive-page {
+    color: #a5d6a7;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.pagination {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 5px 10px;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
 </style>
