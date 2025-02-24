@@ -2,7 +2,7 @@
   <div>
     <header-top />
     <header-main />
-    <breadcrumb />
+    <breadcrumb v-if="$route.path !== '/registration'" />
     <RouterView />
     <footer-main />
       <img src="@/assets/icons/scroll-up.svg"

@@ -31,19 +31,42 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 
+import checkup1 from "@/assets/images/checkups/checkup1.jpg";
+import checkup2 from "@/assets/images/checkups/checkup2.jpg";
+import checkup3 from "@/assets/images/checkups/checkup3.jpg";
+
+const checkups = [
+    { id: 1, img: checkup1, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 2, img: checkup2, checkupName: 'Kardioloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 3, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '20.02.2025', },
+    { id: 4, img: checkup3, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '20.02.2025', },
+    { id: 5, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 6, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 7, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 8, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 9, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 10, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 11, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 12, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 13, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 14, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+];
+
 const route = useRoute();
-const checkup = JSON.parse(route.query.checkup);
-console.log(checkup)
+
+const checkup = computed(() => {
+    return checkups.find(checkup => checkup.id === parseInt(route.params.id));
+});
 </script>
 
 <style scoped>
 ul{
     list-style: disc;
 }
-
 </style>

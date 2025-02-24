@@ -240,14 +240,14 @@
                     <img src="../assets/icons/search.svg" alt="search" class="cursor-pointer" style="width: 37px; height: 37px;" @click="toggleSearch">
                     <input v-show="showSearch" type="text" class="search-input" :class="{ 'expanded': showSearch }">
                 </div> -->
-                <div class="search-box">
+                <div class="search-box ">
                     <button class="btn-search">
-                        <img :src="searchIcon" alt="search" class="w-[25px] h-[25px] md:w-[27px] md:h-[27px] lg:w-[36px] lg:h-[36px] cursor-pointer mb-4 ml-7 md:mb-1 lg:mb-0 lg:ml-0">
+                        <img :src="searchIcon" alt="search" class="w-[25px] h-[25px] md:w-[27px] md:h-[27px] lg:w-[32px] lg:h-[32px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
                     </button>
                     <input type="text" class="input-search" placeholder="Type to Search...">
                 </div>
                 <div class="headerParent relative group">
-                  <div class="ml-5 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[50px] lg:h-[40px] flex flex-col justify-around items-end cursor-pointer">
+                  <div class="ml-3 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[45px] lg:h-[35px] flex flex-col justify-around items-end cursor-pointer">
                     <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                     <span class="w-full h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                     <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
@@ -285,6 +285,8 @@
                     </li> -->
                   </ul>
                 </div>
+                <i class="fa-solid fa-right-to-bracket text-3xl text-[#ef7c00] ml-3 cursor-pointer" @click="toggleModal"></i>
+                <LoginModal v-if="showModal" @close="toggleModal" />
             </div>
         </div>
     </div>
@@ -293,9 +295,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import LoginModal from './LoginModal.vue';
 
 const route = useRoute();
-
+const showModal = ref(false)
 
 const headerClass = computed(() => {
   return route.path === '/' ? 'header-white' : 'header-gray';
@@ -313,6 +316,10 @@ const searchIcon = computed(() => {
 const openPdf = () => {
   window.open('/src/assets/peyvend/peyvend-kitabcasi.pdf', '_blank');
 };
+
+const toggleModal = () => {
+    showModal.value = !showModal.value
+}
 </script>
 
 <style scoped>
@@ -345,7 +352,6 @@ a:hover::after {
 .search-box {
   width: fit-content;
   height: fit-content;
-  position: relative;
   position: relative;
 }
 

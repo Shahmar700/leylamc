@@ -121,8 +121,8 @@ const isExpired = (endDate) => {
 
 const router = useRouter();
 
-const goToCheckUp = (checkup) => {
-    router.push({ name: 'check-up-inner', params: { id: checkup.id }, query: { checkup: JSON.stringify(checkup) } });
+const goToCheckUp  = (checkup) => {
+    router.push({ name: 'check-up-inner', params: { id: checkup.id } });
 };
 
 </script>
