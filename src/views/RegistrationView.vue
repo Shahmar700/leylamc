@@ -10,33 +10,38 @@
         <div class="flex items-center p-6 h-full w-full">
           <form class="max-w-lg w-full mx-auto">
             <div class="mb-8">
-              <h3 class="text-primary text-2xl font-bold max-md:text-center">Create an account</h3>
+              <h3 class="text-primary text-2xl font-bold max-md:text-center">Yeni hesab yaradın</h3>
             </div>
 
-            <div>
-              <label class="text-gray-800 text-xs block mb-2">Ad</label>
+            <div class="mt-6">
+              <label :class="{'text-red-500': !isNameValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Ad</label>
+              <span v-if="formSubmitted && !isNameValid" class="text-lightgray text-xs">Minimal 2 simvol</span>
               <div class="relative flex items-center">
-                <input name="name" type="text" required class="w-full bg-transparent text-sm border-b border-gray-300 focus:border-primary pl-2 pr-8 py-3 outline-none" placeholder="Adınızı daxil edin" />
+                <input v-model="name" name="name" type="text" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-2 pr-8 py-1 outline-none" placeholder="Adınızı daxil edin" />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
                   <circle cx="10" cy="7" r="6" data-original="#000000"></circle>
                   <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
                 </svg>
               </div>
+              
             </div>
             <div class="mt-6">
-              <label class="text-gray-800 text-xs block mb-2">Soyad</label>
+              <label :class="{'text-red-500': !isSurnameValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Soyad</label>
+              <span v-if="formSubmitted && !isSurnameValid" class="text-lightgray text-xs">Minimal 2 simvol</span>
               <div class="relative flex items-center">
-                <input name="name" type="text" required class="w-full bg-transparent text-sm border-b border-gray-300 focus:border-primary pl-2 pr-8 py-3 outline-none" placeholder="Soyadınızı daxil edin" />
+                <input v-model="surname" name="surname" type="text" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-2 pr-8 py-1 outline-none" placeholder="Soyadınızı daxil edin" />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
                   <circle cx="10" cy="7" r="6" data-original="#000000"></circle>
                   <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
                 </svg>
               </div>
+              
             </div>
             <div class="mt-6">
-              <label class="text-gray-800 text-xs block mb-2">E-poçt</label>
+              <label :class="{'text-red-500': !isEmailValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">E-poçt</label>
+              <span v-if="formSubmitted && !isEmailValid" class="text-lightgray text-xs">E-poçt düzgün formada daxil edin</span>
               <div class="relative flex items-center">
-                <input name="email" type="text" required class="w-full bg-transparent text-sm border-b border-gray-300 focus:border-primary pl-2 pr-8 py-3 outline-none" placeholder="Elektron adresinizi daxil edin" />
+                <input v-model="email" name="email" type="email" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-2 pr-8 py-1 outline-none" placeholder="Elektron adresinizi daxil edin" />
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 682.667 682.667">
                   <defs>
                     <clipPath id="a" clipPathUnits="userSpaceOnUse">
@@ -49,37 +54,37 @@
                   </g>
                 </svg>
               </div>
-            </div>
-            <div class="mt-6">
-              <label class="text-gray-800 text-xs block mb-2">Şifrə</label>
-              <div class="relative flex items-center">
-                <input name="password" type="password" required class="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Şifrənizi daxil edin" />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2 cursor-pointer" viewBox="0 0 128 128">
-                  <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-            <div class="mt-6">
-              <label class="text-gray-800 text-xs block mb-2">Şifrə təsdiq</label>
-              <div class="relative flex items-center">
-                <input name="password" type="password" required class="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-3 outline-none" placeholder="Şifrənizi təkrar daxil edin" />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2 cursor-pointer" viewBox="0 0 128 128">
-                  <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-            <div class="flex items-center mt-6">
-              <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 rounded" />
-              <label for="remember-me" class="ml-3 block text-sm text-gray-800">
-                I accept the <a href="javascript:void(0);" class="text-primary font-semibold hover:underline ml-1">Terms and Conditions</a>
-              </label>
+              
             </div>
 
+            <div class="mt-6">
+              <label :class="{'text-red-500': !isPasswordValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Şifrə</label>
+              <span v-if="formSubmitted && !isPasswordValid" class="text-lightgray text-xs">Minimal 6 simvol daxil edin</span>
+              <div class="relative flex items-center">
+                <input v-model="password" :type="showPassword ? 'text' : 'password'" name="password" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-1 outline-none" placeholder="Şifrənizi daxil edin" />
+                <svg class="w-[18px] h-[18px] absolute right-2 cursor-pointer" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" fill="#bbb" stroke="#bbb">
+                  <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.355469 20 6 21.355469 6 23 L 6 47 C 6 48.644531 7.355469 50 9 50 L 41 50 C 42.644531 50 44 48.644531 44 47 L 44 23 C 44 21.355469 42.644531 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 9 22 L 41 22 C 41.554688 22 42 22.445313 42 23 L 42 47 C 42 47.554688 41.554688 48 41 48 L 9 48 C 8.445313 48 8 47.554688 8 47 L 8 23 C 8 22.445313 8.445313 22 9 22 Z M 25 30 C 23.300781 30 22 31.300781 22 33 C 22 33.898438 22.398438 34.6875 23 35.1875 L 23 38 C 23 39.101563 23.898438 40 25 40 C 26.101563 40 27 39.101563 27 38 L 27 35.1875 C 27.601563 34.6875 28 33.898438 28 33 C 28 31.300781 26.699219 30 25 30 Z"></path>
+                </svg>
+              </div>
+              
+            </div>
+            <div class="mt-6">
+                <label :class="{'text-red-500': !isConfirmPasswordValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Şifrə təsdiq</label>
+                <span v-if="formSubmitted && !isConfirmPasswordValid" class="text-lightgray text-xs">Şifrəni düzgün daxil edin</span>
+                <div class="relative flex items-center">
+                  <input v-model="confirmPassword" :type="showConfirmPassword ? 'text' : 'password'" name="confirmPassword" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-blue-500 pl-2 pr-8 py-1 outline-none" placeholder="Şifrənizi təkrar daxil edin" />
+                  <svg class="w-[18px] h-[18px] absolute right-2 cursor-pointer" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" fill="#bbb" stroke="#bbb">
+                    <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.355469 20 6 21.355469 6 23 L 6 47 C 6 48.644531 7.355469 50 9 50 L 41 50 C 42.644531 50 44 48.644531 44 47 L 44 23 C 44 21.355469 42.644531 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 9 22 L 41 22 C 41.554688 22 42 22.445313 42 23 L 42 47 C 42 47.554688 41.554688 48 41 48 L 9 48 C 8.445313 48 8 47.554688 8 47 L 8 23 C 8 22.445313 8.445313 22 9 22 Z M 25 30 C 23.300781 30 22 31.300781 22 33 C 22 33.898438 22.398438 34.6875 23 35.1875 L 23 38 C 23 39.101563 23.898438 40 25 40 C 26.101563 40 27 39.101563 27 38 L 27 35.1875 C 27.601563 34.6875 28 33.898438 28 33 C 28 31.300781 26.699219 30 25 30 Z"></path>
+                  </svg>
+                </div>
+                
+              </div>
+
             <div class="mt-8">
-              <button type="button" class="w-full py-2.5 px-4 text-sm tracking-wider rounded-md border border-primary bg-transparent hover:bg-primary text-primary hover:text-white focus:outline-none transition-all duration-200 font-bold">
-                Creat an account
+              <button  @click="validateForm" type="button" class="w-full py-2.5 px-4 text-sm tracking-wider rounded-md border border-primary bg-transparent hover:bg-primary text-primary hover:text-white focus:outline-none transition-all duration-200 font-bold">
+                Hesab yaradın
               </button>
-              <p class="text-sm mt-6 text-gray-800">Already have an account? <a href="javascript:void(0);" @click="toggleModal"  class="text-primary font-semibold hover:underline ml-1">Login here</a></p>
+              <p class="text-sm md:text-base mt-6 text-gray-800">Artıq qeydiyyatdan keçmisiz? <a href="javascript:void(0);" @click="toggleModal"  class="text-primary font-semibold hover:underline ml-1">Daxil olun</a></p>
             </div>
           </form>
         </div>
@@ -91,14 +96,42 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import LoginModal from '@/components/LoginModal.vue';
 
 const showModal = ref(false);
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const toggleModal = () => {
   showModal.value = !showModal.value;
 };
+
+// Input Validate 
+const name = ref('');
+const surname = ref('');
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const formSubmitted = ref(false);
+
+const isNameValid = computed(() => name.value.length >= 2);
+const isSurnameValid = computed(() => surname.value.length >= 2);
+const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
+const isPasswordValid = computed(() => password.value.length >= 6);
+const isConfirmPasswordValid = computed(() => confirmPassword.value === password.value);
+
+const validateForm = () => {
+  formSubmitted.value = true;
+
+  if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
+    // Form is valid, proceed with submission
+  } else {
+    // Form is invalid, show error messages
+  }
+};
+
+
 </script>
 
 

@@ -55,6 +55,13 @@ import DoctorArticles from '@/views/DoctorArticles.vue'
 import CheckUpInnerView from '@/views/medical_services/CheckUpInnerView.vue'
 import DoctorArticlesInner from '@/views/DoctorArticlesInner.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
+import E_appointmentView from '@/views/online_services/E_appointmentView.vue'
+import E_resultView from '@/views/online_services/E_resultView.vue'
+import E_paymentView from '@/views/online_services/E_paymentView.vue'
+import E_commerceView from '@/views/online_services/E_commerceView.vue'
+import E_consultationView from '@/views/online_services/E_consultationView.vue'
+import OffersView from '@/views/OffersView.vue'
+import ContactView from '@/views/ContactView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -369,79 +376,146 @@ const router = createRouter({
       meta: { breadcrumb: 'Tibbi xidmətlər' },
       children: [
         {
-          path: '/medical-services/ambulance',
+          path: 'ambulance',
           name: 'ambulance',
           component: AmbulanceView,
           meta: { breadcrumb: 'Təcili Tibbi yardım' },
         },
         {
-          path: '/medical-services/home-examination',
+          path: 'home-examination',
           name: 'home-examination',
           component: HomeBasedExaminationView,
           meta: { breadcrumb: 'Ünvanda müayinə' },
         },
         {
-          path: '/medical-services/children-center',
+          path: 'children-center',
           name: 'children-center',
           component: ChildrenHealthCenterView,
           meta: { breadcrumb: 'Uşaq sağlamlıq mərkəzi' },
         },
         {
-          path: '/medical-services/male-female-infertility',
+          path: 'male-female-infertility',
           name: 'male-female-infertility',
           component: MaleFemaleInfertilityView,
           meta: { breadcrumb: 'Kişi və qadın sonsuzluğu mərkəzi' },
         },
         {
-          path: '/medical-services/corporate-cooperation',
+          path: 'corporate-cooperation',
           name: 'corporate-cooperation',
           component: CorporateCooperationView,
           meta: { breadcrumb: 'Korporativ əməkdaşlıq' },
         },
         {
-          path: '/medical-services/medical-insurance',
+          path: 'medical-insurance',
           name: 'medical-insurance',
           component: MedicalInsuranceView,
           meta: { breadcrumb: 'Tibbi sığorta' },
         },
         { 
-          path: '/medical-services/industrial-medicine',
+          path: 'industrial-medicine',
           name: 'industrial-medicine',
           component: IndustrialMedicineView,
           meta: { breadcrumb: 'Sənaye təbabəti' },
         },
         {
-          path: '/medical-services/outpatient-examination',
+          path: 'outpatient-examination',
           name: 'outpatient-examination',
           component: OutpatientExaminationView,
           meta: { breadcrumb: 'Ambulator müayinə' },
         },
         {
-          path: '/medical-services/check-up',
+          path: 'check-up',
           name: 'check-up',
           component: CheckUpView,
           meta: { breadcrumb: 'Check-up' },
         },
         {
-          path: '/medical-services/check-up/:id',
+          path: 'check-up/:id',
           name: 'check-up-inner',
           component: CheckUpInnerView,
           props: true,
           meta: { breadcrumb: 'Check-up Detalları' },
         },
         {
-          path: '/medical-services/actions',
+          path: 'actions',
           name: 'actions',
           component: ActionsView,
           meta: { breadcrumb: 'Aksiyalar' },
         },
         {
-          path: '/medical-services/vacc',
+          path: 'vacc',
           name: 'vacc',
           component: VaccView,
           meta: { breadcrumb: 'Pulmonologiya' },
         }
       ],
+    },
+    {
+      path: '/online-services',
+      redirect: '/online-services/e-appointment',
+      meta: { breadcrumb: 'Onlayn xidmətlər' },
+      children: [
+        {
+          path: 'e-appointment',
+          name: 'e-appointment',
+          component: E_appointmentView,
+          meta: { breadcrumb: 'E-növbə' }
+        },
+        {
+          path: 'e-result',
+          name: 'e-result',
+          component: E_resultView,
+          meta: { breadcrumb: 'E-nəticə' }
+        },
+        {
+          path: 'e-payment',
+          name: 'e-payment',
+          component: E_paymentView,
+          meta: { breadcrumb: 'E-ödəmə' }
+        },
+        {
+          path: 'e-commerce',
+          name: 'e-commerce',
+          component: E_commerceView,
+          meta: { breadcrumb: 'E-satış' }
+        },
+        {
+          path: 'e-consultation',
+          name: 'e-consultation',
+          component: E_consultationView,
+          meta: { breadcrumb: 'E-məsləhət' }
+        },
+      ]
+    },
+    {
+      path: '/health-kiosk',
+      name: 'health-kiosk',
+      component: HealthKioskView,
+      meta: { breadcrumb: 'Sağlıq köşkü' }
+    },
+    {
+      path: '/vacancies',
+      name: 'vacancies',
+      component: VacanciesView,
+      meta: { breadcrumb: 'Vakansiyalar' }
+    },
+    {
+      path: '/offers',
+      name: 'offers',
+      component: OffersView,
+      meta: { breadcrumb: 'Aksiyalar' }
+    },
+    {
+      path: '/offers',
+      name: 'offers',
+      component: OffersView,
+      meta: { breadcrumb: 'Aksiyalar' }
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: ContactView,
+      meta: { breadcrumb: 'Əlaqə' }
     },
   ],
   scrollBehavior (to, from, savedPosition) {

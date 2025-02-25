@@ -40,33 +40,33 @@
       <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           <Eservice 
           :eService="eService1"
-          title="E - randevu"
-          description="Online qəbula e-randevula yazılın"
-          link="https://example.com/e-randevu"
+          title="E - növbə"
+          description="Online qəbula e - növbəyə yazılın"
+          link="/online-services/e-appointment"
           />
           <Eservice
           :eService="eService2"
           title="E - nəticə"
           description="Analizlərin nəticələrini əldə edin" 
-          link="https://example.com/e-randevu"
+          link="/online-services/e-result"
           />
           <Eservice 
           :eService="eService3" 
           title="E - ödəmə"
           description="Ödənişləri e-ödəmə vasitəsiylə edin"
-          link="https://example.com/e-randevu"
+          link="/online-services/e-payment"
           />
           <Eservice 
           :eService="eService4" 
           title="E - satış"
           description="Xidmətlərimizi online sifariş edin"
-          link="https://example.com/e-randevu"
+          link="/online-services/e-commerce"
           />
           <Eservice 
           :eService="eService5" 
           title="E - məsləhət"
           description="Xidmətlərimizi online sifariş edin"
-          link="https://example.com/e-randevu"
+          link="/online-services/e-consultation"
           />
       </div>
      </div>

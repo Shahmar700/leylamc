@@ -265,20 +265,42 @@
                     <li class="mb-2 px-6">
                       <router-link to="/linkk" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi Xidmətlər</router-link>
                     </li>
+                    <!-- Onlayn Xidmətlər  -->
+                    <li class="mb-2 px-6 onlineParent relative">
+                      <router-link to="/online-services" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">
+                        <span>Onlayn Xidmətlər</span>
+                        <span><i class="onlineFa fa-solid fa-angle-down"></i></span>
+                      </router-link>
+                      <ul class="onlineDropdown shadow-xl rounded-xl z-10">
+                          <li class="mb-2 px-6">
+                            <router-link :to="{name: 'e-appointment'}" class="block w-full h-full">E-növbə</router-link>
+                          </li>
+                          <li class="mb-2 px-6">
+                            <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-nəticə</router-link>
+                          </li>
+                          <li class="mb-2 px-6">
+                            <router-link :to="{name: 'e-payment'}" class="block w-full h-full">E-ödəmə</router-link>
+                          </li>
+                          <li class="mb-2 px-6">
+                            <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>
+                          </li>
+                          <li class="mb-2 px-6">
+                            <router-link :to="{name: 'e-consultation'}" class="block w-full h-full">E-məsləhət</router-link>
+                          </li>
+                        </ul>
+                    </li>
+                    <!-- Onlayn Xidmətlər END -->
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Onlayn Xidmətlər</router-link>
+                      <router-link :to="{name: 'health-kiosk'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Sağlıq köşkü</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Sağlıq köşkü</router-link>
+                      <router-link :to="{name: 'vacancies'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Vakansiyalar</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Vakansiyalar</router-link>
+                      <router-link :to="{name: 'offers'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Aksiyalar</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Aksiyalar</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Əlaqə</router-link>
+                      <router-link :to="{name: 'contact'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Əlaqə</router-link>
                     </li>
                     <!-- <li class=" px-8">
                       <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Çıxış</router-link>
@@ -423,7 +445,7 @@ a:hover::after {
   color: white;
 }
 
-.mediaParent, .galleryParent, .surgeryParent{
+.mediaParent, .galleryParent, .surgeryParent, .onlineParent{
   position: relative;
 }
 
@@ -461,12 +483,32 @@ a:hover::after {
   opacity: 1;
 }
 
+.onlineDropdown{
+  position: absolute;
+  left: -200px;
+  top: 0px;
+  background-color: #fff;
+  padding: 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+  border-radius: 15px;
+}
+
+.onlineParent:hover .onlineDropdown{
+  left: -160px;
+  top: 0px;
+  visibility: visible;
+  opacity: 1;
+}
+
 .fa-solid.fa-angle-down{
   transition: 0.4s;
 }
 .mediaParent:hover .mediaFa,
 .galleryParent:hover .galleryFa,
-.surgeryParent:hover .surgeryFa
+.surgeryParent:hover .surgeryFa,
+.onlineParent:hover .onlineFa
 {
   transform: rotate(-90deg);
 }

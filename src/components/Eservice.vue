@@ -1,10 +1,10 @@
 <template>
-     <a :href="link" target="_blank" class="bg-white  rounded-3xl py-9 px-6 cursor-pointer transition-all duration-300 hover:shadow-lg">
+     <router-link :to="link" class="bg-white  rounded-3xl py-9 px-6 cursor-pointer transition-all duration-300 hover:shadow-lg">
         <img :src="eService" alt="e-service" class="pb-4">
         <h3 class="pb-5 text-2xl font-bold">{{ title }}</h3>
         <p class="text-lg">{{ description }}</p>
         <img  class="mt-3" src="@/assets/icons/e-service-btn.svg" alt="">
-    </a>
+    </router-link>
 </template>
 
 <script setup>
