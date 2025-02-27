@@ -28,6 +28,7 @@ const fetchQualityPolicy = async () => {
   try {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/qualitypolicy-list/');
     const policyData = response.data.results[0];
+    console.log(policyData)
     policyTitle.value = policyData.title;
     policyText.value = policyData.text;
   } catch (error) {
@@ -37,7 +38,9 @@ const fetchQualityPolicy = async () => {
 
 // Computed xüsusiyyəti ilə mətnin formatlanması
 const formattedPolicyText = computed(() => {
-  return policyText.value.replace(/\n/g, '<br>');
+  return policyText.value
+    .replace(/\n/g, '<br>')
+    .replace(/(.*?:)/g, '<b>$1</b>'); // Başlıqları bold formatda göstərmək
 });
 
 onMounted(() => {

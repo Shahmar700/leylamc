@@ -240,8 +240,8 @@ import AllNewsView from '@/views/AllNewsView.vue'
     {
       path: '/doctor/:id',
       name: 'doctor',
-      component: DrView,
-      props: true,
+      component: () => import('@/views/DrView.vue'),
+      props: true
     },
     {
       path: '/departments',

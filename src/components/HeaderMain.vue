@@ -47,7 +47,7 @@
                             </router-link>
                             <ul class="mediaDropdown shadow-xl rounded-xl border border-t-primary">
                               <li class="mb-2 px-6">
-                                <router-link :to="{name: 'news'}" class="block w-full h-full">Xəbərlər</router-link>
+                                <router-link :to="{name: 'all-news'}" class="block w-full h-full">Xəbərlər</router-link>
                               </li>
                               <li class="mb-2 px-6">
                                 <router-link :to="{ name: 'kiv-writes' }" class="block w-full h-full">KİV Yazanlar</router-link>

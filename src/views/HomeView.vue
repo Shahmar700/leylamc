@@ -362,8 +362,8 @@ const stopPolling = () => {
 
 const router = useRouter();
 const goToDoctor = (id) => {
-  router.push({name: 'doctor', params: {id}});
-}
+  router.push({ name: 'doctor', params: { id } });
+};
 
 const goToNews = (slug) => {
   router.push({ name: 'news-content', params: { slug } });

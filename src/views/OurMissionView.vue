@@ -38,7 +38,7 @@ const fetchOurMission = async () => {
 
 // Computed xüsusiyyəti ilə mətnin formatlanması
 const formattedMissionText = computed(() => {
-  return missionText.value.replace(/\n/g, '<br>');
+  return missionText.value.replace(/\n/g, '<br>').replace(/(.*?:)/g, '<b>$1</b>'); // Başlıqları bold formatda göstərmək
 });
 
 onMounted(() => {

@@ -76,7 +76,7 @@ const tableArticles = ref([
 ]);
 
 const author = ref('');
-const itemsPerPage = ref('all');
+const itemsPerPage = ref('5');
 const currentPage = ref(1);
 
 const filteredArticles = computed(() => {

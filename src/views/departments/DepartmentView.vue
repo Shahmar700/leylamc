@@ -89,7 +89,9 @@ watch(() => route.params.slug, () => {
 
 // Computed xüsusiyyəti ilə mətnin formatlanması
 const formattedText = computed(() => {
-  return department.value.text ? department.value.text.replace(/\n/g, "<br>") : ''
+  return department.value.text
+    ? department.value.text.replace(/\n/g, "<br>").replace(/(.*?:)/g, "<b>$1</b>") // Başlıqları bold formatda göstərmək
+    : ''
 })
 </script>
 
