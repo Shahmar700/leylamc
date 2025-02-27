@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="relative pb-[550px]">
+  <div :style="{ marginTop: headerHeight + 'px' }">
+    <div class="relative pb-[550px]" >
       <div class="max-w-[2400px] mx-auto">
         <Slider :images="homeImages" />
       </div>
@@ -145,29 +145,19 @@
             <h1 class="text-primary text-4xl font-semibold tracking-wider">Xəbərlər</h1>
           </div>
           <div>
-            <a href="" class="greenBtn">Kanalımıza keçid et</a>
+            <a href="" class="greenBtn">Bütün xəbərlər</a>
           </div>
         </div>
         <!-- News Boxs -->
          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <News 
+          <News 
+            v-for="item in news"
+            :key="item.id"
             class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
-            :newsImg="news1" 
-            newsDate="27 oktyabr2024"
-            newsName="Leyla Medical Centerin Radiologiya şöbəsi"
-            />
-            <News 
-            class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
-            :newsImg="news2"
-            newsDate="27 oktyabr2024"
-            newsName="Leyla Medical Centerin Radiologiya şöbəsi" 
-            />
-            <News 
-            class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
-            :newsImg="news3"
-            newsDate="27 oktyabr2024"
-            newsName="Leyla Medical Centerin Radiologiya şöbəsi" 
-            />
+            :newsImg="item.main_photo" 
+            :newsDate="new Date(item.created_at).toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })"
+            :newsName="item.title"
+          />
          </div>
       </div>
       </div>
@@ -202,7 +192,7 @@
       </div>
     </div>
 
-    <!-- ** OUR TEAM ** -->
+    <!-- ** OUR TEAM (Doctors) ** -->
     <div class="mt-48">
       <div class="container">
         <div class="flex justify-between mb-16">
@@ -214,25 +204,15 @@
           </div>
         </div>
         <!-- Doctors Imgs  -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-16">
           <DoctorCard
-           :image="Dr1"
-           name="Op.Dr. Aynurə Abdullayeva"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('1')"
-          />
-          <DoctorCard
-           :image="Dr2"
-           name="Op.Dr. Natiq Məhərrəmov"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('2')"
-          />
-          <DoctorCard
-           :image="Dr3"
-           name="T.Ü.F.D. Op.Dr. Nigar Əlizadə"
-           position="Cərrah Mama-Ginekoloq"
-           @click="goToDoctor('3')"
-          />
+            v-for="doctor in doctors"
+            :key="doctor.id"
+            :image="doctor.photo"
+            :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
+            :position="doctor.specialty"
+            @click="goToDoctor(doctor.id)"
+        />
         </div>
       </div>
     </div>
@@ -291,8 +271,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router'
+import axios from 'axios';
+import { shuffle } from 'lodash';
 import Slider from '@/components/Slider.vue'
 import Service from '@/components/Service.vue'
 import Eservice from '@/components/Eservice.vue'
@@ -316,6 +298,63 @@ const openModal = (url) => {
 const closeModal = () => {
   isModalOpen.value = false;
 };
+
+// GET APİ DOCTORS -------------------
+
+const doctors = ref([]);
+
+// API çağırışı ilə həkim məlumatlarını yükləmək
+const fetchDoctors = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
+    console.log(response.data); // Məlumatları konsolda göstərmək
+    doctors.value = shuffle(response.data.results); // Doktorları təsadüfi olaraq qarışdırmaq
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+  }
+};
+
+// GET APİ NEWS -------------------
+
+const news = ref([]);
+
+// API çağırışı ilə xəbərləri yükləmək
+const fetchNews = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/news-list/');
+    console.log(response.data); // Məlumatları konsolda göstərmək
+    news.value = response.data.results;
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+  }
+};
+
+onMounted(() => {
+  fetchDoctors();
+  fetchNews();
+  startPolling();
+});
+
+onUnmounted(() => {
+  stopPolling();
+});
+
+let pollingInterval;
+
+const startPolling = () => {
+  pollingInterval = setInterval(fetchNews, 5000); // Hər 5 saniyədən bir API çağırışı
+};
+
+const stopPolling = () => {
+  clearInterval(pollingInterval);
+};
+
+const router = useRouter();
+const goToDoctor = (id) => {
+  router.push({name: 'doctor', params: {id}});
+}
+
+// GET APİ DOCTORS END ________________________
 
 // images for the slider component
 import heroBanner from '@/assets/images/heroBanner.webp'
@@ -345,9 +384,9 @@ import eService4 from "@/assets/icons/eService4.svg";
 import eService5 from "@/assets/icons/eService5.svg";
 
 // News Images 
-import news1 from "@/assets/images/news1.jpg"
-import news2 from "@/assets/images/news2.jpg"
-import news3 from "@/assets/images/news3.jpg"
+// import news1 from "@/assets/images/news1.jpg"
+// import news2 from "@/assets/images/news2.jpg"
+// import news3 from "@/assets/images/news3.jpg"
 
 // Departments Images
 import departmentsBg from "@/assets/images/departaments-bg.webp";
@@ -378,22 +417,14 @@ const prevSlide = () => {
   }
 };
 
- 
-// Doctors Images (Our Team) 
-import Dr1 from "@/assets/images/Dr1.jpg"
-import Dr2 from "@/assets/images/Dr2.jpg"
-import Dr3 from "@/assets/images/Dr3.jpg"
-
-const router = useRouter();
-const goToDoctor = (id) => {
-  router.push({name: 'doctor', params: {id}});
-}
 
 // Rating User Images
 import user1 from "@/assets/images/user1.jpg"
 import user2 from "@/assets/images/user2.jpg"
 import user3 from "@/assets/images/user3.jpg"
 
+// get header height 
+const headerHeight = inject('headerHeight', ref(0))
 </script>
 
 <style scoped>

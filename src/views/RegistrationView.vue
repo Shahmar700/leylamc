@@ -3,11 +3,11 @@
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="font-[sans-serif] bg-white md:h-screen">
       <div class="grid md:grid-cols-2 items-center gap-8 h-full">
-        <div class="max-md:order-1 p-4 h-full bg-[#f6fafd]">
+        <div class="max-md:order-1 p-3 h-full rounded-xl bg-[#f6fafd]"  data-aos="fade-right">
           <img src="@/assets/images/Leyla_Building.png" class="w-full h-full aspect-square object-contain block mx-auto rounded-xl" alt="login-image" />
         </div>
 
-        <div class="flex items-center p-6 h-full w-full">
+        <div class="flex items-center p-6 h-full w-full shadow-md rounded-md" data-aos="fade-left">
           <form class="max-w-lg w-full mx-auto">
             <div class="mb-8">
               <h3 class="text-primary text-2xl font-bold max-md:text-center">Yeni hesab yaradın</h3>
@@ -25,6 +25,7 @@
               </div>
               
             </div>
+            <!-- Surname  -->
             <div class="mt-6">
               <label :class="{'text-red-500': !isSurnameValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Soyad</label>
               <span v-if="formSubmitted && !isSurnameValid" class="text-lightgray text-xs">Minimal 2 simvol</span>
@@ -35,8 +36,20 @@
                   <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
                 </svg>
               </div>
-              
             </div>
+            <!-- Tel Number  -->
+            <div class="mt-6">
+              <label :class="{'text-red-500': !isPhoneValid && formSubmitted}" class="text-gray-800 text-xs md:text-base block mb-1">Mobil nömrə</label>
+              <span v-if="formSubmitted && !isPhoneValid" class="text-lightgray text-xs">Düzgün mobil nömrə daxil edin</span>
+              <div class="relative flex items-center">
+                <span class="absolute left-2 text-gray-500">+</span>
+                <input v-model="phone" @input="validatePhone" name="phone" type="tel" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-6 pr-8 py-1 outline-none" placeholder="994 77 123 45 67" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
+                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27 11.72 11.72 0 004.52.91 1 1 0 011 1v3.5a1 1 0 01-1 1A19.92 19.92 0 012 4.5a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.91 4.52 1 1 0 01-.27 1.11l-2.2 2.2z"/>
+                </svg>
+              </div>
+            </div>
+            <!-- E-mail  -->
             <div class="mt-6">
               <label :class="{'text-red-500': !isEmailValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">E-poçt</label>
               <span v-if="formSubmitted && !isEmailValid" class="text-lightgray text-xs">E-poçt düzgün formada daxil edin</span>
@@ -111,6 +124,7 @@ const toggleModal = () => {
 const name = ref('');
 const surname = ref('');
 const email = ref('');
+const phone = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const formSubmitted = ref(false);
@@ -118,18 +132,24 @@ const formSubmitted = ref(false);
 const isNameValid = computed(() => name.value.length >= 2);
 const isSurnameValid = computed(() => surname.value.length >= 2);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
+const isPhoneValid = computed(() => /^\d{10}$/.test(phone.value)); // 10 rəqəmli mobil nömrə üçün şərt
 const isPasswordValid = computed(() => password.value.length >= 6);
 const isConfirmPasswordValid = computed(() => confirmPassword.value === password.value);
+
+const validatePhone = () => {
+  phone.value = phone.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
+};
 
 const validateForm = () => {
   formSubmitted.value = true;
 
-  if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
+  if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPhoneValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
     // Form is valid, proceed with submission
   } else {
     // Form is invalid, show error messages
   }
 };
+
 
 
 </script>

@@ -1,7 +1,7 @@
 <template>
     <a class="p-2 rounded-3xl border hover:border-2 hover:border-primary transition-shadow duration-300 cursor-pointer">
-        <div class="w-full  rounded-3xl overflow-hidden">
-            <img :src="image" alt="doctor" class="rounded-3xl object-cover">
+        <div class=" rounded-3xl overflow-hidden w-full h-[325px] xl:h-[350px] 2xl:h-[380px] xl:object-contain">
+            <img :src="image" alt="doctor" class="rounded-3xl object-cover w-full h-full">
         </div>
         <div class="mt-6">
             <h1 class="text-primary text-2xl font-bold">{{ name }}</h1>
@@ -30,6 +30,33 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.doctor-card {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s;
+}
 
+.doctor-card:hover {
+  transform: scale(1.05);
+}
 
+.doctor-image {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.doctor-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.doctor-position {
+  font-size: 1rem;
+  color: #666;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <div :class="headerClass">
-        <div class="container w-full flex justify-between py-3 sm:py-4 lg:py-6 xl:py-8 items-center font-bold text-lg sm:text-2xl">
+    <div :class="headerClass" class="sticky top-0 z-[99999]">
+        <div class="container w-full flex justify-between py-3 sm:py-4 lg:py-5 items-center font-bold text-lg sm:text-2xl">
             
             <router-link to="/" id="headerLogo">
               <svg class="absolute sm:relative w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,11 +21,11 @@
             <!-- Main Header Links  -->
             <ul class="flex items-center space-x-3 md:space-x-5 lg:space-x-8 text-main-text">
                 <li class="">
-                    <router-link to="/" class="hidden md:inline-block text-base sm:text-lg lg:text-xl xl:text-2xl">Əsas Səhifə</router-link>
+                    <router-link to="/" class="hidden md:inline-block text-base sm:text-lg lg:text-xl">Əsas Səhifə</router-link>
                 </li>
                 <!-- ---------- ABOUT US ----------  -->
                 <li class="headerParent relative group">
-                  <router-link to="/about" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl xl:text-2xl">Haqqımızda</router-link>
+                  <router-link to="/about" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Haqqımızda</router-link>
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
                       <li class="mb-2 px-6">
                         <router-link :to="{name: 'our-history'}" class="block w-full h-full">Tariximiz</router-link>
@@ -102,7 +102,7 @@
                 </li>
                 <!-- ---------- ABOUT US END ----------  -->
                 <li class="headerParent relative group">
-                    <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl xl:text-2xl">Həkimlər</router-link>
+                    <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
                       <li class="mb-2 px-6">
                         <router-link :to="{name: 'doctors'}"  class="block w-full h-full">Həkimlərimiz</router-link>
@@ -112,8 +112,10 @@
                       </li>
                     </ul>
                 </li>
+
+                 <!-- Department  -->
                 <li class="headerParent relative group">
-                    <router-link to="/departments" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl xl:text-2xl">Bölmələr</router-link>
+                  <router-link to="/departments" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</router-link>
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
                       <!-- Surgery -->
                       <li class="mb-2 px-6 surgeryParent relative">
@@ -138,63 +140,18 @@
                       </li>
                       <!-- Surgery END -->
                       <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
-                            <li class="mb-2 px-6">
-                            <router-link :to="{name: 'phlebology'}" class="block w-full h-full">Flebologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'gynecology'}" class="block w-full h-full">Ginekologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'laboratory'}" class="block w-full h-full">Laboratoriya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'traumatology'}" class="block w-full h-full">Travmotologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'ophthalmology'}" class="block w-full h-full">Oftalmologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'otorhinolaryngology'}" class="block w-full h-full">Otorinolarinqologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'neonatology-and-pediatrics'}" class="block w-full h-full">Neonatologiya və Pediatriya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'gastroenterology'}" class="block w-full h-full">Qastroenterologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'instrumental-diagnostics'}" class="block w-full h-full">İnstrumental diaqnostika</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'therapy'}" class="block w-full h-full">Terapiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'uro-andrology'}" class="block w-full h-full">Uro-andrologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'cardiology'}" class="block w-full h-full">Kardiologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'neurology'}" class="block w-full h-full">Nevrologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'endocrinology-and-dietology'}" class="block w-full h-full">Endokrinologiya və dietologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'allergology'}" class="block w-full h-full">Allerqologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'dermatocosmetology'}" class="block w-full h-full">Dermatokosmetologiya</router-link>
-                          </li>
-                          <li class="mb-2 px-6">
-                            <router-link :to="{name: 'pulmonology'}" class="block w-full h-full">Pulmonologiya</router-link>
-                          </li>
+                        <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
+                          <router-link :to="{ name: department.slug, params: { slug: department.slug } }" class="block w-full h-full">{{ department.name }}</router-link>
+                        </li>
                       </ul>
                       
                     </ul>
                 </li>
+                <!-- -------------------------- Department END -->
+                 
+                <!-- MEDİCAL SERVİCES  -->
                 <li class="headerParent relative group">
-                    <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi xidmətlər</router-link>
+                    <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl">Tibbi xidmətlər</router-link>
                     <!-- MEDİCAL SERVİCES  -->
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
                       <li class="mb-2 px-6">
@@ -242,32 +199,33 @@
                 </div> -->
                 <div class="search-box ">
                     <button class="btn-search">
-                        <img :src="searchIcon" alt="search" class="w-[25px] h-[25px] md:w-[27px] md:h-[27px] lg:w-[32px] lg:h-[32px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
+                        <img :src="searchIcon" alt="search" class="w-[25px] h-[25px] md:w-[27px] md:h-[27px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
                     </button>
                     <input type="text" class="input-search" placeholder="Type to Search...">
                 </div>
+                
                 <div class="headerParent relative group">
-                  <div class="ml-3 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[45px] lg:h-[35px] flex flex-col justify-around items-end cursor-pointer">
+                  <div class="ml-3 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[42px] lg:h-[32px] flex flex-col justify-around items-end cursor-pointer">
                     <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                     <span class="w-full h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                     <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                   </div>
                   <ul class="headerDropdown absolute top-8 right-0 z-30 bg-white min-w-[300px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible cursor-pointer text-main-text">
                     <li class="lg:hidden mb-2 px-6">
-                      <router-link :to="{name: 'doctors'}" class="sm:hidden text-base sm:text-lg lg:text-xl xl:text-2xl">Həkimlər</router-link>
+                      <router-link :to="{name: 'doctors'}" class="sm:hidden text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
                     </li>
                     <li class="lg:hidden mb-2 px-6">
-                      <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Bölmələr</a>
+                      <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl">Bölmələr</a>
                     </li>
                     <li class="xl:hidden mb-2 px-6">
-                      <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Check Up</a>
+                      <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl">Check Up</a>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Tibbi Xidmətlər</router-link>
+                      <router-link to="/linkk" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl">Tibbi Xidmətlər</router-link>
                     </li>
                     <!-- Onlayn Xidmətlər  -->
                     <li class="mb-2 px-6 onlineParent relative">
-                      <router-link to="/online-services" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">
+                      <router-link to="/online-services" class="block w-full h-full text-base sm:text-lg lg:text-xl">
                         <span>Onlayn Xidmətlər</span>
                         <span><i class="onlineFa fa-solid fa-angle-down"></i></span>
                       </router-link>
@@ -291,19 +249,19 @@
                     </li>
                     <!-- Onlayn Xidmətlər END -->
                     <li class="mb-2 px-6">
-                      <router-link :to="{name: 'health-kiosk'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Sağlıq köşkü</router-link>
+                      <router-link :to="{name: 'health-kiosk'}" class="block w-full h-full text-base sm:text-lg lg:text-xl">Sağlıq köşkü</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link :to="{name: 'vacancies'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Vakansiyalar</router-link>
+                      <router-link :to="{name: 'vacancies'}" class="block w-full h-full text-base sm:text-lg lg:text-xl">Vakansiyalar</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link :to="{name: 'offers'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Aksiyalar</router-link>
+                      <router-link :to="{name: 'offers'}" class="block w-full h-full text-base sm:text-lg lg:text-xl">Aksiyalar</router-link>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link :to="{name: 'contact'}" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Əlaqə</router-link>
+                      <router-link :to="{name: 'contact'}" class="block w-full h-full text-base sm:text-lg lg:text-xl">Əlaqə</router-link>
                     </li>
                     <!-- <li class=" px-8">
-                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl xl:text-2xl">Çıxış</router-link>
+                      <router-link to="/linkk" class="block w-full h-full text-base sm:text-lg lg:text-xl">Çıxış</router-link>
                     </li> -->
                   </ul>
                 </div>
@@ -315,12 +273,14 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import LoginModal from './LoginModal.vue';
+import axios from 'axios';
 
 const route = useRoute();
 const showModal = ref(false)
+const departments = ref([]); // Yeni ref
 
 const headerClass = computed(() => {
   return route.path === '/' ? 'header-white' : 'header-gray';
@@ -342,6 +302,23 @@ const openPdf = () => {
 const toggleModal = () => {
     showModal.value = !showModal.value
 }
+
+// API çağırışı
+const fetchDepartments = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/')
+    departments.value = response.data.results.filter(department => department.category !== 'Surgery')
+    console.log(departments.value) // Məlumatları konsolda göstərmək
+  } catch (error) {
+    console.error('API çağırışında xəta:', error)
+  }
+}
+
+
+onMounted(() => {
+  fetchDepartments();
+});
+
 </script>
 
 <style scoped>

@@ -1,12 +1,12 @@
 <template>
     <div class="bg-primary">
-        <header class="container w-full py-2 sm:py-3 flex flex-wrap justify-between">
+        <header class="container w-full py-2 sm:py-2 flex flex-wrap justify-between">
         <!-- left side  -->
         <div class="flex flex-col items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
             
             <div class="flex mb-2 sm:mb-0">
                 <!-- lang  -->
-                <div class="pr-2 select-none relative">
+                <div class="pr-2 select-none relative z-[999999] text-sm">
                     <div class="relative inline-block w-[45px] md:w-[55px]">
                         <div @click="toggleDropdown" class="appearance-none px-2 cursor-pointer outline-0 rounded-md bg-white border border-gray-300">
                             {{ selectedLanguage }}
@@ -22,7 +22,7 @@
                 <!-- lang END -->
                 
                 <span class="text-white">|</span>
-                <div class=" flex items-center px-2">
+                <div class=" flex items-center px-2 text-sm">
                     <div class="mr-1">
                     <a href="tel:*0101" class="flex items-center">
                         <div class="relative">
@@ -37,7 +37,7 @@
                 
             </div>
 
-            <div class="flex mt-1 sm:mt-0">
+            <div class="flex mt-1 sm:mt-0 text-sm">
                 <div class="flex items-center px-2">
                     <a href="tel:+994502257330" class="flex items-center">
                         <img src="@/assets/icons/mob.svg" alt="mob" class="icon" />
@@ -57,19 +57,19 @@
         <!-- right side  -->
         <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-end mt-1 sm:mt-0">
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[20px] md:h-[24px] " />
+                <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>
             <a href="https://x.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/xcom.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[20px] md:h-[24px] " />
+                <img src="@/assets/icons/xcom.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>
             <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/yt.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[20px] md:h-[24px] " />
+                <img src="@/assets/icons/yt.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>
             <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/ig.svg" alt="Instagram" class="w-[15px] h-[15px] md:w-[20px] md:h-[24px] " />
+                <img src="@/assets/icons/ig.svg" alt="Instagram" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>
             <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/wp.svg" alt="WhatsApp" class="w-[15px] h-[15px] md:w-[20px] md:h-[24px] " />
+                <img src="@/assets/icons/wp.svg" alt="WhatsApp" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>
         </div>
         </header>
@@ -100,6 +100,7 @@ const filteredLanguages = computed(() => {
 </script>
 
 <style>
+
 .arrowIcon{
     width: 10px;
     height: 10px;

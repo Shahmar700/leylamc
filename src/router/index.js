@@ -40,6 +40,7 @@ import EndocrinologyView from '@/views/departments/EndocrinologyView.vue'
 import AllergologyView from '@/views/departments/AllergologyView.vue'
 import DermatocosmetologyView from '@/views/departments/DermatocosmetologyView.vue'
 import PulmonologyView from '@/views/departments/PulmonologyView.vue'
+import DepartmentView from '@/views/departments/DepartmentView.vue'
 import AmbulanceView from '@/views/medical_services/AmbulanceView.vue'
 import HomeBasedExaminationView from '@/views/medical_services/HomeBasedExaminationView.vue'
 import ChildrenHealthCenterView from '@/views/medical_services/ChildrenHealthCenterView.vue'
@@ -62,10 +63,9 @@ import E_commerceView from '@/views/online_services/E_commerceView.vue'
 import E_consultationView from '@/views/online_services/E_consultationView.vue'
 import OffersView from '@/views/OffersView.vue'
 import ContactView from '@/views/ContactView.vue'
+import axios from 'axios'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+  const routes = [
     {
       path: '/',
       name: 'home',
@@ -266,108 +266,7 @@ const router = createRouter({
             },
           ],
         },
-        {
-          path: '/departments/phlebology',
-          name: 'phlebology',
-          component: PhlebologyView,
-          meta: { breadcrumb: 'Flebologiya' },
-        },
-        {
-          path: '/departments/gynecology',
-          name: 'gynecology',
-          component: GynecologyView,
-          meta: { breadcrumb: 'Ginekologiya' },
-        },
-        {
-          path: '/departments/laboratory',
-          name: 'laboratory',
-          component: LaboratoryView,
-          meta: { breadcrumb: 'Laboratoriya' },
-        },
-        {
-          path: '/departments/traumatology',
-          name: 'traumatology',
-          component: TraumatologyView,
-          meta: { breadcrumb: 'Travmotologiya' },
-        },
-        {
-          path: '/departments/ophthalmology',
-          name: 'ophthalmology',
-          component: OphthalmologyView,
-          meta: { breadcrumb: 'Oftalmologiya' },
-        },
-        {
-          path: '/departments/otorhinolaryngology',
-          name: 'otorhinolaryngology',
-          component: OtorhinolaryngologyView,
-          meta: { breadcrumb: 'Otorinolarinqologiya' },
-        },
-        {
-          path: '/departments/neonatology-and-pediatrics',
-          name: 'neonatology-and-pediatrics',
-          component: NeonatologyView,
-          meta: { breadcrumb: 'Neonatologiya və Pediatriya' },
-        },
-        {
-          path: '/departments/gastroenterology',
-          name: 'gastroenterology',
-          component: GastroenterologyView,
-          meta: { breadcrumb: 'Qastroenterologiya' },
-        },
-        {
-          path: '/departments/instrumental-diagnostics',
-          name: 'instrumental-diagnostics',
-          component: InstrumentalView,
-          meta: { breadcrumb: 'İnstrumental diaqnostika ' },
-        },
-        {
-          path: '/departments/therapy',
-          name: 'therapy',
-          component: TherapyView,
-          meta: { breadcrumb: 'Terapiya' },
-        },
-        {
-          path: '/departments/uro-andrology',
-          name: 'uro-andrology',
-          component: UroAndrologyView,
-          meta: { breadcrumb: 'Uro-andrologiya' },
-        },
-        {
-          path: '/departments/cardiology',
-          name: 'cardiology',
-          component: CardiologyView,
-          meta: { breadcrumb: 'Kardiologiya' },
-        },
-        {
-          path: '/departments/neurology',
-          name: 'neurology',
-          component: NeurologyView,
-          meta: { breadcrumb: 'Nevrologiya' },
-        },
-        {
-          path: '/departments/endocrinology-and-dietology',
-          name: 'endocrinology-and-dietology',
-          component: EndocrinologyView,
-          meta: { breadcrumb: 'Endokrinologiya və dietologiya' },
-        },
-        {
-          path: '/departments/allergology',
-          name: 'allergology',
-          component: AllergologyView,
-          meta: { breadcrumb: 'Allerqologiya' },
-        },
-        {
-          path: '/departments/dermatocosmetology',
-          name: 'dermatocosmetology',
-          component: DermatocosmetologyView,
-          meta: { breadcrumb: 'Dermatokosmetologiya' },
-        },
-        {
-          path: '/departments/pulmonology',
-          name: 'pulmonology',
-          component: PulmonologyView,
-          meta: { breadcrumb: 'Pulmonologiya' },
-        },
+       // Statik department yollarını silirik
       ]
     },
     {
@@ -517,10 +416,39 @@ const router = createRouter({
       component: ContactView,
       meta: { breadcrumb: 'Əlaqə' }
     },
-  ],
-  scrollBehavior (to, from, savedPosition) {
-    return { top: 0 } 
+  ]
+
+ 
+
+  const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes,
+    scrollBehavior (to, from, savedPosition) {
+      return { top: 0 } 
+    }
+  })
+
+
+// Dinamik olaraq department-ları yükləmək
+const fetchDepartments = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/')
+    // console.log(response.data.results); // Məlumatları konsolda göstərmək
+    const departments = response.data.results
+    departments.forEach(department => {
+      // console.log(department); // Hər bir department obyektini konsolda göstərmək
+      router.addRoute({
+        path: `/departments/:slug`, // :slug parametrini istifadə edirik
+        name: department.slug,
+        component: DepartmentView,
+        meta: { breadcrumb: department.name }
+      })
+    })
+  } catch (error) {
+    console.error('API çağırışında xəta:', error)
   }
-})
+}
+
+fetchDepartments()
 
 export default router

@@ -6,7 +6,7 @@
           :key="index"
           class="slide h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600] xl:h-[800px]"
         >
-          <img :src="image" alt="slideImage" class="slide-image" />
+          <img :src="image" alt="slideImage" class="slide-image object-cover md:object-fill" />
         </div>
       </div>
       <button class="nav-button left top-[20%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
@@ -77,7 +77,6 @@
   .slide-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
   
   .nav-button {

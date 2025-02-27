@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
       <!-- Map Buttons  -->
-      <div class="absolute flex top-10 left-10">
+      <div class="absolute flex top-10 right-10">
         <button @click="showMap" :class="mapButtonClass" class="text-lg py-2 px-4 font-bold rounded-tl-3xl rounded-bl-3xl">Xəritə</button>
         <button @click="showSatellite" :class="satelliteButtonClass" class="text-lg py-2 px-4 font-bold rounded-tr-3xl rounded-br-3xl">Peyk</button>
       </div>
