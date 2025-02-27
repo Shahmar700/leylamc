@@ -3,12 +3,14 @@
         <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="(checkup, index) in paginatedCheckups" :key="index" class="relative mb-4" @click="goToCheckUp(checkup)">
-                        <img :src="checkup.img" :alt="checkup.checkupName" class="w-full h-auto rounded-md">
-                        <p class="text-base sm:text-lg mt-2">{{ checkup.checkupName }}</p>
-                        <div v-if="isExpired(checkup.endDate)" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold">
-                            VAXTI BİTİB
+                    <div v-for="(checkup, index) in paginatedCheckups" :key="index" @click="goToCheckUp(checkup)" class="relative mb-4" :class="{ 'opacity-90' : isExpired(checkup.endDate) }">
+                        <div class="relative">
+                            <img :src="checkup.img" :alt="checkup.checkupName" class="w-full h-auto rounded-md" :class="{ 'filter: grayscale' : isExpired(checkup.endDate) }">
+                            <div v-if="isExpired(checkup.endDate)" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold">
+                            <span class="-rotate-[30deg] tracking-widest">VAXTI BİTİB</span>
                         </div>
+                        </div>
+                        <p class="text-base sm:text-lg mt-2">{{ checkup.checkupName }}</p>
                     </div>
                 </div>
                 <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">

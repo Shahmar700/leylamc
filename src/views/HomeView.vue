@@ -7,25 +7,30 @@
     <!-- ** SERVICES ** ----  -->
       <div class="bg-white border rounded-t-[60px] absolute -bottom-48 sm:-bottom-60 md:-bottom-40 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full">
         <div class="container pt-[60px] lg:pt-[90px] pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Service 
+          <Service
+            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
             :backgroundImage="service1"
             :icon="serviceIcon1"
             title="Ünvanda xidmət"
             description="Ünvanda müayinə rahat, komfortlu və operativ tibbi xidmətin ən optimal üsuludur."
+            @click="goToService('home-examination')"
           />
-          <Service 
+          <Service
+            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
             :backgroundImage="service2"
             :icon="serviceIcon2"
             title="TƏCİLİ TİBBİ yardım"
             description="Təcili və Təxirə salmaz Tibbi yardım xidməti üzrə 
             briqadamız 7/24 sizə yüksək səviyyədə diaqnostik-müalicəvi xidmət göstərir. "
+            @click="goToService('ambulance')"
           />
           <Service
+            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service3"
             :icon="serviceIcon3"
             title="Çağrı mərkəzimiz"
             description="*0101 çağrı mərkəzi dinləmədədir. Suallarınızı cavablandırmağa hazırıq!"
-          
+            @click="goToService('contact')"
           />
         </div>
         </div>
@@ -91,10 +96,10 @@
           <div class="w-full sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]  h-[600px] relative">
             <img class="rounded-2xl w-full h-full rounded-bl-3xl object-cover" src="@/assets/images/leyla-building.jpg" alt="">
               <div class="pt-2 pr-2 bg-white absolute left-0 bottom-0 rounded-2xl transition-all duration-150 cursor-pointer hover:scale-101">
-                <a href="" class="!w-36 text-white pt-4 pb-3 px-4 rounded-2xl bg-primary flex flex-col hover:shadow-lg">
+                <router-link :to="{name: 'our-history'}" class="!w-36 text-white pt-4 pb-3 px-4 rounded-2xl bg-primary flex flex-col hover:shadow-lg">
                   <span class="font-semibold text-3xl">Daha ətraflı</span>
                   <img class="object-cover" src="@/assets/icons/long-arrow.svg" alt="">
-                </a>
+                </router-link>
               </div>
           </div>
         </div>
@@ -145,19 +150,20 @@
             <h1 class="text-primary text-4xl font-semibold tracking-wider">Xəbərlər</h1>
           </div>
           <div>
-            <a href="" class="greenBtn">Bütün xəbərlər</a>
+            <router-link :to="{name: 'all-news'}" class="greenBtn">Bütün xəbərlər</router-link>
           </div>
         </div>
         <!-- News Boxs -->
          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <News 
-            v-for="item in news"
+            v-for="item in news.slice(0, 3)" 
             :key="item.id"
             class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
             :newsImg="item.main_photo" 
             :newsDate="new Date(item.created_at).toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })"
             :newsName="item.title"
-          />
+            @click="goToNews(item.slug)"
+        />
          </div>
       </div>
       </div>
@@ -218,7 +224,7 @@
     </div>
 
     <!-- ** Ratings ** -->
-    <div class="mt-24 sm:mt-32 md:mt-40 lg:mt-48">
+    <!-- <div class="mt-24 sm:mt-32 md:mt-40 lg:mt-48">
       <div class="container">
         <div class="flex justify-between mb-32 md:mb-24 lg:mb-16">
           <div>
@@ -228,7 +234,7 @@
             <a href="" class="greenBtn tracking-wider">Pasiyent məmnunluqları</a>
           </div>
         </div>
-        <!-- User Rating  -->
+       
         <div class="grid grid-cols-1 screen-500px:grid-cols-2 lg:grid-cols-3 gap-6">
           <Rating
         :image="user1"
@@ -250,7 +256,7 @@
         />
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- ** MAP **  -->
     <div class="mt-48">
@@ -297,6 +303,11 @@ const openModal = (url) => {
 
 const closeModal = () => {
   isModalOpen.value = false;
+};
+
+// Go To Services 
+const goToService = (serviceName) => {
+  router.push({ name: serviceName });
 };
 
 // GET APİ DOCTORS -------------------
@@ -352,6 +363,10 @@ const stopPolling = () => {
 const router = useRouter();
 const goToDoctor = (id) => {
   router.push({name: 'doctor', params: {id}});
+}
+
+const goToNews = (slug) => {
+  router.push({ name: 'news-content', params: { slug } });
 }
 
 // GET APİ DOCTORS END ________________________

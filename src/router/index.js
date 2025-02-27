@@ -63,7 +63,9 @@ import E_commerceView from '@/views/online_services/E_commerceView.vue'
 import E_consultationView from '@/views/online_services/E_consultationView.vue'
 import OffersView from '@/views/OffersView.vue'
 import ContactView from '@/views/ContactView.vue'
+import NewsContentView from '@/views/NewsContentView.vue'
 import axios from 'axios'
+import AllNewsView from '@/views/AllNewsView.vue'
 
   const routes = [
     {
@@ -75,6 +77,16 @@ import axios from 'axios'
       path: '/registration',
       name: 'registration',
       component: RegistrationView,
+    },
+    {
+      path: '/news/:slug',
+      name: 'news-content',
+      component: NewsContentView
+    },
+    {
+      path: '/all-news',
+      name: 'all-news',
+      component: AllNewsView
     },
     {
       path: '/about',

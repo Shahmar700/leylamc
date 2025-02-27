@@ -110,6 +110,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import axios from 'axios';
 import LoginModal from '@/components/LoginModal.vue';
 
 const showModal = ref(false);
@@ -140,18 +141,34 @@ const validatePhone = () => {
   phone.value = phone.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
 };
 
-const validateForm = () => {
+const validateForm = async () => {
   formSubmitted.value = true;
 
   if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPhoneValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
     // Form is valid, proceed with submission
+    try {
+      const response = await axios.post('http://192.168.2.242:8000/api/token/', {
+        name: name.value,
+        surname: surname.value,
+        email: email.value,
+        phone: phone.value,
+        password: password.value,
+      });
+
+      const { access, refresh } = response.data;
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+
+      // Redirect or show success message
+      console.log('Registration successful');
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
   } else {
     // Form is invalid, show error messages
+    console.log('Form is invalid');
   }
 };
-
-
-
 </script>
 
 

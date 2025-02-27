@@ -2,8 +2,8 @@
     <div class="container mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-3xl font-semibold mb-10">Vizyonumuz</h1>
-                <p class="mt-4 text-xl font-thin text-justify">Məqsədimiz Azərbaycan səhiyyəsində prioritet sahələr üzrə yeni innovasiyaları müalicə metodlarına tətbiq etmək, ən son tibbi texnologiyalardan istifadə etməklə sağlamlıq sektorunda marka yaratmaq, qazandığımız uğurları dünya səhiyyə sisteminə inteqrasiya etmək, yerli və xarici vətəndaşlara yüksək səviyyədə diaqnostik və müalicə xidmətləri göstərməkdir.</p>
+                <h1 class="text-3xl font-semibold mb-10">{{ visionTitle }}</h1>
+                <p class="mt-4 text-xl font-thin text-justify">{{ visionText }}</p>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
@@ -14,8 +14,28 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
+
+const visionTitle = ref('');
+const visionText = ref('');
+
+const fetchOurVision = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/ourvision-list/');
+    const visionData = response.data.results[0];
+    visionTitle.value = visionData.title;
+    visionText.value = visionData.text;
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+  }
+};
+
+onMounted(() => {
+  fetchOurVision();
+});
 </script>
 
 <style scoped>
