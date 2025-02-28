@@ -445,14 +445,14 @@ import AllNewsView from '@/views/AllNewsView.vue'
 const fetchDepartments = async () => {
   try {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/')
-    // console.log(response.data.results); // Məlumatları konsolda göstərmək
     const departments = response.data.results
     departments.forEach(department => {
-      // console.log(department); // Hər bir department obyektini konsolda göstərmək
       router.addRoute({
+        // path: `/departments/${department.slug}`,
         path: `/departments/:slug`, // :slug parametrini istifadə edirik
         name: department.slug,
         component: DepartmentView,
+        props: true, // props olaraq ötürülməsini təmin edirik
         meta: { breadcrumb: department.name }
       })
     })

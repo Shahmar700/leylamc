@@ -2,7 +2,7 @@
     <div class="bg-primary">
         <header class="container w-full py-2 sm:py-2 flex flex-wrap justify-between">
         <!-- left side  -->
-        <div class="flex flex-col items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
+        <div class="flex items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
             
             <div class="flex mb-2 sm:mb-0">
                 <!-- lang  -->
@@ -21,6 +21,7 @@
                 </div>
                 <!-- lang END -->
                 
+                <!-- Phone  -->
                 <span class="text-white">|</span>
                 <div class=" flex items-center px-2 text-sm">
                     <div class="mr-1">
@@ -33,11 +34,11 @@
                     </a>
                     </div>
                 </div>
-                <span class="text-white hidden sm:block">|</span>
+                <span class="text-white">|</span>
                 
             </div>
 
-            <div class="flex mt-1 sm:mt-0 text-sm">
+            <div class="flex text-sm">
                 <div class="flex items-center px-2">
                     <a href="tel:+994502257330" class="flex items-center">
                         <img src="@/assets/icons/mob.svg" alt="mob" class="icon" />

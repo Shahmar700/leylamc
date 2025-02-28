@@ -1,11 +1,10 @@
 <template>
     <div class="container mt-16 text-main-text">
-        <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
+        <div class="flex flex-col md:flex-row items-center xl:items-start md:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
                 <h1 class="text-3xl font-semibold mb-10">KİV yazanlar</h1>
                 <div>
-                    <!-- WRITE HERE -->
-                    <div class="flex mb-4 headingBtns">
+                    <div class="flex mb-4 headingBtns border-b">
                         <button @click="activeTab = 'gazet'" :class="{ 'font-bold': activeTab === 'gazet' }">Qazet və jurnallar</button>
                         <button @click="activeTab = 'internet'" :class="{ 'font-bold': activeTab === 'internet' }">İnternet</button>
                         <button @click="activeTab = 'tv'" :class="{ 'font-bold': activeTab === 'tv' }">Televiziya və Radio</button>
@@ -13,16 +12,16 @@
                     <table class="min-w-full bg-white">
                         <thead>
                             <tr>
-                                <th class="py-2 px-4 border-b">Tarix</th>
-                                <th class="py-2 px-4 border-b">Mənbə</th>
-                                <th class="py-2 px-4 border-b">URL</th>
+                                <th class="py-2 px-4 border-b text-start"><i class="fa-regular fa-calendar mr-1"></i>Tarix</th>
+                                <th class="py-2 px-4 border-b text-start"><i class="fa-solid fa-pencil mr-1"></i>Mənbə</th>
+                                <th class="py-2 px-4 border-b text-start"><i class="fa-solid fa-link mr-1"></i>URL</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in paginatedContent" :key="item.id">
+                            <tr v-for="item in paginatedContent" :key="item.id" @click="openUrl(item.url)" class="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-primary hover:border">
                                 <td class="py-2 px-4 border-b">{{ item.date }}</td>
                                 <td class="py-2 px-4 border-b">{{ item.source }}</td>
-                                <td class="py-2 px-4 border-b"><a :href="item.url" target="_blank">{{ item.url }}</a></td>
+                                <td class="py-2 px-4 border-b">{{ item.url }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -124,22 +123,26 @@ const goToNextPage = () => {
 const goToLastPage = () => {
   currentPage.value = totalPages.value;
 };
+
+const openUrl = (url) => {
+  window.open(url, '_blank');
+};
 </script>
 
 <style scoped>
 .headingBtns button {
   padding: 8px 16px;
-  border: 1px solid #86c055;
+  border: 1px solid #6bb52b;
   background-color: transparent;
   cursor: pointer;
-  color: #86c055;
+  color: #6bb52b;
   border-radius: 2px;
 }
 
 .headingBtns button.font-bold {
   font-weight: bold;
-  border-bottom: 2px solid #86c055;
-  background-color: #86c055;
+  border-bottom: 2px solid #6bb52b;
+  background-color: #6bb52b;
   color: #fff;
 }
 

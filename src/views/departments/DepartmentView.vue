@@ -5,29 +5,6 @@
                 <h1 class="text-3xl font-semibold mb-10">{{ department.name }}</h1>
                 <div class="text-base sm:text-lg" v-html="formattedText"></div>
                 <br>
-                <!-- <p class="text-base sm:text-lg">Şöbənin müalicə və müayinə istiqamətləri:</p>
-                <br>
-                <ul class="ml-7 list-disc">
-                    <li class="font-normal text-base sm:text-lg">
-                        Aşağı ətraf venalarının varikoz xəstəliyi
-                    </li>
-                    <li class="font-normal text-base sm:text-lg">
-                        Tromboflebit, Posttromboflebitik sindrom
-                    </li>
-                    <li class="font-normal text-base sm:text-lg">
-                        Diabetik ayaq sindromu
-                    </li>
-                    <li class="font-normal text-base sm:text-lg">
-                        Xroniki yaralar (diabetik yaralar, arterial və venoz yaralar, yataq yaralar və s.)
-                    </li>
-                    <li class="font-normal text-base sm:text-lg">
-                        Endovenoz lazer abblasiya, skleroterapiya, miniflebektomiya
-                    </li>
-                    <li class="font-normal text-base sm:text-lg">
-                        Podiatriya və s.
-                    </li>
-                </ul> -->
-                <br>
                 <div>
                     <a target="_blank" href="https://www.instagram.com/p/CeaarG4IOul/?utm_source=ig_web_copy_link"></a>
                 </div>

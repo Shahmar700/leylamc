@@ -186,12 +186,13 @@
         <div class="overflow-hidden">
           <div class="flex transition-transform duration-300 gap-5" :style="{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }">
             <Departament
-              v-for="(departament, index) in departaments"
+              v-for="(department, index) in departments"
               :key="index"
-              :depIcon="departament.icon"
-              :name="departament.name"
-              :subtitle="departament.subtitle"
-              class="w-[30%] flex-shrink-0"
+              :depIcon="department.icon"
+              :name="department.name"
+              :subtitle="department.text"
+              :slug="department.slug"
+              class="w-[30%] flex-shrink-0 cursor-pointer"
             />
           </div>
         </div>
@@ -340,9 +341,25 @@ const fetchNews = async () => {
   }
 };
 
+// GET APİ DEPARTMENTS -------------------
+
+const departments = ref([]);
+
+// API çağırışı ilə departamentləri yükləmək
+const fetchDepartments = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/');
+    console.log(response.data); // Məlumatları konsolda göstərmək
+    departments.value = response.data.results;
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+  }
+};
+
 onMounted(() => {
   fetchDoctors();
   fetchNews();
+  fetchDepartments();
   startPolling();
 });
 
@@ -405,20 +422,20 @@ import eService5 from "@/assets/icons/eService5.svg";
 
 // Departments Images
 import departmentsBg from "@/assets/images/departaments-bg.webp";
-import allergolog from "@/assets/images/departaments/allergolog.png";
-import dermatology from "@/assets/images/departaments/dermatology.png";
-import ambulance from "@/assets/images/departaments/ambulance.png";
+// import allergolog from "@/assets/images/departaments/allergolog.png";
+// import dermatology from "@/assets/images/departaments/dermatology.png";
+// import ambulance from "@/assets/images/departaments/ambulance.png";
 import vectorLeft from "@/assets/icons/vector-left.svg";
 import vectorRight from "@/assets/icons/vector-right.svg";
 
-const departaments = ref([
-  { icon: allergolog, name: 'Allerqologiya', subtitle: 'Allergiya orqanizmin hər hansı bir maddəyə yüksək reaksiyasıdır' },
-  { icon: dermatology, name: 'Dermatokosmetologiya', subtitle: 'Şöbədə həm dermatoloji həm kosmetoloji xidmətlər göstərilir' },
-  { icon: ambulance, name: 'Təcili tibbi yardım', subtitle: '7/24 fəaliyyət göstərir' },
-  { icon: ambulance, name: 'Təcili tibbi yardım', subtitle: '7/24 fəaliyyət göstərir' },
-]);
+// const departaments = ref([
+//   { icon: allergolog, name: 'Allerqologiya', subtitle: 'Allergiya orqanizmin hər hansı bir maddəyə yüksək reaksiyasıdır' },
+//   { icon: dermatology, name: 'Dermatokosmetologiya', subtitle: 'Şöbədə həm dermatoloji həm kosmetoloji xidmətlər göstərilir' },
+//   { icon: ambulance, name: 'Təcili tibbi yardım', subtitle: '7/24 fəaliyyət göstərir' },
+//   { icon: ambulance, name: 'Təcili tibbi yardım', subtitle: '7/24 fəaliyyət göstərir' },
+// ]);
 const currentIndex = ref(0);
-const maxIndex = computed(() => departaments.value.length - 3);
+const maxIndex = computed(() => departments.value.length - 3);
 
 const nextSlide = () => {
   if (currentIndex.value < maxIndex.value) {

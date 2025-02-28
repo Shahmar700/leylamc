@@ -1,17 +1,19 @@
 <template>
-    <div class="w-[30%] bg-white py-16 px-12 flex items-center rounded-3xl text-main-text">
+    <div class="w-[30%] bg-white py-16 px-12 flex items-center rounded-3xl text-main-text cursor-pointer" @click="goToDepartment">
         <img :src="depIcon" alt="icon" class="w-[55px] h-[55px] object-contain mr-5">
         <div class="">
             <h1 class="font-bold text-2xl">{{name}}</h1>
-            <p class="text-sm mt-2">{{subtitle}}</p>
+            <p class="text-sm mt-2">{{ truncatedSubtitle }}</p>
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 const props = defineProps({
-    depIcon:{
+    depIcon: {
         type: String,
         required: true,
     },
@@ -22,11 +24,26 @@ const props = defineProps({
     subtitle: {
         type: String,
         required: true
+    },
+    slug: {
+        type: String,
+        required: true
     }
-})
+});
+
+const router = useRouter();
+
+const truncatedSubtitle = computed(() => {
+    return props.subtitle.length > 25 ? props.subtitle.substring(0, 25) + '...' : props.subtitle;
+});
+
+const goToDepartment = () => {
+    router.push({ name: props.slug, params: { slug: props.slug } }); // Marşrut adını props.slug olaraq istifadə edirik
+};
 </script>
 
-<style  scoped>
-
-
+<style scoped>
+.cursor-pointer {
+    cursor: pointer;
+}
 </style>

@@ -5,7 +5,7 @@
                 <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ checkup.checkupName }}</h1>
                 <img :src="checkup.img" :alt="checkup.checkupName" class="w-full h-auto rounded-md mb-4">
                 <p class="text-base sm:text-lg mt-2">Başlanğıc tarixi: {{ checkup.startDate }}</p>
-                <p class="text-base sm:text-lg mt-2">Bitmə tarixi: {{ checkup.endDate }}</p>
+                <p class="text-base sm:text-lg mt-2">Bitmə tarixi: {{ checkup.finish_date }}</p>
                 <br>
                 <ul class="ml-7 list-disc">
                     <li class="font-normal text-base sm:text-lg">
@@ -42,20 +42,20 @@ import checkup2 from "@/assets/images/checkups/checkup2.jpg";
 import checkup3 from "@/assets/images/checkups/checkup3.jpg";
 
 const checkups = [
-    { id: 1, img: checkup1, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 2, img: checkup2, checkupName: 'Kardioloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 3, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '20.02.2025', },
-    { id: 4, img: checkup3, checkupName: 'Terapevtik check up', startDate: '15.02.2025', endDate: '20.02.2025', },
-    { id: 5, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 6, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 7, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 8, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 9, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 10, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 11, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 12, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 13, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
-    { id: 14, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', endDate: '28.02.2025', },
+    { id: 1, img: checkup1, checkupName: 'Terapevtik check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 2, img: checkup2, checkupName: 'Kardioloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 3, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '20.02.2025', },
+    { id: 4, img: checkup3, checkupName: 'Terapevtik check up', startDate: '15.02.2025', finish_date: '20.02.2025', },
+    { id: 5, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 6, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 7, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 8, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 9, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 10, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 11, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 12, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 13, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
+    { id: 14, img: checkup3, checkupName: 'Onkoloji check up', startDate: '15.02.2025', finish_date: '28.02.2025', },
 ];
 
 const route = useRoute();

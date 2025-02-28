@@ -199,12 +199,12 @@
                 </div> -->
                 <div class="search-box ">
                     <button class="btn-search">
-                        <img :src="searchIcon" alt="search" class="w-[25px] h-[25px] md:w-[27px] md:h-[27px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
+                        <img :src="searchIcon" alt="search" class="w-[20px] h-[20px] md:w-[25px] md:h-[25px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
                     </button>
                     <input type="text" class="input-search" placeholder="Type to Search...">
                 </div>
                 
-                <div class="headerParent relative group">
+                <div class="headerParent relative group flex items-center justify-center">
                   <div class="ml-3 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[42px] lg:h-[32px] flex flex-col justify-around items-end cursor-pointer">
                     <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                     <span class="w-full h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
@@ -221,7 +221,7 @@
                       <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl">Check Up</a>
                     </li>
                     <li class="mb-2 px-6">
-                      <router-link to="/linkk" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl">Tibbi Xidmətlər</router-link>
+                      <router-link to="/medical-services" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl">Tibbi Xidmətlər</router-link>
                     </li>
                     <!-- Onlayn Xidmətlər  -->
                     <li class="mb-2 px-6 onlineParent relative">
@@ -265,7 +265,7 @@
                     </li> -->
                   </ul>
                 </div>
-                <i class="fa-solid fa-right-to-bracket text-3xl text-[#ef7c00] ml-3 cursor-pointer" @click="toggleModal"></i>
+                <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] ml-3 cursor-pointer" @click="toggleModal"></i>
                 <LoginModal v-if="showModal" @close="toggleModal" />
             </div>
         </div>

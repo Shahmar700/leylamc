@@ -1,12 +1,12 @@
 <template>
-    <div class="container mt-24">
+    <div class="container mt-24" v-if="doctor">
       <div class="flex">
         <div class="p-1 rounded-3xl border border-[#c7c7c7] w-[30%] max-w-[400px]">
-          <img :src="doctor.image" alt="" class="rounded-3xl w-full">
+          <img :src="doctor.photo" alt="" class="rounded-3xl w-full">
         </div>
         <div class="w-[59%] ml-14 flex flex-col justify-between">
           <div class="w-full mt-4">
-            <h1 class="text-3xl text-primary tracking-wider mb-1 font-bold">{{ doctor.name }}</h1>
+            <h1 class="text-3xl text-primary tracking-wider mb-1 font-bold">{{ doctor.degree }} {{ doctor.first_name }} {{ doctor.last_name }}</h1>
             <p class="text-2xl text-main-text tracking-wider">{{ doctor.position }}</p>
           </div>
           <div class="w-full flex border py-5 justify-evenly border-[#c7c7c7] rounded-3xl">
@@ -14,7 +14,7 @@
             <div class="flex flex-col px-12 py-6 items-center tracking-wider">
               <div class="flex">
                 <img :src="expIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">5 il</span>
+                <span class="text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}</span>
               </div>
               <span class="mt-1">Təcrübə</span>
             </div>
@@ -167,28 +167,43 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import axios from 'axios';
 
 import DoctorRating from '@/components/DoctorRating.vue';
 
-import Dr1 from "@/assets/images/Dr1.jpg";
-import Dr2 from "@/assets/images/Dr2.jpg";
-import Dr3 from "@/assets/images/Dr3.jpg";
+// import Dr1 from "@/assets/images/Dr1.jpg";
+// import Dr2 from "@/assets/images/Dr2.jpg";
+// import Dr3 from "@/assets/images/Dr3.jpg";
 
 import tick from '@/assets/icons/tick.svg'
 
-const doctors = ref([
-  { id: '1', name: 'Op.Dr. Aynurə Abdullayeva', position: 'Cərrah Mama-Ginekoloq', image: Dr1 },
-  { id: '2', name: 'Op.Dr. Natiq Məhərrəmov', position: 'Cərrah Mama-Ginekoloq', image: Dr2 },
-  { id: '3', name: 'T.Ü.F.D. Op.Dr. Nigar Əlizadə', position: 'Cərrah Mama-Ginekoloq', image: Dr3 },
-]);
+// const doctors = ref([
+//   { id: '1', name: 'Op.Dr. Aynurə Abdullayeva', position: 'Cərrah Mama-Ginekoloq', image: Dr1 },
+//   { id: '2', name: 'Op.Dr. Natiq Məhərrəmov', position: 'Cərrah Mama-Ginekoloq', image: Dr2 },
+//   { id: '3', name: 'T.Ü.F.D. Op.Dr. Nigar Əlizadə', position: 'Cərrah Mama-Ginekoloq', image: Dr3 },
+// ]);
 
 const route = useRoute();   
+const doctor = ref(null);
 
-const doctor = computed(() => {
-  return doctors.value.find(doc => doc.id === route.params.id);
-});
+const fetchDoctor = async () => {
+  try{
+    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/doctor-list/${route.params.id}/`);
+    doctor.value = response.data;
+  }catch(error){
+    console.error('API çağırışında xəta:', error)
+  }
+}
+
+onMounted(() => {
+  fetchDoctor();
+})
+
+// const doctor = computed(() => {
+//   return doctors.value.find(doc => doc.id === route.params.id);
+// });
 
 
 // Doctor Experience Icons 
