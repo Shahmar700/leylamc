@@ -1,6 +1,6 @@
 <template>
     <div :style="backgroundStyle"
-     class="service-container h-[320px] sm:h-[330px] md:h-[420px] rounded-[70px] py-[80px] px-[35px]">
+     class="service-container h-fit sm:h-[330px] md:h-[420px] rounded-[70px] py-[40px] screen-500:py-[60px] px-[30px]">
         <img :src="icon" alt="service icon" class="mb-6">
         <h2 class="text-white text-4xl">{{ title }}</h2>
         <p class="text-white mt-3">{{ description }}</p>
@@ -41,7 +41,7 @@ const backgroundStyle = computed(() => ({
   background-size: cover;
   background-position: center;
   border-radius: 70px;
-  padding: 80px 35px;
+  /* padding: 80px 35px; */
 }
 img{
     width: 80px;

@@ -2,7 +2,7 @@
     <div class="bg-primary">
         <header class="container w-full py-2 sm:py-2 flex flex-wrap justify-between">
         <!-- left side  -->
-        <div class="flex items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
+        <div class="flex flex-row screen-500:flex-col screen-500:flex-row items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
             
             <div class="flex mb-2 sm:mb-0">
                 <!-- lang  -->
@@ -22,7 +22,7 @@
                 <!-- lang END -->
                 
                 <!-- Phone  -->
-                <span class="text-white">|</span>
+                <span class="text-white hidden screen-500:block">|</span>
                 <div class=" flex items-center px-2 text-sm">
                     <div class="mr-1">
                     <a href="tel:*0101" class="flex items-center">
@@ -34,18 +34,18 @@
                     </a>
                     </div>
                 </div>
-                <span class="text-white">|</span>
+                <span class="text-white hidden screen-500:block">|</span>
                 
             </div>
 
-            <div class="flex text-sm">
+            <div class="flex flex-col screen-500:flex-row text-sm">
                 <div class="flex items-center px-2">
                     <a href="tel:+994502257330" class="flex items-center">
                         <img src="@/assets/icons/mob.svg" alt="mob" class="icon" />
                         <span class="text-white pl-1">+994 50 225 73 30</span>
                     </a>
                 </div>
-                <span class="text-white">|</span>
+                <span class="text-white hidden screen-500:block">|</span>
                 <div class="flex items-center px-2">
                     <a href="mailto:info@leylamc.az" class="flex items-center">
                     <img src="@/assets/icons/mail.svg" alt="mail" class="icon" />
@@ -56,7 +56,7 @@
             
         </div>
         <!-- right side  -->
-        <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-end mt-1 sm:mt-0">
+        <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-start screen-500:justify-end mt-1 sm:mt-0">
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
                 <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
             </a>

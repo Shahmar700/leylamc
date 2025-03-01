@@ -28,6 +28,8 @@ export default {
       xl: "1280px",
       "2xl": "1536px",
       'screen-500': '500px',
+      'screen-400': '400px',
+      'screen-375': '375px',
     },
   },
   plugins: [],

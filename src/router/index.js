@@ -66,6 +66,7 @@ import ContactView from '@/views/ContactView.vue'
 import NewsContentView from '@/views/NewsContentView.vue'
 import axios from 'axios'
 import AllNewsView from '@/views/AllNewsView.vue'
+import CartView from '@/views/CartView.vue'
 
   const routes = [
     {
@@ -397,6 +398,12 @@ import AllNewsView from '@/views/AllNewsView.vue'
           meta: { breadcrumb: 'E-məsləhət' }
         },
       ]
+    },
+    {
+    path: '/cart',
+    name: 'CartView',
+    component: CartView,
+    meta: { breadcrumb: 'Səbət' }
     },
     {
       path: '/health-kiosk',
