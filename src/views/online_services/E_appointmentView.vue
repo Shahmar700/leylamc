@@ -15,8 +15,31 @@
                     </div>
 
                     <!-- DOĞUM TARİXİ START  -->
+                    <div class="flex flex-col w-full lg:w-1/2 relative">
+                        <label for="birthdate" class="mb-2">Doğum Tarixi</label>
+                        <VueDatePicker v-model="birthdate" id="birthdate" class="border border-gray-300 p-2 rounded-md" :enableTimePicker="false" format="dd-MM-yyyy" required>
+                            <template #input="{ inputValue, inputEvents }">
+                                <input
+                                    :value="inputValue"
+                                    v-on="inputEvents"
+                                    type="text"
+                                    class="border border-gray-300 p-2 rounded-md w-full"
+                                    placeholder="Doğum Tarixi"
+                                />
+                            </template>
+                        </VueDatePicker>
+                        <i class="fa-regular fa-calendar absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none hidden"></i>
+                    </div>
                     <!-- DOĞUM TARİXİ END  -->
-                    
+
+                    <!-- Şəxsiyyət vəsiqəsi -->
+                    <div class="flex flex-col w-full lg:w-1/2">
+                        <label for="idCard" class="mb-2">Şəxsiyyət vəsiqəsi</label>
+                        <input v-model="idCard" type="text" id="idCard" class="border border-gray-300 p-2 rounded-md" required>
+                    </div>
+                    <!-- Şəxsiyyət vəsiqəsi END -->
+
+                    <!-- Phone  -->
                     <div class="relative flex flex-col w-full lg:w-1/2">
                         <!-- Ölkə kodu seçimi (absolute) -->
                         <select
@@ -41,16 +64,45 @@
                         placeholder="Telefon nömrəsi"
                         />
                     </div>
+
+                    <!-- Ünvan  -->
+                    <div class="flex flex-col w-full lg:w-1/2">
+                        <label for="address" class="mb-2">Ünvan</label>
+                        <input v-model="address" type="text" id="address" class="border border-gray-300 p-2 rounded-md" required>
+                    </div>
+                    <!-- Ünvan END -->
+
+                    <!-- E - mail  -->
                     <div class="flex flex-col w-full lg:w-1/2">
                         <label for="email" class="mb-2">Elektron Ünvan</label>
                         <input v-model="email" type="email" id="email" class="border border-gray-300 p-2 rounded-md" required>
                     </div>
+                    <!-- E-mail End  -->
+
+                    <!-- İxtisas  -->
                     <div class="flex flex-col w-full lg:w-1/2">
-                        <label for="message" class="mb-2">Təklif və Şikayət</label>
-                        <textarea v-model="message" id="message" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
+                        <label for="specialty" class="mb-2">İxtisas</label>
+                        <select v-model="specialty" id="specialty" class="border border-gray-300 p-2 rounded-md" required>
+                            <option value="">Seçin</option>
+                            <option value="1">Ümumi Cərrah</option>
+                            <option value="2">Uşaq Cərrahı</option>
+                            <option value="3">Estetik-Plastik Cərrah</option>
+                            <option value="4">Mama-Ginekoloq</option>
+                            <option value="5">Mammoloq</option>
+                        </select>
                     </div>
-                    <div class="w-full">
-                        <button type="submit" class="greenBtn mt-4">Göndər</button>
+                    <!-- İxtisas End -->
+
+                    <!-- Sizə uyğun zaman  -->
+                    <div class="flex flex-col w-full lg:w-1/2">
+                        <label for="preferredTime" class="mb-2">Sizə uyğun zaman</label>
+                        <input v-model="preferredTime" type="text" id="preferredTime" class="border border-gray-300 p-2 rounded-md" required>
+                    </div>
+                    <!-- Sizə uyğun zaman END -->
+                    
+                    <div class="w-full mt-4">
+                        <button type="submit" class="bg-primary px-5 py-3 rounded-md mr-5 h-[45px] text-white">Göndər</button>
+                        <button type="button" @click="resetForm" class="bg-[#f07c00] text-white px-5 py-3 rounded-md h-[45px]">Yenilə</button>
                     </div>
                 </form>
 
@@ -74,6 +126,8 @@ import { ref } from 'vue';
 import axios from 'axios';
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const countries = ref([
   { name: 'Azərbaycan', dial_code: '+994', code: 'AZ', flag: '🇦🇿' },
@@ -87,15 +141,33 @@ const countries = ref([
 
 const selectedCountry = ref(countries.value[0]);
 const name = ref('');
+const idCard = ref('');
 const phoneNumber = ref('');
 const email = ref('');
 const message = ref('');
+const birthdate = ref('');
+const address = ref('');
+const preferredTime = ref('');
+const specialty = ref('');
 const formSubmitted = ref(false);
 const formSuccess = ref(false);
 const formError = ref('');
 
 const onInput = (event) => {
   phoneNumber.value = event.target.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
+};
+
+const resetForm = () => {
+  name.value = '';
+  idCard.value = '';
+  phoneNumber.value = '';
+  email.value = '';
+  message.value = '';
+  birthdate.value = '';
+  address.value = '';
+  preferredTime.value = '';
+  specialty.value = '';
+  selectedCountry.value = countries.value[0];
 };
 
 const submitForm = async () => {
@@ -107,18 +179,20 @@ const submitForm = async () => {
     const fullPhoneNumber = `${selectedCountry.value.dial_code}${phoneNumber.value}`;
     const response = await axios.post('http://192.168.2.242:8000/api/leyla/v1/directoroffice-api/', {
       name: name.value,
+      idCard: idCard.value,
       phone: fullPhoneNumber,
       email: email.value,
       message: message.value,
+      birthdate: birthdate.value,
+      address: address.value,
+      preferredTime: preferredTime.value,
+      specialty: specialty.value,
     });
 
     if (response.status === 201) {
       formSuccess.value = true;
       // Formu təmizləmək
-      name.value = '';
-      phoneNumber.value = '';
-      email.value = '';
-      message.value = '';
+      resetForm();
     }
   } catch (error) {
     formError.value = 'Formu göndərərkən xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.';
