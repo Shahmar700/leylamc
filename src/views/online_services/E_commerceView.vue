@@ -18,9 +18,14 @@
                     <div class="w-full ml-2">
                       <div>
                         <div class="flex w-full mb-4 ">
-                          <input type="text" v-model="searchQuery" placeholder="Axtar" class="border px-3 py-2 rounded-md">
-                          <button class="bg-primary text-white py-1 px-2 rounded-sm mx-4">Axtar</button>
-                          <button class="bg-[#d7e4cc] text-main-text py-1 px-2 rounded-sm">Yenilə</button>
+                          <div class="input-animated-wrapper">
+                            <input type="text" v-model="searchQuery" placeholder="Axtar" class="custom-input border px-3 py-2 rounded-md">
+                            <svg viewBox="0 0 180 60" preserveAspectRatio="none">
+                              <polyline points="179,1 179,59 1,59 1,1 179,1"/>
+                            </svg>
+                          </div>
+                          <!-- <button class="bg-primary text-white py-1 px-2 rounded-sm mx-4">Axtar</button> -->
+                          <button class="bg-[#d7e4cc] text-main-text py-1 px-2 rounded-sm ml-3">Yenilə</button>
                         </div>
                         <table class="min-w-full bg-white">
                           <thead>
