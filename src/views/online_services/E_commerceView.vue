@@ -3,62 +3,57 @@
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <!-- LEFT SIDE  -->
             <div class="w-full sm:w-3/4 flex" data-aos="zoom-out-right">
-                <!-- CATEGORIES  -->
-                <div class="flex flex-col">
-                  <h1 class="text-2xl font-semibold mb-10">Kateqoriyalar</h1>
-                  <ul>
-                    <span v-for="category in mainCategories" :key="category.id" @click="selectCategory(category)" class="font-semibold text-primary border-b border-primary cursor-pointer">{{ category.name }}</span>
-                    <li v-for="subcategory in subCategories.filter(sub => sub.main_cat.id === selectedCategory?.id)" :key="subcategory.id" @click="selectSubcategory(subcategory)" class="cursor-pointer">{{ subcategory.name }}</li>
-                  </ul>
-                  <p class="mt-4 text-xl font-thin text-justify"></p>
-                </div>
-                <!-- CATEGORIES END  --- -->
+                  <!-- CATEGORIES  -->
+                  <div class="flex flex-col">
+                    <h1 class="text-2xl font-semibold mb-10">Kateqoriyalar</h1>
+                    <ul>
+                      <span v-for="category in mainCategories" :key="category.id" @click="selectCategory(category)" class="font-semibold text-primary border-b border-primary cursor-pointer">{{ category.name }}</span>
+                      <li v-for="subcategory in subCategories.filter(sub => sub.main_cat.id === selectedCategory?.id)" :key="subcategory.id" @click="selectSubcategory(subcategory)" class="cursor-pointer">{{ subcategory.name }}</li>
+                    </ul>
+                    <p class="mt-4 text-xl font-thin text-justify"></p>
+                  </div>
+                  <!-- CATEGORIES END  --- -->
 
-                    <!-- SERVICE TABLE  -->
-                    <div class="w-full ml-2">
-                      <div>
-                        <div class="flex w-full mb-4 ">
-                          <div class="input-animated-wrapper">
-                            <input type="text" v-model="searchQuery" placeholder="Axtar" class="custom-input border px-3 py-2 rounded-md">
-                            <svg viewBox="0 0 180 60" preserveAspectRatio="none">
-                              <polyline points="179,1 179,59 1,59 1,1 179,1"/>
-                            </svg>
+                     <!-- SERVICE TABLE  -->
+                      <div class="w-full ml-2">
+                        <div>
+                          <div class="flex w-full mb-4 ">
+                            <input type="text" v-model="searchQuery" placeholder="Axtar" class="border px-3 py-2 rounded-md">
+                            <button class="bg-primary text-white py-1 px-2 rounded-sm mx-4">Axtar</button>
+                            <button class="bg-[#d7e4cc] text-main-text py-1 px-2 rounded-sm">Yenilə</button>
                           </div>
-                          <!-- <button class="bg-primary text-white py-1 px-2 rounded-sm mx-4">Axtar</button> -->
-                          <button class="bg-[#d7e4cc] text-main-text py-1 px-2 rounded-sm ml-3">Yenilə</button>
-                        </div>
-                        <table class="min-w-full bg-white">
-                          <thead>
-                            <tr>
-                              <th class="py-2 px-4 border-b">Xidmət adı</th>
-                              <th class="py-2 px-4 border-b">Qiymət</th>
-                              <th class="py-2 px-4 border-b">Say</th>
-                              <th class="py-2 px-4 border-b">Səbətə at</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-for="service in paginatedServices" :key="service.id">
-                              <td class="py-2 px-4 border-b">{{ service.name }}</td>
-                              <td class="py-2 px-4 border-b">{{ service.price }}</td>
-                              <td class="py-2 px-4 border-b">
-                                <input type="number" :value="1" @input="service.quantity = $event.target.value" min="1" class="border px-2 py-1 rounded-md">
-                              </td>
-                              <td class="py-2 px-4 border-b">
-                                <button @click="addToCart(service)" class="bg-primary text-white py-1 px-2 rounded-sm">Səbətə at</button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
-                          <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-                          <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-                          <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                          <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-                          <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+                          <table class="min-w-full bg-white">
+                            <thead>
+                              <tr>
+                                <th class="py-2 px-4 border-b">Xidmət adı</th>
+                                <th class="py-2 px-4 border-b">Qiymət</th>
+                                <th class="py-2 px-4 border-b">Say</th>
+                                <th class="py-2 px-4 border-b">Səbətə at</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="service in paginatedServices" :key="service.id">
+                                <td class="py-2 px-4 border-b">{{ service.name }}</td>
+                                <td class="py-2 px-4 border-b">{{ service.price }}</td>
+                                <td class="py-2 px-4 border-b">
+                                  <input type="number" v-model.number="service.quantity" min="1" class="border px-2 py-1 rounded-md" @input="validateQuantity(service)">
+                                </td>
+                                <td class="py-2 px-4 border-b">
+                                  <button @click="addToCart(service)" class="bg-primary text-white py-1 px-2 rounded-sm">Səbətə at</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
+                            <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+                            <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
+                            <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
+                            <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+                            <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <!-- SERVICE TABLE END  --- -->
+                      <!-- SERVICE TABLE END  --- -->
             </div>
 
             <!-- LEFT SIDE END -->
@@ -66,18 +61,18 @@
             <!-- RIGHT SIDE  -->
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <!-- CART SIDE  -->
-                <div class="border flex flex-col items-center justify-center rounded-lg mb-5 hover:shadow-md transition-all duration-200">
-                  <div class="flex items-center text-xl text-white bg-[#ef7c00] py-4 w-full justify-center">
-                    <i class="fa-solid fa-cart-shopping mr-1"></i>
-                    <h3>Səbət</h3>
+                  <div class="border flex flex-col items-center justify-center rounded-lg mb-5 hover:shadow-md transition-all duration-200">
+                    <div class="flex items-center text-xl text-white bg-[#ef7c00] py-4 w-full justify-center">
+                      <i class="fa-solid fa-cart-shopping mr-1"></i>
+                      <h3>Səbət</h3>
+                    </div>
+                    <div class="bg-orange-100 w-full text-center py-5">
+                      <p class="mb-3" v-if="cart.length === 0">Səbət boşdur</p>
+                      <p class="mb-3" v-else>{{ cart.length }} xidmət - {{ totalCartPrice }} AZN</p>
+                      <button @click="goToCart" class="bg-[#ef7c00] text-white px-3 py-1 rounded-lg">Səbətə bax</button>
+                    </div>
                   </div>
-                  <div class="bg-orange-100 w-full text-center py-5">
-                    <p class="mb-3" v-if="cart.length === 0">Səbət boşdur</p>
-                    <p class="mb-3" v-else>{{ cart.length }} xidmət - {{ totalCartPrice }} AZN</p>
-                    <button @click="goToCart" class="bg-[#ef7c00] text-white px-3 py-1 rounded-lg">Səbətə bax</button>
-                  </div>
-                </div>
-                <!-- CART SIDE END  -->
+                  <!-- CART SIDE END  -->
                 <SideBanners class="mb-4" /> 
             </div>
         </div>
@@ -125,6 +120,11 @@ const fetchServices = async () => {
   try {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/online-sales-product-list/');
     services.value = response.data.results;
+    services.value.forEach(service => {
+      if (!service.quantity) {
+        service.quantity = 1;
+      }
+    });
   } catch (error) {
     console.error('Error fetching services:', error);
   }
@@ -218,12 +218,19 @@ const goToLastPage = () => {
 
 const addToCart = (service) => {
   const existingItem = cart.value.find(item => item.id === service.id);
+  const quantityToAdd = service.quantity || 1;
   if (existingItem) {
-    existingItem.quantity += 1;
+    existingItem.quantity += quantityToAdd;
   } else {
-    cart.value.push({ ...service, quantity: 1 });
+    cart.value.push({ ...service, quantity: quantityToAdd });
   }
   localStorage.setItem('cart', JSON.stringify(cart.value));
+};
+
+const validateQuantity = (service) => {
+  if (service.quantity < 1) {
+    service.quantity = 1;
+  }
 };
 
 const goToCart = () => {
