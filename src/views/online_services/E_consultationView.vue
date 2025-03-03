@@ -42,7 +42,7 @@
                         <input v-model="email" type="email" id="email" class="border border-gray-300 p-2 rounded-md" required>
                     </div>
                     <div class="flex flex-col w-full lg:w-1/2">
-                        <label for="message" class="mb-2">Təklif və Şikayət</label>
+                        <label for="message" class="mb-2">Sualınızı qeyd edin</label>
                         <textarea v-model="message" id="message" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
                     </div>
                     <div class="w-full">
@@ -62,7 +62,24 @@
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
 
+import { ref } from 'vue';
+import axios from 'axios';
 
+const countries = ref([
+  { name: 'Azərbaycan', dial_code: '+994', code: 'AZ', flag: '🇦🇿' },
+  { name: 'Türkiye', dial_code: '+90', code: 'TR', flag: '🇹🇷' },
+  { name: 'Rusiya', dial_code: '+7', code: 'RU', flag: '🇷🇺' },
+  { name: 'ABŞ', dial_code: '+1', code: 'US', flag: '🇺🇸' },
+  { name: 'Özbəkistan', dial_code: '+998', code: 'UZ', flag: '🇺🇿' },
+  { name: 'Gürcüstan', dial_code: '+995', code: 'GE', flag: '🇬🇪' },
+  { name: 'Türkmənistan', dial_code: '+993', code: 'TM', flag: '🇹🇲' },
+]);
+
+const phoneNumber = ref('')
+
+const onInput = (event) => {
+  phoneNumber.value = event.target.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
+};
 </script>
 
 <style scoped>

@@ -101,6 +101,8 @@
                     </ul>
                 </li>
                 <!-- ---------- ABOUT US END ----------  -->
+
+                <!-- OUR DOCTORS  -->
                 <li class="headerParent relative group">
                     <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
                     <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:top-11 group-hover:opacity-100 group-hover:visible border border-t-primary">
@@ -112,6 +114,7 @@
                       </li>
                     </ul>
                 </li>
+                <!-- OUR DOCTORS END -----  -->
 
                  <!-- Department  -->
                 <li class="headerParent relative group">

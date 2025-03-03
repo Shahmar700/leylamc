@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-3/4" data-aos="zoom-out-right">
                 <!-- Directors  -->
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="zoom-out-left">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="zoom-out-left">
                     <div class="flex flex-col items-center">
                         <img src="@/assets/images/elnur-vahabov.jpeg" alt="" class="mb-3 rounded-2xl">
                         <h5 class="font-extrabold text-main-text text-lg md:text-xl">Direktor</h5>
@@ -17,7 +17,7 @@
                     </div>
                     <div></div>
                  </div>
-                <h1 class="text-main-text text-2xl my-4">Leyla Medical Center-in Direktor Kabineti ilə əlaqə forması</h1>
+                 <h1 class="text-main-text text-2xl my-4">Leyla Medical Center-in Direktor Kabineti ilə əlaqə forması</h1>
                 <p class="text-main-text text-base">Biz daima inkişafdayıq. Bizim üçün sizin rahatlığınız və bizdən razılığınız çox vacibdir. Sizi narahat edən bir şey olduğu halda biz onu mütləq aradan qaldırmağa hazırıq. Öz təklifinizi və ya şikayətinizi aşağıdakı formanı doldurmağla Leyla Medical Center-in direktoruna məruzə edə bilərsiniz.</p>
                 <div class="mt-5">
                     <div class="flex items-center mb-2">
@@ -40,8 +40,8 @@
 
                 <form @submit.prevent="submitForm" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5">
                     <div class="flex flex-col w-full lg:w-1/2">
-                        <label for="name" class="mb-2">Ad və Soyad</label>
-                        <input v-model="name" type="text" id="name" class="border border-gray-300 p-2 rounded-md" required>
+                        <label for="patient_fullname" class="mb-2">Ad və Soyad</label>
+                        <input v-model="patient_fullname" type="text" id="patient_fullname" class="border border-gray-300 p-2 rounded-md" required>
                     </div>
                     <div class="relative flex flex-col w-full lg:w-1/2">
                         <!-- Ölkə kodu seçimi (absolute) -->
@@ -61,19 +61,19 @@
                         <!-- Telefon nömrəsi üçün input -->
                         <input
                         type="text"
-                        v-model="phoneNumber"
+                        v-model="patient_phone_number"
                         @input="onInput"
                         class="w-full pl-24 pr-2 py-2 border border-gray-300 rounded focus:outline-none"
                         placeholder="Telefon nömrəsi"
                         />
                     </div>
                     <div class="flex flex-col w-full lg:w-1/2">
-                        <label for="email" class="mb-2">Elektron Ünvan</label>
-                        <input v-model="email" type="email" id="email" class="border border-gray-300 p-2 rounded-md" required>
+                        <label for="e_mail" class="mb-2">Elektron Ünvan</label>
+                        <input v-model="e_mail" type="email" id="e_mail" class="border border-gray-300 p-2 rounded-md" required>
                     </div>
                     <div class="flex flex-col w-full lg:w-1/2">
-                        <label for="message" class="mb-2">Təklif və Şikayət</label>
-                        <textarea v-model="message" id="message" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
+                        <label for="patient_comment" class="mb-2">Təklif və Şikayət</label>
+                        <textarea v-model="patient_comment" id="patient_comment" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
                     </div>
                     <div class="w-full">
                         <button type="submit" class="greenBtn mt-4">Göndər</button>
@@ -112,16 +112,16 @@ const countries = ref([
 ]);
 
 const selectedCountry = ref(countries.value[0]);
-const name = ref('');
-const phoneNumber = ref('');
-const email = ref('');
-const message = ref('');
+const patient_fullname = ref('');
+const patient_phone_number = ref('');
+const e_mail = ref('');
+const patient_comment = ref('');
 const formSubmitted = ref(false);
 const formSuccess = ref(false);
 const formError = ref('');
 
 const onInput = (event) => {
-  phoneNumber.value = event.target.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
+  patient_phone_number.value = event.target.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
 };
 
 const submitForm = async () => {
@@ -130,21 +130,28 @@ const submitForm = async () => {
   formError.value = '';
 
   try {
-    const fullPhoneNumber = `${selectedCountry.value.dial_code}${phoneNumber.value}`;
+    const fullPhoneNumber = `${selectedCountry.value.dial_code}${patient_phone_number.value}`;
+    console.log({
+      patient_fullname: patient_fullname.value,
+      patient_phone_number: fullPhoneNumber,
+      e_mail: e_mail.value,
+      patient_comment: patient_comment.value,
+    }); // Göndərilən məlumatları konsolda göstərmək
+
     const response = await axios.post('http://192.168.2.242:8000/api/leyla/v1/directoroffice-api/', {
-      name: name.value,
-      phone: fullPhoneNumber,
-      email: email.value,
-      message: message.value,
+      patient_fullname: patient_fullname.value,
+      patient_phone_number: fullPhoneNumber,
+      e_mail: e_mail.value,
+      patient_comment: patient_comment.value,
     });
 
     if (response.status === 201) {
       formSuccess.value = true;
       // Formu təmizləmək
-      name.value = '';
-      phoneNumber.value = '';
-      email.value = '';
-      message.value = '';
+      patient_fullname.value = '';
+      patient_phone_number.value = '';
+      e_mail.value = '';
+      patient_comment.value = '';
     }
   } catch (error) {
     formError.value = 'Formu göndərərkən xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.';

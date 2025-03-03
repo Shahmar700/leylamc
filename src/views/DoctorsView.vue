@@ -75,6 +75,9 @@ const fetchDoctors = async () => {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = response.data.results;
+    // Şöbələri yükləmək
+    const uniqueDepartments = [...new Set(doctors.value.map(doctor => doctor.category))];
+    departments.value = uniqueDepartments.filter(name => name).map(name => ({ name }));
   } catch (error) {
     console.error('API çağırışında xəta:', error);
   }
@@ -83,68 +86,58 @@ const fetchDoctors = async () => {
 // API çağırışı ilə ixtisasları yükləmək
 const fetchSpecializations = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
-    const uniqueSpecializations = [...new Set(response.data.results.map(doctor => doctor.specialty))];
-    specializations.value = uniqueSpecializations.map(specialty => ({ specialty }));
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/drspecialty-list/');
+    specializations.value = response.data.results.map(specialty => ({ specialty: specialty.name }));
   } catch (error) {
     console.error('API çağırışında xəta:', error);
   }
 };
 
-// API çağırışı ilə şöbələri yükləmək
-const fetchDepartments = async () => {
-  try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/');
-    departments.value = response.data.results;
-  } catch (error) {
-    console.error('API çağırışında xəta:', error);
-  }
-};
 
 onMounted(() => {
   fetchDoctors();
   fetchSpecializations();
-  fetchDepartments();
-  startPolling();
+  // startPolling();
 });
 
-onUnmounted(() => {
-  stopPolling();
-});
+// onUnmounted(() => {
+//   stopPolling();
+// });
 
 let pollingInterval;
 
 const startPolling = () => {
-  pollingInterval = setInterval(fetchDoctors, 5000); // Hər 5 saniyədən bir API çağırışı
+  pollingInterval = setInterval(fetchDoctors, 1000); // Hər 5 saniyədən bir API çağırışı
 };
 
-const stopPolling = () => {
-  clearInterval(pollingInterval);
-};
+// const stopPolling = () => {
+//   clearInterval(pollingInterval);
+// };
 
 const filteredDoctors = computed(() => {
   return doctors.value.filter(doctor => {
     const matchesName = name.value ? `${doctor.first_name} ${doctor.last_name}`.toLowerCase().includes(name.value.toLowerCase()) : true;
-    const matchesSpecializations = selectedSpecializations.value.length ? selectedSpecializations.value.some(spec => doctor.specialty.includes(spec.specialty)) : true;
-    const matchesDepartments = selectedDepartments.value.length ? selectedDepartments.value.some(dep => doctor.department.name === dep.name) : true;
+    const matchesSpecializations = selectedSpecializations.value.length ? selectedSpecializations.value.some(spec => doctor.specialty && doctor.specialty.name === spec.specialty) : true;
+    const matchesDepartments = selectedDepartments.value.length ? selectedDepartments.value.some(dep => doctor.category && doctor.category === dep.name) : true;
 
     return matchesName && matchesSpecializations && matchesDepartments;
   });
 });
 
+
 // Dinamik olaraq ekranda göstərilən həkimlərin ixtisaslarını və şöbələrini əldə etmək
 const filteredSpecializations = computed(() => {
-  const uniqueSpecializations = [...new Set(filteredDoctors.value.map(doctor => doctor.specialty))];
-  return uniqueSpecializations.map(specialty => ({ specialty }));
+  const uniqueSpecializations = [...new Set(filteredDoctors.value.map(doctor => doctor.specialty && doctor.specialty.name))];
+  return uniqueSpecializations.filter(specialty => specialty).map(specialty => ({ specialty }));
 });
 
 const filteredDepartments = computed(() => {
-  const uniqueDepartments = [...new Set(filteredDoctors.value.map(doctor => doctor.department.name))];
-  return uniqueDepartments.map(name => ({ name }));
+  const uniqueDepartments = [...new Set(doctors.value.map(doctor => doctor.category))];
+  return uniqueDepartments.filter(name => name).map(name => ({ name }));
 });
 
 // **PAGINATION 
-const itemsPerPage = 6;
+const itemsPerPage = 8;
 const currentPage = ref(1);
 
 const totalPages = computed(() => Math.ceil(filteredDoctors.value.length / itemsPerPage));

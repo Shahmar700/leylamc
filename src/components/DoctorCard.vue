@@ -1,11 +1,11 @@
 <template>
     <a class="p-2 rounded-3xl border hover:border-2 hover:border-primary transition-shadow duration-300 cursor-pointer">
         <div class=" rounded-3xl overflow-hidden w-full h-[325px] xl:h-[350px] 2xl:h-[380px] xl:object-contain">
-            <img :src="image" alt="doctor" class="rounded-3xl object-cover w-full h-full">
+            <img :src="image" alt="doctor" class="rounded-3xl object-cover w-full h-[380px]">
         </div>
         <div class="mt-6">
             <h1 class="text-primary text-2xl font-bold">{{ name }}</h1>
-            <p class="text-main-text text-sm font-light pb-2">{{ position }}</p>
+            <p class="text-main-text text-sm md:text-base font-light mt-1 pb-2">{{ position }}</p>
         </div>
     </a>
 </template>
@@ -41,12 +41,6 @@ const props = defineProps({
 
 .doctor-card:hover {
   transform: scale(1.05);
-}
-
-.doctor-image {
-  width: 100%;
-  height: auto;
-  border-radius: 50%;
 }
 
 .doctor-name {

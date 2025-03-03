@@ -37,18 +37,38 @@
                 </svg>
               </div>
             </div>
+
             <!-- Tel Number  -->
             <div class="mt-6">
               <label :class="{'text-red-500': !isPhoneValid && formSubmitted}" class="text-gray-800 text-xs md:text-base block mb-1">Mobil nömrə</label>
               <span v-if="formSubmitted && !isPhoneValid" class="text-lightgray text-xs">Düzgün mobil nömrə daxil edin</span>
-              <div class="relative flex items-center">
-                <span class="absolute left-2 text-gray-500">+</span>
-                <input v-model="phone" @input="validatePhone" name="phone" type="tel" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-6 pr-8 py-1 outline-none" placeholder="994 77 123 45 67" />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
-                  <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27 11.72 11.72 0 004.52.91 1 1 0 011 1v3.5a1 1 0 01-1 1A19.92 19.92 0 012 4.5a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.91 4.52 1 1 0 01-.27 1.11l-2.2 2.2z"/>
-                </svg>
+              <div class="relative flex flex-col w-full">
+                <!-- Ölkə kodu seçimi (absolute) -->
+                <select
+                v-model="selectedCountry"
+                class="absolute inset-y-0 left-0 pl-2 pr-6 border-r border-gray-300 bg-transparent focus:outline-none appearance-none"
+                >
+                <option
+                    v-for="country in countries"
+                    :key="country.code"
+                    :value="country"
+                >
+                    {{ country.flag }} {{ country.dial_code }}
+                </option>
+                </select>
+
+                <!-- Telefon nömrəsi üçün input -->
+                <input
+                type="text"
+                v-model="phone"
+                @input="validatePhone"
+                class="w-full pl-24 pr-2 py-2 border border-gray-300 rounded focus:outline-none"
+                placeholder="Telefon nömrəsi"
+                />
               </div>
             </div>
+
+            
             <!-- E-mail  -->
             <div class="mt-6">
               <label :class="{'text-red-500': !isEmailValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">E-poçt</label>
@@ -70,6 +90,7 @@
               
             </div>
 
+            <!-- Password  -->
             <div class="mt-6">
               <label :class="{'text-red-500': !isPasswordValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Şifrə</label>
               <span v-if="formSubmitted && !isPasswordValid" class="text-lightgray text-xs">Minimal 6 simvol daxil edin</span>
@@ -79,9 +100,10 @@
                   <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.355469 20 6 21.355469 6 23 L 6 47 C 6 48.644531 7.355469 50 9 50 L 41 50 C 42.644531 50 44 48.644531 44 47 L 44 23 C 44 21.355469 42.644531 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 9 22 L 41 22 C 41.554688 22 42 22.445313 42 23 L 42 47 C 42 47.554688 41.554688 48 41 48 L 9 48 C 8.445313 48 8 47.554688 8 47 L 8 23 C 8 22.445313 8.445313 22 9 22 Z M 25 30 C 23.300781 30 22 31.300781 22 33 C 22 33.898438 22.398438 34.6875 23 35.1875 L 23 38 C 23 39.101563 23.898438 40 25 40 C 26.101563 40 27 39.101563 27 38 L 27 35.1875 C 27.601563 34.6875 28 33.898438 28 33 C 28 31.300781 26.699219 30 25 30 Z"></path>
                 </svg>
               </div>
-              
             </div>
-            <div class="mt-6">
+
+            <!-- Password Confirm -->
+              <div class="mt-6">
                 <label :class="{'text-red-500': !isConfirmPasswordValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Şifrə təsdiq</label>
                 <span v-if="formSubmitted && !isConfirmPasswordValid" class="text-lightgray text-xs">Şifrəni düzgün daxil edin</span>
                 <div class="relative flex items-center">
@@ -90,7 +112,6 @@
                     <path d="M 25 3 C 18.363281 3 13 8.363281 13 15 L 13 20 L 9 20 C 7.355469 20 6 21.355469 6 23 L 6 47 C 6 48.644531 7.355469 50 9 50 L 41 50 C 42.644531 50 44 48.644531 44 47 L 44 23 C 44 21.355469 42.644531 20 41 20 L 37 20 L 37 15 C 37 8.363281 31.636719 3 25 3 Z M 25 5 C 30.566406 5 35 9.433594 35 15 L 35 20 L 15 20 L 15 15 C 15 9.433594 19.433594 5 25 5 Z M 9 22 L 41 22 C 41.554688 22 42 22.445313 42 23 L 42 47 C 42 47.554688 41.554688 48 41 48 L 9 48 C 8.445313 48 8 47.554688 8 47 L 8 23 C 8 22.445313 8.445313 22 9 22 Z M 25 30 C 23.300781 30 22 31.300781 22 33 C 22 33.898438 22.398438 34.6875 23 35.1875 L 23 38 C 23 39.101563 23.898438 40 25 40 C 26.101563 40 27 39.101563 27 38 L 27 35.1875 C 27.601563 34.6875 28 33.898438 28 33 C 28 31.300781 26.699219 30 25 30 Z"></path>
                   </svg>
                 </div>
-                
               </div>
 
             <div class="mt-8">
@@ -169,6 +190,19 @@ const validateForm = async () => {
     console.log('Form is invalid');
   }
 };
+
+// Ölkə kodları üçün məlumatlar
+const countries = ref([
+  { name: 'Azərbaycan', dial_code: '+994', code: 'AZ', flag: '🇦🇿' },
+  { name: 'Türkiye', dial_code: '+90', code: 'TR', flag: '🇹🇷' },
+  { name: 'Rusiya', dial_code: '+7', code: 'RU', flag: '🇷🇺' },
+  { name: 'ABŞ', dial_code: '+1', code: 'US', flag: '🇺🇸' },
+  { name: 'Özbəkistan', dial_code: '+998', code: 'UZ', flag: '🇺🇿' },
+  { name: 'Gürcüstan', dial_code: '+995', code: 'GE', flag: '🇬🇪' },
+  { name: 'Türkmənistan', dial_code: '+993', code: 'TM', flag: '🇹🇲' },
+]);
+
+const selectedCountry = ref(countries.value[0]);
 </script>
 
 

@@ -54,86 +54,46 @@
             <tbody>
               <tr class="bg-[#f6fbf2]">
                 <td class="p-2">Vəzifə</td>
-                <td class="p-2">Həkim ginekoloq</td>
+                <td class="p-2">{{ doctor.position }}</td>
               </tr>
               <tr class="bg-white">
                 <td class="p-2">Şöbə</td>
-                <td class="p-2">Ginekologiya</td>
+                <td class="p-2">{{  doctor.category  }}</td>
               </tr>
               <tr class="bg-[#f6fbf2]">
                 <td class="p-2">Təhsil</td>
                 <td class="p-2">
                   <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>1994-2000-ci illərdə Azərbaycan Tibb Universitetində. 
-                    Müalicə işi fakultəsində təhsil almışdır.</p>
+                    <p v-html="formattedEducation"></p>
                   </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="" class="w-[17px] h-[17px]">
-                    <p>1994-2000-ci illərdə Azərbaycan Tibb Universitetində. 
-                    Müalicə işi fakultəsində təhsil almışdır.</p>
-                  </div>
-
-                    <!-- for  -->
-                    <!-- <div v-for="(education, index) in doctor.education" :key="index" class="flex items-start mb-2">
-                      <img :src="tick" alt="tick" class="w-[17px] h-[17px] mr-2">
-                      <p>{{ education }}</p>
-                    </div> -->
-
                 </td>
               </tr>
               <tr class="bg-white">
                 <td class="p-2">Kurslar, Konfranslar</td>
                 <td class="p-2">
                   <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>2011-ci ildə Rusiya Federasiyasında “Uşaqlıq boynu xəstəlikləri müyinəsi və müalicəsi. Kolposkopiya üzrə təlim” keçmişdir.</p>
+                    <p v-html="formattedCourses"></p>
                   </div>
                 </td>
               </tr>
               <tr class="bg-[#f6fbf2]">
                 <td class="p-2">Müayinə və müalicə istiqamətləri</td>
                 <td class="p-2">
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Bütün ginekoloji xəstəliklər</p>
-                  </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Hamiləliyin təqibi</p>
-                  </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Ginekoloji əməliyyatlar</p>
-                  </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Uşaqlıq boynunun xəstəlikləri</p>
-                  </div> 
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Təbii doğuş</p>
-                  </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Qeysəriyyə əməliyyatı</p>
-                  </div>
-                  <div class="flex items-center">
-                    <img :src="tick" alt="">
-                    <p>Qadınlarda menstrual sikl problemləri</p>
-                  </div>
+                  <p v-html="formattedTreatment"></p>
                 </td>
               </tr>
               <tr class="bg-white">
                 <td class="p-2">İş təcrübəsi</td>
-                <td class="p-2">09.04.2019-cu illərdə indiyədək “Leyla Medical Center” MMC</td>
+                <td class="p-2">
+                  <p v-html="formattedExperience"></p>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div v-if="selectedTab === 'articles'">
           <!-- Həkimin məqalələri kontenti -->
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores sunt sint rerum deserunt eum commodi aliquam alias, excepturi temporibus consectetur eaque? Possimus illo voluptatum eaque ipsum tempore enim vero, magnam mollitia atque nihil, perferendis consectetur hic dicta earum porro at incidunt unde quas quis nulla molestias temporibus modi iure reprehenderit? Veritatis minima ut tempora laudantium iste quod officia similique nemo alias sapiente harum ipsum, culpa sequi. Temporibus odio minus ut pariatur ratione odit fuga dicta. Sint eius rem doloremque a nostrum saepe natus quos, nesciunt vel. Possimus ipsum tempore quaerat hic veniam nemo doloremque minima esse, et itaque fuga exercitationem.
+         <p v-html="formattedArticles"></p>
         </div>
         <div v-if="selectedTab === 'reviews'" class="pt-2">
           <!-- Rəylər kontenti -->
@@ -173,17 +133,6 @@ import axios from 'axios';
 
 import DoctorRating from '@/components/DoctorRating.vue';
 
-// import Dr1 from "@/assets/images/Dr1.jpg";
-// import Dr2 from "@/assets/images/Dr2.jpg";
-// import Dr3 from "@/assets/images/Dr3.jpg";
-
-import tick from '@/assets/icons/tick.svg'
-
-// const doctors = ref([
-//   { id: '1', name: 'Op.Dr. Aynurə Abdullayeva', position: 'Cərrah Mama-Ginekoloq', image: Dr1 },
-//   { id: '2', name: 'Op.Dr. Natiq Məhərrəmov', position: 'Cərrah Mama-Ginekoloq', image: Dr2 },
-//   { id: '3', name: 'T.Ü.F.D. Op.Dr. Nigar Əlizadə', position: 'Cərrah Mama-Ginekoloq', image: Dr3 },
-// ]);
 
 const route = useRoute();   
 const doctor = ref(null);
@@ -201,9 +150,16 @@ onMounted(() => {
   fetchDoctor();
 })
 
-// const doctor = computed(() => {
-//   return doctors.value.find(doc => doc.id === route.params.id);
-// });
+const formatText = (text) => {
+  if (!text) return '';
+  return text.replace(/\r\n/g, '<br>');
+};
+
+const formattedEducation = computed(() => formatText(doctor.value?.education));
+const formattedCourses = computed(() => formatText(doctor.value?.courses_and_conferences));
+const formattedTreatment = computed(() => formatText(doctor.value?.examination_and_treatment));
+const formattedExperience = computed(() => formatText(doctor.value?.experience_text));
+const formattedArticles = computed(() => formatText(doctor.value?.articles));
 
 
 // Doctor Experience Icons 
@@ -235,7 +191,8 @@ const tabStyle = computed(() => {
 });
 
 // Doctor Rating Users 
-import UserPhoto from '@/assets/images/rating-user.jpg'
+
+// import UserPhoto from '@/assets/images/rating-user.jpg'
 
 </script>
 
@@ -247,6 +204,9 @@ table img{
 }
 table tr td{
   padding: 15px;
+}
+table tr td:nth-child(1){
+  display: flex;
 }
 table tr td:nth-child(1){
   font-size: 20px;

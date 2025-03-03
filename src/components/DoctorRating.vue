@@ -1,9 +1,10 @@
 <template>
-    <div class="w-full flex rounded-2xl p-7 pb-10 mt-16 tracking-wider transition-shadow duration-500 custom-shadow hover:custom-shadow-hover">
-        <div class="w-[15%] relative">
-            <div class="w-[140px] h-[140px] rounded-full overflow-hidden absolute -top-20">
+    <div class="w-full flex rounded-2xl p-7 pb-10 mt-8 tracking-wider transition-shadow duration-500 custom-shadow hover:custom-shadow-hover">
+        <div class="w-[100px] h-[100px] p-14 mr-7 bg-gray-100 rounded-full flex justify-center items-center">
+            <!-- <div class="w-[140px] h-[140px] rounded-full overflow-hidden absolute -top-20">
                 <img :src="image" alt="" class="w-full h-full object-cover rounded-full">
-            </div>
+            </div> -->
+            <i class="fa-regular fa-user text-6xl"></i>
         </div>
         <div class="text-main-text w-full flex flex-col justify-evenly">
             <div class="w-full flex justify-between items-center">

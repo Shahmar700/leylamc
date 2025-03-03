@@ -438,13 +438,29 @@ import CartView from '@/views/CartView.vue'
   ]
 
  
+  const scrollPositions = new Map()
 
   const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
-    scrollBehavior (to, from, savedPosition) {
-      return { top: 0 } 
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition
+      } else if (to.meta.saveScrollPosition && from.meta.saveScrollPosition) {
+        const position = scrollPositions.get(from.fullPath)
+        if (position) {
+          return position
+        }
+      }
+      return { top: 0 }
     }
+  })
+
+  router.beforeEach((to, from, next) => {
+    if (from.meta.saveScrollPosition) {
+      scrollPositions.set(from.fullPath, { left: window.pageXOffset, top: window.pageYOffset })
+    }
+    next()
   })
 
 
