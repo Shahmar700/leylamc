@@ -1,8 +1,8 @@
 <template>
      <router-link :to="link" class="bg-white  rounded-3xl py-9 px-6 cursor-pointer transition-all duration-300 hover:shadow-lg">
-        <img :src="eService" alt="e-service" class="pb-4">
-        <h3 class="pb-5 text-2xl font-bold">{{ title }}</h3>
-        <p class="text-lg">{{ description }}</p>
+        <img :src="eService" alt="e-service" class="pb-2 sm:pb-4 w-[40px] h-[55px] screen-500:w-[55px] screen-500:h-[70px] md:w-[65px] md:h-[81px]">
+        <h3 class="pb-2 screen-400:pb-3 md:pb-5 text-xl md:text-2xl font-bold">{{ title }}</h3>
+        <p class="text-base md:text-lg">{{ description }}</p>
         <img  class="mt-3" src="@/assets/icons/e-service-btn.svg" alt="">
     </router-link>
 </template>

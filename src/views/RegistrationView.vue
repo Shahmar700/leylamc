@@ -103,7 +103,7 @@
             </div>
 
             <!-- Password Confirm -->
-              <div class="mt-6">
+            <div class="mt-6">
                 <label :class="{'text-red-500': !isConfirmPasswordValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Şifrə təsdiq</label>
                 <span v-if="formSubmitted && !isConfirmPasswordValid" class="text-lightgray text-xs">Şifrəni düzgün daxil edin</span>
                 <div class="relative flex items-center">
@@ -114,6 +114,8 @@
                 </div>
               </div>
 
+
+            <!-- Button  -->
             <div class="mt-8">
               <button  @click="validateForm" type="button" class="w-full py-2.5 px-4 text-sm tracking-wider rounded-md border border-primary bg-transparent hover:bg-primary text-primary hover:text-white focus:outline-none transition-all duration-200 font-bold">
                 Hesab yaradın
@@ -154,7 +156,7 @@ const formSubmitted = ref(false);
 const isNameValid = computed(() => name.value.length >= 2);
 const isSurnameValid = computed(() => surname.value.length >= 2);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
-const isPhoneValid = computed(() => /^\d{10}$/.test(phone.value)); // 10 rəqəmli mobil nömrə üçün şərt
+const isPhoneValid = computed(() => /^\d+$/.test(phone.value)); // Yalnız rəqəmləri yoxlayır
 const isPasswordValid = computed(() => password.value.length >= 6);
 const isConfirmPasswordValid = computed(() => confirmPassword.value === password.value);
 
@@ -168,13 +170,16 @@ const validateForm = async () => {
   if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPhoneValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
     // Form is valid, proceed with submission
     try {
-      const response = await axios.post('http://192.168.2.242:8000/api/token/', {
+      const payload = {
         name: name.value,
         surname: surname.value,
         email: email.value,
         phone: phone.value,
         password: password.value,
-      });
+      };
+      console.log('Göndərilən məlumatlar:', payload);
+
+      const response = await axios.post('http://192.168.2.242:8000/api/token/', payload);
 
       const { access, refresh } = response.data;
       localStorage.setItem('access_token', access);

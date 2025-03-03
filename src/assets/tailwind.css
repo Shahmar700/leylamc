@@ -32,6 +32,12 @@
   transition: all 0.3s;
   cursor: pointer;
 }
+@media screen and (min-width: 320px) {
+  .greenBtn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
 .greenBtn:hover{
   color: #6bb52b;
   background-color: #fff;

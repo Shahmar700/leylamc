@@ -39,8 +39,8 @@
     <!-- ** E-SERVİCES ** ----   -->
      <div class="bg-secondary pt-[72px] pb-24">
       <div>
-        <h1 class="text-4xl text-center text-primary font-semibold tracking-wide">Elektron xidmətlərimizlə bir addım daha yaxınıq</h1>
-        <p class="text-[#505050] text-3xl text-center mt-4 mb-[72px]">Hər an, hər yerdə sizinləyik</p>
+        <h1 class="text-xl screen-500::text-2xl lg:text-3xl text-center text-primary font-semibold tracking-wide">Elektron xidmətlərimizlə bir addım daha yaxınıq</h1>
+        <p class="text-[#505050] text-xl screen-500::text-2xl lg:text-3xl text-center mt-4 mb-[72px]">Hər an, hər yerdə sizinləyik</p>
       </div>
       <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           <Eservice 
@@ -80,12 +80,12 @@
       <div class="container grid grid-cols-1 lg:grid-cols-2 gap-6 pt-36 pb-32">
         <div class="flex justify-center flex-col">
           <div class="w-full">
-            <img src="@/assets/images/logo-mini.svg" alt="Logo" class="float-left mr-4 mb-4 w-24 h-24">
+            <img src="@/assets/images/logo-mini.svg" alt="Logo" class="float-left mr-4 mb-4 w-h-16 h-16 screen-400:w-24 screen-400:h-24">
           <div>
-            <p class="text-2xl font-thin">
+            <p class="text-base screen-400:text-lg md:text-2xl font-thin">
             1999-cu ildə ulu öndərimiz Heydər Əliyev tərəfindən açılışı baş tutan Leyla Medical Center fəaliyyətinin 22-ci ilində Referans Medical Group şəbəkəsinə daxil olaraq yeni ad, daha geniş xidmət çeşidi, daha da peşəkar həkimlər ilə sizlər üçün xidmət göstərməyə başladı. Mərkəzimiz tək Azərbaycanda deyil, eyni zamanda Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi kimi uğurla fəaliyyətə başlamışdır.
           </p>
-          <h4 class="text-2xl font-bold">
+          <h4 class="text-base screen-400:text-lg md:text-2xl font-bold">
             Bizlərə göstərilən inamı doğrultmaq və Səhiyyə sisteminin, xüsusilə özəl tibb sektorunun inkişaf etdirilməsi məqsədilə müəssisəmiz dayanmadan sizlər üçün xidmət göstərməkdədir. Leyla Medical Center olaraq yeni personal, yeni həkimlər, yeni avadanlıqlar və ən dəqiq laborator xidmətlər ilə "Sizin sağlamlığınız-bizim dəyərimizdir" şüarı altında fəaliyyətimizi sizlər üçün davam etdiririk.
           </h4>
           </div>
@@ -93,11 +93,11 @@
         </div>
         <!-- Right Side  -->
         <div class="">
-          <div class="w-full sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]  h-[600px] relative">
+          <div class="w-full h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]  relative">
             <img class="rounded-2xl w-full h-full rounded-bl-3xl object-cover" src="@/assets/images/leyla-building.jpg" alt="">
               <div class="pt-2 pr-2 bg-white absolute left-0 bottom-0 rounded-2xl transition-all duration-150 cursor-pointer hover:scale-101">
                 <router-link :to="{name: 'our-history'}" class="!w-36 text-white pt-4 pb-3 px-4 rounded-2xl bg-primary flex flex-col hover:shadow-lg">
-                  <span class="font-semibold text-3xl">Daha ətraflı</span>
+                  <span class="font-semibold text-base screen-400:text-xl screen-500:text-2xl lg:text-3xl">Daha ətraflı</span>
                   <img class="object-cover" src="@/assets/icons/long-arrow.svg" alt="">
                 </router-link>
               </div>
@@ -108,12 +108,12 @@
       <!-- ** Our Youtube Channel ** -->
       <div class="bg-secondary py-16">
       <div class="container ">
-        <div class="flex justify-between mb-10">
+        <div class=" flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
             <p class="text-2xl text-[#505050] font-thin tracking-wider">Youtube kanalımız</p>
-            <h1 class="text-primary text-3xl font-semibold tracking-wider">Faydalı məlumatlar</h1>
+            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Faydalı məlumatlar</h1>
           </div>
-          <div>
+          <div class="mt-4 sm:mt-0">
             <a href="" class="greenBtn">Kanalımıza keçid et</a>
           </div>
         </div>
@@ -145,11 +145,11 @@
       <!-- ** News **  -->
       <div class="bg-secondary py-16 my-32">
       <div class="container">
-        <div class="flex justify-between mb-10">
+        <div class=" flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
-            <h1 class="text-primary text-4xl font-semibold tracking-wider">Xəbərlər</h1>
+            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Xəbərlər</h1>
           </div>
-          <div>
+          <div class="mt-4 sm:mt-0">
             <router-link :to="{name: 'all-news'}" class="greenBtn">Bütün xəbərlər</router-link>
           </div>
         </div>
@@ -172,7 +172,7 @@
     <div class="py-16 bg-cover bg-center" :style="{ backgroundImage: `url(${departmentsBg})` }">
       <div class="container">
         <div class="flex justify-between mb-16">
-          <h1 class="text-white text-4xl font-semibold tracking-wider">Şöbələrimiz</h1>
+          <h1 class="text-white text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Şöbələrimiz</h1>
           <div class="flex">
             <button id="depSpinLeft" @click="prevSlide" :class="{ 'opacity-50 cursor-not-allowed': currentIndex === 0 }" class="w-10 bg-white flex items-center justify-center rounded-md mr-2">
               <img class="w-3" :src="vectorLeft" alt="">
@@ -204,7 +204,7 @@
       <div class="container">
         <div class="flex justify-between mb-16">
           <div>
-            <h1 class="text-primary text-4xl font-semibold tracking-wider">Peşəkar komandamız</h1>
+            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Peşəkar komandamız</h1>
           </div>
           <div>
             <router-link to="/doctors" class="greenBtn tracking-wider">Həkimlərimiz</router-link>
@@ -264,7 +264,7 @@
       <div class="container">
         <div class="flex justify-between mb-16">
           <div>
-            <h1 class="text-primary text-4xl font-semibold tracking-wider">Xəritədə bax</h1>
+            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Xəritədə bax</h1>
           </div>
         </div>
         <!-- Maps  -->
