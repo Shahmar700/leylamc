@@ -1,11 +1,11 @@
 <template>
   <div :style="{ marginTop: headerHeight + 'px' }">
-    <div class="relative pb-[550px]" >
+    <div class="relative pb-[400px] screen-400:pb-[550px]" >
       <div class="max-w-[2400px] mx-auto">
         <Slider :images="homeImages" />
       </div>
     <!-- ** SERVICES ** ----  -->
-      <div class="bg-white border rounded-t-[60px] absolute bottom-32 screen-375:bottom-44 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full">
+      <div class="bg-white border rounded-t-[60px] absolute -bottom-6 screen-375:bottom-32 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full">
         <div class="container pt-[30px] screen-500:pt-[50px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
