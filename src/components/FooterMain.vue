@@ -3,10 +3,10 @@
         <div class="container py-10">
             <div class="flex flex-col md:flex-row justify-between">
                 <div class="w-full md:w-[50%] 2xl:w-[40%]">
-                    <h1 class="text-primary text-xl sm:text-2xl mb-5">Yeniliklərdən ilk sən xəbərdar ol!</h1>
-                    <label class="flex w-full">
-                        <input type="text" class="w-[60%] xl:w-[70%] rounded-xl sm:rounded-2xl outline-none p-2 sm:p-3">
-                        <button class="greenBtn !rounded-lg ml-3">Abunə ol</button>
+                    <h1 class="text-primary text-center screen-400:text-start text-lg screen-400:text-xl sm:text-2xl mb-5">Yeniliklərdən ilk sən xəbərdar ol!</h1>
+                    <label class="flex flex-col screen-400:flex-row w-full">
+                        <input type="text" class="w-full screen-400:w-[60%] xl:w-[70%] rounded-xl sm:rounded-2xl outline-none p-2 sm:p-3 mb-4 screen-400:mb-0">
+                        <button class="greenBtn !rounded-lg screen-400:ml-3">Abunə ol</button>
                     </label>
                     <div class="mt-7 flex items-center">
                         <p class="text-main-text flex items-center">

@@ -1,6 +1,6 @@
 <template>
   <div :class="headerClass" class="sticky top-0 z-[99999]">
-    <div class="container w-full flex justify-between py-3 sm:py-4 lg:py-5 items-center font-bold text-lg sm:text-2xl">
+    <div class="container w-full flex justify-between py-3 sm:py-4 lg:py-5 sm:items-center font-bold text-lg sm:text-2xl">
       <!-- LOGO -->
       <router-link to="/" id="headerLogo">
         <svg class="absolute sm:relative w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,15 +121,15 @@
       </ul>
 
       <!-- SEARCH, BURGER ICON və LOGIN -->
-      <div class="flex ">
+      <div class="flex items-center">
         <div class="search-box relative">
           <button class="btn-search z-[9999]">
-            <img :src="searchIcon" alt="search" class="w-[20px] h-[20px] md:w-[25px] md:h-[25px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
+            <img :src="searchIcon" alt="search" class="w-[20px] h-[20px] md:w-[25px] md:h-[25px] lg:w-[30px] lg:h-[30px] cursor-pointer  md:mb-1 lg:mb-0 lg:ml-0">
           </button>
           <input type="text" class="input-search" placeholder="Type to Search...">
         </div>
         <!-- BURGER ICON (mobil və əlavə elementlər üçün: click ilə) -->
-        <div @click="toggleBurger" class="ml-2 cursor-pointer">
+        <div @click="toggleBurger" class="md:ml-1 cursor-pointer">
           <div class="w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[42px] lg:h-[32px] flex flex-col justify-around items-end">
             <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
             <span class="w-full h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
@@ -543,6 +543,18 @@ a:hover::after {
   background-color: green;
   color: white;
 }
+
+@media screen and (min-width: 320px) {
+  .btn-search:focus ~ .input-search,
+  .input-search:focus {
+    width: 220px;
+  }
+  .input-search::placeholder {
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 100;
+  }
+} 
 
 .mediaParent, .galleryParent, .surgeryParent, .onlineParent{
   position: relative;

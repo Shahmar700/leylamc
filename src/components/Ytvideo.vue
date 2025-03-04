@@ -2,11 +2,11 @@
     <div @click="$emit('click', videoUrl)" class="cursor-pointer">
         <!-- Video frame  -->
         <div class="w-full rounded-3xl overflow-hidden">
-      <iframe class="w-full h-[350px]" :src="videoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe class="w-full h-[290px] sm:h-[350px]" :src="videoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
         <!-- Video name  -->
-        <div class="mt-8">
-            <h1 class="text-2xl text-main-text">{{name}} </h1>
+        <div class="mt-5 screen-400:mt-8">
+            <h1 class="text-lg screen-400:text-2xl text-main-text">{{name}} </h1>
         </div>
     </div>
 </template>
