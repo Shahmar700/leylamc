@@ -123,18 +123,15 @@
                         <span>Cərrahiyyə</span>
                         <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
                       </router-link>
+                      <!-- Dinamik Cərrahiyə -->
                       <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
-                        <li class="mb-2 px-6">
-                          <router-link :to="{name: 'general-surgery'}" class="block w-full h-full">Ümumi cərrahiyyə</router-link>
-                        </li>
-                        <li class="mb-2 px-6">
-                          <router-link :to="{name: 'plastic-surgery'}" class="block w-full h-full">Plastik cərrahiyyə</router-link>
-                        </li>
-                        <li class="mb-2 px-6">
-                          <router-link :to="{name: 'pediatric-surgery'}" class="block w-full h-full">Uşaq cərrahiyyəsi</router-link>
-                        </li>
-                        <li class="mb-2 px-6">
-                          <router-link :to="{name: 'thoracic-surgery'}" class="block w-full h-full">Torakal cərrahiyyə</router-link>
+                        <li v-for="surgery in surgeries" :key="surgery.id">
+                          <router-link 
+                            :to="{ name: surgery.slug, params: { slug: surgery.slug } }" 
+                            class="block" 
+                            >
+                            {{ surgery.name }}
+                          </router-link>
                         </li>
                       </ul>
                     </li>
@@ -266,206 +263,245 @@
           </div>
       </div>
 
+      <!-- ------------------------------- BURGER MENU START ------------------------------- -->
       <transition name="fade">
-  <div 
-    v-if="burgerOpen" 
-    class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
-  >
-    <div class="container mx-auto py-5 px-4">
-      <div class="flex justify-between items-center mb-5">
-        <router-link to="/" class="text-2xl font-bold" @click="toggleBurger">
-          <!-- LOGO və ya Başlıq -->
-        </router-link>
-        <button @click="toggleBurger" class="text-2xl font-bold">&times;</button>
-      </div>
-      <ul class="space-y-4">
-        <!-- Əsas Səhifə -->
-        <li>
-          <router-link to="/" class="block text-xl" @click="toggleBurger">Əsas Səhifə</router-link>
-        </li>
-        <!-- Haqqımızda -->
-        <li>
-          <div @click="toggleBurgerDropdown('haqqimizda_mobile')" class="flex justify-between items-center text-xl cursor-pointer">
-            <span>Haqqımızda</span>
-            <i class="fa-solid fa-angle-down transition-transform duration-300" 
-               :class="{'rotate-180': burgerDropdowns.haqqimizda_mobile}"></i>
-          </div>
-          <ul v-if="burgerDropdowns.haqqimizda_mobile" class="mt-2 pl-4 space-y-2">
-            <li>
-              <router-link :to="{name: 'our-history'}" class="block" @click="toggleBurger">Tariximiz</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'our-vision'}" class="block" @click="toggleBurger">Vizyonumuz</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'our-mission'}" class="block" @click="toggleBurger">Missiyamız</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'our-relations'}" class="block" @click="toggleBurger">Beynəlxalq əlaqələrimiz</router-link>
-            </li>
-            <!-- Mediada Biz -->
-            <li>
-              <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
-                <span>Mediada Biz</span>
-                <i class="fa-solid fa-angle-down transition-transform duration-300" 
-                   :class="{'rotate-180': burgerDropdowns.mediadaBiz_mobile}"></i>
-              </div>
-              <ul v-if="burgerDropdowns.mediadaBiz_mobile" class="mt-2 pl-4 space-y-2">
-                <li>
-                  <router-link :to="{name: 'all-news'}" class="block" @click="toggleBurger">Xəbərlər</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'kiv-writes'}" class="block" @click="toggleBurger">KİV Yazanlar</router-link>
-                </li>
-                <!-- Qalereya -->
-                <li>
-                  <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
-                    <span>Qalereya</span>
-                    <i class="fa-solid fa-angle-down transition-transform duration-300" 
-                       :class="{'rotate-180': burgerDropdowns.gallery_mobile}"></i>
-                  </div>
-                  <ul v-if="burgerDropdowns.gallery_mobile" class="mt-2 pl-4 space-y-2">
-                    <li>
-                      <router-link :to="{name: 'photos-view'}" class="block" @click="toggleBurger">Foto</router-link>
-                    </li>
-                    <li>
-                      <router-link :to="{name: 'videos-view'}" class="block" @click="toggleBurger">Video</router-link>
+        <div 
+          v-if="burgerOpen" 
+          class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
+        >
+          <div class="container mx-auto py-5 px-4">
+            <div class="flex justify-between items-center mb-5">
+              <router-link to="/" class="text-2xl font-bold" @click="toggleBurger">
+                <!-- LOGO və ya Başlıq -->
+              </router-link>
+              <button @click="toggleBurger" class="text-2xl font-bold">&times;</button>
+            </div>
+            <ul class="space-y-4">
+              <!-- Əsas Səhifə -->
+              <li class="md:hidden">
+                <router-link to="/" class="block text-lg sm:text-xl" @click="toggleBurger">Əsas Səhifə</router-link>
+              </li>
+              <!-- Haqqımızda -->
+              <li class="md:hidden">
+                <div @click="toggleBurgerDropdown('haqqimizda_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <span>Haqqımızda</span>
+                  <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                    :class="{'rotate-180': burgerDropdowns.haqqimizda_mobile}"></i>
+                </div>
+                <ul v-if="burgerDropdowns.haqqimizda_mobile" class="mt-2 pl-4 space-y-2">
+                  <li>
+                    <router-link :to="{name: 'our-history'}" class="block text-lg sm:text-xl" @click="toggleBurger">Tariximiz</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'our-vision'}" class="block text-lg sm:text-xl" @click="toggleBurger">Vizyonumuz</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'our-mission'}" class="block text-lg sm:text-xl" @click="toggleBurger">Missiyamız</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'our-relations'}" class="block text-lg sm:text-xl" @click="toggleBurger">Beynəlxalq əlaqələrimiz</router-link>
+                  </li>
+                  <!-- Mediada Biz -->
+                  <li>
+                    <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                      <span>Mediada Biz</span>
+                      <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                        :class="{'rotate-180': burgerDropdowns.mediadaBiz_mobile}"></i>
+                    </div>
+                    <ul v-if="burgerDropdowns.mediadaBiz_mobile" class="mt-2 pl-4 space-y-2">
+                      <li>
+                        <router-link :to="{name: 'all-news'}" class="block text-lg sm:text-xl" @click="toggleBurger">Xəbərlər</router-link>
+                      </li>
+                      <li>
+                        <router-link :to="{name: 'kiv-writes'}" class="block text-lg sm:text-xl" @click="toggleBurger">KİV Yazanlar</router-link>
+                      </li>
+                      <!-- Qalereya -->
+                      <li>
+                        <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                          <span>Qalereya</span>
+                          <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                            :class="{'rotate-180': burgerDropdowns.gallery_mobile}"></i>
+                        </div>
+                        <ul v-if="burgerDropdowns.gallery_mobile" class="mt-2 pl-4 space-y-2">
+                          <li>
+                            <router-link :to="{name: 'photos-view'}" class="block text-lg sm:text-xl" @click="toggleBurger">Foto</router-link>
+                          </li>
+                          <li>
+                            <router-link :to="{name: 'videos-view'}" class="block text-lg sm:text-xl" @click="toggleBurger">Video</router-link>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <router-link :to="{name: 'health-kiosk'}" class="block text-lg sm:text-xl" @click="toggleBurger">Sağlıq köşkü</router-link>
+                      </li>
+                      <li>
+                        <router-link :to="{name: 'vacancies'}" class="block text-lg sm:text-xl" @click="toggleBurger">Vakansiyalar</router-link>
+                      </li>
+                      <li>
+                        <router-link :to="{name: 'latest-updates'}" class="block text-lg sm:text-xl" @click="toggleBurger">Son yeniliklər</router-link>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'director-office'}" class="block text-lg sm:text-xl" @click="toggleBurger">Direktor Kabineti</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'satisfaction-form'}" class="block text-lg sm:text-xl" @click="toggleBurger">Məmnunluq anketi</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'quality-policy'}" class="block text-lg sm:text-xl" @click="toggleBurger">Keyfiyyət siyasəti</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'quality-control'}" class="block text-lg sm:text-xl" @click="toggleBurger">Keyfiyyətə nəzarət</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'certificates'}" class="block text-lg sm:text-xl" @click="toggleBurger">Sertifikatlar</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'training-center'}" class="block text-lg sm:text-xl" @click="toggleBurger">Təlim Mərkəzi</router-link>
+                  </li>
+                </ul>
+              </li>
+              <!-- Həkimlər -->
+              <li class="md:hidden">
+                <div @click="toggleBurgerDropdown('hekimler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <span>Həkimlər</span>
+                  <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                    :class="{'rotate-180': burgerDropdowns.hekimler_mobile}"></i>
+                </div>
+                <ul v-if="burgerDropdowns.hekimler_mobile" class="mt-2 pl-4 space-y-2">
+                  <li>
+                    <router-link :to="{name: 'doctors'}" class="block text-lg sm:text-xl" @click="toggleBurger">Həkimlərimiz</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'doctor-articles'}" class="block text-lg sm:text-xl" @click="toggleBurger">Həkim məqalələri</router-link>
+                  </li>
+                </ul>
+              </li>
+              <!-- Bölmələr (SIDEBAR) -->
+              <li class="lg:hidden">
+                <div @click="toggleBurgerDropdown('bolmeler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <span>Bölmələr</span>
+                  <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                    :class="{'rotate-180': burgerDropdowns.bolmeler_mobile}"></i>
+                </div>
+                <ul v-if="burgerDropdowns.bolmeler_mobile" class="mt-2 pl-4 space-y-2">
+                  <!-- "Cərrahiyyə" dropdownu -->
+                  <li>
+                    <div @click="toggleBurgerDropdown('cerrahiye')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                      <span>Cərrahiyyə</span>
+                      <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                        :class="{'rotate-180': burgerDropdowns.cerrahiye}"></i>
+                    </div>
+                    <!-- Dinamik Cərrahiyə -->
+                      <ul v-if="burgerDropdowns.cerrahiye" class="mt-2 pl-4 space-y-2">
+                        <li v-for="surgery in surgeries" :key="surgery.id">
+                          <router-link 
+                            :to="{ name: surgery.slug, params: { slug: surgery.slug } }" 
+                            class="block text-lg sm:text-xl" 
+                            @click="toggleBurger">
+                            {{ surgery.name }}
+                          </router-link>
+                        </li>
+                      </ul>
+                    <!-- Dinamik Cərrahiyə END -->
+                  </li>
+                  <!-- "Cərrahiyyə" END -->
+                  <!-- Dinamik bölmələr -->
+                  <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
+                    <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
+                      <router-link :to="{ name: department.slug, params: { slug: department.slug } }" class="block text-lg sm:text-xl" @click="toggleBurger">
+                        {{ department.name }}
+                      </router-link>
                     </li>
                   </ul>
-                </li>
-                <li>
-                  <router-link :to="{name: 'health-kiosk'}" class="block" @click="toggleBurger">Sağlıq köşkü</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'vacancies'}" class="block" @click="toggleBurger">Vakansiyalar</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'latest-updates'}" class="block" @click="toggleBurger">Son yeniliklər</router-link>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <router-link :to="{name: 'director-office'}" class="block" @click="toggleBurger">Direktor Kabineti</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'satisfaction-form'}" class="block" @click="toggleBurger">Məmnunluq anketi</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'quality-policy'}" class="block" @click="toggleBurger">Keyfiyyət siyasəti</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'quality-control'}" class="block" @click="toggleBurger">Keyfiyyətə nəzarət</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'certificates'}" class="block" @click="toggleBurger">Sertifikatlar</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'training-center'}" class="block" @click="toggleBurger">Təlim Mərkəzi</router-link>
-            </li>
-          </ul>
-        </li>
-        <!-- Həkimlər -->
-        <li>
-          <div @click="toggleBurgerDropdown('hekimler_mobile')" class="flex justify-between items-center text-xl cursor-pointer">
-            <span>Həkimlər</span>
-            <i class="fa-solid fa-angle-down transition-transform duration-300" 
-               :class="{'rotate-180': burgerDropdowns.hekimler_mobile}"></i>
-          </div>
-          <ul v-if="burgerDropdowns.hekimler_mobile" class="mt-2 pl-4 space-y-2">
-            <li>
-              <router-link :to="{name: 'doctors'}" class="block" @click="toggleBurger">Həkimlərimiz</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'doctor-articles'}" class="block" @click="toggleBurger">Həkim məqalələri</router-link>
-            </li>
-          </ul>
-        </li>
-        <!-- Bölmələr -->
-        <li>
-          <div @click="toggleBurgerDropdown('bolmeler')" class="flex justify-between items-center text-xl cursor-pointer">
-            <span>Bölmələr</span>
-            <i class="fa-solid fa-angle-down transition-transform duration-300" 
-               :class="{'rotate-180': burgerDropdowns.bolmeler}"></i>
-          </div>
-          <ul v-if="burgerDropdowns.bolmeler" class="mt-2 pl-4 space-y-2">
-            <!-- Statik "Cərrahiyyə" dropdownu -->
-            <li>
-              <div @click="toggleBurgerDropdown('cerrahiye')" class="flex justify-between items-center cursor-pointer text-xl">
-                <span>Cərrahiyyə</span>
-                <i class="fa-solid fa-angle-down transition-transform duration-300" 
-                   :class="{'rotate-180': burgerDropdowns.cerrahiye}"></i>
-              </div>
-              <ul v-if="burgerDropdowns.cerrahiye" class="mt-2 pl-4 space-y-2">
-                <li>
-                  <router-link :to="{name: 'general-surgery'}" class="block" @click="toggleBurger">Ümumi cərrahiyyə</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'plastic-surgery'}" class="block" @click="toggleBurger">Plastik cərrahiyyə</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'pediatric-surgery'}" class="block" @click="toggleBurger">Uşaq cərrahiyyəsi</router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'thoracic-surgery'}" class="block" @click="toggleBurger">Torakal cərrahiyyə</router-link>
-                </li>
-              </ul>
-            </li>
-            <!-- Dinamik bölmələr -->
-            <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
-              <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
-                <router-link :to="{ name: department.slug, params: { slug: department.slug } }" class="block" @click="toggleBurger">
-                  {{ department.name }}
-                </router-link>
+                </ul>
               </li>
+              <!-- Tibbi xidmətlər (SIDEBAR) -->
+              <li class="lg:hidden">
+                <div @click="toggleBurgerDropdown('tibbiXidmetler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <span>Tibbi xidmətlər</span>
+                  <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                    :class="{'rotate-180': burgerDropdowns.tibbiXidmetler_mobile}"></i>
+                </div>
+                <ul v-if="burgerDropdowns.tibbiXidmetler_mobile" class="mt-2 pl-4 space-y-2">
+                  <li>
+                    <router-link :to="{name: 'ambulance'}" class="block text-lg sm:text-xl" @click="toggleBurger">Təcili Tibbi yardım</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'home-examination'}" class="block text-lg sm:text-xl" @click="toggleBurger">Ünvanda müayinə</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'children-center'}" class="block text-lg sm:text-xl" @click="toggleBurger">Uşaq sağlamlıq mərkəzi</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'male-female-infertility'}" class="block text-lg sm:text-xl" @click="toggleBurger">Kişi və qadın sonsuzluğu mərkəzi</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'corporate-cooperation'}" class="block text-lg sm:text-xl" @click="toggleBurger">Korporativ əməkdaşlıq</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'medical-insurance'}" class="block text-lg sm:text-xl" @click="toggleBurger">Tibbi sığorta</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'industrial-medicine'}" class="block text-lg sm:text-xl" @click="toggleBurger">Sənaye təbabəti</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'outpatient-examination'}" class="block text-lg sm:text-xl" @click="toggleBurger">Ambulator müayinə</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'check-up'}" class="block text-lg sm:text-xl" @click="toggleBurger">Check-up</router-link>
+                  </li>
+                  <li>
+                    <router-link :to="{name: 'actions'}" class="block text-lg sm:text-xl" @click="toggleBurger">Aksiyalar</router-link>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="openPdf; toggleBurger" class="block text-lg sm:text-xl">Peyvəndlər</a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Onlayn Xidmətlər SİDEBAR  -->
+            <li>
+              <div @click="toggleBurgerDropdown('onlaynXidmetler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <span>Onlayn Xidmətlər</span>
+                  <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                    :class="{'rotate-180': burgerDropdowns.onlaynXidmetler_mobile}"></i>
+              </div>
+                  <ul v-if="burgerDropdowns.onlaynXidmetler_mobile" class="mt-2 pl-4 space-y-2">
+                      <li @click="toggleBurger">
+                        <router-link :to="{name: 'e-appointment'}" class="block w-full h-full text-lg sm:text-xl">E-növbə</router-link>
+                      </li>
+                      <li @click="toggleBurger">
+                        <router-link :to="{name: 'e-result'}" class="block w-full h-full text-lg sm:text-xl">E-nəticə</router-link>
+                      </li>
+                      <li @click="toggleBurger">
+                        <router-link :to="{name: 'e-payment'}" class="block w-full h-full text-lg sm:text-xl">E-ödəmə</router-link>
+                      </li>
+                      <li @click="toggleBurger">
+                        <router-link :to="{name: 'e-commerce'}" class="block w-full h-full text-lg sm:text-xl">E-satış</router-link>
+                      </li>
+                      <li @click="toggleBurger">
+                        <router-link :to="{name: 'e-consultation'}" class="block w-full h-full text-lg sm:text-xl">E-məsləhət</router-link>
+                      </li>
+                  </ul>
+                </li>
+                <!-- Sağlıq Köşkü SİDEBAR  -->
+                <li>
+                  <router-link :to="{ name: 'health-kiosk' }" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Sağlıq köşkü</router-link>
+                </li>
+                <li>
+                  <router-link :to="{name: 'vacancies'}" class="block w-full h-full text-lg sm:text-xl">Vakansiyalar</router-link>
+                </li>
+                <li>
+                  <router-link :to="{name: 'offers'}" class="block w-full h-full text-lg sm:text-xl">Aksiyalar</router-link>
+                </li>
+                <li>
+                  <router-link :to="{name: 'contact'}" class="block w-full h-full text-lg  sm:text-xl">Əlaqə</router-link>
+                </li>
             </ul>
-          </ul>
-        </li>
-        <!-- Tibbi xidmətlər -->
-        <li>
-          <div @click="toggleBurgerDropdown('tibbiXidmetler')" class="flex justify-between items-center text-xl cursor-pointer">
-            <span>Tibbi xidmətlər</span>
-            <i class="fa-solid fa-angle-down transition-transform duration-300" 
-               :class="{'rotate-180': burgerDropdowns.tibbiXidmetler}"></i>
           </div>
-          <ul v-if="burgerDropdowns.tibbiXidmetler" class="mt-2 pl-4 space-y-2">
-            <li>
-              <router-link :to="{name: 'ambulance'}" class="block" @click="toggleBurger">Təcili Tibbi yardım</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'home-examination'}" class="block" @click="toggleBurger">Ünvanda müayinə</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'children-center'}" class="block" @click="toggleBurger">Uşaq sağlamlıq mərkəzi</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'male-female-infertility'}" class="block" @click="toggleBurger">Kişi və qadın sonsuzluğu mərkəzi</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'corporate-cooperation'}" class="block" @click="toggleBurger">Korporativ əməkdaşlıq</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'medical-insurance'}" class="block" @click="toggleBurger">Tibbi sığorta</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'industrial-medicine'}" class="block" @click="toggleBurger">Sənaye təbabəti</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'outpatient-examination'}" class="block" @click="toggleBurger">Ambulator müayinə</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'check-up'}" class="block" @click="toggleBurger">Check-up</router-link>
-            </li>
-            <li>
-              <router-link :to="{name: 'actions'}" class="block" @click="toggleBurger">Aksiyalar</router-link>
-            </li>
-            <li>
-              <a href="#" @click.prevent="openPdf; toggleBurger" class="block">Peyvəndlər</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+        </div>
 </transition>
   </div>
 
@@ -481,6 +517,8 @@ import axios from 'axios';
 const route = useRoute();
 const showModal = ref(false)
 const departments = ref([]); // Yeni ref
+const surgeries = ref([]);
+
 
 const headerClass = computed(() => {
 return route.path === '/' ? 'header-white' : 'header-gray';
@@ -514,9 +552,18 @@ try {
 }
 }
 
+const fetchSurgeries = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/surgeondep-list/');
+    surgeries.value = response.data.results;
+  } catch (error) {
+    console.error("HeaderView API çağırışında xəta:", error);
+  }
+};
 
 onMounted(() => {
 fetchDepartments();
+fetchSurgeries();
 });
 
 // Burger menyu üçün reaktiv dəyər və toggle funksiyası
@@ -527,6 +574,10 @@ const toggleBurger = () => {
 const burgerDropdowns = reactive({
   haqqimizda_mobile: false,
   hekimler_mobile: false,
+  cerrahiye: false,
+  bolmeler_mobile: false,
+  tibbiXidmetler_mobile: false,
+  onlaynXidmetler_mobile: false,
   // digər açarlar...
 })
 const toggleBurgerDropdown = (key) => {

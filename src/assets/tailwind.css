@@ -2,23 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'AvantGarde';
-    font-weight: bold;
-    src: url('/src/assets/fonts/AVGARDD_2.TTF') format('truetype');
-  }
-  
-  @font-face {
-    font-family: 'AvantGarde';
-    font-weight: normal;
-    src: url('/src/assets/fonts/AVGARDO_2.TTF') format('truetype');
-  }
-  
-  @font-face {
-    font-family: 'AvantGarde';
-    font-style: italic;
-    src: url('/src/assets/fonts/AVGARDN_2.TTF') format('truetype');
-  }
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap'); */
+
+
+* {
+  scroll-behavior: smooth;
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Open Sans', sans-serif; */
+  /* font-family: 'Montserrat', sans-serif; */
+  /* font-family: 'Merriweather', sans-serif; */
+}
   *{
     scroll-behavior: smooth;
   }

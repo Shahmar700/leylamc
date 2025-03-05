@@ -32,7 +32,7 @@ const department = ref({})
 
 const fetchDepartment = async () => {
   try {
-    console.log(route.params.slug) // slug dəyərini konsolda göstərmək
+    // console.log(route.params.slug) // slug dəyərini konsolda göstərmək
     const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/department-list/${route.params.slug}/`)
     department.value = response.data
   } catch (error) {
@@ -52,7 +52,7 @@ onUnmounted(() => {
 let pollingInterval
 
 const startPolling = () => {
-  pollingInterval = setInterval(fetchDepartment, 5000) // Hər 5 saniyədən bir API çağırışı
+  pollingInterval = setInterval(fetchDepartment, 3000) // Hər 5 saniyədən bir API çağırışı
 }
 
 const stopPolling = () => {

@@ -246,40 +246,16 @@ import CartView from '@/views/CartView.vue'
     },
     {
       path: '/departments',
-      redirect: '/departments/surgery/general-surgery',
+      redirect: '/departments/surgery',
       meta: { breadcrumb: 'Bölmələr' },
       children: [
         {
-          path: '/departments/surgery',
-          redirect: '/departments/surgery/general-surgery',
-          children:[
-            {
-              path: '/departments/surgery/general-surgery',
-              name: 'general-surgery',
-              component: GeneralSurgeryView,
-              meta: { breadcrumb: 'Ümumi cərrahiyyə' },
-            },
-            {
-              path: '/departments/surgery/plastic-surgery',
-              name: 'plastic-surgery',
-              component: PlasticSurgeryView,
-              meta: { breadcrumb: 'Plastik cərrahiyyə' },
-            },
-            {
-              path: '/departments/surgery/pediatric-surgery',
-              name: 'pediatric-surgery',
-              component: PediatricSurgeryView,
-              meta: { breadcrumb: 'Uşaq cərrahiyyəsi' },
-            },
-            {
-              path: '/departments/surgery/thoracic-surgery',
-              name: 'thoracic-surgery',
-              component: ThoracicSurgeryView,
-              meta: { breadcrumb: 'Torakal cərrahiyyə' },
-            },
-          ],
-        },
-       // Statik department yollarını silirik
+          path: 'surgery', // Nisbətən: /departments/surgery
+          name: 'surgery', // Parent adı
+          redirect: '/departments/surgery', // Default yönləndirmə (əgər ehtiyac varsa)
+          meta: { breadcrumb: 'Cərrahiyyə' },
+          children: [] // Dinamik child routelar burada əlavə olunacaq
+        }
       ]
     },
     {
@@ -484,6 +460,27 @@ const fetchDepartments = async () => {
   }
 }
 
+// Dinamik surgery routelarını əlavə edən funksiya
+const fetchSurgeryDepartments = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/surgeondep-list/')
+    const surgeries = response.data.results
+    surgeries.forEach(surgery => {
+      router.addRoute({
+        path: `/departments/surgery/:slug`, // :slug parametrini istifadə edirik
+        name: surgery.slug,
+        component: () => import('@/views/departments/surgery/SurgeryView.vue'), // SurgeryView.vue səhifəsinə yönləndirilir
+        props: true, // props olaraq ötürülməsini təmin edirik
+        meta: { breadcrumb: surgery.name }
+      })
+    })
+  } catch (error) {
+    console.error('Surgery API çağırışında xəta:', error)
+  }
+}
+
 fetchDepartments()
+fetchSurgeryDepartments();
+
 
 export default router
