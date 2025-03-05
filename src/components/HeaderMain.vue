@@ -26,7 +26,7 @@
               <!-- ---------- ABOUT US ----------  -->
               <li class="headerParent relative group">
                 <router-link to="/about" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Haqqımızda</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-32 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="mb-2 px-6">
                       <router-link :to="{name: 'our-history'}" class="block w-full h-full">Tariximiz</router-link>
                     </li>
@@ -103,7 +103,7 @@
               <!-- ---------- ABOUT US END ----------  -->
               <li class="headerParent relative group">
                   <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-32 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="mb-2 px-6">
                       <router-link :to="{name: 'doctors'}"  class="block w-full h-full">Həkimlərimiz</router-link>
                     </li>
@@ -116,7 +116,7 @@
                <!-- Department  -->
               <li class="headerParent relative group">
                 <router-link to="/departments" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-28 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative">
                       <router-link to="/departments/surgery" class="block w-full h-full">
@@ -125,7 +125,7 @@
                       </router-link>
                       <!-- Dinamik Cərrahiyə -->
                       <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
-                        <li v-for="surgery in surgeries" :key="surgery.id">
+                        <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
                           <router-link 
                             :to="{ name: surgery.slug, params: { slug: surgery.slug } }" 
                             class="block" 

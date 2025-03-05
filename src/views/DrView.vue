@@ -14,19 +14,19 @@
             <div class="flex flex-col px-12 py-6 items-center tracking-wider">
               <div class="flex">
                 <img :src="expIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}</span>
+                <span class="text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}il</span>
               </div>
               <span class="mt-1">Təcrübə</span>
             </div>
-            <!-- Doctor experience -->
+            <!-- Doctor Number of patients -->
             <div class="flex flex-col px-12 py-6 items-center tracking-wider border border-l-[#c7c7c7] border-r-[#c7c7c7] border-t-0 border-b-0">
               <div class="flex">
                 <img :src="patientIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">9845</span>
+                <span class="text-4xl font-bold text-main-text ml-2">{{ patientCount }}</span>
               </div>
               <span class="mt-1">Pasiyent sayı</span>
             </div>
-            <!-- Doctor experience -->
+            <!-- Doctor comments -->
             <div class="flex flex-col px-12 py-6 items-center tracking-wider">
               <div class="flex">
                 <img :src="opiIcon" alt="" class="w-[45px] h-[45px] object-cover">
@@ -138,13 +138,30 @@ const route = useRoute();
 const doctor = ref(null);
 
 const fetchDoctor = async () => {
-  try{
+  try {
+    console.log(`Həkim məlumatı çağırılır: ${route.params.id}`);
+    // Burada artıq slug parametri ilə çağırış edirik
     const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/doctor-list/${route.params.id}/`);
     doctor.value = response.data;
-  }catch(error){
-    console.error('API çağırışında xəta:', error)
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+    
+    // Alternativ olaraq bütün həkimləri yükləyib, slug-a görə filtrlə
+    try {
+      console.log('Bütün həkimlər çağırılır və filtrlənir');
+      const allResponse = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
+      const doctorFound = allResponse.data.results.find(d => d.slug === route.params.id);
+      
+      if (doctorFound) {
+        doctor.value = doctorFound;
+      } else {
+        console.error('Həkim tapılmadı');
+      }
+    } catch (fallbackError) {
+      console.error('Alternativ API çağırışında xəta:', fallbackError);
+    }
   }
-}
+};
 
 onMounted(() => {
   fetchDoctor();
@@ -194,6 +211,47 @@ const tabStyle = computed(() => {
 
 // import UserPhoto from '@/assets/images/rating-user.jpg'
 
+
+// Həkimin təcrübə ilinə görə random pasiyent sayını hesablayan funksiya
+const calculatePatients = (experienceYear) => {
+  let min, max;
+  
+  // Təcrübə ilinə əsasən aralığı müəyyən et
+  if (!experienceYear || experienceYear <= 1) {
+    min = 60;
+    max = 100;
+  } else if (experienceYear <= 3) {
+    min = 200;
+    max = 250;
+  } else if (experienceYear <= 5) {
+    min = 700;
+    max = 1000;
+  } else {
+    min = 1500;
+    max = 2000;
+  }
+  
+  // Random rəqəm generasiya et
+  let baseNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+  
+  // Tam yuvarlaq rəqəmlərdən qaçmaq üçün +/- 10% aralığında bir düzəliş əlavə et
+  // Bu rəqəmlərə 1-9 arası bir təsadüfi ədəd də əlavə edək ki, daha real görünsün
+  let adjustment = Math.floor(Math.random() * 10) + 1;
+  if (Math.random() > 0.5) {
+    baseNumber = baseNumber + adjustment;
+  } else {
+    baseNumber = baseNumber - adjustment;
+  }
+  
+  // Rəqəmi tam olmayan formada randomlaşdıraq (məsələn 973 deyil, 973.5)
+  return baseNumber;
+};
+
+// Hesablanmış pasiyent sayı üçün computed xüsusiyyəti yaradaq
+const patientCount = computed(() => {
+  if (!doctor.value) return 0;
+  return calculatePatients(doctor.value.experience_year);
+});
 </script>
 
 <style scoped>

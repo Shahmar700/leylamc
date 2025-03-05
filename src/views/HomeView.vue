@@ -213,12 +213,12 @@
         <!-- Doctors Imgs  -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-16">
           <DoctorCard
-            v-for="doctor in doctors"
+            v-for="doctor in doctors.slice(0, 3)"
             :key="doctor.id"
             :image="doctor.photo"
             :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
             :position="doctor.specialty.name"
-            @click="goToDoctor(doctor.id)"
+            @click="goToDoctor(doctor)"
         />
         </div>
       </div>
@@ -334,7 +334,7 @@ const news = ref([]);
 const fetchNews = async () => {
   try {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/news-list/');
-    console.log(response.data); // Məlumatları konsolda göstərmək
+    // console.log(response.data); // Məlumatları konsolda göstərmək
     news.value = response.data.results;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
@@ -378,8 +378,8 @@ const stopPolling = () => {
 };
 
 const router = useRouter();
-const goToDoctor = (id) => {
-  router.push({ name: 'doctor', params: { id } });
+const goToDoctor = (doctor) => {
+  router.push({ name: 'doctor', params: { id: doctor.slug } });
 };
 
 const goToNews = (slug) => {

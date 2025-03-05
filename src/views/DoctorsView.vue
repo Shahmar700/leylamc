@@ -17,9 +17,9 @@
               <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
               <multiselect v-model="selectedDepartments" :options="filteredDepartments" :multiple="true" placeholder="Şöbə seçin" label="name" track-by="name" class="rounded-md !h-[47px]"></multiselect>
           </div>
-          <div class="w-full">
+          <!-- <div class="w-full">
               <button type="submit" class="greenBtn mt-8 !py-2 !px-6 !rounded-lg">Axtar</button>
-          </div>
+          </div> -->
         </form>
     </div>
       <div>
@@ -30,9 +30,9 @@
               :image="doctor.photo"
               :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
               :position="doctor.position"
-              @click="goToDoctor(doctor.id)"
+              @click="goToDoctor(doctor)"
               class="mt-6"
-            />
+          />
       </div>
       <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
         <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
@@ -54,8 +54,8 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const goToDoctor = (id) => {
-  router.push({ name: 'doctor', params: { id } });
+const goToDoctor = (doctor) => {
+  router.push({ name: 'doctor', params: { id: doctor.slug } });
 };
 
 import DoctorCard from '@/components/DoctorCard.vue'
