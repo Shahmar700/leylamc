@@ -202,12 +202,12 @@
     <!-- ** OUR TEAM (Doctors) ** -->
     <div class="mt-48">
       <div class="container">
-        <div class="flex justify-between mb-16">
+        <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
             <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Peşəkar komandamız</h1>
           </div>
-          <div>
-            <router-link to="/doctors" class="greenBtn tracking-wider">Həkimlərimiz</router-link>
+          <div class="mt-4 sm:mt-0">
+            <router-link to="/doctors" class="greenBtn tracking-wider text-base screen-500:text-lg lg:text-xl">Həkimlərimiz</router-link>
           </div>
         </div>
         <!-- Doctors Imgs  -->

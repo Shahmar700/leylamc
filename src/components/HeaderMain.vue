@@ -119,29 +119,39 @@
                   <ul class="headerDropdown absolute top-8 -right-28 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative">
-                      <router-link to="/departments/surgery" class="block w-full h-full">
+                      <div class="block w-full h-full cursor-pointer">
                         <span>Cərrahiyyə</span>
                         <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
-                      </router-link>
+                      </div>
                       <!-- Dinamik Cərrahiyə -->
                       <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
                         <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
                           <router-link 
-                            :to="{ name: surgery.slug, params: { slug: surgery.slug } }" 
-                            class="block" 
-                            >
+                            :to="{
+                              name: 'surgery-detail', 
+                              params: { slug: surgery.slug }
+                            }" 
+                            class="block">
                             {{ surgery.name }}
                           </router-link>
                         </li>
                       </ul>
                     </li>
                     <!-- Surgery END -->
-                    <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
-                      <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
-                        <router-link :to="{ name: department.slug, params: { slug: department.slug } }" class="block w-full h-full">{{ department.name }}</router-link>
-                      </li>
-                    </ul>
-                    
+                     <!-- DEPARTMENT (HEADER)  -->
+                     <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
+                        <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
+                          <router-link 
+                            :to="{
+                              name: 'department-detail', 
+                              params: { slug: department.slug }
+                            }" 
+                            class="block w-full h-full">
+                            {{ department.name }}
+                          </router-link>
+                        </li>
+                      </ul>
+                    <!-- DEPARTMENT (HEADER) END  -->
                   </ul>
               </li>
               <!-- -------------------------- Department END -->
@@ -149,42 +159,23 @@
               <!-- MEDİCAL SERVİCES  -->
               <li class="headerParent relative group">
                   <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl">Tibbi xidmətlər</router-link>
-                  <!-- MEDİCAL SERVİCES  -->
-                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'ambulance'}"  class="block w-full h-full">Təcili Tibbi yardım</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'home-examination'}" class="block w-full h-full">Ünvanda müayinə</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'children-center'}" class="block w-full h-full">Uşaq sağlamlıq mərkəzi</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'male-female-infertility'}" class="block w-full h-full">Kişi və qadın sonsuzluğu mərkəzi</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'corporate-cooperation'}" class="block w-full h-full">Korporativ əməkdaşlıq</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'medical-insurance'}" class="block w-full h-full">Tibbi sığorta</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'industrial-medicine'}" class="block w-full h-full">Sənaye təbabəti</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'outpatient-examination'}" class="block w-full h-full">Ambulator müayinə</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'check-up'}" class="block w-full h-full">Check-up</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <router-link :to="{name: 'actions'}" class="block w-full h-full">Aksiyalar</router-link>
-                    </li>
-                    <li class="mb-2 px-6">
-                      <a href="#" @click.prevent="openPdf" class="block w-full h-full">Peyvəndlər</a>
-                    </li>
-                  </ul>
+                  <!-- MEDİCAL SERVİCES (HEADER)  -->
+                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <li v-if="medicalServices.length === 0" class="mb-2 px-6">
+                    <span class="block w-full h-full">Yüklənir...</span>
+                  </li>
+                  <li v-for="service in medicalServices" :key="service.id" class="mb-2 px-6">
+                    <router-link 
+                      :to="`/medical-services/${service.slug}`"
+                      class="block w-full h-full">
+                      {{ service.title }}
+                    </router-link>
+                  </li>
+                  <!-- Peyvəndlər linki statik olaraq qalsın -->
+                  <li class="mb-2 px-6">
+                    <a href="#" @click.prevent="openPdf" class="block w-full h-full">Peyvəndlər</a>
+                  </li>
+                </ul>
               </li>
           </ul>
 
@@ -387,34 +378,41 @@
                 </div>
                 <ul v-if="burgerDropdowns.bolmeler_mobile" class="mt-2 pl-4 space-y-2">
                   <!-- "Cərrahiyyə" dropdownu -->
-                  <li>
-                    <div @click="toggleBurgerDropdown('cerrahiye')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                  <li class="mb-2 px-6 surgeryParent relative">
+                    <a href="#" @click.prevent class="block w-full h-full">
                       <span>Cərrahiyyə</span>
-                      <i class="fa-solid fa-angle-down transition-transform duration-300" 
-                        :class="{'rotate-180': burgerDropdowns.cerrahiye}"></i>
-                    </div>
+                      <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
+                    </a>
                     <!-- Dinamik Cərrahiyə -->
-                      <ul v-if="burgerDropdowns.cerrahiye" class="mt-2 pl-4 space-y-2">
-                        <li v-for="surgery in surgeries" :key="surgery.id">
-                          <router-link 
-                            :to="{ name: surgery.slug, params: { slug: surgery.slug } }" 
-                            class="block text-lg sm:text-xl" 
-                            @click="toggleBurger">
-                            {{ surgery.name }}
-                          </router-link>
-                        </li>
-                      </ul>
-                    <!-- Dinamik Cərrahiyə END -->
+                    <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
+                      <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
+                        <router-link 
+                          :to="{
+                            name: 'surgery-detail', 
+                            params: { slug: surgery.slug }
+                          }" 
+                          class="block">
+                          {{ surgery.name }}
+                        </router-link>
+                      </li>
+                    </ul>
                   </li>
                   <!-- "Cərrahiyyə" END -->
-                  <!-- Dinamik bölmələr -->
+                  <!-- Department (SİDEBAR)  -->
                   <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
                     <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
-                      <router-link :to="{ name: department.slug, params: { slug: department.slug } }" class="block text-lg sm:text-xl" @click="toggleBurger">
+                      <router-link 
+                        :to="{
+                          name: 'department-detail', 
+                          params: { slug: department.slug }
+                        }" 
+                        class="block text-lg sm:text-xl" 
+                        @click="toggleBurger">
                         {{ department.name }}
                       </router-link>
                     </li>
                   </ul>
+                  <!-- Department (Sidebar) END -->
                 </ul>
               </li>
               <!-- Tibbi xidmətlər (SIDEBAR) -->
@@ -543,27 +541,41 @@ const toggleModal = () => {
 
 // API çağırışı
 const fetchDepartments = async () => {
-try {
-  const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/')
-  departments.value = response.data.results.filter(department => department.category !== 'Surgery')
-  console.log(departments.value) // Məlumatları konsolda göstərmək
-} catch (error) {
-  console.error('API çağırışında xəta:', error)
-}
-}
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/');
+    departments.value = response.data.results.filter(department => department.category !== 'Surgery');
+  } catch (error) {
+    console.error("Department API çağırışında xəta:", error);
+  }
+};
 
 const fetchSurgeries = async () => {
   try {
     const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/surgeondep-list/');
     surgeries.value = response.data.results;
+    console.log('Cerahiye' + surgeries )
   } catch (error) {
     console.error("HeaderView API çağırışında xəta:", error);
   }
 };
 
+// Tibbi xidmətlər üçün API-dən məlumatları alın
+const medicalServices = ref([]);
+
+const fetchMedicalServices = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/medical-service-list/');
+    medicalServices.value = response.data.results;
+  } catch (error) {
+    console.error('Tibbi xidmət məlumatları yükləmə xətası:', error);
+  }
+};
+
+
 onMounted(() => {
 fetchDepartments();
-fetchSurgeries();
+fetchSurgeries();  // Cərrahiyə məlumatlarını yükləyir
+fetchMedicalServices(); // Yeni əlavə edilən funksiya
 });
 
 // Burger menyu üçün reaktiv dəyər və toggle funksiyası

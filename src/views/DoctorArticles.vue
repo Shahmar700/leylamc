@@ -59,8 +59,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted  } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
+
 
 const tableArticles = ref([
     {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn'},
@@ -74,6 +76,40 @@ const tableArticles = ref([
     {id: 9, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '15-12-2020', articleAuthor: 'Leyla Süleymanova'},
     {id: 10, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Almaz Nəbiyeva'},
 ]);
+
+// API inteqrasiyası - aktivləşdirmək üçün şərhləri silin
+// API-dən məqalələri yükləmək üçün funksiya
+/*
+const fetchArticles = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/article-list/');
+    console.log('API-dən gələn məqalə dataları:', response.data);
+    
+    // API response formatını yoxlayın və uyğunlaşdırın
+    // Məsələn, API-nin data strukturu aşağıdakı kimi ola bilər:
+    // { results: [ { id, title, publish_date, author, ... } ] }
+    
+    // tableArticles-i API-dən gələn datalarla əvəz edin
+    // Burada API-nin data strukturuna uyğun olaraq məlumatı map etmək olar
+    tableArticles.value = response.data.results.map(item => ({
+      id: item.id,
+      articleHeader: item.title, // API-nin field adı title ola bilər
+      articleDate: item.publish_date, // API-nin field adı publish_date ola bilər
+      articleAuthor: item.author, // API-nin field adı author ola bilər
+      // Əlavə field-lər əlavə edilə bilər
+    }));
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+    // Xəta halında istifadəçiyə mesaj göstərmək olar
+    // Bu halda statik data istifadə etməyə davam edə bilərsiniz
+  }
+};
+
+// Component mount olduqda API-ni çağır
+onMounted(() => {
+  fetchArticles();
+});
+*/
 
 const author = ref('');
 const itemsPerPage = ref('5');
@@ -163,42 +199,5 @@ import Maps from "@/components/Maps.vue";
 ul{
     list-style: disc;
 }
-.pagination-button {
-    margin: 0 5px;
-    background-color: #6bb52b;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-.pagination-button:disabled {
-    background-color: #a5d6a7;
-    cursor: not-allowed;
-}
-span {
-    margin: 0 5px;
-    cursor: pointer;
-}
-.font-bold {
-    font-weight: bold;
-}
-.active-page {
-    background-color: #6bb52b;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.inactive-page {
-    color: #a5d6a7;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-.pagination {
-    position: sticky;
-    bottom: 0;
-    background-color: white;
-    padding: 5px 10px;
-    width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
+
 </style>

@@ -244,100 +244,131 @@ import CartView from '@/views/CartView.vue'
       component: () => import('@/views/DrView.vue'),
       props: true
     },
+    // Əsas departments (bölmələr) marşrutu
     {
       path: '/departments',
-      redirect: '/departments/surgery',
+      name: 'departments',
+      component: () => import('@/views/departments/DepartmentsLayout.vue'), // Ümumi layout
       meta: { breadcrumb: 'Bölmələr' },
-      children: [
-        {
-          path: 'surgery', // Nisbətən: /departments/surgery
-          name: 'surgery', // Parent adı
-          redirect: '/departments/surgery', // Default yönləndirmə (əgər ehtiyac varsa)
-          meta: { breadcrumb: 'Cərrahiyyə' },
-          children: [] // Dinamik child routelar burada əlavə olunacaq
-        }
-      ]
+      children: [] // Dinamik child routelar buradan çıxaraq ana səviyyəyə keçəcək
     },
+    // Dinamik slug parametri ilə department alt marşrutu
     {
-      path: '/medical-services',
-      redirect: '/medical-services/ambulance',
-      meta: { breadcrumb: 'Tibbi xidmətlər' },
-      children: [
-        {
-          path: 'ambulance',
-          name: 'ambulance',
-          component: AmbulanceView,
-          meta: { breadcrumb: 'Təcili Tibbi yardım' },
-        },
-        {
-          path: 'home-examination',
-          name: 'home-examination',
-          component: HomeBasedExaminationView,
-          meta: { breadcrumb: 'Ünvanda müayinə' },
-        },
-        {
-          path: 'children-center',
-          name: 'children-center',
-          component: ChildrenHealthCenterView,
-          meta: { breadcrumb: 'Uşaq sağlamlıq mərkəzi' },
-        },
-        {
-          path: 'male-female-infertility',
-          name: 'male-female-infertility',
-          component: MaleFemaleInfertilityView,
-          meta: { breadcrumb: 'Kişi və qadın sonsuzluğu mərkəzi' },
-        },
-        {
-          path: 'corporate-cooperation',
-          name: 'corporate-cooperation',
-          component: CorporateCooperationView,
-          meta: { breadcrumb: 'Korporativ əməkdaşlıq' },
-        },
-        {
-          path: 'medical-insurance',
-          name: 'medical-insurance',
-          component: MedicalInsuranceView,
-          meta: { breadcrumb: 'Tibbi sığorta' },
-        },
-        { 
-          path: 'industrial-medicine',
-          name: 'industrial-medicine',
-          component: IndustrialMedicineView,
-          meta: { breadcrumb: 'Sənaye təbabəti' },
-        },
-        {
-          path: 'outpatient-examination',
-          name: 'outpatient-examination',
-          component: OutpatientExaminationView,
-          meta: { breadcrumb: 'Ambulator müayinə' },
-        },
-        {
-          path: 'check-up',
-          name: 'check-up',
-          component: CheckUpView,
-          meta: { breadcrumb: 'Check-up' },
-        },
-        {
-          path: 'check-up/:id',
-          name: 'check-up-inner',
-          component: CheckUpInnerView,
-          props: true,
-          meta: { breadcrumb: 'Check-up Detalları' },
-        },
-        {
-          path: 'actions',
-          name: 'actions',
-          component: ActionsView,
-          meta: { breadcrumb: 'Aksiyalar' },
-        },
-        {
-          path: 'vacc',
-          name: 'vacc',
-          component: VaccView,
-          meta: { breadcrumb: 'Pulmonologiya' },
-        }
-      ],
+      path: '/departments/:slug',
+      name: 'department-detail',
+      component: () => import('@/views/departments/DepartmentView.vue'), 
+      props: true,
+      // meta: { breadcrumb: route => `${route.params.slug}` }
     },
+    // Surgery bölməsi üçün əsas marşrut
+    {
+      path: '/departments/surgery',
+      name: 'surgery',
+      component: () => import('@/views/departments/surgery/SurgeryLayout.vue'), // Ana səhifə üçün
+      meta: { breadcrumb: 'Cərrahiyyə' }
+    },
+    // Dinamik slug parametri ilə surgery alt marşrutu
+    {
+      path: '/departments/surgery/:slug',
+      name: 'surgery-detail',
+      component: () => import('@/views/departments/surgery/SurgeryView.vue'),
+      props: true
+    },
+    // Əsas medical-services marşrutunu əlavə et
+      {
+        path: '/medical-services',
+        name: 'medical-services',
+        component: () => import('@/views/medical_services/MedicalServiceView.vue'), // Və ya uyğun komponent
+        meta: { breadcrumb: 'Tibbi xidmətlər' },
+        children: [] // Tibbi xidmətlər üçün boş children array
+      },
+      // Dinamik slug parametri ilə marşrut
+      {
+        path: '/medical-services/:slug',
+        name: 'medical-service-detail',
+        component: () => import('@/views/medical_services/MedicalServiceView.vue'),
+        props: true
+      },
+    // {
+    //   path: '/medical-services',
+    //   redirect: '/medical-services/ambulance',
+    //   meta: { breadcrumb: 'Tibbi xidmətlər' },
+    //   children: [
+    //     {
+    //       path: 'ambulance',
+    //       name: 'ambulance',
+    //       component: AmbulanceView,
+    //       meta: { breadcrumb: 'Təcili Tibbi yardım' },
+    //     },
+    //     {
+    //       path: 'home-examination',
+    //       name: 'home-examination',
+    //       component: HomeBasedExaminationView,
+    //       meta: { breadcrumb: 'Ünvanda müayinə' },
+    //     },
+    //     {
+    //       path: 'children-center',
+    //       name: 'children-center',
+    //       component: ChildrenHealthCenterView,
+    //       meta: { breadcrumb: 'Uşaq sağlamlıq mərkəzi' },
+    //     },
+    //     {
+    //       path: 'male-female-infertility',
+    //       name: 'male-female-infertility',
+    //       component: MaleFemaleInfertilityView,
+    //       meta: { breadcrumb: 'Kişi və qadın sonsuzluğu mərkəzi' },
+    //     },
+    //     {
+    //       path: 'corporate-cooperation',
+    //       name: 'corporate-cooperation',
+    //       component: CorporateCooperationView,
+    //       meta: { breadcrumb: 'Korporativ əməkdaşlıq' },
+    //     },
+    //     {
+    //       path: 'medical-insurance',
+    //       name: 'medical-insurance',
+    //       component: MedicalInsuranceView,
+    //       meta: { breadcrumb: 'Tibbi sığorta' },
+    //     },
+    //     { 
+    //       path: 'industrial-medicine',
+    //       name: 'industrial-medicine',
+    //       component: IndustrialMedicineView,
+    //       meta: { breadcrumb: 'Sənaye təbabəti' },
+    //     },
+    //     {
+    //       path: 'outpatient-examination',
+    //       name: 'outpatient-examination',
+    //       component: OutpatientExaminationView,
+    //       meta: { breadcrumb: 'Ambulator müayinə' },
+    //     },
+    //     {
+    //       path: 'check-up',
+    //       name: 'check-up',
+    //       component: CheckUpView,
+    //       meta: { breadcrumb: 'Check-up' },
+    //     },
+    //     {
+    //       path: 'check-up/:id',
+    //       name: 'check-up-inner',
+    //       component: CheckUpInnerView,
+    //       props: true,
+    //       meta: { breadcrumb: 'Check-up Detalları' },
+    //     },
+    //     {
+    //       path: 'actions',
+    //       name: 'actions',
+    //       component: ActionsView,
+    //       meta: { breadcrumb: 'Aksiyalar' },
+    //     },
+    //     {
+    //       path: 'vacc',
+    //       name: 'vacc',
+    //       component: VaccView,
+    //       meta: { breadcrumb: 'Pulmonologiya' },
+    //     }
+    //   ],
+    // },
     {
       path: '/online-services',
       redirect: '/online-services/e-appointment',
@@ -447,16 +478,15 @@ const fetchDepartments = async () => {
     const departments = response.data.results
     departments.forEach(department => {
       router.addRoute({
-        // path: `/departments/${department.slug}`,
-        path: `/departments/:slug`, // :slug parametrini istifadə edirik
-        name: department.slug,
-        component: DepartmentView,
+        path: `/departments/${department.slug}`, // Hər departament üçün unikal yol
+        name: `department-${department.slug}`, // Unikal ad təyin edirik
+        component: () => import('@/views/departments/DepartmentView.vue'), // Dinamik import
         props: true, // props olaraq ötürülməsini təmin edirik
         meta: { breadcrumb: department.name }
       })
     })
   } catch (error) {
-    console.error('API çağırışında xəta:', error)
+    console.error('Department API çağırışında xəta:', error)
   }
 }
 
@@ -467,8 +497,9 @@ const fetchSurgeryDepartments = async () => {
     const surgeries = response.data.results
     surgeries.forEach(surgery => {
       router.addRoute({
-        path: `/departments/surgery/:slug`, // :slug parametrini istifadə edirik
-        name: surgery.slug,
+        path: `/departments/surgery/${surgery.slug}`, // :slug parametrini istifadə edirik
+        // name: surgery.slug,
+        name: `surgery-${surgery.slug}`,  
         component: () => import('@/views/departments/surgery/SurgeryView.vue'), // SurgeryView.vue səhifəsinə yönləndirilir
         props: true, // props olaraq ötürülməsini təmin edirik
         meta: { breadcrumb: surgery.name }
@@ -478,6 +509,29 @@ const fetchSurgeryDepartments = async () => {
     console.error('Surgery API çağırışında xəta:', error)
   }
 }
+
+// Dinamik tibbi xidmətlər marşrutlarını əlavə edən funksiya
+const fetchMedicalServiceRoutes = async () => {
+  try {
+    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/medical-service-list/');
+    const medicalServices = response.data.results;
+    
+    medicalServices.forEach(service => {
+      // Parent marşrut olmadan birbaşa əlavə et
+      router.addRoute({
+        path: `/medical-services/${service.slug}`,
+        name: service.slug,
+        component: () => import('@/views/medical_services/MedicalServiceView.vue'),
+        props: true,
+        meta: { breadcrumb: service.title }
+      });
+    });
+  } catch (error) {
+    console.error('Tibbi xidmətlər marşrutları əlavə edilərkən xəta:', error);
+  }
+};
+
+fetchMedicalServiceRoutes();
 
 fetchDepartments()
 fetchSurgeryDepartments();
