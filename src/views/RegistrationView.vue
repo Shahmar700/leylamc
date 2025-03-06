@@ -13,6 +13,19 @@
               <h3 class="text-primary text-2xl font-bold max-md:text-center">Yeni hesab yaradın</h3>
             </div>
 
+            <!-- Ad sahəsindən əvvəl əlavə edin -->
+            <div class="mt-6">
+              <label :class="{'text-red-500': !isUsernameValid && formSubmitted}" class="text-gray-800 text-xs md:text-base block mb-1">İstifadəçi adı</label>
+              <span v-if="formSubmitted && !isUsernameValid" class="text-lightgray text-xs">Minimal 3 simvol</span>
+              <div class="relative flex items-center">
+                <input v-model="username" name="username" type="text" required class="w-full bg-transparent text-xs border-b border-gray-300 focus:border-primary pl-2 pr-8 py-1 outline-none" placeholder="İstifadəçi adı daxil edin" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
+                  <circle cx="10" cy="7" r="6" data-original="#000000"></circle>
+                  <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
+                </svg>
+              </div>
+            </div>
+
             <div class="mt-6">
               <label :class="{'text-red-500': !isNameValid && formSubmitted}" class="text-gray-800 text-xs md:text-base  block mb-1">Ad</label>
               <span v-if="formSubmitted && !isNameValid" class="text-lightgray text-xs">Minimal 2 simvol</span>
@@ -135,10 +148,13 @@
 import { ref, computed } from 'vue';
 import axios from 'axios';
 import LoginModal from '@/components/LoginModal.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const showModal = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+
 
 const toggleModal = () => {
   showModal.value = !showModal.value;
@@ -153,6 +169,8 @@ const password = ref('');
 const confirmPassword = ref('');
 const formSubmitted = ref(false);
 
+const isUsernameValid = computed(() => username.value.length >= 3);
+
 const isNameValid = computed(() => name.value.length >= 2);
 const isSurnameValid = computed(() => surname.value.length >= 2);
 const isEmailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value));
@@ -164,37 +182,7 @@ const validatePhone = () => {
   phone.value = phone.value.replace(/\D/g, ''); // Yalnız rəqəmləri saxla
 };
 
-const validateForm = async () => {
-  formSubmitted.value = true;
 
-  if (isNameValid.value && isSurnameValid.value && isEmailValid.value && isPhoneValid.value && isPasswordValid.value && isConfirmPasswordValid.value) {
-    // Form is valid, proceed with submission
-    try {
-      const payload = {
-        name: name.value,
-        surname: surname.value,
-        email: email.value,
-        phone: phone.value,
-        password: password.value,
-      };
-      console.log('Göndərilən məlumatlar:', payload);
-
-      const response = await axios.post('http://192.168.2.242:8000/api/token/', payload);
-
-      const { access, refresh } = response.data;
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-
-      // Redirect or show success message
-      console.log('Registration successful');
-    } catch (error) {
-      console.error('Registration failed:', error);
-    }
-  } else {
-    // Form is invalid, show error messages
-    console.log('Form is invalid');
-  }
-};
 
 // Ölkə kodları üçün məlumatlar
 const countries = ref([
@@ -208,6 +196,66 @@ const countries = ref([
 ]);
 
 const selectedCountry = ref(countries.value[0]);
+
+// AUTH 
+
+import authService from '@/services/auth';
+import api from '@/services/api';
+
+const username = ref('');
+const validateForm = async () => {
+  formSubmitted.value = true;
+
+  if (isNameValid.value && isSurnameValid.value && isEmailValid.value && 
+      isPhoneValid.value && isPasswordValid.value && isConfirmPasswordValid.value && 
+      isUsernameValid.value) {
+    
+    try {
+      // 1. Əvvəlcə qeydiyyat API-nə sorğu
+      const registerPayload = {
+        username: username.value,
+        first_name: name.value,
+        last_name: surname.value,
+        email: email.value,
+        phone_number: selectedCountry.value.dial_code + phone.value,
+        password: password.value
+      };
+      
+      console.log('Göndərilən qeydiyyat məlumatları:', registerPayload);
+      
+      // İndi api servisini istifadə edirik
+      const registerResponse = await api.post(
+        '/leyla/v1/register-create/', 
+        registerPayload
+      );
+      
+      console.log('Qeydiyyat uğurlu:', registerResponse.data);
+      
+      // 2. Qeydiyyatdan sonra login üçün token alma
+      await authService.login(username.value, password.value);
+      
+      // 3. Uğurlu qeydiyyat mesajı və ya yönləndirmə
+      alert('Qeydiyyat uğurla tamamlandı!');
+      // İstifadəçini ana səhifəyə yönləndiririk
+      router.push('/');
+      
+    } catch (error) {
+      console.error('Qeydiyyat xətası:', error);
+      
+      // Xəta mesajını göstər
+      if (error.response) {
+        // Backend-dən xəta mesajı gəldisə
+        alert(`Xəta: ${JSON.stringify(error.response.data)}`);
+      } else {
+        // Ümumi xəta
+        alert('Qeydiyyat zamanı xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.');
+      }
+    }
+  } else {
+    // Form məlumatları düzgün deyil
+    console.log('Form məlumatları düzgün deyil');
+  }
+};
 </script>
 
 

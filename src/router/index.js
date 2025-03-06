@@ -68,11 +68,23 @@ import axios from 'axios'
 import AllNewsView from '@/views/AllNewsView.vue'
 import CartView from '@/views/CartView.vue'
 
+import authService from '@/services/auth';
+import ProfileView from '@/views/ProfileView.vue'
+
   const routes = [
     {
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
+      meta: {
+        breadcrumb: 'Profil',
+        requiresAuth: true  // Bu səhifəyə daxil olmaq üçün autentifikasiya tələb olunur
+      }
     },
     {
       path: '/registration',
@@ -275,20 +287,21 @@ import CartView from '@/views/CartView.vue'
       props: true
     },
     // Əsas medical-services marşrutunu əlavə et
-      {
-        path: '/medical-services',
-        name: 'medical-services',
-        component: () => import('@/views/medical_services/MedicalServiceView.vue'), // Və ya uyğun komponent
-        meta: { breadcrumb: 'Tibbi xidmətlər' },
-        children: [] // Tibbi xidmətlər üçün boş children array
-      },
-      // Dinamik slug parametri ilə marşrut
-      {
-        path: '/medical-services/:slug',
-        name: 'medical-service-detail',
-        component: () => import('@/views/medical_services/MedicalServiceView.vue'),
-        props: true
-      },
+    {
+      path: '/medical-services',
+      name: 'medical-services',
+      component: () => import('@/views/medical_services/MedicalServiceView.vue'),
+      meta: { breadcrumb: 'Tibbi xidmətlər' },
+      // Problem: Eyni komponenti həm ana səhifə, həm də detallı səhifə üçün istifadə ediriksə,
+      // komponentin hansında olduğunu bilməsi lazımdır
+    },
+    {
+      path: '/medical-services/:slug',
+      name: 'medical-service-detail',
+      component: () => import('@/views/medical_services/MedicalServiceView.vue'),
+      meta: { breadcrumb: '' },
+      props: true  // Bu çox vacibdir - component-ə slug parametrini ötürür
+    },
     // {
     //   path: '/medical-services',
     //   redirect: '/medical-services/ambulance',
@@ -470,6 +483,26 @@ import CartView from '@/views/CartView.vue'
     next()
   })
 
+  // Autentifikasiya guard-ı
+    router.beforeEach((to, from, next) => {
+      // Rota üçün auth tələb olunub-olmadığını yoxlayırıq
+      const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+      
+      // İstifadəçinin daxil olub-olmadığını yoxlayırıq
+      const isAuthenticated = authService.isLoggedIn();
+      
+      if (requiresAuth && !isAuthenticated) {
+        // Auth tələb olunur, amma istifadəçi daxil olmayıb: Login səhifəsinə yönləndirilir
+        next('/login');
+      } else if (to.path === '/login' && isAuthenticated) {
+        // İstifadəçi artıq daxil olub və login səhifəsinə getmək istəyir: Ana səhifəyə yönləndirilir
+        next('/');
+      } else {
+        // Bütün digər hallarda: normal naviqasiya
+        next();
+      }
+    });
+
 
 // Dinamik olaraq department-ları yükləmək
 const fetchDepartments = async () => {
@@ -517,13 +550,12 @@ const fetchMedicalServiceRoutes = async () => {
     const medicalServices = response.data.results;
     
     medicalServices.forEach(service => {
-      // Parent marşrut olmadan birbaşa əlavə et
       router.addRoute({
         path: `/medical-services/${service.slug}`,
-        name: service.slug,
+        name: `medical-service-${service.slug}`, // Unikal ad 
         component: () => import('@/views/medical_services/MedicalServiceView.vue'),
         props: true,
-        meta: { breadcrumb: service.title }
+        meta: { breadcrumb: service.title } // API-dən gələn başlıqla breadcrumb-u təyin edirik
       });
     });
   } catch (error) {
@@ -535,6 +567,17 @@ fetchMedicalServiceRoutes();
 
 fetchDepartments()
 fetchSurgeryDepartments();
+
+// Google Analytics səhifə görüntülənmə izləmə
+router.afterEach((to) => {
+  // Əgər Google Analytics hazırdırsa
+  if (window.gtag) {
+    window.gtag('config', 'G-HYBSVNG1Q5', {
+      page_path: to.path,
+      page_title: to.meta.breadcrumb || to.name
+    });
+  }
+});
 
 
 export default router

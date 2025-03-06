@@ -166,7 +166,10 @@
                   </li>
                   <li v-for="service in medicalServices" :key="service.id" class="mb-2 px-6">
                     <router-link 
-                      :to="`/medical-services/${service.slug}`"
+                      :to="{
+                        name: 'medical-service-detail',  // Burada name-i dəqiq yazırıq
+                        params: { slug: service.slug }
+                      }"
                       class="block w-full h-full">
                       {{ service.title }}
                     </router-link>
@@ -249,8 +252,42 @@
                   </li>
                 </ul>
               </div>
-              <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] ml-3 cursor-pointer" @click="toggleModal"></i>
-              <LoginModal v-if="showModal" @close="toggleModal" />
+              <!-- İstifadəçi girişi / profil ikonu -->
+                <div class="relative ml-3">
+                  <!-- İstifadəçi daxil olmadıqda login ikonu -->
+                  <template v-if="!isLoggedIn">
+                    <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] cursor-pointer" @click="toggleModal"></i>
+                    <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
+                  </template>
+                  
+                  <!-- İstifadəçi daxil olduqda profil ikonu və dropdown -->
+                  <template v-else>
+                    <div class="headerParent relative group">
+                      <div class="flex items-center cursor-pointer">
+                        <i class="fa-solid fa-user-circle text-2xl md:text-3xl text-[#ef7c00]"></i>
+                        <span class="ml-2 hidden md:inline text-sm text-primary">{{ username }}</span>
+                      </div>
+                      
+                      <ul class="headerDropdown absolute top-8 right-0 z-30 bg-white w-48 py-3 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                        <li class="mb-2 px-4">
+                          <router-link to="/profile" class="block py-1 w-full">
+                            <i class="fa-solid fa-user mr-2"></i> Profilim
+                          </router-link>
+                        </li>
+                        <li class="mb-2 px-4">
+                          <router-link to="/orders" class="block py-1 w-full">
+                            <i class="fa-solid fa-clipboard-list mr-2"></i> Sifarişlərim
+                          </router-link>
+                        </li>
+                        <li class="px-4">
+                          <button @click="logout" class="flex w-full items-center py-1 text-red-500">
+                            <i class="fa-solid fa-sign-out-alt mr-2"></i> Çıxış
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </template>
+                </div>
           </div>
       </div>
 
@@ -432,7 +469,10 @@
                   <!-- Dinamik tibbi xidmətlər -->
                   <li v-for="service in medicalServices" :key="service.id" class="mb-2">
                     <router-link 
-                      :to="`/medical-services/${service.slug}`"
+                      :to="{
+                        name: 'medical-service-detail',
+                        params: { slug: service.slug }
+                      }"
                       class="block text-lg sm:text-xl" 
                       @click="toggleBurger">
                       {{ service.title }}
@@ -493,20 +533,37 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed, onMounted, reactive, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import LoginModal from './LoginModal.vue';
 import axios from 'axios';
+import authService from '@/services/auth'; // Auth servisini import edirik
 
+const router = useRouter();
 const route = useRoute();
 const showModal = ref(false)
 const departments = ref([]); // Yeni ref
 const surgeries = ref([]);
-
+const isLoggedIn = ref(false); // İstifadəçinin giriş statusu
+const username = ref(''); // İstifadəçi adını saxlamaq üçün
 
 const headerClass = computed(() => {
 return route.path === '/' ? 'header-white' : 'header-gray';
 });
+
+// Komponenti yükləyərkən və route dəyişdiyində auth statusunu yoxlayırıq
+const checkAuthStatus = () => {
+  isLoggedIn.value = authService.isLoggedIn();
+  username.value = authService.getUsername() || '';
+};
+
+// İstifadəçi çıxış funksiyası
+const logout = () => {
+  authService.logout();
+  isLoggedIn.value = false;
+  username.value = '';
+  router.push('/');
+};
 
 // Search Icons
 import searchIconHome from '../assets/icons/search.svg';
@@ -562,6 +619,12 @@ onMounted(() => {
 fetchDepartments();
 fetchSurgeries();  // Cərrahiyə məlumatlarını yükləyir
 fetchMedicalServices(); // Yeni əlavə edilən funksiya
+checkAuthStatus(); // Auth statusunu yoxlayırıq
+});
+
+// Route dəyişdiyində auth statusunu yeniləyirik
+watch(() => route.path, () => {
+  checkAuthStatus();
 });
 
 // Burger menyu üçün reaktiv dəyər və toggle funksiyası
