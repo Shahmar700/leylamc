@@ -103,7 +103,7 @@
               <!-- ---------- ABOUT US END ----------  -->
               <li class="headerParent relative group">
                   <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-32 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-52 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="mb-2 px-6">
                       <router-link :to="{name: 'doctors'}"  class="block w-full h-full">Həkimlərimiz</router-link>
                     </li>
@@ -116,7 +116,7 @@
                <!-- Department  -->
               <li class="headerParent relative group">
                 <router-link to="/departments" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-28 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-40 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative">
                       <div class="block w-full h-full cursor-pointer">
@@ -160,7 +160,7 @@
               <li class="headerParent relative group">
                   <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl">Tibbi xidmətlər</router-link>
                   <!-- MEDİCAL SERVİCES (HEADER)  -->
-                  <ul class="headerDropdown absolute top-8 -right-5 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-44 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                   <li v-if="medicalServices.length === 0" class="mb-2 px-6">
                     <span class="block w-full h-full">Yüklənir...</span>
                   </li>
@@ -378,20 +378,22 @@
                 </div>
                 <ul v-if="burgerDropdowns.bolmeler_mobile" class="mt-2 pl-4 space-y-2">
                   <!-- "Cərrahiyyə" dropdownu -->
-                  <li class="mb-2 px-6 surgeryParent relative">
-                    <a href="#" @click.prevent class="block w-full h-full">
+                  <li class="md:hidden">
+                    <div @click="toggleBurgerDropdown('cerrahiyye_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
                       <span>Cərrahiyyə</span>
-                      <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
-                    </a>
+                      <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                        :class="{'rotate-180': burgerDropdowns.cerrahiyye_mobile}"></i>
+                    </div>
                     <!-- Dinamik Cərrahiyə -->
-                    <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
+                    <ul v-if="burgerDropdowns.cerrahiyye_mobile" class="mt-2 pl-4 space-y-2">
                       <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
                         <router-link 
+                          @click="toggleBurger"
                           :to="{
                             name: 'surgery-detail', 
                             params: { slug: surgery.slug }
                           }" 
-                          class="block">
+                          class="block text-lg sm:text-xl">
                           {{ surgery.name }}
                         </router-link>
                       </li>
@@ -423,37 +425,21 @@
                     :class="{'rotate-180': burgerDropdowns.tibbiXidmetler_mobile}"></i>
                 </div>
                 <ul v-if="burgerDropdowns.tibbiXidmetler_mobile" class="mt-2 pl-4 space-y-2">
-                  <li>
-                    <router-link :to="{name: 'ambulance'}" class="block text-lg sm:text-xl" @click="toggleBurger">Təcili Tibbi yardım</router-link>
+                  <!-- Yüklənmə göstəricisi -->
+                  <li v-if="medicalServices.length === 0" class="mb-2">
+                    <span class="block text-lg sm:text-xl">Yüklənir...</span>
                   </li>
-                  <li>
-                    <router-link :to="{name: 'home-examination'}" class="block text-lg sm:text-xl" @click="toggleBurger">Ünvanda müayinə</router-link>
+                  <!-- Dinamik tibbi xidmətlər -->
+                  <li v-for="service in medicalServices" :key="service.id" class="mb-2">
+                    <router-link 
+                      :to="`/medical-services/${service.slug}`"
+                      class="block text-lg sm:text-xl" 
+                      @click="toggleBurger">
+                      {{ service.title }}
+                    </router-link>
                   </li>
-                  <li>
-                    <router-link :to="{name: 'children-center'}" class="block text-lg sm:text-xl" @click="toggleBurger">Uşaq sağlamlıq mərkəzi</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'male-female-infertility'}" class="block text-lg sm:text-xl" @click="toggleBurger">Kişi və qadın sonsuzluğu mərkəzi</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'corporate-cooperation'}" class="block text-lg sm:text-xl" @click="toggleBurger">Korporativ əməkdaşlıq</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'medical-insurance'}" class="block text-lg sm:text-xl" @click="toggleBurger">Tibbi sığorta</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'industrial-medicine'}" class="block text-lg sm:text-xl" @click="toggleBurger">Sənaye təbabəti</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'outpatient-examination'}" class="block text-lg sm:text-xl" @click="toggleBurger">Ambulator müayinə</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'check-up'}" class="block text-lg sm:text-xl" @click="toggleBurger">Check-up</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{name: 'actions'}" class="block text-lg sm:text-xl" @click="toggleBurger">Aksiyalar</router-link>
-                  </li>
-                  <li>
+                  <!-- Peyvəndlər linki statik olaraq qalsın -->
+                  <li class="mb-2">
                     <a href="#" @click.prevent="openPdf; toggleBurger" class="block text-lg sm:text-xl">Peyvəndlər</a>
                   </li>
                 </ul>
@@ -586,7 +572,7 @@ const toggleBurger = () => {
 const burgerDropdowns = reactive({
   haqqimizda_mobile: false,
   hekimler_mobile: false,
-  cerrahiye: false,
+  cerrahiyye_mobile: false,
   bolmeler_mobile: false,
   tibbiXidmetler_mobile: false,
   onlaynXidmetler_mobile: false,
