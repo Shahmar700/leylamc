@@ -2,6 +2,8 @@
    <div>
     <header-top ref="headerTop" />
     <header-main ref="headerMain" />
+    <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
+
     <!-- <breadcrumb v-if="$route.path !== '/registration' && $route.path !== '/'" /> -->
     <RouterView />
     <footer-main />
@@ -21,7 +23,20 @@ import HeaderTop from './components/HeaderTop.vue'
 import HeaderMain from './components/HeaderMain.vue'
 import FooterMain from './components/FooterMain.vue'
 import Breadcrumb from './components/Breadcrumb.vue'
+import LoginModal from './components/LoginModal.vue';
+import authService from '@/services/auth'; // Auth service import
+const showModal = ref(false);
 
+const toggleModal = () => {
+  showModal.value = !showModal.value;
+};
+
+const checkAuthStatus = () => {
+  return authService.isLoggedIn();
+};
+
+// Provide the toggleModal function to be used in any component
+provide('toggleModal', toggleModal);
 const showScrollUp = ref(false)
 // get header height 
 const headerTop = ref(null)

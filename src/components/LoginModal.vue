@@ -53,6 +53,7 @@
 import { ref, defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/auth'; // auth servisini import edirik
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const emit = defineEmits(['close', 'login-success']); // login-success eventi əlavə edildi
@@ -83,11 +84,16 @@ const login = async () => {
         // auth servisi vasitəsilə login edirik
         await authService.login(username.value, password.value);
         
-        // Uğurlu giriş emiti göndəririk - BU SƏTRİ ƏLAVƏ EDİN
+        // Uğurlu giriş emiti göndəririk
         emit('login-success');
         
         // Uğurlu login mesajı göstəririk
-        alert('Uğurla daxil oldunuz!');
+        Swal.fire({
+            icon: 'success',
+            title: 'Uğurla daxil oldunuz!',
+            showConfirmButton: false,
+            timer: 1500
+        });
         
         // Modalı bağlayırıq
         closeModal();
@@ -108,6 +114,13 @@ const login = async () => {
         } else {
             loginError.value = 'Server ilə əlaqə yaratmaq mümkün olmadı. İnternet bağlantınızı yoxlayın.';
         }
+        
+        // Xəta mesajı göstəririk
+        Swal.fire({
+            icon: 'error',
+            title: 'Giriş zamanı xəta baş verdi',
+            text: loginError.value,
+        });
     } finally {
         isLoading.value = false;
     }

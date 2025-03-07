@@ -13,21 +13,23 @@
           <br>
           
           <!-- Service links if available -->
-          <div class="flex flex-wrap gap-4 mt-4">
+          <div class="flex flex-col flex-wrap gap-4 mt-4">
             <a v-if="serviceData?.service_link" target="_blank" 
                :href="serviceData.service_link" 
-               class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
-              Video 1
+               class=" text-primary">
+              {{ serviceData.service_link }}
             </a>
+           
             <a v-if="serviceData?.link" target="_blank" 
                :href="serviceData.link" 
-               class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
-              Video 2
+               class=" text-primary">
+              {{serviceData.link}}
             </a>
+        
             <a v-if="serviceData?.link1" target="_blank" 
                :href="serviceData.link1" 
-               class="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark">
-              Video 3
+               class=" text-primary">
+               {{serviceData.link1}}
             </a>
           </div>
         </div>

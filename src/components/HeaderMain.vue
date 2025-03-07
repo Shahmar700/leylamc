@@ -114,16 +114,16 @@
               </li>
 
                <!-- Department  -->
-              <li class="headerParent relative group">
-                <router-link to="/departments" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-40 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
-                    <!-- Surgery -->
-                    <li class="mb-2 px-6 surgeryParent relative">
-                      <div class="block w-full h-full cursor-pointer">
-                        <span>Cərrahiyyə</span>
-                        <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
-                      </div>
-                      <!-- Dinamik Cərrahiyə -->
+               <li class="headerParent relative group">
+    <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
+    <ul class="headerDropdown absolute top-8 -right-40 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+      <!-- Surgery -->
+      <li class="mb-2 px-6 surgeryParent relative">
+        <div :class="{'text-primary': isSurgeryRoute}" class="block w-full h-full cursor-pointer">
+          <span>Cərrahiyyə</span>
+          <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
+        </div>
+        <!-- Dinamik Cərrahiyə -->
                       <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
                         <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
                           <router-link 
@@ -136,21 +136,22 @@
                           </router-link>
                         </li>
                       </ul>
-                    </li>
-                    <!-- Surgery END -->
-                     <!-- DEPARTMENT (HEADER)  -->
-                     <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
-                        <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
-                          <router-link 
-                            :to="{
-                              name: 'department-detail', 
-                              params: { slug: department.slug }
-                            }" 
-                            class="block w-full h-full">
-                            {{ department.name }}
-                          </router-link>
-                        </li>
-                      </ul>
+      </li>
+      <!-- Surgery END -->
+      <!-- DEPARTMENT (HEADER)  -->
+      <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
+        <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
+          <router-link 
+            :to="{
+              name: 'department-detail', 
+              params: { slug: department.slug }
+            }" 
+            :class="{'text-primary': isDepartmentRoute && route.params.slug === department.slug}"
+            class="block w-full h-full">
+            {{ department.name }}
+          </router-link>
+        </li>
+      </ul>
                     <!-- DEPARTMENT (HEADER) END  -->
                   </ul>
               </li>
@@ -158,7 +159,7 @@
                
               <!-- MEDİCAL SERVİCES  -->
               <li class="headerParent relative group">
-                  <router-link to="/medical-services" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl">Tibbi xidmətlər</router-link>
+                  <div :class="{'text-primary': isMedServiceRoute}" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl cursor-pointer">Tibbi xidmətlər</div>
                   <!-- MEDİCAL SERVİCES (HEADER)  -->
                   <ul class="headerDropdown absolute top-8 -right-44 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                   <li v-if="medicalServices.length === 0" class="mb-2 px-6">
@@ -260,7 +261,6 @@
                   <!-- İstifadəçi daxil olmadıqda login ikonu -->
                   <template v-if="!isLoggedIn">
                     <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] cursor-pointer" @click="toggleModal"></i>
-                    <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
                   </template>
                   
                   <!-- İstifadəçi daxil olduqda profil ikonu və dropdown -->
@@ -411,7 +411,7 @@
               </li>
               <!-- Bölmələr (SIDEBAR) -->
               <li class="lg:hidden">
-                <div @click="toggleBurgerDropdown('bolmeler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                <div :class="{'text-primary': isDepartmentRoute}" @click="toggleBurgerDropdown('bolmeler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
                   <span>Bölmələr</span>
                   <i class="fa-solid fa-angle-down transition-transform duration-300" 
                     :class="{'rotate-180': burgerDropdowns.bolmeler_mobile}"></i>
@@ -419,7 +419,7 @@
                 <ul v-if="burgerDropdowns.bolmeler_mobile" class="mt-2 pl-4 space-y-2">
                   <!-- "Cərrahiyyə" dropdownu -->
                   <li class="md:hidden">
-                    <div @click="toggleBurgerDropdown('cerrahiyye_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                    <div :class="{'text-primary': isSurgeryRoute}" @click="toggleBurgerDropdown('cerrahiyye_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
                       <span>Cərrahiyyə</span>
                       <i class="fa-solid fa-angle-down transition-transform duration-300" 
                         :class="{'rotate-180': burgerDropdowns.cerrahiyye_mobile}"></i>
@@ -467,7 +467,7 @@
               <!-- CheckUP (SİDEBAR) END -->
               <!-- Tibbi xidmətlər (SIDEBAR) -->
               <li class="lg:hidden">
-                <div @click="toggleBurgerDropdown('tibbiXidmetler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                <div :class="{'text-primary': isMedServiceRoute}"  @click="toggleBurgerDropdown('tibbiXidmetler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
                   <span>Tibbi xidmətlər</span>
                   <i class="fa-solid fa-angle-down transition-transform duration-300" 
                     :class="{'rotate-180': burgerDropdowns.tibbiXidmetler_mobile}"></i>
@@ -544,15 +544,30 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive, watch } from 'vue';
+import { ref, computed, inject, onMounted, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import LoginModal from './LoginModal.vue';
 import axios from 'axios';
+
 import authService from '@/services/auth'; // Auth servisini import edirik
 
 const router = useRouter();
 const route = useRoute();
-const showModal = ref(false)
+const toggleModal = inject('toggleModal'); // Inject the toggleModal function
+const isDepartmentRoute = computed(() => {
+  return route.name === 'departments' || 
+         route.name === 'department-detail' || 
+         route.path.includes('/departments');
+});
+const isSurgeryRoute = computed(() => {
+  return route.name === 'surgery' || 
+         route.name === 'surgery-detail' || 
+         route.path.includes('/surgery');
+});
+const isMedServiceRoute = computed(() => {
+  return route.name === 'medical-services' || 
+         route.name === 'medical-servicesl' || 
+         route.path.includes('/medical-services');
+});
 const departments = ref([]); // Yeni ref
 const surgeries = ref([]);
 const isLoggedIn = ref(false); // İstifadəçinin giriş statusu
@@ -589,9 +604,6 @@ const openPdf = () => {
 window.open('/src/assets/peyvend/peyvend-kitabcasi.pdf', '_blank');
 };
 
-const toggleModal = () => {
-  showModal.value = !showModal.value
-}
 
 // API çağırışı
 const fetchDepartments = async () => {

@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-24" v-if="doctor">
       <div class="flex">
+        <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
         <div class="p-1 rounded-3xl border border-[#c7c7c7] w-[30%] max-w-[400px]">
           <img :src="doctor.photo" alt="" class="rounded-3xl w-full">
         </div>
@@ -37,6 +38,8 @@
           </div>
         </div>
       </div>
+
+
 
       <!-- Doctor İnformations -->
       <div class="w-full mt-20">
@@ -98,10 +101,17 @@
         <div v-if="selectedTab === 'reviews'" class="pt-2">
           <!-- Rəylər kontenti -->
           <div class="grid gap-8">
-            <div>
-              <i class="fa-regular fa-comments mr-1"></i>
-              <span>Rəy yazın</span>
-            </div>
+            <button v-if="!showCommentSection" @click="openCommentModal" class="greenBtn !w-[150px] text-center">
+  <i class="fa-regular fa-comments mr-1"></i>
+  <span>Rəy yazın</span>
+</button>
+
+<!-- commentmodal -->
+<div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
+  <textarea v-model="commentText" class="outline-none" placeholder="Şərhinizi buraya yazın..."></textarea>
+  <button class="rounded-xl" @click="submitComment">Göndər</button>
+</div>
+      <!-- commentmodal -->
             <DoctorRating 
               :image="UserPhoto"
               name='İsmayıl Bayramlı'
@@ -131,15 +141,52 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-
+import auth from '@/services/auth'; 
 import DoctorRating from '@/components/DoctorRating.vue';
-
-
+import Modal from '@/components/Modal.vue';
+import LoginModal from '@/components/LoginModal.vue';
 const route = useRoute();   
 const doctor = ref(null);
+const showCommentSection = ref(false);
+const commentText = ref('');
+import Swal from 'sweetalert2';
+
+const toggleModal = inject('toggleModal'); // Inject the toggleModal function
+
+
+const openCommentModal = () => {
+    if (auth.isLoggedIn()){
+        showCommentSection.value = true;
+    }
+    else {
+      toggleModal();
+    }
+}
+const submitComment = async () => {
+  try {
+    // Submit the comment to the server
+    await axios.post('http://192.168.2.242:8000/api/leyla/v1/comment-api', { comment: commentText.value });
+    // Clear the comment text and hide the comment section
+    commentText.value = '';
+    showCommentSection.value = false;
+    // Show success message
+    Swal.fire({
+      icon: 'success',
+      title: 'Comment submitted',
+      text: 'Your comment has been submitted successfully!',
+    });
+  } catch (error) {
+    // Show error message
+    Swal.fire({
+      icon: 'error',
+      title: 'Error submitting comment',
+      text: error.message,
+    });
+  }
+}
 
 const fetchDoctor = async () => {
   try {
@@ -277,4 +324,20 @@ table tr td:nth-child(1){
 table tr div{
   margin-bottom: 7px;
 }
+.comment-section {
+  margin-top: 20px;
+}
+.comment-section textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+}
+.comment-section button {
+  background-color: #6bb52b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
 </style>
