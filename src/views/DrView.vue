@@ -98,6 +98,10 @@
         <div v-if="selectedTab === 'reviews'" class="pt-2">
           <!-- Rəylər kontenti -->
           <div class="grid gap-8">
+            <div>
+              <i class="fa-regular fa-comments mr-1"></i>
+              <span>Rəy yazın</span>
+            </div>
             <DoctorRating 
               :image="UserPhoto"
               name='İsmayıl Bayramlı'

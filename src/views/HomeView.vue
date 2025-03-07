@@ -42,7 +42,7 @@
         <h1 class="text-xl screen-500::text-2xl lg:text-3xl text-center text-primary font-semibold tracking-wide">Elektron xidmətlərimizlə bir addım daha yaxınıq</h1>
         <p class="text-[#505050] text-xl screen-500::text-2xl lg:text-3xl text-center mt-4 mb-[72px]">Hər an, hər yerdə sizinləyik</p>
       </div>
-      <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <Eservice 
           :eService="eService1"
           title="E - növbə"
@@ -61,12 +61,12 @@
           description="Ödənişləri e-ödəmə vasitəsiylə edin"
           link="/online-services/e-payment"
           />
-          <Eservice 
+          <!-- <Eservice 
           :eService="eService4" 
           title="E - satış"
           description="Xidmətlərimizi online sifariş edin"
           link="/online-services/e-commerce"
-          />
+          /> -->
           <Eservice 
           :eService="eService5" 
           title="E - məsləhət"

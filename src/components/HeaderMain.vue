@@ -1,9 +1,9 @@
 <template>
   <div :class="headerClass" class="sticky top-0 z-[99999]">
-      <div class="container w-full flex justify-between py-3 sm:py-4 lg:py-5 sm:items-center font-bold text-lg sm:text-2xl">
+      <div class="container flex justify-between py-3 sm:py-4 lg:py-5 sm:items-center font-bold text-lg sm:text-2xl">
           
-          <router-link to="/" id="headerLogo">
-            <svg class="absolute sm:relative w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <router-link to="/" id="headerLogo" class="flex items-center">
+            <svg class="w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M33.3704 74.1032C37.857 67.7021 52.1825 65.4213 48.8904 60.3937C35.5929 66.9363 10.6627 66.9696 8.01569 92.9028C22.9655 81.8153 51.1004 99.6119 75.9599 53.7845C63.27 63.2904 41.3489 77.5826 33.3663 74.1032" fill="#6E6E6E"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M37.986 35.0223C56.9729 12.9097 94.7803 33.345 66.1251 59.27C78.4779 37.4612 64.5061 22.8485 37.986 35.0223Z" fill="#6BB52B"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M13.8799 70.037C-25.0596 5.07274 29.3374 -7.94592 38.5271 29.5868C25.8206 14.92 -7.27961 8.24 13.8799 70.037Z" fill="#EF7C00"/>
@@ -208,11 +208,14 @@
                   <li class="lg:hidden mb-2 px-6">
                     <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl">Bölmələr</a>
                   </li>
-                  <li class="xl:hidden mb-2 px-6">
+                  <!-- <li class="xl:hidden mb-2 px-6">
                     <a href="#" class="w-full h-full text-base sm:text-lg lg:text-xl">Check Up</a>
-                  </li>
+                  </li> -->
                   <li class="mb-2 px-6">
                     <router-link to="/medical-services" class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl">Tibbi Xidmətlər</router-link>
+                  </li>
+                  <li class="mb-2 px-6">
+                    <router-link :to="{name: 'check-up'}" class="block w-full h-full text-base sm:text-lg lg:text-xl">Check Up</router-link>
                   </li>
                   <!-- Digər elementlər (Onlayn Xidmətlər, Sağlıq köşkü, Vakansiyalar, Aksiyalar, Əlaqə) -->
                   <li class="mb-2 px-6 onlineParent relative">
@@ -230,9 +233,9 @@
                         <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-payment'}" class="block w-full h-full">E-ödəmə</router-link>
                         </li>
-                        <li class="mb-2 px-6">
+                        <!-- <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>
-                        </li>
+                        </li> -->
                         <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-consultation'}" class="block w-full h-full">E-məsləhət</router-link>
                         </li>
@@ -274,11 +277,11 @@
                             <i class="fa-solid fa-user mr-2"></i> Profilim
                           </router-link>
                         </li>
-                        <li class="mb-2 px-4">
+                        <!-- <li class="mb-2 px-4">
                           <router-link to="/orders" class="block py-1 w-full">
                             <i class="fa-solid fa-clipboard-list mr-2"></i> Sifarişlərim
                           </router-link>
-                        </li>
+                        </li> -->
                         <li class="px-4">
                           <button @click="logout" class="flex w-full items-center py-1 text-red-500">
                             <i class="fa-solid fa-sign-out-alt mr-2"></i> Çıxış
@@ -295,7 +298,7 @@
       <transition name="fade">
         <div 
           v-if="burgerOpen" 
-          class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto w-[320px] md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
+          class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto] md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
         >
           <div class="container mx-auto py-5 px-4">
             <div class="flex justify-between items-center mb-5">
@@ -454,6 +457,14 @@
                   <!-- Department (Sidebar) END -->
                 </ul>
               </li>
+              <!-- CheckUP (SİDEBAR)  -->
+              <!-- <li>
+                <router-link :to="{ name: 'health-kiosk' }" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Sağlıq köşkü</router-link>
+              </li> -->
+              <li>
+                <router-link :to="{name: 'check-up'}" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Check Up</router-link>
+              </li>
+              <!-- CheckUP (SİDEBAR) END -->
               <!-- Tibbi xidmətlər (SIDEBAR) -->
               <li class="lg:hidden">
                 <div @click="toggleBurgerDropdown('tibbiXidmetler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
@@ -502,9 +513,9 @@
                       <li @click="toggleBurger">
                         <router-link :to="{name: 'e-payment'}" class="block w-full h-full text-lg sm:text-xl">E-ödəmə</router-link>
                       </li>
-                      <li @click="toggleBurger">
+                      <!-- <li @click="toggleBurger">
                         <router-link :to="{name: 'e-commerce'}" class="block w-full h-full text-lg sm:text-xl">E-satış</router-link>
-                      </li>
+                      </li> -->
                       <li @click="toggleBurger">
                         <router-link :to="{name: 'e-consultation'}" class="block w-full h-full text-lg sm:text-xl">E-məsləhət</router-link>
                       </li>
@@ -515,13 +526,13 @@
                   <router-link :to="{ name: 'health-kiosk' }" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Sağlıq köşkü</router-link>
                 </li>
                 <li>
-                  <router-link :to="{name: 'vacancies'}" class="block w-full h-full text-lg sm:text-xl">Vakansiyalar</router-link>
+                  <router-link :to="{name: 'vacancies'}" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Vakansiyalar</router-link>
                 </li>
                 <li>
-                  <router-link :to="{name: 'offers'}" class="block w-full h-full text-lg sm:text-xl">Aksiyalar</router-link>
+                  <router-link :to="{name: 'offers'}" @click="toggleBurger" class="block w-full h-full text-lg sm:text-xl">Aksiyalar</router-link>
                 </li>
                 <li>
-                  <router-link :to="{name: 'contact'}" class="block w-full h-full text-lg  sm:text-xl">Əlaqə</router-link>
+                  <router-link :to="{name: 'contact'}" @click="toggleBurger" class="block w-full h-full text-lg  sm:text-xl">Əlaqə</router-link>
                 </li>
             </ul>
           </div>
@@ -857,4 +868,5 @@ direction: ltr; /* Left-to-right direction for child elements */
 ul li{
 font-size: 22px;
 }
+
 </style>

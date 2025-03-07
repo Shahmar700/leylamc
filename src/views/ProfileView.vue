@@ -66,7 +66,7 @@
     const userId = decodedToken.user_id;
     
     // Düzgün endpoint-i istifadə edərək sorğu göndəririk
-    const response = await api.get(`/api/leyla/v1/user-profile/${userId}/`);
+    const response = await api.get(`http://192.168.2.242:8000/api/leyla/v1/user-me/`);
     console.log('Profil məlumatları:', response.data); // Profil məlumatlarını konsolda göstərin
     userProfile.value = response.data;
   } catch (err) {

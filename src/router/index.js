@@ -383,6 +383,18 @@ import ProfileView from '@/views/ProfileView.vue'
     //   ],
     // },
     {
+      path: '/check-up',
+      name: 'check-up',
+      component: CheckUpView,
+      meta: { breadcrumb: 'Check-up' },
+    },
+    {
+      path: '/check-up/:slug',
+      name: 'check-up-inner',
+      component: () => import('@/views/medical_services/CheckUpInnerView.vue'),
+      props: true
+    },
+      {
       path: '/online-services',
       redirect: '/online-services/e-appointment',
       meta: { breadcrumb: 'Onlayn xidmətlər' },
@@ -400,10 +412,11 @@ import ProfileView from '@/views/ProfileView.vue'
           meta: { breadcrumb: 'E-nəticə' }
         },
         {
-          path: 'e-payment',
+          path: '/online-services/e-payment',
           name: 'e-payment',
-          component: E_paymentView,
-          meta: { breadcrumb: 'E-ödəmə' }
+          beforeEnter() {
+            window.location.href = 'https://referans.io/services/onlayn-odenis/';
+          }
         },
         {
           path: 'e-commerce',
