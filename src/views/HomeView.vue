@@ -13,7 +13,7 @@
             :icon="serviceIcon1"
             title="Ünvanda xidmət"
             description="Ünvanda müayinə rahat, komfortlu və operativ tibbi xidmətin ən optimal üsuludur."
-            @click="goToService('home-examination')"
+            @click="goToService('/medical-services/unvanda-xidmt')"
           />
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
@@ -22,7 +22,7 @@
             title="TƏCİLİ TİBBİ yardım"
             description="Təcili və Təxirə salmaz Tibbi yardım xidməti üzrə 
             briqadamız 7/24 sizə yüksək səviyyədə diaqnostik-müalicəvi xidmət göstərir. "
-            @click="goToService('ambulance')"
+            @click="goToService('/medical-services/tcili-tibbi-yardm')"
           />
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
@@ -307,10 +307,15 @@ const closeModal = () => {
 };
 
 // Go To Services 
-const goToService = (serviceName) => {
-  router.push({ name: serviceName });
+const goToService = (servicePath) => {  // serviceName yerine servicePath
+  if (servicePath.startsWith('/')) {
+    // Path parametri ilə yönləndirmə
+    router.push({ path: servicePath });
+  } else {
+    // İsim parametri ilə yönləndirmə
+    router.push({ name: servicePath });
+  }
 };
-
 // GET APİ DOCTORS -------------------
 
 const doctors = ref([]);

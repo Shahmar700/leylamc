@@ -21,38 +21,38 @@
                 </div>
                 <!-- Right Side  -->
                 <div class="w-full mt-7 md:w-[45%] md:mt-0 text-center lg:text-start">
-                    <h1 class="text-main-text text-xl sm:text-2xl mb-2 md:mb-5">Bizimlə əlaqə</h1>
+                    <h1 class="text-main-text text-xl sm:text-2xl mb-2 md:mb-5">Bizimlə əlaqə:</h1>
                     <div class="flex flex-col screen-500px:flex-row md:flex-col lg:flex-row justify-between">
                         <div>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 12 490 18 58</span>
-                                </p>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 12 490 51 05</span>
-                                </p>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 12 490 51 06</span>
-                                </p>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 12 490 21 31</span>
-                                </p>
+                            <p class="text-main-text flex items-center justify-center">
+                                <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
+                                <a href="tel:+994124901858" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 12 490 18 58</a>
+                            </p>
+                            <p class="text-main-text flex items-center justify-center">
+                                <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
+                                <a href="tel:+994124905105" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 12 490 51 05</a>
+                            </p>
+                            <p class="text-main-text flex items-center justify-center">
+                                <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
+                                <a href="tel:+994124905106" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 12 490 51 06</a>
+                            </p>
+                            <p class="text-main-text flex items-center justify-center">
+                                <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
+                                <a href="tel:+994124902131" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 12 490 21 31</a>
+                            </p>
                         </div>
                         <div>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <i class="fa fa-mobile-alt text-[#B7AEAE] text-xl" aria-hidden="true"></i>
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 50 225 44 54</span>
-                                </p>
-                                <p class="text-main-text flex items-center justify-center">
-                                    <i class="fa fa-mobile-alt text-[#B7AEAE] text-xl" aria-hidden="true"></i>
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 50 225 73 30</span>
-                                </p>
-                                <p class="text-main-text flex items-center justify-center">
+                            <p class="text-main-text flex items-center justify-center">
+                                <i class="fa fa-mobile-alt text-[#B7AEAE] text-xl" aria-hidden="true"></i>
+                                <a href="tel:+994502254454" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 50 225 44 54</a>
+                            </p>
+                            <p class="text-main-text flex items-center justify-center">
+                                <i class="fa fa-mobile-alt text-[#B7AEAE] text-xl" aria-hidden="true"></i>
+                                <a href="tel:+994502257330" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-primary transition-colors">+994 50 225 73 30</a>
+                            </p>
+                            <p class="text-main-text flex items-center justify-center">
                                     <i class="fa-brands fa-whatsapp text-[#B7AEAE] text-xl"></i>
-                                    <span class="ml-2 text-lg sm:text-xl text-main-text mb-1">+994 55 455 01 11</span>
+                                    <a href="https://wa.me/994554550111" class="ml-2 text-lg sm:text-xl text-main-text mb-1 hover:text-[#25d366] transition-colors">+994 55 455 01 11</a>
                                 </p>
                         </div>
                     </div>

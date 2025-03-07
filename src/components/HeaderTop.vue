@@ -56,23 +56,23 @@
             
         </div>
         <!-- right side  -->
-        <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-start screen-500:justify-end mt-1 sm:mt-0">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
-            </a>
-            <a href="https://x.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/xcom.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
-            </a>
-            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/yt.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/ig.svg" alt="Instagram" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
-            </a>
-            <a href="https://www.whatsapp.com" target="_blank" rel="noopener noreferrer">
-                <img src="@/assets/icons/wp.svg" alt="WhatsApp" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] " />
-            </a>
-        </div>
+            <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-start screen-500:justify-end mt-1 sm:mt-0">
+                <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer">
+                    <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#1877F2]" />
+                </a>
+                <a href="https://x.com/referansmg" target="_blank" rel="noopener noreferrer">
+                    <img src="@/assets/icons/xcom.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#000]" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer">
+                    <img src="@/assets/icons/yt.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#ff0000]" />
+                </a>
+                <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer">
+                    <img src="@/assets/icons/ig.svg" alt="Instagram" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] instagram-gradient" />
+                </a>
+                <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer">
+                    <img src="@/assets/icons/wp.svg" alt="WhatsApp" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] whatsapp-gradient" />
+                </a>
+            </div>
         </header>
     </div>
 </template>
@@ -125,4 +125,17 @@ const filteredLanguages = computed(() => {
   animation: pulse 1.5s infinite;
 }
 
+.instagram-gradient:hover {
+  background: linear-gradient(45deg, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 0.3s;
+}
+
+.whatsapp-gradient:hover {
+  background: linear-gradient(45deg, #075e54, #128c7e, #25d366, #abee79, #34b7f1, #d2e3c1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 0.3s;
+}
 </style>

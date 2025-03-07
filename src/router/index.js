@@ -552,7 +552,7 @@ const fetchMedicalServiceRoutes = async () => {
     medicalServices.forEach(service => {
       router.addRoute({
         path: `/medical-services/${service.slug}`,
-        name: `medical-service-${service.slug}`, // Unikal ad 
+        name: `medical-service-details`, // Unikal ad 
         component: () => import('@/views/medical_services/MedicalServiceView.vue'),
         props: true,
         meta: { breadcrumb: service.title } // API-dən gələn başlıqla breadcrumb-u təyin edirik
