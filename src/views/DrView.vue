@@ -143,18 +143,48 @@
 <script setup>
 import { ref, onMounted, computed, inject } from 'vue';
 import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
 import axios from 'axios';
 import auth from '@/services/auth'; 
 import DoctorRating from '@/components/DoctorRating.vue';
 import Modal from '@/components/Modal.vue';
 import LoginModal from '@/components/LoginModal.vue';
+import Swal from 'sweetalert2';
+
 const route = useRoute();   
 const doctor = ref(null);
 const showCommentSection = ref(false);
 const commentText = ref('');
-import Swal from 'sweetalert2';
 
-const toggleModal = inject('toggleModal'); // Inject the toggleModal function
+// SEO metadata computed properties
+const pageTitle = computed(() => {
+  if (!doctor.value) return 'Doctor Profile | Leyla Medical Center';
+  return `${doctor.value.degree} ${doctor.value.first_name} ${doctor.value.last_name} | ${doctor.value.position} | Leyla Medical Center`;
+});
+
+const pageDescription = computed(() => {
+  if (!doctor.value) return 'View doctor profiles and information at Leyla Medical Center.';
+  return `${doctor.value.degree} ${doctor.value.first_name} ${doctor.value.last_name} - ${doctor.value.position} at Leyla Medical Center. ${doctor.value.experience_year} years of experience.`;
+});
+
+useHead({
+  title: pageTitle,
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: computed(() => `https://yourwebsite.com/doctor/${route.params.id}`) },
+    { property: 'og:image', content: computed(() => doctor.value?.photo || 'https://yourwebsite.com/default-doctor-image.jpg') },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'twitter:image', content: computed(() => doctor.value?.photo || 'https://yourwebsite.com/default-doctor-image.jpg') },
+    { name: 'keywords', content: computed(() => `doctor, healthcare, ${doctor.value?.category || ''}, ${doctor.value?.position || ''}, medical center`) },
+  ],
+});
+
+const toggleModal = inject('toggleModal'); 
 
 
 const openCommentModal = () => {

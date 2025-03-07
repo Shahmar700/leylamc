@@ -9,7 +9,7 @@
             Hələ qeydiyyatınız yoxdur? <router-link :to="{name: 'registration'}" class="font-medium text-primary-600 text-[#ef7c00] underline hover:underline dark:text-primary-500" @click="closeModal">Qeydiyyat</router-link>
             </p>
         </div>
-    
+
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form class="space-y-6" @submit.prevent="login">
             <!-- Error message -->
@@ -144,8 +144,6 @@ const login = async () => {
 .modal-content {
   background: white;
   border-radius: 8px;
-  padding: 20px;
-  max-width: 500px;
   width: 100%;
   z-index: 1001;
 }

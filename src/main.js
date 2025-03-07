@@ -7,6 +7,10 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
+
+import { createHead } from '@vueuse/head'
+
+
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -21,8 +25,10 @@ app.component('header-main', HeaderMain)
 app.component('footer-main', FooterMain)
 app.component('breadcrumb', Breadcrumb)
 
-app.use(router)
+const head = createHead()
 
+app.use(router)
+app.use(head)
 app.mount('#app')
 
 // AOS-u başlat
