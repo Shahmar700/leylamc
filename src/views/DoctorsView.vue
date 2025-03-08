@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-17">
+  <div class="container mt-17" data-aos="flip-up">
     <div>
        <!-- Doctor Filters  -->
        <form @submit.prevent="filterDoctors" class="flex gap-4 mt-5 items-center text-base lg:text-lg">

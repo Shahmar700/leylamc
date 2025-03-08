@@ -116,7 +116,7 @@
                <!-- Department  -->
                <li class="headerParent relative group">
                   <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
-                  <ul class="headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-14 xl:-right-20 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative hidden lg:block">
                       <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer">
@@ -232,7 +232,7 @@
                           <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-nəticə</router-link>
                         </li>
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-payment'}" class="block w-full h-full">E-ödəmə</router-link>
+                          <router-link :to="{name: 'e-payment'}" class="block w-full h-full" @click.native="openInNewTab">E-ödəmə</router-link>
                         </li>
                         <!-- <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>
@@ -511,7 +511,7 @@
                         <router-link :to="{name: 'e-result'}" class="block w-full h-full text-lg sm:text-xl">E-nəticə</router-link>
                       </li>
                       <li @click="toggleBurger">
-                        <router-link :to="{name: 'e-payment'}" class="block w-full h-full text-lg sm:text-xl">E-ödəmə</router-link>
+                        <router-link :to="{name: 'e-payment'}" class="block w-full h-full text-lg sm:text-xl" @click.native="openInNewTab">E-ödəmə</router-link>
                       </li>
                       <!-- <li @click="toggleBurger">
                         <router-link :to="{name: 'e-commerce'}" class="block w-full h-full text-lg sm:text-xl">E-satış</router-link>
@@ -667,6 +667,8 @@ const burgerDropdowns = reactive({
 const toggleBurgerDropdown = (key) => {
   burgerDropdowns[key] = !burgerDropdowns[key]
 }
+
+
 </script>
 
 <style scoped>
