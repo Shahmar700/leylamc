@@ -1,9 +1,9 @@
 <template>
   <div :class="headerClass" class="sticky top-0 z-[99999]">
-      <div class="container flex justify-between py-3 sm:py-4 lg:py-5 sm:items-center font-bold text-lg sm:text-2xl">
+      <div class="container flex justify-between py-3 sm:py-4 lg:py-3 xl:py-5 sm:items-center font-bold text-lg sm:text-2xl">
           
           <router-link to="/" id="headerLogo" class="flex items-center">
-            <svg class="w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="absolute screen-500:static w-[80px] h-[30px] md:w-[130px] md:h-[45px] lg:w-[210px] lg:h-[60px]" viewBox="0 0 251 93" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M33.3704 74.1032C37.857 67.7021 52.1825 65.4213 48.8904 60.3937C35.5929 66.9363 10.6627 66.9696 8.01569 92.9028C22.9655 81.8153 51.1004 99.6119 75.9599 53.7845C63.27 63.2904 41.3489 77.5826 33.3663 74.1032" fill="#6E6E6E"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M37.986 35.0223C56.9729 12.9097 94.7803 33.345 66.1251 59.27C78.4779 37.4612 64.5061 22.8485 37.986 35.0223Z" fill="#6BB52B"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M13.8799 70.037C-25.0596 5.07274 29.3374 -7.94592 38.5271 29.5868C25.8206 14.92 -7.27961 8.24 13.8799 70.037Z" fill="#EF7C00"/>
@@ -26,7 +26,7 @@
               <!-- ---------- ABOUT US ----------  -->
               <li class="headerParent relative group">
                 <router-link to="/about" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Haqqımızda</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-32 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-0 lg:-right-32 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="mb-2 px-6">
                       <router-link :to="{name: 'our-history'}" class="block w-full h-full">Tariximiz</router-link>
                     </li>
@@ -45,7 +45,7 @@
                             <span>Mediada Biz</span>
                             <span><i class="mediaFa fa-solid fa-angle-down"></i></span>
                           </router-link>
-                          <ul class="mediaDropdown shadow-xl rounded-xl border border-t-primary">
+                          <ul class="mediaDropdown shadow-xl rounded-xl border border-t-primary hidden md:block">
                             <li class="mb-2 px-6">
                               <router-link :to="{name: 'all-news'}" class="block w-full h-full">Xəbərlər</router-link>
                             </li>
@@ -103,7 +103,7 @@
               <!-- ---------- ABOUT US END ----------  -->
               <li class="headerParent relative group">
                   <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block  cursor-pointer text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
-                  <ul class="headerDropdown absolute top-8 -right-52 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-52 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="mb-2 px-6">
                       <router-link :to="{name: 'doctors'}"  class="block w-full h-full">Həkimlərimiz</router-link>
                     </li>
@@ -115,43 +115,43 @@
 
                <!-- Department  -->
                <li class="headerParent relative group">
-    <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
-    <ul class="headerDropdown absolute top-8 -right-40 z-30 bg-white py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
-      <!-- Surgery -->
-      <li class="mb-2 px-6 surgeryParent relative">
-        <div :class="{'text-primary': isSurgeryRoute}" class="block w-full h-full cursor-pointer">
-          <span>Cərrahiyyə</span>
-          <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
-        </div>
-        <!-- Dinamik Cərrahiyə -->
-                      <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
-                        <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
-                          <router-link 
-                            :to="{
-                              name: 'surgery-detail', 
-                              params: { slug: surgery.slug }
-                            }" 
-                            class="block">
-                            {{ surgery.name }}
-                          </router-link>
-                        </li>
-                      </ul>
-      </li>
-      <!-- Surgery END -->
-      <!-- DEPARTMENT (HEADER)  -->
-      <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
-        <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
-          <router-link 
-            :to="{
-              name: 'department-detail', 
-              params: { slug: department.slug }
-            }" 
-            :class="{'text-primary': isDepartmentRoute && route.params.slug === department.slug}"
-            class="block w-full h-full">
-            {{ department.name }}
-          </router-link>
-        </li>
-      </ul>
+                  <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
+                  <ul class="headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                    <!-- Surgery -->
+                    <li class="mb-2 px-6 surgeryParent relative hidden lg:block">
+                      <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer">
+                        <span>Cərrahiyyə</span>
+                        <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
+                      </div>
+                      <!-- Dinamik Cərrahiyə -->
+                        <ul class="surgeryDropdown shadow-xl rounded-xl z-10">
+                          <li v-for="surgery in surgeries" :key="surgery.id" class="mb-2 px-6">
+                            <router-link 
+                              :to="{
+                                name: 'surgery-detail', 
+                                params: { slug: surgery.slug }
+                              }" 
+                              class="block">
+                              {{ surgery.name }}
+                            </router-link>
+                          </li>
+                        </ul>
+                    </li>
+                    <!-- Surgery END -->
+                    <!-- DEPARTMENT (HEADER)  -->
+                    <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
+                      <li v-for="department in departments" :key="department.id" class="mb-2 px-6">
+                        <router-link 
+                          :to="{
+                            name: 'department-detail', 
+                            params: { slug: department.slug }
+                          }" 
+                          :class="{'text-primary': isDepartmentRoute && route.params.slug === department.slug}"
+                          class="block w-full h-full">
+                          {{ department.name }}
+                        </router-link>
+                      </li>
+                    </ul>
                     <!-- DEPARTMENT (HEADER) END  -->
                   </ul>
               </li>
@@ -161,7 +161,7 @@
               <li class="headerParent relative group">
                   <div :class="{'text-primary': isMedServiceRoute}" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl cursor-pointer">Tibbi xidmətlər</div>
                   <!-- MEDİCAL SERVİCES (HEADER)  -->
-                  <ul class="headerDropdown absolute top-8 -right-44 z-30 bg-white min-w-[320px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-44 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                   <li v-if="medicalServices.length === 0" class="mb-2 px-6">
                     <span class="block w-full h-full">Yüklənir...</span>
                   </li>
@@ -201,7 +201,7 @@
                   <span class="w-10/12 h-[4px] md:h-[5px] lg:h-[6px] rounded-md bg-primary"></span>
                 </div>
                 <!-- Bu dropdown yalnız böyük ekranlarda göstərilsin -->
-                <ul class="headerDropdown hidden md:block absolute top-8 right-0 z-30 bg-white min-w-[300px] py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible cursor-pointer text-main-text">
+                <ul class="headerDropdown hidden md:block absolute top-8 right-0 z-30 bg-white min-w-[300px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible cursor-pointer text-main-text">
                   <!-- Əvvəlki mobil elementlər (burger içindəki) -->
                   <li class="lg:hidden mb-2 px-6">
                     <router-link :to="{name: 'doctors'}" class="sm:hidden text-base sm:text-lg lg:text-xl">Həkimlər</router-link>
@@ -300,7 +300,7 @@
           v-if="burgerOpen" 
           class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto] md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
         >
-          <div class="container mx-auto py-5 px-4">
+          <div class="container mx-auto py-3 xl:py-5 px-4">
             <div class="flex justify-between items-center mb-5">
               <router-link to="/" class="text-2xl font-bold" @click="toggleBurger">
                 <!-- LOGO və ya Başlıq -->
@@ -880,5 +880,29 @@ direction: ltr; /* Left-to-right direction for child elements */
 ul li{
 font-size: 22px;
 }
+
+@media (max-width: 1100px) {
+  .headerDropdown li{
+    font-size: 18px;
+    margin-bottom: 1px;
+  }
+  .mediaDropdown, .galleryDropdown, .surgeryDropdown{
+    position: absolute;
+    right: -105px;
+  }
+  .mediaParent:hover .mediaDropdown{
+    right: -90px;
+    top: 0px;
+    visibility: visible;
+    opacity: 1;
+  }
+  .galleryParent:hover .galleryDropdown{
+    right: -100px;
+    top: 0px;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
 
 </style>
