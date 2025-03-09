@@ -40,7 +40,7 @@ const itemsPerPage = 9;
 
 const fetchAllNews = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/news-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     news.value = response.data.results;
   } catch (error) {

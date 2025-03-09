@@ -51,7 +51,7 @@ const error = ref(null);
 const fetchCheckupData = async (slug) => {
   try {
     loading.value = true;
-    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/checkup-list/${slug}/`);
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/checkup-list/${slug}/`);
     checkup.value = response.data || null;
   } catch (err) {
     error.value = "Məlumatları yükləmək mümkün olmadı.";

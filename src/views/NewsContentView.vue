@@ -22,7 +22,7 @@
   
   const fetchNewsItem = async () => {
     try {
-      const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/news-list/${route.params.slug}/`);
+      const response = await axios.get(`http://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);
       newsItem.value = response.data;
     } catch (error) {
       console.error('API çağırışında xəta:', error);

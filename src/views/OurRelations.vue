@@ -43,7 +43,7 @@ const relationsText = ref('');
 
 const fetchRelations = async () => {
     try{
-        const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/internationalrelation-list/');
+        const response = await axios.get('http://bytexerp.online/api/leyla/v1/internationalrelation-list/');
         const relationsData = response.data.results[0];
         relationsTitle.value = relationsData.title;
         relationsText.value = relationsData.text;

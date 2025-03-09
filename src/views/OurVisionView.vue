@@ -24,7 +24,7 @@ const visionText = ref('');
 
 const fetchOurVision = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/ourvision-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/ourvision-list/');
     const visionData = response.data.results[0];
     visionTitle.value = visionData.title;
     visionText.value = visionData.text;

@@ -52,7 +52,7 @@ const fetchArticle = async () => {
   
   try {
     // route.params.id ilə API-yə sorğu göndəririk
-    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/article-list/${route.params.id}/`);
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/article-list/${route.params.id}/`);
     console.log('API-dən gələn məqalə dataları:', response.data);
     
     // API response-dan məlumatları əldə edirik

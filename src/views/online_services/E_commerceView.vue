@@ -100,7 +100,7 @@ const router = useRouter();
 
 const fetchMainCategories = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/online-sales-main-cat-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-main-cat-list/');
     mainCategories.value = response.data.results;
   } catch (error) {
     console.error('Error fetching main categories:', error);
@@ -109,7 +109,7 @@ const fetchMainCategories = async () => {
 
 const fetchSubCategories = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/online-sales-cat-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-cat-list/');
     subCategories.value = response.data.results;
   } catch (error) {
     console.error('Error fetching subcategories:', error);
@@ -118,7 +118,7 @@ const fetchSubCategories = async () => {
 
 const fetchServices = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/online-sales-product-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-product-list/');
     services.value = response.data.results;
     services.value.forEach(service => {
       if (!service.quantity) {

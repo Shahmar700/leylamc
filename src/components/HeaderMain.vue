@@ -608,7 +608,7 @@ window.open('/src/assets/peyvend/peyvend-kitabcasi.pdf', '_blank');
 // API çağırışı
 const fetchDepartments = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/department-list/');
     departments.value = response.data.results.filter(department => department.category !== 'Surgery');
   } catch (error) {
     console.error("Department API çağırışında xəta:", error);
@@ -617,7 +617,7 @@ const fetchDepartments = async () => {
 
 const fetchSurgeries = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/surgeondep-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/surgeondep-list/');
     surgeries.value = response.data.results;
     console.log('Cerahiye' + surgeries )
   } catch (error) {
@@ -630,7 +630,7 @@ const medicalServices = ref([]);
 
 const fetchMedicalServices = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/medical-service-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/medical-service-list/');
     medicalServices.value = response.data.results;
   } catch (error) {
     console.error('Tibbi xidmət məlumatları yükləmə xətası:', error);

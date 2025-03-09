@@ -33,7 +33,7 @@ const department = ref({})
 const fetchDepartment = async () => {
   try {
     // console.log(route.params.slug) // slug dəyərini konsolda göstərmək
-    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/department-list/${route.params.slug}/`)
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/department-list/${route.params.slug}/`)
     department.value = response.data
   } catch (error) {
     console.error('API çağırışında xəta:', error)

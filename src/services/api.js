@@ -2,7 +2,7 @@ import axios from 'axios';
 import authService from './auth';
 
 const api = axios.create({
-  baseURL: 'http://192.168.2.242:8000/api',
+  baseURL: 'http://bytexerp.online/api',
   headers: {
     'Content-Type': 'application/json'
   }

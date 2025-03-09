@@ -70,7 +70,7 @@ const fetchSurgeryDetails = async (slug) => {
     error.value = null;
     
     // Əsas məlumatları əldə edirik
-    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/surgeonphoto-list/${slug}/`);
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/surgeonphoto-list/${slug}/`);
     
     if (response.data) {
       surgeryData.value = response.data;

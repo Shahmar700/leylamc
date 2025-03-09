@@ -26,7 +26,7 @@ const policyText = ref('');
 
 const fetchQualityPolicy = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/qualitypolicy-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/qualitypolicy-list/');
     const policyData = response.data.results[0];
     console.log(policyData)
     policyTitle.value = policyData.title;

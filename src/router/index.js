@@ -179,6 +179,13 @@ import ProfileView from '@/views/ProfileView.vue'
               meta: { breadcrumb: 'Vakansiya' },
             },
             {
+              path: '/about/our-in-media/vacancies/:slug',
+              name: 'vacancy-detail',
+              component: () => import('@/views/VacancyInner.vue'),
+              props: true,
+              meta: { breadcrumb: 'Vakansiya Detalları' },
+            },
+            {
               path: '/about/our-in-media/latest-updates',
               name: 'latest-updates',
               component: LatestUpdatesView,
@@ -445,12 +452,6 @@ import ProfileView from '@/views/ProfileView.vue'
       meta: { breadcrumb: 'Sağlıq köşkü' }
     },
     {
-      path: '/vacancies',
-      name: 'vacancies',
-      component: VacanciesView,
-      meta: { breadcrumb: 'Vakansiyalar' }
-    },
-    {
       path: '/offers',
       name: 'offers',
       component: OffersView,
@@ -520,7 +521,7 @@ import ProfileView from '@/views/ProfileView.vue'
 // Dinamik olaraq department-ları yükləmək
 const fetchDepartments = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/')
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/department-list/')
     const departments = response.data.results
     departments.forEach(department => {
       router.addRoute({
@@ -539,7 +540,7 @@ const fetchDepartments = async () => {
 // Dinamik surgery routelarını əlavə edən funksiya
 const fetchSurgeryDepartments = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/surgeondep-list/')
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/surgeondep-list/')
     const surgeries = response.data.results
     surgeries.forEach(surgery => {
       router.addRoute({
@@ -559,7 +560,7 @@ const fetchSurgeryDepartments = async () => {
 // Dinamik tibbi xidmətlər marşrutlarını əlavə edən funksiya
 const fetchMedicalServiceRoutes = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/medical-service-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/medical-service-list/');
     const medicalServices = response.data.results;
     
     medicalServices.forEach(service => {

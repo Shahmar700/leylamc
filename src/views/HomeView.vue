@@ -324,7 +324,7 @@ const doctors = ref([]);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = shuffle(response.data.results); // Doktorları təsadüfi olaraq qarışdırmaq
   } catch (error) {
@@ -339,7 +339,7 @@ const news = ref([]);
 // API çağırışı ilə xəbərləri yükləmək
 const fetchNews = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/news-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
     // console.log(response.data); // Məlumatları konsolda göstərmək
     news.value = response.data.results;
   } catch (error) {
@@ -354,7 +354,7 @@ const departments = ref([]);
 // API çağırışı ilə departamentləri yükləmək
 const fetchDepartments = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/department-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/department-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     departments.value = response.data.results;
   } catch (error) {

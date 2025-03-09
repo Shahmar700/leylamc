@@ -35,7 +35,7 @@ const certificates = ref([]);
 
 const fetchCertificates = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/certificate-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/certificate-list/');
     // console.log(response.data); // Məlumatları konsolda göstərmək
     certificates.value = response.data.results;
   } catch (error) {

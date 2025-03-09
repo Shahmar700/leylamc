@@ -82,7 +82,7 @@ const tableArticles = ref([
 /*
 const fetchArticles = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/article-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/article-list/');
     console.log('API-dən gələn məqalə dataları:', response.data);
     
     // API response formatını yoxlayın və uyğunlaşdırın

@@ -77,7 +77,7 @@
       error.value = null;
       
       // Əsas məlumatları əldə edirik
-      const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/department-list/${slug}/`);
+      const response = await axios.get(`http://bytexerp.online/api/leyla/v1/department-list/${slug}/`);
       
       if (response.data) {
         departmentData.value = response.data;

@@ -8,13 +8,18 @@
       </div>
       <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
         <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-        <h1 class="text-3xl font-semibold mb-10">{{ visionTitle }}</h1>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div v-for="(vacancy, index) in paginatedVacancies" :key="index" class="mb-4">
-              <img :src="vacancy.img" :alt="vacancy.title" class="w-full h-auto rounded-md">
-              <p class="text-base sm:text-lg mt-2">{{ vacancy.title }}</p>
+        <h1 class="text-3xl font-semibold mb-10">Vakansiyalar</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div 
+                  v-for="(vacancy, index) in paginatedVacancies" 
+                  :key="index" 
+                  class="mb-4 cursor-pointer hover:opacity-90 transition-all transform hover:scale-101 duration-200" 
+                  @click="goToVacancyDetail(vacancy.slug)"
+                  >
+                  <img :src="vacancy.image" :alt="vacancy.title" class="w-full h-auto rounded-md">
+                  <p class="text-base sm:text-lg mt-2">{{ vacancy.title }}</p>
+                </div>
             </div>
-          </div>
           <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
             <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
             <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
@@ -35,21 +40,30 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from 'axios';
+import { useRouter } from "vue-router";
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
+
+const router = useRouter();
 
 // API-dən məlumatları çəkmək üçün state-lər
 const vacanciesData = ref([]);
 const loading = ref(true);
 const error = ref(null);
 
+// Vakansiya detalına keçid funksiyası
+const goToVacancyDetail = (slug) => {
+  router.push({ name: 'vacancy-detail', params: { slug } });
+};
+
 // API-dən məlumatları çəkmək funksiyası
 const fetchVacanciesData = async () => {
   try {
     loading.value = true;
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/vacancy-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/vacancy-list/');
+    console.log('API cavabı:', response.data); // API cavabını konsolda görüntüləmək
     vacanciesData.value = response.data.results || [];
   } catch (err) {
     error.value = "Məlumatları yükləmək mümkün olmadı.";
