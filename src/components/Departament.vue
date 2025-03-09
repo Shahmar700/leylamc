@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[30%] bg-white py-16 px-12 flex items-center rounded-3xl text-main-text cursor-pointer" @click="goToDepartment">
+    <div class="w-[100%] h-[220px] bg-white py-16 px-12 flex items-center rounded-3xl text-main-text cursor-pointer" @click="goToDepartment">
         <img :src="depIcon" alt="icon" class="w-[55px] h-[55px] object-contain mr-5">
         <div class="">
             <h1 class="font-bold text-2xl">{{name}}</h1>

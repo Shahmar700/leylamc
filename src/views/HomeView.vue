@@ -169,33 +169,40 @@
       </div>
 
       <!-- ** Departments ** -->
-    <div class="py-16 bg-cover bg-center" :style="{ backgroundImage: `url(${departmentsBg})` }">
+      <div class="py-16 bg-cover bg-center" :style="{ backgroundImage: `url(${departmentsBg})` }">
       <div class="container">
         <div class="flex justify-between mb-16">
           <h1 class="text-white text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Şöbələrimiz</h1>
-          <div class="flex">
-            <button id="depSpinLeft" @click="prevSlide" :class="{ 'opacity-50 cursor-not-allowed': currentIndex === 0 }" class="w-10 bg-white flex items-center justify-center rounded-md mr-2">
-              <img class="w-3" :src="vectorLeft" alt="">
-            </button>
-            <button id="depSpinRight" @click="nextSlide" :class="{ 'opacity-50 cursor-not-allowed': currentIndex === maxIndex }" class="w-10 bg-white flex items-center justify-center rounded-md">
-              <img class="w-3" :src="vectorRight" alt="">
-            </button>
-          </div>
         </div>
-        <!-- Departament Carousel  -->
-        <div class="overflow-hidden">
-          <div class="flex transition-transform duration-300 gap-5" :style="{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }">
-            <Departament
-              v-for="(department, index) in departments"
-              :key="index"
-              :depIcon="department.icon"
-              :name="department.name"
-              :subtitle="department.text"
-              :slug="department.slug"
-              class="w-[30%] flex-shrink-0 cursor-pointer"
-            />
-          </div>
-        </div>
+      
+      <!-- Swiper Carousel -->
+      <swiper
+        :modules="[Navigation, FreeMode]"
+        :slides-per-view="slidesPerView"
+        :space-between="20"
+        :navigation="{ 
+          nextEl: '.swiper-button-next', 
+          prevEl: '.swiper-button-prev'
+        }"
+        :grab-cursor="true"
+        :free-mode="true"
+        :resistance="true"
+        :resistance-ratio="0.85"
+        @swiper="onSwiper"
+      >
+        <swiper-slide v-for="(department, index) in departments" :key="index">
+          <Departament
+            :depIcon="department.icon"
+            :name="department.name" 
+            :subtitle="department.text"
+            :slug="department.slug"
+            class="cursor-pointer h-full"
+          />
+        </swiper-slide>
+        
+        <div class="swiper-button-prev !text-white !bg-primary !w-10 !h-10 !rounded-md"></div>
+        <div class="swiper-button-next !text-white !bg-primary !w-10 !h-10 !rounded-md"></div>
+      </swiper>
       </div>
     </div>
 
@@ -294,6 +301,38 @@ import Maps from '@/components/Maps.vue'
 import Modal from '@/components/Modal.vue';
 import { useHead } from '@vueuse/head';
 
+// Swiper import
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/free-mode';
+
+// Responsive state
+const isMobile = ref(false);
+const isTablet = ref(false);
+const isDesktop = ref(false);
+
+// Ekran ölçülərini izləyən funksiya
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768;
+  isTablet.value = window.innerWidth >= 768 && window.innerWidth < 1024;
+  isDesktop.value = window.innerWidth >= 1024;
+};
+
+// Swiper instance
+let swiperInstance = null;
+const onSwiper = (swiper) => {
+  swiperInstance = swiper;
+};
+
+// Responsive slidesPerView
+const slidesPerView = computed(() => {
+  if (isMobile.value) return 1;
+  if (isTablet.value) return 2;
+  return 3;
+});
+
 // Modal
 const isModalOpen = ref(false);
 const currentVideoUrl = ref('');
@@ -355,22 +394,29 @@ const departments = ref([]);
 const fetchDepartments = async () => {
   try {
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/department-list/');
-    console.log(response.data); // Məlumatları konsolda göstərmək
+    // console.log(response.data); // Məlumatları konsolda göstərmək
     departments.value = response.data.results;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
   }
 };
 
+
+
 onMounted(() => {
   fetchDoctors();
   fetchNews();
   fetchDepartments();
   startPolling();
+
+  // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq
+  window.addEventListener('resize', handleResize);
+  handleResize();
 });
 
 onUnmounted(() => {
   stopPolling();
+  window.removeEventListener('resize', handleResize);
 });
 
 let pollingInterval;
@@ -441,7 +487,6 @@ import vectorRight from "@/assets/icons/vector-right.svg";
 //   { icon: ambulance, name: 'Təcili tibbi yardım', subtitle: '7/24 fəaliyyət göstərir' },
 // ]);
 const currentIndex = ref(0);
-const maxIndex = computed(() => departments.value.length - 3);
 
 const nextSlide = () => {
   if (currentIndex.value < maxIndex.value) {
@@ -463,6 +508,7 @@ import user3 from "@/assets/images/user3.jpg"
 
 // get header height 
 const headerHeight = inject('headerHeight', ref(0))
+
 
 // SEO meta məlumatları
 import { inject } from 'vue';
