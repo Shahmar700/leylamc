@@ -278,7 +278,7 @@
 </template>
 
 <script setup>
-import { ref, computed, inject, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router'
 import axios from 'axios';
 import { shuffle } from 'lodash';
@@ -292,6 +292,7 @@ import DoctorCard from '@/components/DoctorCard.vue'
 import Rating from '@/components/Rating.vue'
 import Maps from '@/components/Maps.vue'
 import Modal from '@/components/Modal.vue';
+import { useHead } from '@vueuse/head';
 
 // Modal
 const isModalOpen = ref(false);
@@ -462,6 +463,89 @@ import user3 from "@/assets/images/user3.jpg"
 
 // get header height 
 const headerHeight = inject('headerHeight', ref(0))
+
+// SEO meta məlumatları
+import { inject } from 'vue';
+// Footer-dən əlaqə məlumatlarını inject et
+const contactInfo = inject('contactInfo', null);
+
+useHead({
+  title: 'Leyla Medical Center | Tibb Mərkəzi | Peşəkar Həkim Komandası',
+  meta: [
+    { 
+      name: 'description', 
+      content: '1999-cu ildən fəaliyyət göstərən Leyla Medical Center Azərbaycanda aparıcı tibb mərkəzidir. Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi. Təcili tibbi yardım, ünvana həkim xidməti və geniş şöbə şəbəkəsi.' 
+    },
+    { name: 'keywords', content: 'leyla medical center, tibb mərkəzi, klinika, tibbi xidmət, həkim, ginekologiya, mamalıq, təcili tibbi yardım, ünvana həkim, azərbaycan, bakı' },
+    { property: 'og:title', content: 'Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi' },
+    { 
+      property: 'og:description', 
+      content: 'Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.'
+    },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://leylamc.com' },
+    { property: 'og:image', content: 'https://leylamc.com/images/leyla-building.jpg' },
+    { property: 'og:site_name', content: 'Leyla Medical Center' },
+    { property: 'og:locale', content: 'az_AZ' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi' },
+    { 
+      name: 'twitter:description', 
+      content: 'Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.'
+    },
+    { name: 'twitter:image', content: 'https://leylamc.com/images/leyla-building.jpg' },
+    
+    // Strukturlu məlumatları əlavə etmək
+    {
+      name: 'script',
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'MedicalOrganization',
+        'name': 'Leyla Medical Center',
+        'url': 'https://leylamc.com',
+        'logo': 'https://leylamc.com/images/logo.png',
+        'contactPoint': {
+          '@type': 'ContactPoint',
+          'telephone': '+994-101', 
+          'contactType': 'customer service',
+          'availableLanguage': ['Azərbaycan dili', 'English', 'Русский']
+        },
+        'address': {
+          '@type': 'PostalAddress',
+          'streetAddress': 'Tbilisi prospekti 147',
+          'addressLocality': 'Bakı',
+          'addressRegion': 'Bakı',
+          'postalCode': 'AZ1122',
+          'addressCountry': 'AZ'
+        },
+        'geo': {
+          '@type': 'GeoCoordinates',
+          'latitude': 40.4093,
+          'longitude': 49.8671
+        },
+        'openingHoursSpecification': {
+          '@type': 'OpeningHoursSpecification',
+          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          'opens': '00:00',
+          'closes': '24:00'
+        },
+        'department': departments.value.map(dept => ({
+          '@type': 'MedicalSpecialty',
+          'name': dept.name
+        })),
+      })
+    },
+    contactInfo && {
+      name: 'script',
+      type: 'application/ld+json',
+      children: JSON.stringify(contactInfo)
+    }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://leylamc.com' }
+  ]
+});
 </script>
 
 <style scoped>

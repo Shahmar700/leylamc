@@ -81,7 +81,69 @@
 </template>
 
 <script setup>
+import { inject, provide } from 'vue';
 
+// Footer-in strukturlu məlumatları
+const contactInfo = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Leyla Medical Center",
+  "url": "https://leylamc.com",
+  "logo": "https://leylamc.com/images/footer-logo.svg",
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-12-490-18-58",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-12-490-51-05",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-12-490-51-06",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-12-490-21-31",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-50-225-44-54",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-50-225-73-30",
+      "contactType": "customer service"
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+994-55-455-01-11",
+      "contactType": "customer service",
+      "contactOption": "WhatsApp"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/leylamc",
+    "https://twitter.com/leylamc",
+    "https://www.youtube.com/leylamc",
+    "https://www.instagram.com/leylamc",
+    "https://wa.me/994554550111"
+  ]
+};
+
+// Bu məlumatları parent komponentlərə provide etmək
+const provideContactInfo = inject('provideContactInfo', null);
+if (provideContactInfo) {
+  provideContactInfo(contactInfo);
+}
+// Bu məlumatları global provide etmək
+provide('contactInfo', contactInfo);
 </script>
 
 <style scoped>

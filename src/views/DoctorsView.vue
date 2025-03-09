@@ -46,10 +46,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import axios from 'axios';
+import { useHead } from '@vueuse/head'; // Əlavə et
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -191,6 +192,55 @@ const filterDoctors = () => {
   currentPage.value = 1; // Filtrləmə zamanı ilk səhifəyə qayıt
 };
 
+// SEO meta məlumatları
+const pageTitle = computed(() => {
+  if (selectedSpecializations.value.length > 0) {
+    return `${selectedSpecializations.value[0].specialty} Həkimləri | Leyla Medical Center`;
+  } else if (selectedDepartments.value.length > 0) {
+    return `${selectedDepartments.value[0].name} Şöbəsi Həkimləri | Leyla Medical Center`;
+  } else {
+    return 'Həkimlərimiz | Leyla Medical Center';
+  }
+});
+
+const pageDescription = computed(() => {
+  if (selectedSpecializations.value.length > 0) {
+    return `Leyla Medical Center-in ${selectedSpecializations.value[0].specialty} mütəxəssisləri. Təcrübəli həkimlərimiz haqqında məlumat əldə edin və onlayn qəbula yazılın.`;
+  } else if (selectedDepartments.value.length > 0) {
+    return `Leyla Medical Center-in ${selectedDepartments.value[0].name} şöbəsinin peşəkar həkim heyəti. Mütəxəssislərimiz haqqında məlumat əldə edin.`;
+  } else {
+    return 'Leyla Medical Center-in peşəkar həkim heyəti. Təcrübəli mütəxəssislərimiz haqqında məlumat əldə edin və onlayn qəbula yazılın.';
+  }
+});
+
+const pageKeywords = computed(() => {
+  let baseKeywords = 'həkimlər, mütəxəssislər, tibb işçiləri, qəbul, həkim məsləhəti';
+  
+  if (selectedSpecializations.value.length > 0) {
+    return `${baseKeywords}, ${selectedSpecializations.value.map(s => s.specialty).join(', ')}`;
+  } else if (selectedDepartments.value.length > 0) {
+    return `${baseKeywords}, ${selectedDepartments.value.map(d => d.name).join(', ')}`;
+  }
+  
+  return baseKeywords;
+});
+
+// useHead hooku ilə meta etiketlərini əlavə et
+useHead({
+  title: pageTitle,
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://leylamc.com/doctors' },
+    { property: 'og:image', content: 'https://leylamc.com/images/leyla-doctors.jpg' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'keywords', content: pageKeywords },
+  ],
+});
 </script>
 
 <style scoped>

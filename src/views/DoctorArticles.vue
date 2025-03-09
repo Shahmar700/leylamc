@@ -62,7 +62,7 @@
 import { ref, computed, onMounted  } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-
+import { useHead } from '@vueuse/head'; // Əlavə et
 
 const tableArticles = ref([
     {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn'},
@@ -193,6 +193,56 @@ const goToArticle = (article) => {
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
+
+
+// SEO meta məlumatları
+const pageTitle = computed(() => {
+  if (author.value) {
+    return `${author.value} Məqalələri | Həkim Yazıları | Leyla Medical Center`;
+  }
+  return 'Həkim Məqalələri və Tibb Yazıları | Leyla Medical Center';
+});
+
+const pageDescription = computed(() => {
+  if (author.value) {
+    return `${author.value} tərəfindən yazılmış tibbi məqalələr və sağlamlıq haqqında yazılar. Leyla Medical Center həkimlərindən peşəkar məsləhət və məlumatlar.`;
+  }
+  return 'Leyla Medical Center həkimləri tərəfindən yazılmış tibbi məqalələr və sağlamlıq haqqında yazılar. Xəstəliklər, diaqnostika və müalicə üsulları haqqında peşəkar məsləhətlər.';
+});
+
+const pageKeywords = computed(() => {
+  let baseKeywords = 'tibbi məqalələr, həkim yazıları, sağlamlıq məsləhətləri, tibbi bloq, xəstəliklər haqqında məqalələr';
+  
+  if (author.value) {
+    return `${baseKeywords}, ${author.value} məqalələri, ${author.value} yazıları`;
+  }
+  
+  // Bütün müəlliflərə görə açar sözlər əlavə et
+  const authorNames = [...new Set(tableArticles.value.map(article => article.articleAuthor))];
+  if (authorNames.length > 0) {
+    return `${baseKeywords}, ${authorNames.join(', ')}`;
+  }
+  
+  return baseKeywords;
+});
+
+// useHead hooku ilə meta etiketlərini əlavə et
+useHead({
+  title: pageTitle,
+  meta: [
+    { name: 'description', content: pageDescription },
+    { property: 'og:title', content: pageTitle },
+    { property: 'og:description', content: pageDescription },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://leylamc.com/doctor-articles' },
+    { property: 'og:image', content: 'https://leylamc.com/images/leyla-articles.jpg' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: pageTitle },
+    { name: 'twitter:description', content: pageDescription },
+    { name: 'keywords', content: pageKeywords },
+    { name: 'author', content: author.value || 'Leyla Medical Center Həkimləri' },
+  ],
+});
 </script>
 
 <style scoped>

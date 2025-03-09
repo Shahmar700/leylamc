@@ -298,7 +298,7 @@
       <transition name="fade">
         <div 
           v-if="burgerOpen" 
-          class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto] md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
+          class="fixed inset-0 bg-white/70 backdrop-blur-md z-[9999] overflow-auto md:w-1/3 md:left-auto md:right-0 md:inset-y-auto md:top-10 md:h-full"
         >
           <div class="container mx-auto py-3 xl:py-5 px-4">
             <div class="flex justify-between items-center mb-5">
