@@ -38,7 +38,11 @@ const truncatedSubtitle = computed(() => {
 });
 
 const goToDepartment = () => {
-    router.push({ name: props.slug, params: { slug: props.slug } }); // Marşrut adını props.slug olaraq istifadə edirik
+    // HeaderMain ilə eyni məntiq ilə düzgün yönləndirmə
+    router.push({ 
+        name: 'department-detail', 
+        params: { slug: props.slug }
+    });
 };
 </script>
 

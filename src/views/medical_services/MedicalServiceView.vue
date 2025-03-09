@@ -1,8 +1,8 @@
 <template>
     <div class="container mt-16 text-main-text">
-      <div v-if="loading" class="text-center py-10">
-        <p>Yüklənir...</p>
-      </div>
+      <!-- Skeleton yükləməsi -->
+      <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
+
       <div v-else-if="error" class="text-center py-10">
         <p class="text-red-500">{{ error }}</p>
       </div>
@@ -32,17 +32,16 @@
                {{serviceData.link1}}
             </a>
           </div>
+          <!-- Service photo if available -->
+          <div v-if="serviceData?.photo" class="mt-10">
+            <img :src="serviceData.photo" :alt="serviceData.title" class="w-full max-w-3xl mx-auto rounded-lg">
+          </div>
         </div>
         
         <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
           <SideBanners class="mb-4" /> 
           <SideBanners2 class="mb-4" /> 
         </div>
-      </div>
-  
-      <!-- Service photo if available -->
-      <div v-if="serviceData?.photo" class="mt-10">
-        <img :src="serviceData.photo" :alt="serviceData.title" class="w-full max-w-3xl mx-auto rounded-lg">
       </div>
   
       <Maps class="mt-14 sm:mt-24"/>
@@ -56,27 +55,33 @@
   import SideBanners from "@/components/SideBanners.vue";
   import SideBanners2 from "@/components/SideBanners2.vue";
   import Maps from "@/components/Maps.vue";
+  import SkeletonLoader from "@/components/SkeletonLoader.vue";
+  import { useSkeleton } from "@/composables/useSkeleton";
   
   // Route əldə edirik
   const route = useRoute();
   
   // Data state-ləri
   const serviceData = ref(null);
-  const loading = ref(true);
   const error = ref(null);
   
+  // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
+  const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(400);
+
+
   // Tibbi xidmət məlumatlarını çəkmək
   // Tibbi xidmət məlumatlarını çəkmək
 const fetchServiceDetails = async (slug) => {
   if (!slug) {
     console.error('Slug parametri tapılmadı');
     error.value = 'Səhifə tapılmadı';
-    loading.value = false;
+    stopLoading(); // useSkeleton hook-u ilə yükləməni dayandır
     return;
   }
   
   try {
-    loading.value = true;
+    // Skeleton Yükləməni başlat
+    startLoading();
     error.value = null;
     
     console.log(`API sorğusu göndərilir: http://bytexerp.online/api/leyla/v1/medical-service-list/${slug}/`);
@@ -97,7 +102,8 @@ const fetchServiceDetails = async (slug) => {
     console.error("Xəta detalları:", err.response ? err.response.data : "Response yoxdur");
     error.value = "Məlumatları yükləmək mümkün olmadı. Xahiş edirik daha sonra yenidən cəhd edin.";
   } finally {
-    loading.value = false;
+    // Skeleton Yükləməni dayandır
+    stopLoading();
   }
 };
   
@@ -132,7 +138,7 @@ onMounted(() => {
   // Nə ana səhifə, nə də düzgün detail səhifədə deyilik
   else {
     error.value = "Slug parametri tapılmadı";
-    loading.value = false;
+    stopLoading();
     console.error("Route params:", route.params, "Route name:", route.name);
   }
 });

@@ -1,8 +1,8 @@
 <template>
     <div class="container mt-16 text-main-text">
-      <div v-if="loading" class="text-center py-10">
-        <p>Yüklənir...</p>
-      </div>
+      <!-- Skeleton yükləməsi -->
+      <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
+    
       <div v-else-if="error" class="text-center py-10">
         <p class="text-red-500">{{ error }}</p>
       </div>
@@ -38,30 +38,35 @@
   </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
+import SkeletonLoader from "@/components/SkeletonLoader.vue";
+import { useSkeleton } from "@/composables/useSkeleton";
 
 // API-dən məlumatları çəkmək üçün state-lər
 const checkups = ref([]);
-const loading = ref(true);
 const error = ref(null);
+
+// Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
+const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(400);
+
 
 // API-dən məlumatları çəkmək funksiyası
 const fetchCheckupsData = async () => {
   try {
-    loading.value = true;
+    startLoading();
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/checkup-list/');
     checkups.value = response.data.results || [];
   } catch (err) {
     error.value = "Məlumatları yükləmək mümkün olmadı.";
     console.error("API xətası:", err);
   } finally {
-    loading.value = false;
+    stopLoading()
   }
 };
 
@@ -138,6 +143,11 @@ const router = useRouter();
 const goToCheckUp = (checkup) => {
   router.push({ name: 'check-up-inner', params: { slug: checkup.slug } });
 };
+
+// Component unmount olduqda təmizləmə
+onUnmounted(() => {
+  cleanupSkeleton();
+});
 </script>
 
 <style scoped>
