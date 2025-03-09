@@ -3,12 +3,14 @@
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <!-- Satisfaction survey  -->
             <div class="w-3/4" data-aos="zoom-out-right">
-               <div v-for="(question, index) in questions" :key="index" class="question flex flex-col mb-10 text-base lg:text-lg">
+               <div v-for="(question, index) in questions" :key="index" class="question flex flex-col mb-10 text-sm lg:text-lg">
                 <p class="mb-2 lg:mr-7">{{ question.text }}</p>
-                <div class="flex gap-5">
-                    <label v-for="rating in [1, 2, 3, 4, 5]" :key="rating" :for="'numInput-' + index + '-' + rating" :class="{ selected: question.selectedRating === rating }" class="mr-5">
-                    <input class="cursor-pointer" :id="'numInput-' + index + '-' + rating" type="radio" :name="'question-' + index" :value="rating" v-model="question.selectedRating" />
-                    <span class="ml-2 text-white bg-[#6bb42b7a] font-semibold py-1 px-2 rounded-full">{{ rating }}</span>
+                <div class="flex gap-2 md:first-letter:gap-5">
+                    <label v-for="rating in [1, 2, 3, 4, 5]" :key="rating" :for="'numInput-' + index + '-' + rating" :class="{ selected: question.selectedRating === rating }" class="mr-2 md:mr-5 text-sm md:text-base">
+                    <div class="flex flex-col justify-center screen-500:flex-row">
+                        <input class="cursor-pointer" :id="'numInput-' + index + '-' + rating" type="radio" :name="'question-' + index" :value="rating" v-model="question.selectedRating" />
+                        <span class="ml-0 screen-375:ml-1 md:ml-2 mt-2 screen-500:mt-0 text-white bg-[#6bb42b7a] font-semibold py-1 px-[10px] rounded-full">{{ rating }}</span>
+                    </div>
                     </label>
                 </div>
                </div>
@@ -17,14 +19,14 @@
                         <textarea id="message" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
                     </div>
             </div>
-            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+            <!-- <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
                 <SideBanners2 class="mb-4" /> 
-            </div>
+            </div> -->
         </div>
 
         <!-- GALLERY SIDE  -->
-         <div class="mt-10">
+         <div class="container mt-10">
             <form action="" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5 text-base lg:text-lg">
                     <div class="flex flex-col w-full lg:w-1/2">
                         <label for="name" class="mb-2 !text-main-text">Ad</label>

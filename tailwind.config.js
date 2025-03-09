@@ -18,8 +18,14 @@ export default {
       sans: ['AvantGarde', 'sans-serif'],
     },
     container: {
-      padding: '1rem',
       center: true,
+      padding: {
+        DEFAULT: '0.5rem',    // Kiçik ekranlar üçün default dəyər (768px-dən kiçik)
+        md: '0.5rem',           // 768px və daha böyük ekranlar üçün
+        lg: '1rem',           // 1024px və daha böyük
+        xl: '1rem',           // 1280px və daha böyük
+        '2xl': '1rem',        // 1536px və daha böyük
+      },
     },
     screens: {
       sm: "640px",

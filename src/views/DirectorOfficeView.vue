@@ -5,19 +5,23 @@
                 <!-- Directors  -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="zoom-out-left">
                     <div class="flex flex-col items-center">
-                        <img src="@/assets/images/elnur-vahabov.jpeg" alt="" class="mb-3 rounded-2xl">
-                        <h5 class="font-extrabold text-main-text text-lg md:text-xl">Direktor</h5>
-                        <h5 class="font-extrabold text-main-text text-lg md:text-xl">Dr.Elnur Vahabov</h5>
+                        <div class="w-full">
+                            <img src="@/assets/images/elnur-vahabov.jpeg" alt="" class="mb-3 rounded-2xl w-full h-full object-cover">
+                        </div>
+                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Direktor</h5>
+                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Dr.Elnur Vahabov</h5>
                     </div>
                     <div class="flex flex-col items-center">
-                        <img src="@/assets/images/sevda-ceferova.jpeg" alt="" class="mb-3 rounded-2xl">
-                        <h5 class="font-extrabold text-main-text text-lg md:text-xl">Tibbi Direktor</h5>
-                        <h5 class="font-extrabold text-main-text text-lg md:text-xl">MD., PhD., MBA., MSc HM., UN Physician</h5>
-                        <h5 class="font-extrabold text-main-text text-lg md:text-xl">Dr.Sevda Cəfərova</h5>
+                        <div>
+                            <img src="@/assets/images/sevda-ceferova.jpeg" alt="" class="mb-3 rounded-2xl w-full h-full object-cover">
+                        </div>
+                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Tibbi Direktor</h5>
+                        <h5 class="font-extrabold text-main-text text-md md:text-xl">MD., PhD., MBA., MSc HM., UN Physician</h5>
+                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Dr.Sevda Cəfərova</h5>
                     </div>
                     <div></div>
                  </div>
-                 <h1 class="text-main-text text-2xl my-4">Leyla Medical Center-in Direktor Kabineti ilə əlaqə forması</h1>
+                 <h1 class="text-main-text text-lg md:text-2xl font-bold my-4">Leyla Medical Center-in Direktor Kabineti ilə əlaqə forması</h1>
                 <p class="text-main-text text-base">Biz daima inkişafdayıq. Bizim üçün sizin rahatlığınız və bizdən razılığınız çox vacibdir. Sizi narahat edən bir şey olduğu halda biz onu mütləq aradan qaldırmağa hazırıq. Öz təklifinizi və ya şikayətinizi aşağıdakı formanı doldurmağla Leyla Medical Center-in direktoruna məruzə edə bilərsiniz.</p>
                 <div class="mt-5">
                     <div class="flex items-center mb-2">

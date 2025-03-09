@@ -1,6 +1,6 @@
 <template>
     <div class="bg-primary">
-        <header class="container w-full py-2 sm:py-2 flex flex-wrap justify-between">
+        <header class="container w-full py-2 sm:py-2 flex flex-wrap md:flex-nowrap justify-between">
         <!-- left side  -->
         <div class="flex flex-row w-full justify-between screen-500:justify-start screen-500:flex-row items-start sm:flex-row sm:items-center text-xs md:text-sm lg:text-base">
             

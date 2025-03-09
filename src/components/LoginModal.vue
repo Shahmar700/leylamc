@@ -1,10 +1,10 @@
 <template>
   <div class="modal-overlay">
-    <div class="modal-content relative">
+    <div class="modal-content relative w-[85%] md:w-[50%] lg:w-[45%] xl:w-[40%] max-w-[500px]">
         <i @click="closeModal" class="fa-solid fa-xmark absolute top-7 right-7 cursor-pointer"></i>
       <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 class="my-5 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Hesabınıza daxil olun</h2>
+          <h2 class="my-5 text-center text-xl md:text-2xl font-bold tracking-tight text-gray-900">Hesabınıza daxil olun</h2>
            <p class="text-base font-light text-gray-700 dark:text-gray-400">
             Hələ qeydiyyatınız yoxdur? <router-link :to="{name: 'registration'}" class="font-medium text-primary-600 text-[#ef7c00] underline hover:underline dark:text-primary-500" @click="closeModal">Qeydiyyat</router-link>
             </p>
@@ -144,7 +144,7 @@ const login = async () => {
 .modal-content {
   background: white;
   border-radius: 8px;
-  width: 100%;
+  /* width: 100%; */
   z-index: 1001;
 }
 

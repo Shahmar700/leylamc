@@ -745,7 +745,7 @@ z-index: 999;
 color: #505050;
 font-size: 18px;
 letter-spacing: 2px;
-font-weight: 100;
+font-weight: 400;
 }
 
 .btn-search {
@@ -781,6 +781,33 @@ transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 position: absolute;
 top: -5px;
 right: 0;
+}
+
+@media screen and (max-width: 500px) {
+  .btn-search:focus ~ .input-search,
+  .input-search:focus {
+    width: 180px;
+  }
+  .input-search::placeholder {
+  font-size: 14px;
+  letter-spacing: 1px;
+  }
+  .input-search {
+    right: -10px !important;
+  }
+}
+@media screen and (min-width: 500px) {
+  .btn-search:focus ~ .input-search,
+  .input-search:focus {
+    width: 250px;
+  }
+  .input-search::placeholder {
+  font-size: 14px;
+  letter-spacing: 1px;
+  }
+  .input-search {
+    right: -10px !important;
+  }
 }
 
 .input-search:focus ~ .btn-search {

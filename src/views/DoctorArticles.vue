@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-16 text-main-text">
-        <div class="flex flex-col md:flex-row items-start sm:justify-between">
+        <div class="flex flex-col items-center md:flex-row md:items-start sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="flip-down">
                 <!-- Articles Filters  -->
                 <form @submit.prevent="filterArticles" class="flex gap-4 mt-5 items-center text-base lg:text-lg">

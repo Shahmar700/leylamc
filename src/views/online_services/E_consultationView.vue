@@ -1,8 +1,8 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-10 md:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-                <p class="mt-4 text-xl font-thin text-justify">Tibbi suallarınızı, müxtəlif xəstəliklər haqqında suallarınızı, xəstəliklərin müalicəsi, diaqnostika üsulları, tibbi manipulyasiyaların qaydaları, həmçinin online həll oluna biləcək və cavablandırıla bilinəcək istənilən suallarınızı yönləndirə bilərsiniz.</p>
+                <p class="mt-4 text-base md:text-xl font-normal text-justify">Tibbi suallarınızı, müxtəlif xəstəliklər haqqında suallarınızı, xəstəliklərin müalicəsi, diaqnostika üsulları, tibbi manipulyasiyaların qaydaları, həmçinin online həll oluna biləcək və cavablandırıla bilinəcək istənilən suallarınızı yönləndirə bilərsiniz.</p>
                 <br>
                 <form @submit.prevent="submitForm" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5">
                     <div class="flex flex-col w-full lg:w-1/2">

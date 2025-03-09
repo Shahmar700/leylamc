@@ -82,10 +82,10 @@
           <div class="w-full">
             <img src="@/assets/images/logo-mini.svg" alt="Logo" class="float-left mr-4 mb-4 w-h-16 h-16 screen-400:w-24 screen-400:h-24">
           <div>
-            <p class="text-base screen-400:text-lg md:text-2xl font-thin">
+            <p class="text-base screen-400:text-lg md:text-2xl font-normal text-justify">
             1999-cu ildə ulu öndərimiz Heydər Əliyev tərəfindən açılışı baş tutan Leyla Medical Center fəaliyyətinin 22-ci ilində Referans Medical Group şəbəkəsinə daxil olaraq yeni ad, daha geniş xidmət çeşidi, daha da peşəkar həkimlər ilə sizlər üçün xidmət göstərməyə başladı. Mərkəzimiz tək Azərbaycanda deyil, eyni zamanda Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi kimi uğurla fəaliyyətə başlamışdır.
           </p>
-          <h4 class="text-base screen-400:text-lg md:text-2xl font-bold">
+          <h4 class="text-base screen-400:text-lg md:text-2xl font-bold text-justify">
             Bizlərə göstərilən inamı doğrultmaq və Səhiyyə sisteminin, xüsusilə özəl tibb sektorunun inkişaf etdirilməsi məqsədilə müəssisəmiz dayanmadan sizlər üçün xidmət göstərməkdədir. Leyla Medical Center olaraq yeni personal, yeni həkimlər, yeni avadanlıqlar və ən dəqiq laborator xidmətlər ilə "Sizin sağlamlığınız-bizim dəyərimizdir" şüarı altında fəaliyyətimizi sizlər üçün davam etdiririk.
           </h4>
           </div>
@@ -110,7 +110,7 @@
       <div class="container ">
         <div class=" flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
-            <p class="text-2xl text-[#505050] font-thin tracking-wider">Youtube kanalımız</p>
+            <p class="text-2xl text-[#505050] font-normal tracking-wider">Youtube kanalımız</p>
             <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Faydalı məlumatlar</h1>
           </div>
           <div class="mt-4 sm:mt-0">

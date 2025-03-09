@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-10 md:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
                 <h1 class="text-3xl font-semibold mb-10">Vizyonumuz</h1>

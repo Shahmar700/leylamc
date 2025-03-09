@@ -2,7 +2,7 @@
   <div class="container mt-17" data-aos="flip-up">
     <div>
        <!-- Doctor Filters  -->
-       <form @submit.prevent="filterDoctors" class="flex gap-4 mt-5 items-center text-base lg:text-lg">
+       <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
           <div class="flex flex-col w-full ">
               <label for="name" class="mb-1 !text-main-text">Həkimin Adı, Soyadı</label>
               <input type="text" id="name" v-model="name" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Həkimin Adı, Soyadı">

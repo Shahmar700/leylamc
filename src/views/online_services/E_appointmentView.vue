@@ -1,13 +1,13 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-10 md:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-3xl font-semibold mb-10">E-növbə</h1>
-            <p class="text-main-text text-base">E-randevu bölümü vasitəsilə Siz istənilən həkimin qəbuluna yazıla bilərsiniz. Bunun üçün şəxsi məlumatlarınız, qəbulunda olmaq istədiyiniz həkimin ixtisası və Adı / Soyadı, sizə uyğun olan qəbul günü və saatını qeyd etməyiniz kifayyətdir.</p>
+                <h1 class="text-3xl font-semibold mb-5 md:mb-10">E-növbə</h1>
+            <p class="text-main-text text-base md:text-xl">E-randevu bölümü vasitəsilə Siz istənilən həkimin qəbuluna yazıla bilərsiniz. Bunun üçün şəxsi məlumatlarınız, qəbulunda olmaq istədiyiniz həkimin ixtisası və Adı / Soyadı, sizə uyğun olan qəbul günü və saatını qeyd etməyiniz kifayyətdir.</p>
             <br>
-            <p class="text-main-text text-base">Qeyd etdiyiniz nömrənizə uyğun olaraq Çağrı Mərəzi operatorlarımız siznlə əlaqə saxlayacaq və qəbul günü / saatını təkrar olaraq sizinlə təsdiqlədəcək.</p>
+            <p class="text-main-text text-base md:text-xl">Qeyd etdiyiniz nömrənizə uyğun olaraq Çağrı Mərəzi operatorlarımız siznlə əlaqə saxlayacaq və qəbul günü / saatını təkrar olaraq sizinlə təsdiqlədəcək.</p>
             <br>
-            <p class="text-main-text text-base">Sizin sağlamlığınız – bizim dəyərimizdir!</p>
+            <p class="text-main-text text-base md:text-xl">Sizin sağlamlığınız – bizim dəyərimizdir!</p>
             <br>
                 <form @submit.prevent="submitForm" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5">
                     <div class="flex flex-col w-full lg:w-1/2">
