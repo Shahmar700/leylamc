@@ -73,7 +73,7 @@ const doctors = ref([]);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = response.data.results;
     // Şöbələri yükləmək
@@ -87,7 +87,7 @@ const fetchDoctors = async () => {
 // API çağırışı ilə ixtisasları yükləmək
 const fetchSpecializations = async () => {
   try {
-    const response = await axios.get('http://192.168.2.242:8000/api/leyla/v1/drspecialty-list/');
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/drspecialty-list/');
     specializations.value = response.data.results.map(specialty => ({ specialty: specialty.name }));
   } catch (error) {
     console.error('API çağırışında xəta:', error);

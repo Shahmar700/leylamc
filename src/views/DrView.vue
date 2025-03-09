@@ -198,7 +198,7 @@ const openCommentModal = () => {
 const submitComment = async () => {
   try {
     // Submit the comment to the server
-    await axios.post('http://192.168.2.242:8000/api/leyla/v1/comment-api', { comment: commentText.value });
+    await axios.post('http://bytexerp.online/api/leyla/v1/comment-api', { comment: commentText.value });
     // Clear the comment text and hide the comment section
     commentText.value = '';
     showCommentSection.value = false;
@@ -222,7 +222,7 @@ const fetchDoctor = async () => {
   try {
     console.log(`Həkim məlumatı çağırılır: ${route.params.id}`);
     // Burada artıq slug parametri ilə çağırış edirik
-    const response = await axios.get(`http://192.168.2.242:8000/api/leyla/v1/doctor-list/${route.params.id}/`);
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/doctor-list/${route.params.id}/`);
     doctor.value = response.data;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
@@ -230,7 +230,7 @@ const fetchDoctor = async () => {
     // Alternativ olaraq bütün həkimləri yükləyib, slug-a görə filtrlə
     try {
       console.log('Bütün həkimlər çağırılır və filtrlənir');
-      const allResponse = await axios.get('http://192.168.2.242:8000/api/leyla/v1/doctor-list/');
+      const allResponse = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
       const doctorFound = allResponse.data.results.find(d => d.slug === route.params.id);
       
       if (doctorFound) {
