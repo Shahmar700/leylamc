@@ -8,7 +8,7 @@
                         <p class="text-base sm:text-lg mt-2">{{ item.title }}</p>
                     </div>
                 </div>
-                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
+                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
                     <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
                     <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
                     <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>

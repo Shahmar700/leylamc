@@ -1,6 +1,10 @@
 <template>
-  <div class="container mt-17" data-aos="flip-up">
-    <div>
+  <div class="container mt-17">
+
+    <!-- Skeleton yükləməsi -->
+    <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
+
+    <div v-else>
        <!-- Doctor Filters  -->
        <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
           <div class="flex flex-col w-full ">
@@ -17,13 +21,11 @@
               <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
               <multiselect v-model="selectedDepartments" :options="filteredDepartments" :multiple="true" placeholder="Şöbə seçin" label="name" track-by="name" class="rounded-md !h-[47px]"></multiselect>
           </div>
-          <!-- <div class="w-full">
-              <button type="submit" class="greenBtn mt-8 !py-2 !px-6 !rounded-lg">Axtar</button>
-          </div> -->
+  
         </form>
     </div>
       <div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-aos="flip-left">
           <DoctorCard
               v-for="doctor in paginatedDoctors"
               :key="doctor.id"
@@ -34,12 +36,12 @@
               class="mt-6"
           />
       </div>
-      <div v-if="totalPages > 1" class="pagination mt-4 flex justify-start">
-        <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-        <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-        <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-        <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+        <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
+          <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+          <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
+          <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
+          <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+          <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
         </div>
       </div>
   </div>
@@ -51,9 +53,16 @@ import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import axios from 'axios';
 import { useHead } from '@vueuse/head'; // Əlavə et
+import SkeletonLoader from "@/components/SkeletonLoader.vue";
+import { useSkeleton } from "@/composables/useSkeleton";
+
+// Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
+const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
+
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
+
 
 const goToDoctor = (doctor) => {
   router.push({ name: 'doctor', params: { id: doctor.slug } });
@@ -73,6 +82,7 @@ const doctors = ref([]);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
+    startLoading();
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = response.data.results;
@@ -81,16 +91,21 @@ const fetchDoctors = async () => {
     departments.value = uniqueDepartments.filter(name => name).map(name => ({ name }));
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+  } finally {
+    stopLoading();
   }
 };
 
 // API çağırışı ilə ixtisasları yükləmək
 const fetchSpecializations = async () => {
   try {
+    startLoading();
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/drspecialty-list/');
     specializations.value = response.data.results.map(specialty => ({ specialty: specialty.name }));
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+  } finally {
+    stopLoading();
   }
 };
 
@@ -98,22 +113,23 @@ const fetchSpecializations = async () => {
 onMounted(() => {
   fetchDoctors();
   fetchSpecializations();
-  // startPolling();
+  startPolling();
 });
 
-// onUnmounted(() => {
-//   stopPolling();
-// });
+onUnmounted(() => {
+  stopPolling();
+  cleanupSkeleton(); // Skeleton təmizləməsi əlavə edildi
+});
 
 let pollingInterval;
 
 const startPolling = () => {
-  pollingInterval = setInterval(fetchDoctors, 1000); // Hər 5 saniyədən bir API çağırışı
+  pollingInterval = setInterval(fetchDoctors, 5000); // Hər 5 saniyədən bir API çağırışı
 };
 
-// const stopPolling = () => {
-//   clearInterval(pollingInterval);
-// };
+const stopPolling = () => {
+  clearInterval(pollingInterval);
+};
 
 const filteredDoctors = computed(() => {
   return doctors.value.filter(doctor => {
@@ -166,26 +182,31 @@ const pages = computed(() => {
 const goToPage = (page) => {
     if (page === '...') return;
     currentPage.value = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToFirstPage = () => {
     currentPage.value = 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToPreviousPage = () => {
     if (currentPage.value > 1) {
         currentPage.value--;
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToNextPage = () => {
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToLastPage = () => {
     currentPage.value = totalPages.value;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const filterDoctors = () => {

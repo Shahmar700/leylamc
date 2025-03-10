@@ -95,3 +95,51 @@
   width: 100%;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
+
+@media screen and (max-width: 500px) {
+  .pagination button {
+    margin: 0 2px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .pagination span {
+    margin: 0 2px;
+    border-radius: 3px;
+  }
+  .pagination .active-page {
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .inactive-page {
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .pagination {
+    padding: 3px 8px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .pagination button {
+    margin: 0 1px;
+    padding: 1px 6px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .pagination span {
+    margin: 0 2px;
+    border-radius: 3px;
+  }
+  .pagination .active-page {
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .inactive-page {
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .pagination {
+    padding: 1px 6px;
+  }
+}

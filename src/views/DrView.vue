@@ -1,41 +1,60 @@
 <template>
-    <div class="container mt-24" v-if="doctor">
-      <div class="flex">
+    <div class="container mt-16" >
+      <SkeletonLoader v-if="showSkeleton" :contentLines="12" :showLink="true" />
+    
+      <div v-else-if="!doctor" class="text-center py-10">
+        <p class="text-red-500">Həkim məlumatları tapılmadı.</p>
+      </div>
+      <button @click="goBack" class="flex items-center text-gray-600 mb-6 hover:text-green-600   transition-colors">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Geriyə
+      </button>
+      <div class="flex flex-col lg:flex-row">
+         <!-- Geri butonu -->
         <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
-        <div class="p-1 rounded-3xl border border-[#c7c7c7] w-[30%] max-w-[400px]">
-          <img :src="doctor.photo" alt="" class="rounded-3xl w-full">
+        <div class="p-1 rounded-3xl border border-[#c7c7c7] w-full lg:w-[30%] h-[340px] lg:h-[420px] overflow-hidden" style="aspect-ratio: 3/4;">
+          <!-- Skeleton loader -->
+          <div v-if="!imageLoaded || showSkeleton" class="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
+          <img 
+            v-lazy="doctor.photo" 
+            alt="Doktor şəkli" 
+            class="rounded-3xl w-full h-full object-cover transition-opacity duration-300"
+            :class="{'opacity-0': !imageLoaded, 'opacity-100': imageLoaded}" 
+            @load="onImageLoad"
+          />
         </div>
-        <div class="w-[59%] ml-14 flex flex-col justify-between">
+        <div class="w-full lg:w-[59%] mt-3 lg:mt-0 lg:ml-14 flex flex-col lg:justify-between">
           <div class="w-full mt-4">
-            <h1 class="text-3xl text-primary tracking-wider mb-1 font-bold">{{ doctor.degree }} {{ doctor.first_name }} {{ doctor.last_name }}</h1>
-            <p class="text-2xl text-main-text tracking-wider">{{ doctor.position }}</p>
+            <h1 class="text-xl md:text-2xl lg:text-3xl text-primary tracking-wider mb-1 font-bold">{{ doctor.degree }} {{ doctor.first_name }} {{ doctor.last_name }}</h1>
+            <p class="text-base screen-400:text-lg md:text-xl lg:text-2xl text-main-text tracking-wider">{{ doctor.position }}</p>
           </div>
-          <div class="w-full flex border py-5 justify-evenly border-[#c7c7c7] rounded-3xl">
-            <!-- Doctor experience -->
-            <div class="flex flex-col px-12 py-6 items-center tracking-wider">
-              <div class="flex">
-                <img :src="expIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}il</span>
-              </div>
-              <span class="mt-1">Təcrübə</span>
+          <div class="w-full flex flex-col md:flex-row border mt-5 lg:mt-0 py-3 md:py-5 justify-evenly border-[#c7c7c7] rounded-3xl">
+          <!-- Doctor experience -->
+          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
+            <div class="flex">
+              <img :src="expIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
+              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}il</span>
             </div>
-            <!-- Doctor Number of patients -->
-            <div class="flex flex-col px-12 py-6 items-center tracking-wider border border-l-[#c7c7c7] border-r-[#c7c7c7] border-t-0 border-b-0">
-              <div class="flex">
-                <img :src="patientIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">{{ patientCount }}</span>
-              </div>
-              <span class="mt-1">Pasiyent sayı</span>
-            </div>
-            <!-- Doctor comments -->
-            <div class="flex flex-col px-12 py-6 items-center tracking-wider">
-              <div class="flex">
-                <img :src="opiIcon" alt="" class="w-[45px] h-[45px] object-cover">
-                <span class="text-4xl font-bold text-main-text ml-2">687</span>
-              </div>
-              <span class="mt-1">Rəylər</span>
-            </div>
+            <span class="mt-1">Təcrübə</span>
           </div>
+          
+          <!-- Doctor Number of patients -->
+          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
+            <div class="flex">
+              <img :src="patientIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
+              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{ patientCount }}</span>
+            </div>
+            <span class="mt-1">Pasiyent sayı</span>
+          </div>
+          
+          <!-- Doctor comments -->
+          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
+            <div class="flex">
+              <img :src="opiIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
+              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">687</span>
+            </div>
+            <span class="mt-1">Rəylər</span>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -102,15 +121,15 @@
           <!-- Rəylər kontenti -->
           <div class="grid gap-8">
             <button v-if="!showCommentSection" @click="openCommentModal" class="greenBtn !w-[150px] text-center">
-  <i class="fa-regular fa-comments mr-1"></i>
-  <span>Rəy yazın</span>
-</button>
+          <i class="fa-regular fa-comments mr-1"></i>
+          <span>Rəy yazın</span>
+        </button>
 
-<!-- commentmodal -->
-<div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
-  <textarea v-model="commentText" class="outline-none" placeholder="Şərhinizi buraya yazın..."></textarea>
-  <button class="rounded-xl" @click="submitComment">Göndər</button>
-</div>
+        <!-- commentmodal -->
+        <div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
+          <textarea v-model="commentText" class="outline-none" placeholder="Şərhinizi buraya yazın..."></textarea>
+          <button class="rounded-xl" @click="submitComment">Göndər</button>
+        </div>
       <!-- commentmodal -->
             <DoctorRating 
               :image="UserPhoto"
@@ -141,7 +160,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, inject } from 'vue';
+import { ref, onMounted, computed, inject, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import axios from 'axios';
@@ -150,11 +169,31 @@ import DoctorRating from '@/components/DoctorRating.vue';
 import Modal from '@/components/Modal.vue';
 import LoginModal from '@/components/LoginModal.vue';
 import Swal from 'sweetalert2';
+import SkeletonLoader from "@/components/SkeletonLoader.vue";
+import { useSkeleton } from "@/composables/useSkeleton";
 
 const route = useRoute();   
-const doctor = ref(null);
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const goBack = () => {
+  router.go(-1);
+};
+
+const doctor = ref({});
 const showCommentSection = ref(false);
 const commentText = ref('');
+
+const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
+
+const imageLoaded = ref(false);
+
+const onImageLoad = () => {
+  // Şəkil tam yükləndikdə
+  setTimeout(() => {
+    imageLoaded.value = true;
+  }, 100); // Kiçik bir gecikmə ilə animasiyanı daha yumşaq edə bilərsiniz
+};
 
 // SEO metadata computed properties
 const pageTitle = computed(() => {
@@ -220,10 +259,16 @@ const submitComment = async () => {
 
 const fetchDoctor = async () => {
   try {
+    startLoading();
     console.log(`Həkim məlumatı çağırılır: ${route.params.id}`);
     // Burada artıq slug parametri ilə çağırış edirik
     const response = await axios.get(`http://bytexerp.online/api/leyla/v1/doctor-list/${route.params.id}/`);
     doctor.value = response.data;
+
+     // Şəkli öncədən yükləyək
+     if (doctor.value.photo) {
+      preloadImage(doctor.value.photo);
+    }
   } catch (error) {
     console.error('API çağırışında xəta:', error);
     
@@ -241,12 +286,32 @@ const fetchDoctor = async () => {
     } catch (fallbackError) {
       console.error('Alternativ API çağırışında xəta:', fallbackError);
     }
+  } finally {
+    stopLoading(); 
   }
+};
+
+// Şəkli öncədən yükləmək üçün funksiya
+const preloadImage = (src) => {
+  const img = new Image();
+  img.onload = () => {
+    // Şəkil yükləndikdə göstərək
+    setTimeout(() => {
+      imageLoaded.value = true;
+    }, 300);
+  };
+  img.src = src;
 };
 
 onMounted(() => {
   fetchDoctor();
 })
+
+
+onUnmounted(() => {
+  cleanupSkeleton(); // Skeleton təmizləməsi 
+});
+
 
 const formatText = (text) => {
   if (!text) return '';
@@ -293,45 +358,61 @@ const tabStyle = computed(() => {
 // import UserPhoto from '@/assets/images/rating-user.jpg'
 
 
-// Həkimin təcrübə ilinə görə random pasiyent sayını hesablayan funksiya
-const calculatePatients = (experienceYear) => {
+// Həkimin təcrübə ilinə və ID-sinə görə sabit pasiyent sayını hesablayan funksiya
+const calculatePatients = (experienceYear, doctorSlug) => {
+  // Slug əsasında sabit seed yaratmaq
+  let seed = 0;
+  for (let i = 0; i < doctorSlug.length; i++) {
+    seed += doctorSlug.charCodeAt(i);
+  }
+  
+  // İlkin aralıqları təyin etmək
   let min, max;
+  let dailyIncrease; // Gündəlik artım
   
-  // Təcrübə ilinə əsasən aralığı müəyyən et
+  // Təcrübə ilinə əsasən aralığı və gündəlik artımı müəyyən et
   if (!experienceYear || experienceYear <= 1) {
-    min = 60;
-    max = 100;
-  } else if (experienceYear <= 3) {
-    min = 200;
-    max = 250;
-  } else if (experienceYear <= 5) {
-    min = 700;
-    max = 1000;
-  } else {
-    min = 1500;
+    min = 1800;
     max = 2000;
-  }
-  
-  // Random rəqəm generasiya et
-  let baseNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  
-  // Tam yuvarlaq rəqəmlərdən qaçmaq üçün +/- 10% aralığında bir düzəliş əlavə et
-  // Bu rəqəmlərə 1-9 arası bir təsadüfi ədəd də əlavə edək ki, daha real görünsün
-  let adjustment = Math.floor(Math.random() * 10) + 1;
-  if (Math.random() > 0.5) {
-    baseNumber = baseNumber + adjustment;
+    dailyIncrease = 5;
+  } else if (experienceYear <= 3) {
+    min = 3600;
+    max = 4000;
+    dailyIncrease = 5;
+  } else if (experienceYear <= 5) {
+    min = 5400;
+    max = 6000;
+    dailyIncrease = 7;
+  } else if (experienceYear <= 10) {
+    min = 9000;
+    max = 10000; // Buradakı dəyər düzəldildi (1000 deyil, 10000)
+    dailyIncrease = 12;
   } else {
-    baseNumber = baseNumber - adjustment;
+    min = 15000;
+    max = 20000;
+    dailyIncrease = 17;
   }
   
-  // Rəqəmi tam olmayan formada randomlaşdıraq (məsələn 973 deyil, 973.5)
-  return baseNumber;
+  // Seed əsasında başlanğıc dəyərini hesablamaq
+  const range = max - min;
+  const randomOffset = seed % range;
+  let baseNumber = min + randomOffset;
+  
+  // İndiki tarixdən asılı olaraq gündəlik artımı hesablamaq
+  const startDate = new Date('2023-01-01'); // Başlanğıc tarixi (sabit)
+  const today = new Date();
+  const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  
+  // Ümumi pasiyent sayını hesabla
+  const totalPatients = baseNumber + (daysDiff * dailyIncrease);
+  
+  return totalPatients;
 };
 
-// Hesablanmış pasiyent sayı üçün computed xüsusiyyəti yaradaq
+// Hesablanmış pasiyent sayı üçün computed xüsusiyyəti
 const patientCount = computed(() => {
-  if (!doctor.value) return 0;
-  return calculatePatients(doctor.value.experience_year);
+  if (!doctor.value || !doctor.value.slug) return 0;
+  return calculatePatients(doctor.value.experience_year, doctor.value.slug);
 });
 </script>
 

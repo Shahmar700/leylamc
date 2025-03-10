@@ -65,7 +65,7 @@ import { useHead } from '@vueuse/head';
 
 // SEO meta məlumatları
 useHead({
-  title: 'Leyla Medical Center Tarixi | 1999-dan Günümüzə İnkişaf Yolu',
+  title: 'Haqqımızda | Tariximiz',
   meta: [
     { 
       name: 'description', 

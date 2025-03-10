@@ -1,14 +1,18 @@
 <template>
   <div :style="{ marginTop: headerHeight + 'px' }">
-    <div class="relative pb-[400px] screen-400:pb-[550px]" >
+    <div class="relative pb-[400px] screen-400:pb-[550px]">
       <div class="max-w-[2400px] mx-auto" data-aos="zoom-out-right">
         <Slider :images="homeImages" />
       </div>
-    <!-- ** SERVICES ** ----  -->
-      <div class="bg-white border rounded-t-[60px] absolute -bottom-6 screen-375:bottom-32 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full" >
-        <div class="container pt-[30px] screen-500:pt-[50px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- ** SERVICES ** ----  -->
+      <div
+        class="bg-white border rounded-t-[60px] absolute -bottom-6 screen-375:bottom-32 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full"
+      >
+        <div
+          class="container pt-[30px] screen-500:pt-[50px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           <Service
-            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
+            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service1"
             :icon="serviceIcon1"
             title="Ünvanda xidmət"
@@ -16,7 +20,7 @@
             @click="goToService('/medical-services/unvanda-xidmt')"
           />
           <Service
-            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200" 
+            class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service2"
             :icon="serviceIcon2"
             title="TƏCİLİ TİBBİ yardım"
@@ -33,85 +37,138 @@
             @click="goToService('contact')"
           />
         </div>
-        </div>
-      
       </div>
+    </div>
     <!-- ** E-SERVİCES ** ----   -->
-     <div class="bg-secondary pt-[72px] pb-24">
+    <div class="bg-secondary pt-[72px] pb-24">
       <div>
-        <h1 class="text-xl screen-500::text-2xl lg:text-3xl text-center text-primary font-semibold tracking-wide">Elektron xidmətlərimizlə bir addım daha yaxınıq</h1>
-        <p class="text-[#505050] text-xl screen-500::text-2xl lg:text-3xl text-center mt-4 mb-[72px]">Hər an, hər yerdə sizinləyik</p>
+        <h1
+          class="text-xl screen-500::text-2xl lg:text-3xl text-center text-primary font-semibold tracking-wide"
+        >
+          Elektron xidmətlərimizlə bir addım daha yaxınıq
+        </h1>
+        <p
+          class="text-[#505050] text-xl screen-500::text-2xl lg:text-3xl text-center mt-4 mb-[72px]"
+        >
+          Hər an, hər yerdə sizinləyik
+        </p>
       </div>
-      <div class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <Eservice 
+      <div
+        class="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        <Eservice
           :eService="eService1"
           title="E - növbə"
           description="Online qəbula e - növbəyə yazılın"
           link="/online-services/e-appointment"
-          />
-          <Eservice
+        />
+        <Eservice
           :eService="eService2"
           title="E - nəticə"
-          description="Analizlərin nəticələrini əldə edin" 
+          description="Analizlərin nəticələrini əldə edin"
           link="/online-services/e-result"
-          />
-          <Eservice 
-          :eService="eService3" 
+        />
+        <Eservice
+          :eService="eService3"
           title="E - ödəmə"
           description="Ödənişləri e-ödəmə vasitəsiylə edin"
           link="/online-services/e-payment"
-          />
-          <!-- <Eservice 
+        />
+        <!-- <Eservice 
           :eService="eService4" 
           title="E - satış"
           description="Xidmətlərimizi online sifariş edin"
           link="/online-services/e-commerce"
           /> -->
-          <Eservice 
-          :eService="eService5" 
+        <Eservice
+          :eService="eService5"
           title="E - məsləhət"
           description="Xidmətlərimizi online sifariş edin"
           link="/online-services/e-consultation"
+        />
+      </div>
+    </div>
+
+    <!-- ** ABOUT **  -->
+    <div class="container grid grid-cols-1 lg:grid-cols-2 gap-6 pt-36 pb-32">
+      <div class="flex justify-center flex-col">
+        <div class="w-full">
+          <img
+            src="@/assets/images/logo-mini.svg"
+            alt="Logo"
+            class="float-left mr-4 mb-4 w-h-16 h-16 screen-400:w-24 screen-400:h-24"
           />
-      </div>
-     </div>
-
-     <!-- ** ABOUT **  -->
-      <div class="container grid grid-cols-1 lg:grid-cols-2 gap-6 pt-36 pb-32">
-        <div class="flex justify-center flex-col">
-          <div class="w-full">
-            <img src="@/assets/images/logo-mini.svg" alt="Logo" class="float-left mr-4 mb-4 w-h-16 h-16 screen-400:w-24 screen-400:h-24">
           <div>
-            <p class="text-base screen-400:text-lg md:text-2xl font-normal text-justify">
-            1999-cu ildə ulu öndərimiz Heydər Əliyev tərəfindən açılışı baş tutan Leyla Medical Center fəaliyyətinin 22-ci ilində Referans Medical Group şəbəkəsinə daxil olaraq yeni ad, daha geniş xidmət çeşidi, daha da peşəkar həkimlər ilə sizlər üçün xidmət göstərməyə başladı. Mərkəzimiz tək Azərbaycanda deyil, eyni zamanda Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi kimi uğurla fəaliyyətə başlamışdır.
-          </p>
-          <h4 class="text-base screen-400:text-lg md:text-2xl font-bold text-justify">
-            Bizlərə göstərilən inamı doğrultmaq və Səhiyyə sisteminin, xüsusilə özəl tibb sektorunun inkişaf etdirilməsi məqsədilə müəssisəmiz dayanmadan sizlər üçün xidmət göstərməkdədir. Leyla Medical Center olaraq yeni personal, yeni həkimlər, yeni avadanlıqlar və ən dəqiq laborator xidmətlər ilə "Sizin sağlamlığınız-bizim dəyərimizdir" şüarı altında fəaliyyətimizi sizlər üçün davam etdiririk.
-          </h4>
-          </div>
-        </div>
-        </div>
-        <!-- Right Side  -->
-        <div class="">
-          <div class="w-full h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]  relative">
-            <img class="rounded-2xl w-full h-full rounded-bl-3xl object-cover" src="@/assets/images/leyla-building.jpg" alt="">
-              <div class="pt-2 pr-2 bg-white absolute left-0 bottom-0 rounded-2xl transition-all duration-150 cursor-pointer hover:scale-101">
-                <router-link :to="{name: 'our-history'}" class="!w-36 text-white pt-4 pb-3 px-4 rounded-2xl bg-primary flex flex-col hover:shadow-lg">
-                  <span class="font-semibold text-base screen-400:text-xl screen-500:text-2xl lg:text-3xl">Daha ətraflı</span>
-                  <img class="object-cover" src="@/assets/icons/long-arrow.svg" alt="">
-                </router-link>
-              </div>
+            <p
+              class="text-base screen-400:text-lg md:text-2xl font-normal text-justify"
+            >
+              1999-cu ildə ulu öndərimiz Heydər Əliyev tərəfindən açılışı baş
+              tutan Leyla Medical Center fəaliyyətinin 22-ci ilində Referans
+              Medical Group şəbəkəsinə daxil olaraq yeni ad, daha geniş xidmət
+              çeşidi, daha da peşəkar həkimlər ilə sizlər üçün xidmət göstərməyə
+              başladı. Mərkəzimiz tək Azərbaycanda deyil, eyni zamanda Qafqazda
+              ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb
+              müəssisəsi kimi uğurla fəaliyyətə başlamışdır.
+            </p>
+            <h4
+              class="text-base screen-400:text-lg md:text-2xl font-bold text-justify"
+            >
+              Bizlərə göstərilən inamı doğrultmaq və Səhiyyə sisteminin,
+              xüsusilə özəl tibb sektorunun inkişaf etdirilməsi məqsədilə
+              müəssisəmiz dayanmadan sizlər üçün xidmət göstərməkdədir. Leyla
+              Medical Center olaraq yeni personal, yeni həkimlər, yeni
+              avadanlıqlar və ən dəqiq laborator xidmətlər ilə "Sizin
+              sağlamlığınız-bizim dəyərimizdir" şüarı altında fəaliyyətimizi
+              sizlər üçün davam etdiririk.
+            </h4>
           </div>
         </div>
       </div>
+      <!-- Right Side  -->
+      <div class="">
+        <div
+          class="w-full h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative"
+        >
+          <img
+            class="rounded-2xl w-full h-full rounded-bl-3xl object-cover"
+            src="@/assets/images/leyla-building.jpg"
+            alt=""
+          />
+          <div
+            class="pt-2 pr-2 bg-white absolute left-0 bottom-0 rounded-2xl transition-all duration-150 cursor-pointer hover:scale-101"
+          >
+            <router-link
+              :to="{ name: 'our-history' }"
+              class="!w-36 text-white pt-4 pb-3 px-4 rounded-2xl bg-primary flex flex-col hover:shadow-lg"
+            >
+              <span
+                class="font-semibold text-base screen-400:text-xl screen-500:text-2xl lg:text-3xl"
+                >Daha ətraflı</span
+              >
+              <img
+                class="object-cover"
+                src="@/assets/icons/long-arrow.svg"
+                alt=""
+              />
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <!-- ** Our Youtube Channel ** -->
-      <div class="bg-secondary py-16">
-      <div class="container ">
-        <div class=" flex flex-col screen-500:flex-row justify-between mb-10">
+    <!-- ** Our Youtube Channel ** -->
+    <div class="bg-secondary py-16">
+      <div class="container">
+        <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
-            <p class="text-2xl text-[#505050] font-normal tracking-wider">Youtube kanalımız</p>
-            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Faydalı məlumatlar</h1>
+            <p class="text-2xl text-[#505050] font-normal tracking-wide">
+              Youtube kanalımız
+            </p>
+            <h1
+              class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+            >
+              Faydalı məlumatlar
+            </h1>
           </div>
           <div class="mt-4 sm:mt-0">
             <a href="" class="greenBtn">Kanalımıza keçid et</a>
@@ -119,106 +176,155 @@
         </div>
         <!-- videos  -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Ytvideo
+          <Ytvideo
             class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
             videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
             name="Leyla Medical Centerin Radiologiya şöbəsi"
-             @click="openModal('https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7')"
-            />
-            <Ytvideo
+            @click="
+              openModal(
+                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
+              )
+            "
+          />
+          <Ytvideo
             class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
             videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
             name="Leyla Medical Centerin Radiologiya şöbəsi"
-             @click="openModal('https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7')"
-            />
-            <Ytvideo
+            @click="
+              openModal(
+                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
+              )
+            "
+          />
+          <Ytvideo
             class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
             videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
             name="Leyla Medical Centerin Radiologiya şöbəsi"
-             @click="openModal('https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7')"
-            />
-         </div>
+            @click="
+              openModal(
+                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
+              )
+            "
+          />
+        </div>
       </div>
-        <Modal :isOpen="isModalOpen" :videoUrl="currentVideoUrl" @close="closeModal" />
-      </div>
+      <Modal
+        :isOpen="isModalOpen"
+        :videoUrl="currentVideoUrl"
+        @close="closeModal"
+      />
+    </div>
 
-      <!-- ** News **  -->
-      <div class="bg-secondary py-16 my-32">
+    <!-- ** News **  -->
+    <div class="bg-secondary py-16 my-32">
       <div class="container">
-        <div class=" flex flex-col screen-500:flex-row justify-between mb-10">
+        <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
-            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Xəbərlər</h1>
+            <h1
+              class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+            >
+              Xəbərlər
+            </h1>
           </div>
           <div class="mt-4 sm:mt-0">
-            <router-link :to="{name: 'all-news'}" class="greenBtn">Bütün xəbərlər</router-link>
+            <router-link :to="{ name: 'all-news' }" class="greenBtn"
+              >Bütün xəbərlər</router-link
+            >
           </div>
         </div>
         <!-- News Boxs -->
-         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <News 
-            v-for="item in news.slice(0, 3)" 
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <News
+            v-for="item in news.slice(0, 3)"
             :key="item.id"
             class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
-            :newsImg="item.main_photo" 
-            :newsDate="new Date(item.created_at).toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })"
+            :newsImg="item.main_photo"
+            :newsDate="
+              new Date(item.created_at).toLocaleDateString('az-AZ', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })
+            "
             :newsName="item.title"
             @click="goToNews(item.slug)"
-        />
-         </div>
-      </div>
-      </div>
-
-      <!-- ** Departments ** -->
-      <div class="py-16 bg-cover bg-center" :style="{ backgroundImage: `url(${departmentsBg})` }">
-      <div class="container">
-        <div class="flex justify-between mb-16">
-          <h1 class="text-white text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Şöbələrimiz</h1>
-        </div>
-      
-      <!-- Swiper Carousel -->
-      <swiper
-        :modules="[Navigation, FreeMode]"
-        :slides-per-view="slidesPerView"
-        :space-between="20"
-        :navigation="{ 
-          nextEl: '.swiper-button-next', 
-          prevEl: '.swiper-button-prev'
-        }"
-        :grab-cursor="true"
-        :free-mode="true"
-        :resistance="true"
-        :resistance-ratio="0.85"
-        @swiper="onSwiper"
-      >
-        <swiper-slide v-for="(department, index) in departments" :key="index">
-          <Departament
-            :depIcon="department.icon"
-            :name="department.name" 
-            :subtitle="department.text"
-            :slug="department.slug"
-            class="cursor-pointer h-full"
           />
-        </swiper-slide>
-        
-        <div class="swiper-button-prev !text-white !bg-primary !w-10 !h-10 !rounded-md"></div>
-        <div class="swiper-button-next !text-white !bg-primary !w-10 !h-10 !rounded-md"></div>
-      </swiper>
+        </div>
       </div>
     </div>
+
+    <!-- ** Departments ** -->
+    <div
+        class="py-16 bg-cover bg-center"
+        :style="{ backgroundImage: `url(${departmentsBg})` }"
+      >
+        <div class="container relative">
+          <div class="flex justify-between mb-16">
+            <h1
+              class="text-white text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+            >
+              Şöbələrimiz
+            </h1>
+            
+            <!-- Navigasiya düymələri üçün konteyner -->
+            <div class="flex gap-2">
+              <div class="swiper-button-prev !static !text-primary !bg-white !w-10 !h-10 !rounded-md !m-0"></div>
+              <div class="swiper-button-next !static !text-primary !bg-white !w-10 !h-10 !rounded-md !m-0"></div>
+            </div>
+          </div>
+
+          <!-- Swiper Carousel -->
+          <swiper
+            :modules="[Navigation, FreeMode]"
+            :slides-per-view="slidesPerView"
+            :space-between="20"
+            :navigation="{
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            }"
+            :grab-cursor="true"
+            :free-mode="true"
+            :resistance="true"
+            :resistance-ratio="0.85"
+            @swiper="onSwiper"
+            class="departments-swiper"
+          >
+            <swiper-slide v-for="(department, index) in departments" :key="index">
+              <Departament
+                :depIcon="department.icon"
+                :name="department.name"
+                :subtitle="department.text"
+                :slug="department.slug"
+                class="cursor-pointer h-full"
+              />
+            </swiper-slide>
+          </swiper>
+        </div>
+      </div>
 
     <!-- ** OUR TEAM (Doctors) ** -->
     <div class="mt-48">
       <div class="container">
         <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
-            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Peşəkar komandamız</h1>
+            <h1
+              class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+            >
+              Peşəkar komandamız
+            </h1>
           </div>
           <div class="mt-4 sm:mt-0">
-            <router-link to="/doctors" class="greenBtn tracking-wider text-base screen-500:text-lg lg:text-xl">Həkimlərimiz</router-link>
+            <router-link
+              to="/doctors"
+              class="greenBtn tracking-wide text-base screen-500:text-lg lg:text-xl"
+              >Həkimlərimiz</router-link
+            >
           </div>
         </div>
         <!-- Doctors Imgs  -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-16">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-16"
+        >
           <DoctorCard
             v-for="doctor in doctors.slice(0, 3)"
             :key="doctor.id"
@@ -226,7 +332,7 @@
             :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
             :position="doctor.specialty.name"
             @click="goToDoctor(doctor)"
-        />
+          />
         </div>
       </div>
     </div>
@@ -236,10 +342,10 @@
       <div class="container">
         <div class="flex justify-between mb-32 md:mb-24 lg:mb-16">
           <div>
-            <h1 class="text-primary text-4xl font-semibold tracking-wider">Bizi seçirlər</h1>
+            <h1 class="text-primary text-4xl font-semibold tracking-wide">Bizi seçirlər</h1>
           </div>
           <div>
-            <a href="" class="greenBtn tracking-wider">Pasiyent məmnunluqları</a>
+            <a href="" class="greenBtn tracking-wide">Pasiyent məmnunluqları</a>
           </div>
         </div>
        
@@ -271,42 +377,45 @@
       <div class="container">
         <div class="flex justify-between mb-16">
           <div>
-            <h1 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wider">Xəritədə bax</h1>
+            <h1
+              class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+            >
+              Xəritədə bax
+            </h1>
           </div>
         </div>
         <!-- Maps  -->
-         <div class="w-full rounded-3xl overflow-hidden relative">
-            <Maps />
-         </div>
+        <div class="w-full rounded-3xl overflow-hidden relative">
+          <Maps />
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router'
-import axios from 'axios';
-import { shuffle } from 'lodash';
-import Slider from '@/components/Slider.vue'
-import Service from '@/components/Service.vue'
-import Eservice from '@/components/Eservice.vue'
-import Ytvideo from '@/components/Ytvideo.vue'
-import News from '@/components/News.vue'
-import Departament from '@/components/Departament.vue'
-import DoctorCard from '@/components/DoctorCard.vue'
-import Rating from '@/components/Rating.vue'
-import Maps from '@/components/Maps.vue'
-import Modal from '@/components/Modal.vue';
-import { useHead } from '@vueuse/head';
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { shuffle } from "lodash";
+import Slider from "@/components/Slider.vue";
+import Service from "@/components/Service.vue";
+import Eservice from "@/components/Eservice.vue";
+import Ytvideo from "@/components/Ytvideo.vue";
+import News from "@/components/News.vue";
+import Departament from "@/components/Departament.vue";
+import DoctorCard from "@/components/DoctorCard.vue";
+import Rating from "@/components/Rating.vue";
+import Maps from "@/components/Maps.vue";
+import Modal from "@/components/Modal.vue";
+import { useHead } from "@vueuse/head";
 
 // Swiper import
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, FreeMode } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/free-mode';
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, FreeMode } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/free-mode";
 
 // Responsive state
 const isMobile = ref(false);
@@ -335,7 +444,7 @@ const slidesPerView = computed(() => {
 
 // Modal
 const isModalOpen = ref(false);
-const currentVideoUrl = ref('');
+const currentVideoUrl = ref("");
 
 const openModal = (url) => {
   currentVideoUrl.value = url;
@@ -346,9 +455,10 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-// Go To Services 
-const goToService = (servicePath) => {  // serviceName yerine servicePath
-  if (servicePath.startsWith('/')) {
+// Go To Services
+const goToService = (servicePath) => {
+  // serviceName yerine servicePath
+  if (servicePath.startsWith("/")) {
     // Path parametri ilə yönləndirmə
     router.push({ path: servicePath });
   } else {
@@ -363,11 +473,13 @@ const doctors = ref([]);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
+    const response = await axios.get(
+      "http://bytexerp.online/api/leyla/v1/doctor-list/"
+    );
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = shuffle(response.data.results); // Doktorları təsadüfi olaraq qarışdırmaq
   } catch (error) {
-    console.error('API çağırışında xəta:', error);
+    console.error("API çağırışında xəta:", error);
   }
 };
 
@@ -378,11 +490,13 @@ const news = ref([]);
 // API çağırışı ilə xəbərləri yükləmək
 const fetchNews = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
+    const response = await axios.get(
+      "http://bytexerp.online/api/leyla/v1/news-list/"
+    );
     // console.log(response.data); // Məlumatları konsolda göstərmək
     news.value = response.data.results;
   } catch (error) {
-    console.error('API çağırışında xəta:', error);
+    console.error("API çağırışında xəta:", error);
   }
 };
 
@@ -393,15 +507,15 @@ const departments = ref([]);
 // API çağırışı ilə departamentləri yükləmək
 const fetchDepartments = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/department-list/');
+    const response = await axios.get(
+      "http://bytexerp.online/api/leyla/v1/department-list/"
+    );
     // console.log(response.data); // Məlumatları konsolda göstərmək
     departments.value = response.data.results;
   } catch (error) {
-    console.error('API çağırışında xəta:', error);
+    console.error("API çağırışında xəta:", error);
   }
 };
-
-
 
 onMounted(() => {
   fetchDoctors();
@@ -410,13 +524,13 @@ onMounted(() => {
   startPolling();
 
   // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq
-  window.addEventListener('resize', handleResize);
+  window.addEventListener("resize", handleResize);
   handleResize();
 });
 
 onUnmounted(() => {
   stopPolling();
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener("resize", handleResize);
 });
 
 let pollingInterval;
@@ -431,43 +545,43 @@ const stopPolling = () => {
 
 const router = useRouter();
 const goToDoctor = (doctor) => {
-  router.push({ name: 'doctor', params: { id: doctor.slug } });
+  router.push({ name: "doctor", params: { id: doctor.slug } });
 };
 
 const goToNews = (slug) => {
-  router.push({ name: 'news-content', params: { slug } });
-}
+  router.push({ name: "news-content", params: { slug } });
+};
 
 // GET APİ DOCTORS END ________________________
 
 // images for the slider component
-import heroBanner from '@/assets/images/heroBanner.webp'
+import heroBanner from "@/assets/images/heroBanner.webp";
 // import heroBanner2 from '@/assets/images/heroBanner2.webp'
-import heroBanner3 from '@/assets/images/heroBanner3.webp'
-import heroBanner4 from '@/assets/images/heroBanner4.webp'
+import heroBanner3 from "@/assets/images/heroBanner3.webp";
+import heroBanner4 from "@/assets/images/heroBanner4.webp";
 
 const homeImages = [
   heroBanner,
   // heroBanner2,
   heroBanner3,
   heroBanner4,
-]
-// Services Images 
-import service1 from "@/assets/images/Service1.jpg"
-import service2 from "@/assets/images/Service2.jpg"
-import service3 from "@/assets/images/Service3.jpg"
+];
+// Services Images
+import service1 from "@/assets/images/Service1.jpg";
+import service2 from "@/assets/images/Service2.jpg";
+import service3 from "@/assets/images/Service3.jpg";
 import serviceIcon1 from "@/assets/icons/serviceIcon1.png";
 import serviceIcon2 from "@/assets/icons/serviceIcon2.svg";
 import serviceIcon3 from "@/assets/icons/serviceIcon3.svg";
 
-// E-services Icons 
+// E-services Icons
 import eService1 from "@/assets/icons/eService1.svg";
 import eService2 from "@/assets/icons/eService2.svg";
 import eService3 from "@/assets/icons/eService3.svg";
 import eService4 from "@/assets/icons/eService4.svg";
 import eService5 from "@/assets/icons/eService5.svg";
 
-// News Images 
+// News Images
 // import news1 from "@/assets/images/news1.jpg"
 // import news2 from "@/assets/images/news2.jpg"
 // import news3 from "@/assets/images/news3.jpg"
@@ -500,103 +614,126 @@ const prevSlide = () => {
   }
 };
 
-
 // Rating User Images
-import user1 from "@/assets/images/user1.jpg"
-import user2 from "@/assets/images/user2.jpg"
-import user3 from "@/assets/images/user3.jpg"
+import user1 from "@/assets/images/user1.jpg";
+import user2 from "@/assets/images/user2.jpg";
+import user3 from "@/assets/images/user3.jpg";
 
-// get header height 
-const headerHeight = inject('headerHeight', ref(0))
-
+// get header height
+const headerHeight = inject("headerHeight", ref(0));
 
 // SEO meta məlumatları
-import { inject } from 'vue';
+import { inject } from "vue";
 // Footer-dən əlaqə məlumatlarını inject et
-const contactInfo = inject('contactInfo', null);
+const contactInfo = inject("contactInfo", null);
 
 useHead({
-  title: 'Leyla Medical Center | Tibb Mərkəzi | Peşəkar Həkim Komandası',
+  title: "Leyla Medical Center | Tibb Mərkəzi | Peşəkar Həkim Komandası",
   meta: [
-    { 
-      name: 'description', 
-      content: '1999-cu ildən fəaliyyət göstərən Leyla Medical Center Azərbaycanda aparıcı tibb mərkəzidir. Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi. Təcili tibbi yardım, ünvana həkim xidməti və geniş şöbə şəbəkəsi.' 
+    {
+      name: "description",
+      content:
+        "1999-cu ildən fəaliyyət göstərən Leyla Medical Center Azərbaycanda aparıcı tibb mərkəzidir. Qafqazda ilk Mamalıq və Ginekologiya üzrə ixtisaslaşdırılmış özəl tibb müəssisəsi. Təcili tibbi yardım, ünvana həkim xidməti və geniş şöbə şəbəkəsi.",
     },
-    { name: 'keywords', content: 'leyla medical center, tibb mərkəzi, klinika, tibbi xidmət, həkim, ginekologiya, mamalıq, təcili tibbi yardım, ünvana həkim, azərbaycan, bakı' },
-    { property: 'og:title', content: 'Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi' },
-    { 
-      property: 'og:description', 
-      content: 'Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.'
+    {
+      name: "keywords",
+      content:
+        "leyla medical center, tibb mərkəzi, klinika, tibbi xidmət, həkim, ginekologiya, mamalıq, təcili tibbi yardım, ünvana həkim, azərbaycan, bakı",
     },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com' },
-    { property: 'og:image', content: 'https://leylamc.com/images/leyla-building.jpg' },
-    { property: 'og:site_name', content: 'Leyla Medical Center' },
-    { property: 'og:locale', content: 'az_AZ' },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi' },
-    { 
-      name: 'twitter:description', 
-      content: 'Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.'
+    {
+      property: "og:title",
+      content: "Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi",
     },
-    { name: 'twitter:image', content: 'https://leylamc.com/images/leyla-building.jpg' },
-    
+    {
+      property: "og:description",
+      content:
+        "Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://leylamc.com" },
+    {
+      property: "og:image",
+      content: "https://leylamc.com/images/leyla-building.jpg",
+    },
+    { property: "og:site_name", content: "Leyla Medical Center" },
+    { property: "og:locale", content: "az_AZ" },
+    { name: "twitter:card", content: "summary_large_image" },
+    {
+      name: "twitter:title",
+      content: "Leyla Medical Center | Azərbaycanın Aparıcı Tibb Mərkəzi",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Leyla Medical Center - 1999-cu ildən etibarən yüksək keyfiyyətli tibbi xidmətlər təqdim edir. 7/24 təcili tibbi yardım, ünvana həkim və geniş şöbə şəbəkəsi.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://leylamc.com/images/leyla-building.jpg",
+    },
+
     // Strukturlu məlumatları əlavə etmək
     {
-      name: 'script',
-      type: 'application/ld+json',
+      name: "script",
+      type: "application/ld+json",
       children: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'MedicalOrganization',
-        'name': 'Leyla Medical Center',
-        'url': 'https://leylamc.com',
-        'logo': 'https://leylamc.com/images/logo.png',
-        'contactPoint': {
-          '@type': 'ContactPoint',
-          'telephone': '+994-101', 
-          'contactType': 'customer service',
-          'availableLanguage': ['Azərbaycan dili', 'English', 'Русский']
+        "@context": "https://schema.org",
+        "@type": "MedicalOrganization",
+        name: "Leyla Medical Center",
+        url: "https://leylamc.com",
+        logo: "https://leylamc.com/images/logo.png",
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+994-101",
+          contactType: "customer service",
+          availableLanguage: ["Azərbaycan dili", "English", "Русский"],
         },
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': 'Tbilisi prospekti 147',
-          'addressLocality': 'Bakı',
-          'addressRegion': 'Bakı',
-          'postalCode': 'AZ1122',
-          'addressCountry': 'AZ'
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Tbilisi prospekti 147",
+          addressLocality: "Bakı",
+          addressRegion: "Bakı",
+          postalCode: "AZ1122",
+          addressCountry: "AZ",
         },
-        'geo': {
-          '@type': 'GeoCoordinates',
-          'latitude': 40.4093,
-          'longitude': 49.8671
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 40.4093,
+          longitude: 49.8671,
         },
-        'openingHoursSpecification': {
-          '@type': 'OpeningHoursSpecification',
-          'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          'opens': '00:00',
-          'closes': '24:00'
+        openingHoursSpecification: {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+          opens: "00:00",
+          closes: "24:00",
         },
-        'department': departments.value.map(dept => ({
-          '@type': 'MedicalSpecialty',
-          'name': dept.name
+        department: departments.value.map((dept) => ({
+          "@type": "MedicalSpecialty",
+          name: dept.name,
         })),
-      })
+      }),
     },
     contactInfo && {
-      name: 'script',
-      type: 'application/ld+json',
-      children: JSON.stringify(contactInfo)
-    }
+      name: "script",
+      type: "application/ld+json",
+      children: JSON.stringify(contactInfo),
+    },
   ],
-  link: [
-    { rel: 'canonical', href: 'https://leylamc.com' }
-  ]
+  link: [{ rel: "canonical", href: "https://leylamc.com" }],
 });
 </script>
 
 <style scoped>
 .hover\:shadow-lg:hover {
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .float-left {
   float: left;
@@ -612,9 +749,18 @@ useHead({
   clear: both;
 }
 
-
 /* Department Caroulse  */
+/* Navigasiya düymələri üçün stil */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 16px !important;
+}
 
+/* Container-ı relative et ki, düymələri düzgün yerləşdirə bilək */
+.container {
+  position: relative;
+}
+/* 
 .carousel-container {
   position: relative;
   width: 100%;
@@ -629,11 +775,9 @@ useHead({
 .carousel-item {
   flex: 0 0 30%;
   max-width: 30%;
-  /* padding: 0 8px; */
-  /* box-sizing: border-box; */
-}
+} */
 
-.nav-button {
+/* .nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -656,5 +800,7 @@ useHead({
 .nav-button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
+} */
+
+
 </style>
