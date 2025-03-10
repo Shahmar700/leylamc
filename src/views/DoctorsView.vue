@@ -113,23 +113,23 @@ const fetchSpecializations = async () => {
 onMounted(() => {
   fetchDoctors();
   fetchSpecializations();
-  startPolling();
+  // startPolling();
 });
 
 onUnmounted(() => {
-  stopPolling();
+  // stopPolling();
   cleanupSkeleton(); // Skeleton təmizləməsi əlavə edildi
 });
 
-let pollingInterval;
+// let pollingInterval;
 
-const startPolling = () => {
-  pollingInterval = setInterval(fetchDoctors, 5000); // Hər 5 saniyədən bir API çağırışı
-};
+// const startPolling = () => {
+//   pollingInterval = setInterval(fetchDoctors, 5000); // Hər 5 saniyədən bir API çağırışı
+// };
 
-const stopPolling = () => {
-  clearInterval(pollingInterval);
-};
+// const stopPolling = () => {
+//   clearInterval(pollingInterval);
+// };
 
 const filteredDoctors = computed(() => {
   return doctors.value.filter(doctor => {

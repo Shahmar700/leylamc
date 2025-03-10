@@ -63,9 +63,9 @@
       <!-- Doctor İnformations -->
       <div class="w-full mt-20">
       <div class="flex justify-around relative">
-        <h1 class="pb-4 cursor-pointer text-2xl text-main-text font-bold" @click="selectTab('info')">Məlumat</h1>
-        <h1 class="pb-4 cursor-pointer text-2xl text-main-text font-bold" @click="selectTab('articles')">Həkimin məqalələri</h1>
-        <h1 class="pb-4 cursor-pointer text-2xl text-main-text font-bold" @click="selectTab('reviews')">Rəylər</h1>
+        <h1 class="pb-4 cursor-pointer text-sm screen-400:text-base lg:text-xl xl:text-2xl text-main-text font-bold" @click="selectTab('info')">Məlumat</h1>
+        <h1 class="pb-4 cursor-pointer text-sm screen-400:text-base lg:text-xl xl:text-2xl text-main-text font-bold" @click="selectTab('articles')">Həkimin məqalələri</h1>
+        <h1 class="pb-4 cursor-pointer text-sm screen-400:text-base lg:text-xl xl:text-2xl text-main-text font-bold" @click="selectTab('reviews')">Rəylər</h1>
         <div class="absolute w-full h-[4px] left-0 bottom-[-5px] bg-[#c7c7c7]" :style="tabStyle"></div>
       </div>
 
@@ -75,38 +75,38 @@
           <table class="w-full tracking-wider text-main-text">
             <tbody>
               <tr class="bg-[#f6fbf2]">
-                <td class="p-2">Vəzifə</td>
-                <td class="p-2">{{ doctor.position }}</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">Vəzifə</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">{{ doctor.position }}</td>
               </tr>
               <tr class="bg-white">
-                <td class="p-2">Şöbə</td>
-                <td class="p-2">{{  doctor.category  }}</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">Şöbə</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">{{ doctor.category }}</td>
               </tr>
               <tr class="bg-[#f6fbf2]">
-                <td class="p-2">Təhsil</td>
-                <td class="p-2">
-                  <div class="flex items-center">
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">Təhsil</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">
+                  <div class="flex items-start">
                     <p v-html="formattedEducation"></p>
                   </div>
                 </td>
               </tr>
               <tr class="bg-white">
-                <td class="p-2">Kurslar, Konfranslar</td>
-                <td class="p-2">
-                  <div class="flex items-center">
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">Kurslar, Konfranslar</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">
+                  <div class="flex items-start">
                     <p v-html="formattedCourses"></p>
                   </div>
                 </td>
               </tr>
               <tr class="bg-[#f6fbf2]">
-                <td class="p-2">Müayinə və müalicə istiqamətləri</td>
-                <td class="p-2">
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">Müayinə və müalicə istiqamətləri</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">
                   <p v-html="formattedTreatment"></p>
                 </td>
               </tr>
               <tr class="bg-white">
-                <td class="p-2">İş təcrübəsi</td>
-                <td class="p-2">
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg lg:text-xl font-semibold">İş təcrübəsi</td>
+                <td class="p-1 md:p-3 lg:p-4 text-sm md:text-lg">
                   <p v-html="formattedExperience"></p>
                 </td>
               </tr>
@@ -422,14 +422,14 @@ table img{
   height: 17px;
   margin-right: 5px;
 }
-table tr td{
+/* table tr td{
   padding: 15px;
-}
+} */
 table tr td:nth-child(1){
   display: flex;
 }
 table tr td:nth-child(1){
-  font-size: 20px;
+  /* font-size: 20px; */
   font-weight: bold;
 }
 table tr div{
