@@ -52,11 +52,12 @@
 <script setup>
 import { ref, defineEmits } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/auth'; // auth servisini import edirik
+import { useAuthStore } from '@/store/auth'; // Auth store'u import edirik
 import Swal from 'sweetalert2';
 
 const router = useRouter();
-const emit = defineEmits(['close', 'login-success']); // login-success eventi əlavə edildi
+const emit = defineEmits(['close', 'login-success']);
+const authStore = useAuthStore(); // Auth store instance'ını əldə edirik
 
 // Form inputs
 const username = ref('');
@@ -81,8 +82,8 @@ const login = async () => {
     try {
         isLoading.value = true;
         
-        // auth servisi vasitəsilə login edirik
-        await authService.login(username.value, password.value);
+        // auth store vasitəsilə login edirik
+        await authStore.login(username.value, password.value);
         
         // Uğurlu giriş emiti göndəririk
         emit('login-success');

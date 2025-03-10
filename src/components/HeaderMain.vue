@@ -259,8 +259,8 @@
               <!-- İstifadəçi girişi / profil ikonu -->
                 <div class="relative ml-3">
                   <!-- İstifadəçi daxil olmadıqda login ikonu -->
-                  <template v-if="!isLoggedIn">
-                    <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] cursor-pointer" @click="toggleModal"></i>
+                  <template v-if="!authStore.isLoggedIn">
+                     <i class="fa-solid fa-right-to-bracket text-2xl md:text-3xl text-[#ef7c00] cursor-pointer" @click="toggleModal"></i>
                   </template>
                   
                   <!-- İstifadəçi daxil olduqda profil ikonu və dropdown -->
@@ -268,7 +268,7 @@
                     <div class="headerParent relative group">
                       <div class="flex items-center cursor-pointer">
                         <i class="fa-solid fa-user-circle text-2xl md:text-3xl text-[#ef7c00]"></i>
-                        <span class="ml-2 hidden md:inline text-sm text-primary">{{ username }}</span>
+                        <span class="ml-2 hidden md:inline text-sm text-primary">{{ authStore.username }}</span>
                       </div>
                       
                       <ul class="headerDropdown absolute top-8 right-0 z-30 bg-white w-48 py-3 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
@@ -277,11 +277,6 @@
                             <i class="fa-solid fa-user mr-2"></i> Profilim
                           </router-link>
                         </li>
-                        <!-- <li class="mb-2 px-4">
-                          <router-link to="/orders" class="block py-1 w-full">
-                            <i class="fa-solid fa-clipboard-list mr-2"></i> Sifarişlərim
-                          </router-link>
-                        </li> -->
                         <li class="px-4">
                           <button @click="logout" class="flex w-full items-center py-1 text-red-500">
                             <i class="fa-solid fa-sign-out-alt mr-2"></i> Çıxış
@@ -548,11 +543,13 @@ import { ref, computed, inject, onMounted, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
-import authService from '@/services/auth'; // Auth servisini import edirik
+import { useAuthStore } from '@/store/auth'; // AuthService-i AuthStore ilə əvəz edirik
 
 const router = useRouter();
 const route = useRoute();
 const toggleModal = inject('toggleModal'); // Inject the toggleModal function
+const authStore = useAuthStore(); // Auth store instance'ı yaradırıq
+
 const isDepartmentRoute = computed(() => {
   return route.name === 'departments' || 
          route.name === 'department-detail' || 
@@ -570,8 +567,8 @@ const isMedServiceRoute = computed(() => {
 });
 const departments = ref([]); // Yeni ref
 const surgeries = ref([]);
-const isLoggedIn = ref(false); // İstifadəçinin giriş statusu
-const username = ref(''); // İstifadəçi adını saxlamaq üçün
+const isLoggedIn = computed(() => authStore.isLoggedIn);
+const username = computed(() => authStore.username);
 
 const headerClass = computed(() => {
 return route.path === '/' ? 'header-white' : 'header-gray';
@@ -579,15 +576,12 @@ return route.path === '/' ? 'header-white' : 'header-gray';
 
 // Komponenti yükləyərkən və route dəyişdiyində auth statusunu yoxlayırıq
 const checkAuthStatus = () => {
-  isLoggedIn.value = authService.isLoggedIn();
-  username.value = authService.getUsername() || '';
+  authStore.checkAuthState(); // Store-dakı vəziyyəti yeniləyirik
 };
 
 // İstifadəçi çıxış funksiyası
 const logout = () => {
-  authService.logout();
-  isLoggedIn.value = false;
-  username.value = '';
+  authStore.logout();
   router.push('/');
 };
 

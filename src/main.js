@@ -1,3 +1,4 @@
+import { createPinia } from 'pinia';
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -23,6 +24,7 @@ import Breadcrumb from './components/Breadcrumb.vue'
 import VueLazyload from 'vue-lazyload'
 
 const app = createApp(App)
+const pinia = createPinia();
 app.component('header-top', HeaderTop)
 app.component('header-main', HeaderMain)
 app.component('footer-main', FooterMain)
@@ -39,6 +41,7 @@ app.use(VueLazyload, {
 
 const head = createHead()
 
+app.use(pinia);
 app.use(router)
 app.use(head)
 app.mount('#app')
