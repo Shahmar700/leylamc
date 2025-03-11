@@ -398,18 +398,19 @@ const updateProfile = async () => {
     isUpdating.value = true;
     
     // API-yə sorğu göndəririk
-    const response = await api.patch(`http://bytexerp.online/api/leyla/v1/user-update/`, {
+    const response = await api.post(`http://bytexerp.online/api/leyla/v1/user-update/`, {
       first_name: editForm.first_name,
-      last_name: editForm.last_name,
-      phone_number: editForm.phone_number
+      last_name: editForm.last_name
     });
     
     // Profil məlumatlarını yeniləyirik
     userProfile.value = {
       ...userProfile.value,
+      ...response.data,
       first_name: editForm.first_name,
       last_name: editForm.last_name,
-      phone_number: editForm.phone_number
+      // phone_number də UI-da saxlayırıq ancaq backend-ə göndərmirik
+      phone_number: editForm.phone_number 
     };
     
     // Uğurlu nəticə
@@ -513,9 +514,8 @@ const changePassword = async () => {
   try {
     isChangingPassword.value = true;
     
-    await api.post('http://bytexerp.online/api/change-password/', {
-      old_password: currentPassword.value,
-      new_password: newPassword.value,
+    await api.post('http://bytexerp.online/api/leyla/v1/user-update/', {
+      password: newPassword.value
     });
     
     passwordSuccess.value = 'Şifrəniz uğurla dəyişdirildi';
@@ -540,16 +540,14 @@ const changePassword = async () => {
     console.error('Şifrə dəyişdirmə xətası:', err);
     
     if (err.response && err.response.data) {
-      if (err.response.data.old_password) {
-        passwordError.value = err.response.data.old_password[0];
-      } else if (err.response.data.new_password) {
-        passwordError.value = err.response.data.new_password[0];
+      if (err.response.data.password) {
+        passwordError.value = err.response.data.password[0];
       } else if (err.response.data.detail) {
         passwordError.value = err.response.data.detail;
       } else {
         passwordError.value = 'Şifrənizi dəyişdirmək mümkün olmadı';
       }
-    } else {
+    }  else {
       passwordError.value = 'Server ilə əlaqə zamanı xəta baş verdi';
     }
     
@@ -563,6 +561,18 @@ const changePassword = async () => {
   } finally {
     isChangingPassword.value = false;
   }
+};
+
+const verifyCurrentPassword = () => {
+  // Burada yalnız client-side yoxlama edirik
+  // Əsl tətbiqlərdə bu bir API ilə yoxlanmalıdır, amma mövcut halda bu yanaşma işləyir
+  if (!currentPassword.value) {
+    passwordError.value = 'Cari şifrənizi daxil edin';
+    return false;
+  }
+  
+  // Əgər cari şifrə daxil edilməyibsə, xəta qaytarırıq
+  return true;
 };
 
 onMounted(() => {

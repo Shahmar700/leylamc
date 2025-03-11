@@ -9,15 +9,15 @@
                         <button class="greenBtn !rounded-lg screen-400:ml-3">Abunə ol</button>
                     </label>
                     <div class="mt-7 flex items-center">
-                        <p class="text-main-text flex items-center">
-                            <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
-                            <span class="ml-1 font-bold text-lg sm:text-xl text-main-text">*0101</span>
-                        </p>
-                        <p class="text-main-text flex items-center ml-10">
-                            <img src="@/assets/icons/mail-black.svg" alt="phone" class="icon w-5 h-5" />
-                            <span class="ml-1 font-bold text-lg sm:text-xl text-main-text">info@leylamc.az</span>
-                        </p>
-                    </div>
+                      <p class="text-main-text flex items-center">
+                          <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
+                          <a href="tel:*0101" class="ml-1 font-bold text-lg sm:text-xl text-main-text hover:text-primary transition-colors">*0101</a>
+                      </p>
+                      <p class="text-main-text flex items-center ml-10">
+                          <img src="@/assets/icons/mail-black.svg" alt="phone" class="icon w-5 h-5" />
+                          <a href="mailto:info@leylamc.az" class="ml-1 font-bold text-lg sm:text-xl text-main-text hover:text-primary transition-colors">info@leylamc.az</a>
+                      </p>
+                  </div>
                 </div>
                 <!-- Right Side  -->
                 <div class="w-full mt-7 md:w-[45%] md:mt-0 text-center lg:text-start">

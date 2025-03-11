@@ -5,7 +5,7 @@
         </div>
         <div class="mt-6">
             <h1 class="text-primary text-2xl font-bold">{{ name }}</h1>
-            <p class="dr-position text-gray-500 text-sm md:text-base mt-1 pb-2 italic font-semibold">{{ position }}</p>
+            <p class="dr-position text-gray-500 text-sm md:text-base mt-1 pb-2 font-medium">{{ position }}</p>
         </div>
     </a>
 </template>

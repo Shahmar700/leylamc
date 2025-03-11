@@ -41,7 +41,7 @@
                     </li>
                       <!-- MEDİADA BİZ  -->
                         <li class="mb-2 px-6 mediaParent">
-                          <router-link to="/our-in-media" class="cursor-pointer flex w-full h-full justify-between">
+                          <router-link to="/all-news" class="cursor-pointer flex w-full h-full justify-between">
                             <span>Mediada Biz</span>
                             <span><i class="mediaFa fa-solid fa-angle-down"></i></span>
                           </router-link>
