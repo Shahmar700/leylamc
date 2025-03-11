@@ -177,7 +177,23 @@ const route = useRoute();
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const goBack = () => {
-  router.go(-1);
+  // Əvvəlcə saxlanan pagination səhifəsini yoxlayaq
+  let savedState = null;
+  try {
+    const stateJson = localStorage.getItem('doctorsFilterState');
+    if (stateJson) {
+      savedState = JSON.parse(stateJson);
+    }
+  } catch (e) {
+    console.error('Error parsing saved state', e);
+  }
+  
+  // Geri qayıdaraq və əmin olaq ki, vəziyyət qorunur
+  router.push({ 
+    name: 'doctors',
+    // Əgər sorğu parametrləri istifadə edirsinizsə
+    // query: { page: savedState?.page || 1 } 
+  });
 };
 
 const doctor = ref({});

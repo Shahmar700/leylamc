@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import axios from 'axios';
@@ -84,13 +84,14 @@ const fetchDoctors = async () => {
   try {
     startLoading();
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
-    console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = response.data.results;
     // Şöbələri yükləmək
     const uniqueDepartments = [...new Set(doctors.value.map(doctor => doctor.category))];
     departments.value = uniqueDepartments.filter(name => name).map(name => ({ name }));
+    return response.data;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+    throw error;
   } finally {
     stopLoading();
   }
@@ -102,19 +103,14 @@ const fetchSpecializations = async () => {
     startLoading();
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/drspecialty-list/');
     specializations.value = response.data.results.map(specialty => ({ specialty: specialty.name }));
+    return response.data;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+    throw error;
   } finally {
     stopLoading();
   }
 };
-
-
-onMounted(() => {
-  fetchDoctors();
-  fetchSpecializations();
-  // startPolling();
-});
 
 onUnmounted(() => {
   // stopPolling();
@@ -212,6 +208,108 @@ const goToLastPage = () => {
 const filterDoctors = () => {
   currentPage.value = 1; // Filtrləmə zamanı ilk səhifəyə qayıt
 };
+
+// Geri döndükdə Pagintion saxlanılması 
+// currentPage dəyişdikdə, dəyəri localStorage-də saxlayaq
+watch(currentPage, (newPage) => {
+  localStorage.setItem('doctorsCurrentPage', newPage);
+});
+
+
+// Həmçinin filteredDoctors watch edək və 
+// totalPages dəyişdikdə currentPage-i yenidən yoxlayaq
+watch(totalPages, (newTotalPages) => {
+  // Əgər cari səhifə mövcud səhifə sayından çoxdursa, düzəliş et
+  if (currentPage.value > newTotalPages) {
+    currentPage.value = newTotalPages > 0 ? newTotalPages : 1;
+  }
+});
+
+// Geri döndükdə Filtr dəyərlərini saxlamaq üçün funksiya
+const saveFilterState = () => {
+  const filterState = {
+    name: name.value,
+    specializations: selectedSpecializations.value,
+    departments: selectedDepartments.value,
+    page: currentPage.value
+  };
+  localStorage.setItem('doctorsFilterState', JSON.stringify(filterState));
+};
+
+// Filtr dəyərlərinin hər biri dəyişdikdə state-i saxla
+watch([name, selectedSpecializations, selectedDepartments, currentPage], () => {
+  saveFilterState();
+}, { deep: true });
+
+// Filtr dəyərlərini yükləmək üçün funksiya
+const loadFilterState = () => {
+  const savedState = localStorage.getItem('doctorsFilterState');
+  if (!savedState) return false;
+  
+  try {
+    const filterState = JSON.parse(savedState);
+    
+    // Filtrləri təyin et
+    name.value = filterState.name || '';
+    
+    // specializations və departments-ı yükləyək
+    if (filterState.specializations?.length) {
+      // Əmin olaq ki, specializations mövcuddur və seçilənlər mövcud variantlar arasındadır
+      const validSpecs = filterState.specializations.filter(spec => 
+        specializations.value.some(s => s.specialty === spec.specialty)
+      );
+      selectedSpecializations.value = validSpecs;
+    }
+    
+    if (filterState.departments?.length) {
+      // Əmin olaq ki, departments mövcuddur və seçilənlər mövcud variantlar arasındadır
+      const validDepts = filterState.departments.filter(dept => 
+        departments.value.some(d => d.name === dept.name)
+      );
+      selectedDepartments.value = validDepts;
+    }
+    
+    // Səhifəni sonra yükləyirik (çünki totalPages-in hesablanması filteredDoctors-dan asılıdır)
+    if (filterState.page && filterState.page <= totalPages.value) {
+      currentPage.value = filterState.page;
+    }
+    
+    return true;
+  } catch (e) {
+    console.error('Filter state parsing error:', e);
+    return false;
+  }
+};
+
+
+
+// Səhifə yükləndikdə saxlanılmış vəziyyətləri yükləyək (pagination və filtrlər)
+onMounted(async () => {
+  try {
+    // API çağırışlarını Promise.all ilə gözləyək
+    await Promise.all([
+      fetchDoctors(),
+      fetchSpecializations()
+    ]);
+
+    // API çağırışları bitdikdən və data yüklədikdən sonra
+    // məlumat alınıb və totalPages hesablanıb
+    loadFilterState();
+
+    // Əgər filterState-də pagination vəziyyəti olmadısa 
+    // və ya filterState yüklənmədisə
+    if (currentPage.value === 1) {
+      const savedPage = parseInt(localStorage.getItem('doctorsCurrentPage'));
+      if (!isNaN(savedPage) && savedPage > 0 && savedPage <= totalPages.value) {
+        currentPage.value = savedPage;
+      }
+    }
+  } catch (error) {
+    console.error('Səhifə yükləmə xətası:', error);
+  } finally {
+    cleanupSkeleton();
+  }
+});
 
 // SEO meta məlumatları
 const pageTitle = computed(() => {
