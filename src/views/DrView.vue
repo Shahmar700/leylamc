@@ -115,7 +115,7 @@
         </div>
         <div v-if="selectedTab === 'articles'">
           <!-- Həkimin məqalələri kontenti -->
-         <p v-html="formattedArticles"></p>
+         <p class="text-sm md:text-lg" v-html="formattedArticles"></p>
         </div>
         <div v-if="selectedTab === 'reviews'" class="pt-2">
           <!-- Rəylər kontenti -->

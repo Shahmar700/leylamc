@@ -16,6 +16,7 @@ export default {
     },
     fontFamily: {
       sans: ['AvantGarde', 'sans-serif'],
+      'poppins': ['Poppins', 'sans-serif'],
     },
     container: {
       center: true,

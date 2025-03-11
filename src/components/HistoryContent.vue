@@ -15,22 +15,22 @@
         <!-- RIGHT -->
         <div class="pt-2">   
             <h4 class="text-xl lg:text-2xl text-main-text font-bold mb-2">{{ heading }}</h4>
-            <p v-if="info" class="text-lg lg:text-xl text-main-text font-thin">{{ info }}</p>
+            <p v-if="info" class="text-base md:text-lg lg:text-xl text-main-text font-light">{{ info }}</p>
             <div class="flex mb-2 items-center">
                 <img v-if="tickImg && prog1" :src="tickImg" alt="" class="w-[17px] h-[17px] mr-2">
-                <p v-if="prog1" class="text-lg lg:text-xl text-main-text font-thin">{{ prog1 }}</p>
+                <p v-if="prog1" class="text-base md:text-lg lg:text-xl text-main-text font-light">{{ prog1 }}</p>
             </div>
             <div class="flex mb-2 items-center">
                 <img v-if="tickImg && prog2" :src="tickImg" alt="" class="w-[17px] h-170px] mr-2">
-                <p v-if="prog2" class="text-lg lg:text-xl text-main-text font-thin">{{ prog2 }}</p>
+                <p v-if="prog2" class="text-base md:text-lg lg:text-xl text-main-text font-light">{{ prog2 }}</p>
             </div>
             <div class="flex mb-2 items-center">
                 <img v-if="tickImg && prog3" :src="tickImg" alt="" class="w-[17px] h-[17px] mr-2">
-                <p v-if="prog3" class="text-lg lg:text-xl text-main-text font-thin">{{ prog3 }}</p>
+                <p v-if="prog3" class="text-base md:text-lg lg:text-xl text-main-text font-light">{{ prog3 }}</p>
             </div>
             <div class="flex items-center">
                 <img v-if="tickImg && prog4" :src="tickImg" alt="" class="w-[17px] h-[17px] mr-2">
-                <p v-if="prog4" class="text-lg lg:text-xl text-main-text font-thin">{{ prog4 }}</p>
+                <p v-if="prog4" class="text-base md:text-lg lg:text-xl text-main-text font-light">{{ prog4 }}</p>
             </div>
             <!-- INFO With Green Ticks  -->
         </div>

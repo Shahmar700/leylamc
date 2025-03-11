@@ -5,7 +5,7 @@
         </div>
         <div class="mt-6">
             <h1 class="text-primary text-2xl font-bold">{{ name }}</h1>
-            <p class="text-main-text text-sm md:text-base font-light mt-1 pb-2">{{ position }}</p>
+            <p class="dr-position text-gray-500 text-sm md:text-base mt-1 pb-2 italic font-semibold">{{ position }}</p>
         </div>
     </a>
 </template>
@@ -48,5 +48,9 @@ img[lazy=loaded] {
 .doctor-position {
   font-size: 1rem;
   color: #666;
+}
+
+.dr-position{
+  font-family: 'Poppins', sans-serif;
 }
 </style>

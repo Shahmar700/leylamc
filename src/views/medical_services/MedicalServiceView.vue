@@ -9,26 +9,26 @@
       <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
         <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
           <h1 class="text-3xl font-semibold mb-10">{{ serviceData?.title || serviceData?.title_az }}</h1>
-          <div class="text-base sm:text-lg" v-html="formattedText"></div>
+          <div class="sm:text-lg text-justify" v-html="formattedText"></div>
           <br>
           
           <!-- Service links if available -->
           <div class="flex flex-col flex-wrap gap-4 mt-4">
             <a v-if="serviceData?.service_link" target="_blank" 
                :href="serviceData.service_link" 
-               class=" text-primary">
+               class=" text-primary text-[14px] screen-400:text-base">
               {{ serviceData.service_link }}
             </a>
            
             <a v-if="serviceData?.link" target="_blank" 
                :href="serviceData.link" 
-               class=" text-primary">
+               class=" text-primary text-[14px] screen-400:text-base">
               {{serviceData.link}}
             </a>
         
             <a v-if="serviceData?.link1" target="_blank" 
                :href="serviceData.link1" 
-               class=" text-primary">
+               class=" text-primary text-[14px] screen-400:text-base">
                {{serviceData.link1}}
             </a>
           </div>

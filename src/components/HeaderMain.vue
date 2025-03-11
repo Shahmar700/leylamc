@@ -1,5 +1,5 @@
 <template>
-  <div :class="headerClass" class="sticky top-0 z-[99999]">
+  <div :class="headerClass" class="sticky top-0 z-[99999] shadow-sm">
       <div class="container flex justify-between py-3 sm:py-4 lg:py-3 xl:py-5 sm:items-center font-bold text-lg sm:text-2xl">
           
           <router-link to="/" id="headerLogo" class="flex items-center">
@@ -116,7 +116,7 @@
                <!-- Department  -->
                <li class="headerParent relative group">
                   <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
-                  <ul class="headerDropdown absolute top-8 -right-14 xl:-right-20 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                  <ul class="headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative hidden lg:block">
                       <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer">
@@ -316,44 +316,44 @@
                 </div>
                 <ul v-if="burgerDropdowns.haqqimizda_mobile" class="mt-2 pl-4 space-y-2">
                   <li>
-                    <router-link :to="{name: 'our-history'}" class="block text-lg sm:text-xl" @click="toggleBurger">Tariximiz</router-link>
+                    <router-link :to="{name: 'our-history'}" class="block text-base" @click="toggleBurger">Tariximiz</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'our-vision'}" class="block text-lg sm:text-xl" @click="toggleBurger">Vizyonumuz</router-link>
+                    <router-link :to="{name: 'our-vision'}" class="block text-base" @click="toggleBurger">Vizyonumuz</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'our-mission'}" class="block text-lg sm:text-xl" @click="toggleBurger">Missiyamız</router-link>
+                    <router-link :to="{name: 'our-mission'}" class="block text-base" @click="toggleBurger">Missiyamız</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'our-relations'}" class="block text-lg sm:text-xl" @click="toggleBurger">Beynəlxalq əlaqələrimiz</router-link>
+                    <router-link :to="{name: 'our-relations'}" class="block text-base" @click="toggleBurger">Beynəlxalq əlaqələrimiz</router-link>
                   </li>
                   <!-- Mediada Biz -->
                   <li>
-                    <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                    <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
                       <span>Mediada Biz</span>
                       <i class="fa-solid fa-angle-down transition-transform duration-300" 
                         :class="{'rotate-180': burgerDropdowns.mediadaBiz_mobile}"></i>
                     </div>
                     <ul v-if="burgerDropdowns.mediadaBiz_mobile" class="mt-2 pl-4 space-y-2">
                       <li>
-                        <router-link :to="{name: 'all-news'}" class="block text-lg sm:text-xl" @click="toggleBurger">Xəbərlər</router-link>
+                        <router-link :to="{name: 'all-news'}" class="block text-base" @click="toggleBurger">Xəbərlər</router-link>
                       </li>
                       <li>
-                        <router-link :to="{name: 'kiv-writes'}" class="block text-lg sm:text-xl" @click="toggleBurger">KİV Yazanlar</router-link>
+                        <router-link :to="{name: 'kiv-writes'}" class="block text-base" @click="toggleBurger">KİV Yazanlar</router-link>
                       </li>
                       <!-- Qalereya -->
                       <li>
-                        <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                        <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
                           <span>Qalereya</span>
                           <i class="fa-solid fa-angle-down transition-transform duration-300" 
                             :class="{'rotate-180': burgerDropdowns.gallery_mobile}"></i>
                         </div>
                         <ul v-if="burgerDropdowns.gallery_mobile" class="mt-2 pl-4 space-y-2">
                           <li>
-                            <router-link :to="{name: 'photos-view'}" class="block text-lg sm:text-xl" @click="toggleBurger">Foto</router-link>
+                            <router-link :to="{name: 'photos-view'}" class="block text-base" @click="toggleBurger">Foto</router-link>
                           </li>
                           <li>
-                            <router-link :to="{name: 'videos-view'}" class="block text-lg sm:text-xl" @click="toggleBurger">Video</router-link>
+                            <router-link :to="{name: 'videos-view'}" class="block text-base" @click="toggleBurger">Video</router-link>
                           </li>
                         </ul>
                       </li>
@@ -369,19 +369,19 @@
                     </ul>
                   </li>
                   <li>
-                    <router-link :to="{name: 'director-office'}" class="block text-lg sm:text-xl" @click="toggleBurger">Direktor Kabineti</router-link>
+                    <router-link :to="{name: 'director-office'}" class="block text-base" @click="toggleBurger">Direktor Kabineti</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'satisfaction-form'}" class="block text-lg sm:text-xl" @click="toggleBurger">Məmnunluq anketi</router-link>
+                    <router-link :to="{name: 'satisfaction-form'}" class="block text-base" @click="toggleBurger">Məmnunluq anketi</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'quality-policy'}" class="block text-lg sm:text-xl" @click="toggleBurger">Keyfiyyət siyasəti</router-link>
+                    <router-link :to="{name: 'quality-policy'}" class="block text-base" @click="toggleBurger">Keyfiyyət siyasəti</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'quality-control'}" class="block text-lg sm:text-xl" @click="toggleBurger">Keyfiyyətə nəzarət</router-link>
+                    <router-link :to="{name: 'quality-control'}" class="block text-base" @click="toggleBurger">Keyfiyyətə nəzarət</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'certificates'}" class="block text-lg sm:text-xl" @click="toggleBurger">Sertifikatlar</router-link>
+                    <router-link :to="{name: 'certificates'}" class="block text-base" @click="toggleBurger">Sertifikatlar</router-link>
                   </li>
                   <li>
                     <router-link :to="{name: 'training-center'}" class="block text-lg sm:text-xl" @click="toggleBurger">Təlim Mərkəzi</router-link>

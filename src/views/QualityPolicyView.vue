@@ -1,9 +1,9 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-14 mb:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-3xl font-semibold mb-10">{{ policyTitle }}</h1>
-                <p class="text-base sm:text-lg" v-html="formattedPolicyText"></p>
+                <h1 class="text-2xl md:text-3xl font-semibold mb-5 md:mb-10">{{ policyTitle }}</h1>
+                <p class="text-base md:text-lg lg:text-xl" v-html="formattedPolicyText"></p>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 

@@ -47,17 +47,17 @@
         </div>
       </div>
       
-      <!-- Şifrə sıfırlama formu -->
-      <div v-else class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <!-- Şifrə sıfırlama formu (Email mərhələsi) -->
+      <div v-else-if="showResetForm && !otpSent" class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 class="my-5 text-center text-xl md:text-2xl font-bold tracking-tight text-gray-900">Şifrəni Sıfırla</h2>
           <p class="text-base text-gray-700 text-center">
-            E-poçt ünvanınızı daxil edin, şifrənizi sıfırlamaq üçün sizə təlimat göndərəcəyik.
+            E-poçt ünvanınızı daxil edin, şifrənizi sıfırlamaq üçün sizə doğrulama kodu göndərəcəyik.
           </p>
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" @submit.prevent="sendResetLink">
+          <form class="space-y-6" @submit.prevent="sendOTP">
             <!-- Error/Success message -->
             <div v-if="resetError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
               <span class="block sm:inline">{{ resetError }}</span>
@@ -73,15 +73,82 @@
                 <input v-model="resetEmail" type="email" name="email" id="email" autocomplete="email" placeholder="E-poçt ünvanınızı daxil edin" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 border-gray-200 border" required />
               </div>
             </div>
-    
+
             <div>
               <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" :disabled="isResetting">
-                {{ isResetting ? 'Göndərilir...' : 'Sıfırlama linki göndər' }}
+                {{ isResetting ? 'Göndərilir...' : 'Doğrulama kodu göndər' }}
               </button>
             </div>
             
             <div class="text-center">
               <a href="#" class="text-sm font-medium text-[#ef7c00] hover:text-[#d26a00]" @click.prevent="toggleResetForm">Giriş səhifəsinə qayıt</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- OTP və yeni şifrə formu -->
+      <div v-else-if="showResetForm && otpSent" class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 class="my-5 text-center text-xl md:text-2xl font-bold tracking-tight text-gray-900">Şifrəni Yeniləyin</h2>
+          <p class="text-base text-gray-700 text-center">
+            E-poçt ünvanınıza göndərilən doğrulama kodunu və yeni şifrənizi daxil edin.
+          </p>
+        </div>
+
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form class="space-y-6" @submit.prevent="resetPassword">
+            <!-- Error/Success message -->
+            <div v-if="resetError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span class="block sm:inline">{{ resetError }}</span>
+            </div>
+            
+            <div v-if="resetSuccess" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+              <span class="block sm:inline">{{ resetSuccess }}</span>
+            </div>
+
+            <!-- Email disabled field -->
+            <div>
+              <label for="reset-email" class="block text-sm/6 font-medium text-gray-900">E-poçt ünvanı</label>
+              <div class="mt-2">
+                <!-- Düzəliş burada - {{ }} əvəzinə v-bind və ya : istifadə edilməlidir -->
+                <input type="email" id="reset-email" :value="resetEmail" disabled class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6 border-gray-200 border" />
+              </div>
+            </div>
+
+            <!-- OTP Code -->
+            <div>
+              <label for="otp" class="block text-sm/6 font-medium text-gray-900">Doğrulama kodu</label>
+              <div class="mt-2">
+                <input v-model="otpCode" type="number" id="otp" placeholder="Doğrulama kodunu daxil edin" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 border-gray-200 border" required />
+              </div>
+              <small class="text-gray-500">Doğrulama kodu rəqəmlərdən ibarətdir</small>
+            </div>
+
+            <!-- New Password -->
+            <div>
+              <label for="newPassword" class="block text-sm/6 font-medium text-gray-900">Yeni şifrə</label>
+              <div class="mt-2">
+                <input v-model="newPassword" type="password" id="newPassword" placeholder="Yeni şifrənizi daxil edin" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 border-gray-200 border" required />
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+              <label for="confirmPassword" class="block text-sm/6 font-medium text-gray-900">Şifrə təsdiqi</label>
+              <div class="mt-2">
+                <input v-model="confirmPassword" type="password" id="confirmPassword" placeholder="Şifrəni təkrar daxil edin" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 border-gray-200 border" required />
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" :disabled="isResetting">
+                {{ isResetting ? 'Yenilənir...' : 'Şifrəni yenilə' }}
+              </button>
+            </div>
+            
+            <div class="text-center">
+              <a href="#" class="text-sm font-medium text-[#ef7c00] hover:text-[#d26a00]" @click.prevent="backToEmailStep">Geri qayıt</a>
             </div>
           </form>
         </div>
@@ -116,6 +183,202 @@ const resetError = ref('');
 const resetSuccess = ref('');
 const isResetting = ref(false);
 
+// OTP KOD
+const otpSent = ref(false);
+const otpCode = ref('');
+const newPassword = ref('');
+const confirmPassword = ref('');
+
+// Email mərhələsindən kod göndərmə mərhələsinə keçid
+const sendOTP = async () => {
+  resetError.value = '';
+  resetSuccess.value = '';
+  
+  if (!resetEmail.value) {
+    resetError.value = 'Zəhmət olmasa e-poçt ünvanınızı daxil edin';
+    return;
+  }
+  
+  try {
+    isResetting.value = true;
+    
+    // OTP kodu yaratmaq üçün API çağırışı
+    await axios.post(`${API_URL}/leyla/v1/otp-create/`, {
+      email: resetEmail.value
+    });
+    
+    // Uğurlu mesaj
+    resetSuccess.value = 'Doğrulama kodu e-poçtunuza göndərildi';
+    otpSent.value = true; // OTP göndərildi, növbəti mərhələyə keçin
+    
+    // SweetAlert ilə bildiriş
+    Swal.fire({
+      icon: 'success',
+      title: 'Uğurla göndərildi!',
+      text: 'Doğrulama kodu e-poçt ünvanınıza göndərildi.',
+      confirmButtonText: 'Davam et'
+    });
+    
+  } catch (error) {
+    console.error('OTP göndərmə xətası:', error);
+    
+    if (error.response && error.response.data) {
+      // API-dən gələn xüsusi xəta mesajları
+      if (error.response.data.email) {
+        resetError.value = error.response.data.email[0];
+      } else if (error.response.data.detail) {
+        resetError.value = error.response.data.detail;
+      } else {
+        resetError.value = 'Doğrulama kodunu göndərərkən xəta baş verdi';
+      }
+    } else {
+      resetError.value = 'Server ilə əlaqə yaratmaq mümkün olmadı';
+    }
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Xəta baş verdi',
+      text: resetError.value,
+      confirmButtonText: 'Bağla'
+    });
+  } finally {
+    isResetting.value = false;
+  }
+};
+
+// OTP ilə şifrə yeniləmə
+const resetPassword = async () => {
+  resetError.value = '';
+  resetSuccess.value = '';
+  
+  // Validasiya - client tərəfdə
+  if (!otpCode.value || isNaN(parseInt(otpCode.value))) {
+    resetError.value = 'Zəhmət olmasa düzgün doğrulama kodunu daxil edin (yalnız rəqəmlər)';
+    return;
+  }
+  
+  if (!newPassword.value) {
+    resetError.value = 'Yeni şifrəni daxil edin';
+    return;
+  }
+  
+  if (newPassword.value !== confirmPassword.value) {
+    resetError.value = 'Şifrələr uyğun gəlmir';
+    return;
+  }
+  
+  if (newPassword.value.length < 8) {
+    resetError.value = 'Şifrə ən azı 8 simvol olmalıdır';
+    return;
+  }
+  
+  try {
+    isResetting.value = true;
+    
+    // Debug üçün göndəriləcək məlumatları düzgün parametr adları ilə konsola çıxarırıq
+    console.log("Şifrə sıfırlama tələbi:", {
+      email: resetEmail.value,
+      otp_code: otpCode.value,
+      new_password: newPassword.value
+    });
+    
+    // API-nin gözlədiyi parametr adlarını istifadə edirik
+    const response = await axios.post(`${API_URL}/leyla/v1/otp-reset/`, {
+      email: resetEmail.value,
+      otp_code: parseInt(otpCode.value), // API integer gözləyir
+      new_password: newPassword.value
+      // password2 göndərmirik, front-end doğrulaması yetərlidir
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    
+    console.log("API cavabı:", response.data);
+    
+    // Uğurlu mesaj
+    resetSuccess.value = 'Şifrəniz uğurla yeniləndi!';
+    
+    // SweetAlert ilə bildiriş
+    Swal.fire({
+      icon: 'success',
+      title: 'Şifrəniz yeniləndi!',
+      text: 'İndi yeni şifrənizlə daxil ola bilərsiniz.',
+      confirmButtonText: 'Giriş et'
+    }).then(() => {
+      // Giriş formasına qayıt
+      showResetForm.value = false;
+      otpSent.value = false;
+      resetEmail.value = '';
+      otpCode.value = '';
+      newPassword.value = '';
+      confirmPassword.value = '';
+    });
+    
+  } catch (error) {
+    console.error('Şifrə yeniləmə xətası:', error);
+    
+    // Xəta işləmə kodu eyni qalır...
+    if (error.response) {
+      console.error("API cavab statusu:", error.response.status);
+      console.error("API cavab başlıqları:", error.response.headers);
+      console.error("API cavab məlumatları:", error.response.data);
+      
+      if (error.response.data) {
+        if (error.response.data.error) {
+          resetError.value = error.response.data.error;
+        }
+        else if (typeof error.response.data === 'string') {
+          resetError.value = error.response.data;
+        } 
+        else if (error.response.data.non_field_errors) {
+          resetError.value = error.response.data.non_field_errors[0];
+        } 
+        else if (error.response.data.detail) {
+          resetError.value = error.response.data.detail;
+        } 
+        else if (error.response.data.otp_code) {
+          resetError.value = error.response.data.otp_code[0];
+        } 
+        else if (error.response.data.new_password) {
+          resetError.value = error.response.data.new_password[0];
+        } 
+        else if (error.response.data.email) {
+          resetError.value = error.response.data.email[0]; 
+        } 
+        else {
+          resetError.value = 'Şifrəni yenilərkən xəta baş verdi: ' + JSON.stringify(error.response.data);
+        }
+      } else {
+        resetError.value = `Server xətası: ${error.response.status}`;
+      }
+    } else {
+      resetError.value = 'Server ilə əlaqə yaratmaq mümkün olmadı';
+    }
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Şifrə yeniləmə uğursuz oldu',
+      text: resetError.value,
+      confirmButtonText: 'Bağla'
+    });
+  } finally {
+    isResetting.value = false;
+  }
+};
+
+// Geri dönmək üçün funksiya
+const backToEmailStep = () => {
+  otpSent.value = false;
+  otpCode.value = '';
+  newPassword.value = '';
+  confirmPassword.value = '';
+  resetError.value = '';
+  resetSuccess.value = '';
+};
+
+
 const closeModal = () => {
     emit('close');
 }
@@ -123,6 +386,11 @@ const closeModal = () => {
 // Login və Reset form arasında keçid
 const toggleResetForm = () => {
     showResetForm.value = !showResetForm.value;
+    otpSent.value = false;
+    resetEmail.value = '';
+    otpCode.value = '';
+    newPassword.value = '';
+    confirmPassword.value = '';
     resetError.value = '';
     resetSuccess.value = '';
     loginError.value = '';

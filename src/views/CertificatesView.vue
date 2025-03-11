@@ -1,8 +1,8 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-14 md:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center sm:justify-between">
             <div class=" w-full sm:w-3/4">
-                <h1 class="text-main-text text-2xl lg:text-3xl my-6">Sertifikatlar</h1>
+                <h1 class="text-main-text text-2xl md:text-3xl my-6">Sertifikatlar</h1>
                 <div v-if="certificates.length === 0" class="text-center text-lg">
                     Heç bir məlumat tapılmadı
                 </div>
