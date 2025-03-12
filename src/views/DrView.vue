@@ -40,6 +40,7 @@
           <!-- Doctor Number of patients -->
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
             <div class="flex">
+              <!-- <i class="fa-regular fa-building text-primary text-4xl"></i> -->
               <img :src="patientIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
               <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{ patientCount }}</span>
             </div>
@@ -117,43 +118,55 @@
           <!-- Həkimin məqalələri kontenti -->
          <p class="text-sm md:text-lg" v-html="formattedArticles"></p>
         </div>
-        <div v-if="selectedTab === 'reviews'" class="pt-2">
-          <!-- Rəylər kontenti -->
-          <div class="grid gap-8">
-            <button v-if="!showCommentSection" @click="openCommentModal" class="greenBtn !w-[150px] text-center">
-          <i class="fa-regular fa-comments mr-1"></i>
-          <span>Rəy yazın</span>
-        </button>
 
-        <!-- commentmodal -->
-        <div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
-          <textarea v-model="commentText" class="outline-none" placeholder="Şərhinizi buraya yazın..."></textarea>
-          <button class="rounded-xl" @click="submitComment">Göndər</button>
-        </div>
-      <!-- commentmodal -->
-            <DoctorRating 
-              :image="UserPhoto"
-              name='İsmayıl Bayramlı'
-              review="Uşaqlara öz övladı kimi davranan, her bir xirdaliga diqqet yetirərək xidmət göstərən"
-              date="24.06.2023"
-              star="5"
-            />
-            <DoctorRating 
-              :image="UserPhoto"
-              name='İsmayıl Bayramlı'
-              review="Uşaqlara öz övladı kimi davranan, her bir xirdaliga diqqet yetirərək xidmət göstərən"
-              date="24.06.2023"
-              star="2"
-            />
-            <DoctorRating 
-              :image="UserPhoto"
-              name='İsmayıl Bayramlı'
-              review="Uşaqlara öz övladı kimi davranan, her bir xirdaliga diqqet yetirərək xidmət göstərən"
-              date="24.06.2023"
-              star="4"
-            />
+        <!-- Rəylər kontenti -->
+          <div v-if="selectedTab === 'reviews'" class="pt-2">
+            <div class="grid gap-8">
+              <button v-if="!showCommentSection" @click="openCommentModal" class="greenBtn !w-[150px] text-center">
+                <i class="fa-regular fa-comments mr-1"></i>
+                <span>Rəy yazın</span>
+              </button>
+
+              <!-- Comment yazma bölümü -->
+              <div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
+                <textarea 
+                  v-model="commentText" 
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  placeholder="Rəyinizi buraya yazın..."
+                ></textarea>
+                <div class="flex justify-end mt-2 space-x-2">
+                  <button @click="showCommentSection = false" class="px-4 py-2 rounded-xl border border-gray-300">
+                    İmtina
+                  </button>
+                  <button @click="submitComment" class="px-4 py-2 rounded-xl bg-primary text-white">
+                    Göndər
+                  </button>
+                </div>
+              </div>
+
+              <!-- Rəyləri yükləmə və boş vəziyyəti -->
+              <div v-if="isLoadingComments" class="text-center py-6">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p class="mt-2 text-gray-600">Rəylər yüklənir...</p>
+              </div>
+              
+              <div v-else-if="comments.length === 0" class="text-center py-6">
+                <p class="text-gray-600">Bu həkimə hələ heç bir rəy yazılmayıb.</p>
+              </div>
+
+              <!-- Rəylərin siyahısı -->
+                <DoctorRating 
+                  v-for="comment in comments"
+                  :key="comment.id"
+                  :image="UserPhoto || 'https://via.placeholder.com/100'"
+                  :name="comment.user_full_name || 'İstifadəçi'"
+                  :review="comment.comment"
+                  :date="formatDate(comment.created_at)"
+                  :star="comment.rating || 5"
+                />
+            </div>
           </div>
-        </div>
+        
       </div>
     </div>
     </div>
@@ -171,6 +184,7 @@ import LoginModal from '@/components/LoginModal.vue';
 import Swal from 'sweetalert2';
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
+import api from '@/services/api';
 
 const route = useRoute();   
 
@@ -196,9 +210,15 @@ const goBack = () => {
   });
 };
 
+
 const doctor = ref({});
+// Rəylər üçün state
+const comments = ref([]);
+const isLoadingComments = ref(false);
+const currentUser = ref(null);
 const showCommentSection = ref(false);
 const commentText = ref('');
+
 
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
 
@@ -222,6 +242,46 @@ const pageDescription = computed(() => {
   return `${doctor.value.degree} ${doctor.value.first_name} ${doctor.value.last_name} - ${doctor.value.position} at Leyla Medical Center. ${doctor.value.experience_year} years of experience.`;
 });
 
+// -------- Komment üçün APİ lər ---------
+
+// İstifadəçi məlumatlarını əldə edən funksiya
+const fetchCurrentUser = async () => {
+  try {
+    // Yalnız istifadəçi giriş etdiyi halda
+    if (auth.isLoggedIn()) {
+      const response = await api.get('http://bytexerp.online/api/leyla/v1/user-me/');
+      currentUser.value = response.data;
+      console.log('İstifadəçi məlumatları:', currentUser.value);
+    }
+  } catch (error) {
+    console.error('İstifadəçi məlumatlarını əldə etmə xətası:', error);
+  }
+};
+
+// Doktorun rəylərini əldə edən funksiya
+const fetchDoctorComments = async () => {
+  try {
+    isLoadingComments.value = true;
+    
+    // Slug yerinə ID istifadə edək
+    if (!doctor.value || !doctor.value.id) {
+      console.error('Doctor ID məlumatı mövcud deyil');
+      return;
+    }
+    
+    console.log('Doktor ID ilə rəylər alınır:', doctor.value.id);
+    const response = await api.get(`http://bytexerp.online/api/leyla/v1/comment-list/${doctor.value.id}/`);
+    comments.value = response.data.results || response.data;
+    console.log('Doktor rəyləri:', comments.value);
+  } catch (error) {
+    console.error('Rəyləri əldə etmə xətası:', error);
+  } finally {
+    isLoadingComments.value = false;
+  }
+};
+
+
+
 useHead({
   title: pageTitle,
   meta: [
@@ -242,60 +302,107 @@ useHead({
 const toggleModal = inject('toggleModal'); 
 
 
+// Rəy bölməsini açan funksiya düzəldin
 const openCommentModal = () => {
-    if (auth.isLoggedIn()){
-        showCommentSection.value = true;
-    }
-    else {
-      toggleModal();
-    }
-}
+  // İstifadəçi giriş etmişsə rəy yazma bölməsini aç
+  if (auth.isLoggedIn()) {
+    showCommentSection.value = true;
+  } else {
+    // Əks halda login modalu göstər
+    toggleModal();
+  }
+};
+
+// Rəy göndərmə funksiyası düzəldin
 const submitComment = async () => {
+  if (!commentText.value.trim()) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Diqqət',
+      text: 'Zəhmət olmasa rəyinizi daxil edin.',
+    });
+    return;
+  }
+
   try {
-    // Submit the comment to the server
-    await axios.post('http://bytexerp.online/api/leyla/v1/comment-api', { comment: commentText.value });
-    // Clear the comment text and hide the comment section
+    const doctorSlug = route.params.id;
+    await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', {
+      doctor: doctor.value.id, // Doktor ID-si
+      user: currentUser.value.id, // İstifadəçi ID-si
+      comment: commentText.value, // Rəy mətni
+      doctor_slug: doctorSlug // Ehtiyat üçün slug da göndərək
+    });
+    
+    // Rəyi sıfırlayıb seksiyini bağlayaq
     commentText.value = '';
     showCommentSection.value = false;
-    // Show success message
+    
+    // Uğurlu məlumat göstərək
     Swal.fire({
       icon: 'success',
-      title: 'Comment submitted',
-      text: 'Your comment has been submitted successfully!',
+      title: 'Uğurlu əməliyyat',
+      text: 'Rəyiniz əlavə edildi!',
     });
+    
+    // Yenidən rəyləri yükləyək
+    await fetchDoctorComments();
+    
   } catch (error) {
-    // Show error message
+    console.error('Rəy göndərmə xətası:', error);
+    
     Swal.fire({
       icon: 'error',
-      title: 'Error submitting comment',
-      text: error.message,
+      title: 'Xəta baş verdi',
+      text: 'Rəyinizi göndərmək mümkün olmadı. Zəhmət olmasa bir az sonra yenidən cəhd edin.',
     });
   }
-}
+};
+
+// Tarix formatlaşdırmaq üçün funksiya
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  
+  const date = new Date(dateString);
+  return date.toLocaleDateString('az-AZ', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
+
 
 const fetchDoctor = async () => {
   try {
     startLoading();
-    console.log(`Həkim məlumatı çağırılır: ${route.params.id}`);
-    // Burada artıq slug parametri ilə çağırış edirik
-    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/doctor-list/${route.params.id}/`);
+    
+    // Slug parametrini düzgün kodlayaq
+    const encodedSlug = encodeURIComponent(route.params.id);
+    console.log(`Həkim məlumatı çağırılır (kodlanmış): ${encodedSlug}`);
+    
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/doctor-list/${encodedSlug}/`);
     doctor.value = response.data;
 
-     // Şəkli öncədən yükləyək
-     if (doctor.value.photo) {
+    // Şəkli öncədən yükləyək
+    if (doctor.value.photo) {
       preloadImage(doctor.value.photo);
     }
+    
+    await fetchDoctorComments();
   } catch (error) {
     console.error('API çağırışında xəta:', error);
     
-    // Alternativ olaraq bütün həkimləri yükləyib, slug-a görə filtrlə
+    // Həkimi ID ilə tapmağı sınayaq
     try {
-      console.log('Bütün həkimlər çağırılır və filtrlənir');
       const allResponse = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
-      const doctorFound = allResponse.data.results.find(d => d.slug === route.params.id);
+      const doctorFound = allResponse.data.results.find(d => 
+        d.slug === route.params.id || 
+        d.slug === decodeURIComponent(route.params.id)
+      );
       
       if (doctorFound) {
+        console.log('Həkim alternativ yolla tapıldı:', doctorFound.id);
         doctor.value = doctorFound;
+        await fetchDoctorComments();
       } else {
         console.error('Həkim tapılmadı');
       }
@@ -320,7 +427,9 @@ const preloadImage = (src) => {
 };
 
 onMounted(() => {
-  fetchDoctor();
+  fetchDoctor(); // Bu artıq fetchDoctorComments-i də çağıracaq
+  fetchCurrentUser();
+  // fetchDoctorComments();
 })
 
 

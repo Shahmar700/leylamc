@@ -1,15 +1,28 @@
 <template>
   <div class="container mt-17">
 
-    <!-- Skeleton yükləməsi -->
-    <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" /> -->
+        <!-- Skeleton yükləməsi -->
+        <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" /> -->
+        <!-- Yüklənmə göstəricisi -->
+        <div v-if="isLoading" class="flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        </div>
 
-    <div>
+        <!-- Xəta göstəricisi (əgər varsa) -->
+        <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-sm mb-6">
+          <div class="flex items-center">
+            <svg class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+            </svg>
+            <p>{{ error }}</p>
+          </div>
+        </div>
+      <div v-else> 
        <!-- Doctor Filters  -->
        <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
           <div class="flex flex-col w-full ">
               <label for="name" class="mb-1 !text-main-text">Həkimin Adı, Soyadı</label>
-              <input type="text" id="name" v-model="name" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Həkimin Adı, Soyadı">
+              <input type="text" id="name" v-model="name" class="border border-gray-300  p-2 rounded-md !h-[47px] outline-primary" placeholder="Həkimin Adı, Soyadı">
           </div>
           <!-- Specializations -->
           <div class="flex flex-col w-full ">
@@ -81,6 +94,9 @@ import { useSkeleton } from "@/composables/useSkeleton";
 // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(1000);
 
+// Yüklənmə vəziyyəti üçün əlavə dəyişən
+const isLoading = ref(true);
+const error = ref(null);
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -105,6 +121,8 @@ const doctors = ref([]);
 const fetchDoctors = async () => {
   try {
     startLoading();
+    isLoading.value = true;
+    error.value = null;
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
     doctors.value = response.data.results;
     // Şöbələri yükləmək
@@ -113,9 +131,11 @@ const fetchDoctors = async () => {
     return response.data;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+    error.value = 'Həkimlərin siyahısını yükləmək mümkün olmadı';
     throw error;
   } finally {
     stopLoading();
+    isLoading.value = false;
   }
 };
 
@@ -415,5 +435,23 @@ useHead({
 ::v-deep .multiselect__option--selected.multiselect__option--highlight:after {
   background: #6bb52b !important;
   color: white;
+}
+
+/* Multiselect fokus vəziyyəti üçün stilləri */
+::v-deep .multiselect:focus-within,
+::v-deep .multiselect--active {
+  border-color: #6bb52b !important;
+  box-shadow: 0 0 0 1px #6bb52b !important;
+  outline: none !important;
+}
+
+/* Multiselect açıq olduğu zaman border stilləri */
+::v-deep .multiselect--active {
+  border-color: #6bb52b !important;
+}
+
+/* Multiselect hover vəziyyəti üçün */
+::v-deep .multiselect:hover {
+  border-color: #6bb52b !important;
 }
 </style>

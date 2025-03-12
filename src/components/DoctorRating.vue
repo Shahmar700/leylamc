@@ -1,10 +1,12 @@
 <template>
     <div class="w-full flex rounded-2xl p-3 md:p-7 pb-10 mt-8 tracking-wider transition-shadow duration-500 custom-shadow hover:custom-shadow-hover">
         <div class="w-[70px] h-[70px] screen-500:w-[100px] screen-500:h-[100px] px-8 md:p-10 lg:p-14 mr-4 md:mr-7 bg-gray-100 rounded-full flex justify-center items-center">
-            <!-- <div class="w-[140px] h-[140px] rounded-full overflow-hidden absolute -top-20">
+            <template v-if="image && image !== 'https://via.placeholder.com/100'">
                 <img :src="image" alt="" class="w-full h-full object-cover rounded-full">
-            </div> -->
-            <i class="fa-regular fa-user text-3xl screen-400:text-4xl md:text-5xl lg:text-6xl"></i>
+            </template>
+            <template v-else>
+                <i class="fa-regular fa-user text-3xl screen-400:text-4xl md:text-5xl lg:text-6xl"></i>
+            </template>
         </div>
         <div class="text-main-text w-full flex flex-col justify-evenly">
             <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -27,9 +29,10 @@
 <script setup>
 import { defineProps } from 'vue';
 const props = defineProps({
-    image: {
+        image: {
         type: String,
-        required: true
+        required: false,
+        default: '' // və ya default olaraq placeholder şəkli
     },
     name: {
         type: String,

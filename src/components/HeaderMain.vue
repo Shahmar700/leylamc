@@ -223,7 +223,7 @@
                   <button class="btn-search z-[9999]">
                       <img :src="searchIcon" alt="search" class="w-[20px] h-[20px] md:w-[25px] md:h-[25px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
                   </button>
-                  <input type="text" class="input-search" placeholder="Type to Search...">
+                  <input type="text" class="input-search" placeholder="Axtarmaq üçün yazın...">
               </div>
               
               <div class="headerParent relative group flex items-center justify-center">

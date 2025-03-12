@@ -62,8 +62,6 @@
 
                 <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram  text-white text-sm md:text-base lg:text-lgl hover:text-[#24A1DE] duration-200"></i></a>
 
-                <a href="https://x.com/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter text-white text-sm md:text-base lg:text-lg hover:text-[#000] duration-200"></i></a>
-
                 <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-white text-sm md:text-base lg:text-lg hover:text-[#ff0000] duration-200"></i></a>
 
                 <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-white text-sm md:text-base lg:text-lg duration-200 instagram-gradient"></i></a>
