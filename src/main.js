@@ -44,6 +44,11 @@ const head = createHead()
 app.use(pinia);
 app.use(router)
 app.use(head)
+
+// Burada app başladığında auth vəziyyətini yoxlayın
+import { useAuthStore } from './store/auth';
+const authStore = useAuthStore();
+authStore.checkAuthState();
 app.mount('#app')
 
 // AOS-u başlat

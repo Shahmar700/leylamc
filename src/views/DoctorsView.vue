@@ -2,9 +2,9 @@
   <div class="container mt-17">
 
     <!-- Skeleton yükləməsi -->
-    <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
+    <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" /> -->
 
-    <div v-else>
+    <div>
        <!-- Doctor Filters  -->
        <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
           <div class="flex flex-col w-full ">
@@ -14,17 +14,39 @@
           <!-- Specializations -->
           <div class="flex flex-col w-full ">
               <label for="specializations" class="mb-1 !text-main-text">İxtisas seçin</label>
-              <multiselect v-model="selectedSpecializations" :options="filteredSpecializations" :multiple="true" placeholder="İxtisas seçin" label="specialty" track-by="specialty" class="rounded-md !h-[47px]"></multiselect>
+              <multiselect 
+              v-model="selectedSpecializations" 
+                :options="filteredSpecializations" 
+                :multiple="true" 
+                placeholder="İxtisas seçin" 
+                label="specialty" 
+                track-by="specialty" 
+                class="rounded-md !h-[47px]"
+                selectLabel="Seçmək üçün Enter düyməsini basın"
+                selectedLabel="Seçildi"
+                deselectLabel="Çıxarmaq üçün Enter basın"
+                :customLabel="specialtyCustomLabel"
+              ></multiselect>
           </div>
           <!-- Select a department  -->
           <div class="flex flex-col w-full ">
               <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
-              <multiselect v-model="selectedDepartments" :options="filteredDepartments" :multiple="true" placeholder="Şöbə seçin" label="name" track-by="name" class="rounded-md !h-[47px]"></multiselect>
+              <multiselect v-model="selectedDepartments" 
+                :options="filteredDepartments" 
+                :multiple="true" 
+                placeholder="Şöbə seçin" 
+                label="name" 
+                track-by="name" 
+                class="rounded-md !h-[47px]"
+                selectLabel="Seçmək üçün Enter düyməsini basın"
+                selectedLabel="Seçildi"
+                deselectLabel="Çıxarmaq üçün Enter basın"
+                :customLabel="customLabel">
+              </multiselect>
           </div>
-  
         </form>
     </div>
-      <div>
+      <div data-aos="zoom-out-left" data-aos-delay="1000">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-aos="flip-left">
           <DoctorCard
               v-for="doctor in paginatedDoctors"
@@ -35,7 +57,7 @@
               @click="goToDoctor(doctor)"
               class="mt-6"
           />
-      </div>
+        </div>
         <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
           <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
           <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
@@ -57,7 +79,7 @@ import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
 
 // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
-const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
+const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(1000);
 
 
 import { useRouter } from 'vue-router';
@@ -344,6 +366,15 @@ const pageKeywords = computed(() => {
   return baseKeywords;
 });
 
+// Multiselect tərcümə funksiyaları
+const customLabel = (option) => {
+  return option.name;
+};
+
+const specialtyCustomLabel = (option) => {
+  return option.specialty;
+};
+
 // useHead hooku ilə meta etiketlərini əlavə et
 useHead({
   title: pageTitle,
@@ -363,6 +394,26 @@ useHead({
 </script>
 
 <style scoped>
+/* Multiselect hover stilləri */
+::v-deep .multiselect__option--highlight {
+  background: #6bb52b !important;
+  color: white;
+}
 
+::v-deep .multiselect__option--selected.multiselect__option--highlight {
+  background: #6bb52b !important;
+  color: white;
+}
 
+/* Hover etdikdə tooltip/action bölməsinin arxa planı */
+::v-deep .multiselect__option--highlight:after {
+  background: #6bb52b !important;
+  color: white;
+}
+
+/* Seçilmiş elementin hover vəziyyətində tooltip/action bölməsinin arxa planı */
+::v-deep .multiselect__option--selected.multiselect__option--highlight:after {
+  background: #6bb52b !important;
+  color: white;
+}
 </style>

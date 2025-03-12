@@ -150,6 +150,7 @@ import axios from 'axios';
 import LoginModal from '@/components/LoginModal.vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+import Swal from 'sweetalert2';
 
 const showModal = ref(false);
 const showPassword = ref(false);
@@ -217,11 +218,14 @@ const validateForm = async () => {
         first_name: name.value,
         last_name: surname.value,
         email: email.value,
-        phone_number: selectedCountry.value.dial_code + phone.value,
-        password: password.value
+        password: password.value,
+        profile: {
+          phone: selectedCountry.value.dial_code + phone.value // Düzgün format - nested obyekt içərisində
+        }
       };
       
       console.log('Göndərilən qeydiyyat məlumatları:', registerPayload);
+      console.log('Telefon nömrəsi:', selectedCountry.value.dial_code + phone.value);
       
       // İndi api servisini istifadə edirik
       const registerResponse = await api.post(
@@ -235,25 +239,75 @@ const validateForm = async () => {
       await authService.login(username.value, password.value);
       
       // 3. Uğurlu qeydiyyat mesajı və ya yönləndirmə
-      alert('Qeydiyyat uğurla tamamlandı!');
-      // İstifadəçini ana səhifəyə yönləndiririk
-      router.push('/');
+      Swal.fire({
+        icon: 'success',
+        title: 'Qeydiyyat uğurlu!',
+        text: 'Hesabınız uğurla yaradıldı.',
+        confirmButtonText: 'Davam et'
+      }).then((result) => {
+        // İstifadəçini ana səhifəyə yönləndiririk
+        router.push('/');
+      });
       
     } catch (error) {
       console.error('Qeydiyyat xətası:', error);
+
+      // Xəta mesajını daha ətraflı hazırlayaq
+      let errorMessage = 'Qeydiyyat zamanı xəta baş verdi.';
+      let errorDetails = '';
       
       // Xəta mesajını göstər
-      if (error.response) {
-        // Backend-dən xəta mesajı gəldisə
-        alert(`Xəta: ${JSON.stringify(error.response.data)}`);
+      if (error.response && error.response.data) {
+        // Backend-dən gələn xətanı formatla
+        const responseData = error.response.data;
+        
+        // Email və ya istifadəçi adı təkrarlanması
+        if ((responseData.email && responseData.email.includes('already exists')) || 
+            (responseData.username && responseData.username.includes('already exists'))) {
+          
+          if (responseData.email && responseData.email.includes('already exists')) {
+            errorMessage = 'Hesab artıq mövcuddur';
+            errorDetails = 'Bu e-poçt ünvanı ilə artıq qeydiyyatdan keçilib.';
+          } else {
+            errorMessage = 'Hesab artıq mövcuddur';
+            errorDetails = 'Bu istifadəçi adı artıq istifadə olunur.';
+          }
+        }
+        // Ümumi xəta mesajları
+        else if (typeof responseData === 'string') {
+          errorDetails = responseData;
+        } 
+        // Username ilə bağlı xəta
+        else if (responseData.username) {
+          errorMessage = 'İstifadəçi adı ilə bağlı xəta';
+          errorDetails = Array.isArray(responseData.username) 
+            ? responseData.username[0] 
+            : responseData.username;
+        } 
+        // Email ilə bağlı xəta 
+        else if (responseData.email) {
+          errorMessage = 'E-poçt ünvanı ilə bağlı xəta';
+          errorDetails = Array.isArray(responseData.email) 
+            ? responseData.email[0] 
+            : responseData.email;
+        } 
+        // Digər xətalar 
+        else {
+          errorDetails = JSON.stringify(responseData);
+        }
       } else {
-        // Ümumi xəta
-        alert('Qeydiyyat zamanı xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.');
+        errorDetails = 'Server ilə əlaqə yaratmaq mümkün olmadı.';
       }
+      
+      // SweetAlert ilə xətanı göstər
+      Swal.fire({
+        icon: 'error',
+        title: errorMessage,
+        text: errorDetails,
+        confirmButtonText: 'Bağla',
+        confirmButtonColor: '#dc3545'
+      });
     }
-  } else {
-    // Form məlumatları düzgün deyil
-    console.log('Form məlumatları düzgün deyil');
   }
 };
 </script>

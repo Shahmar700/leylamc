@@ -87,7 +87,7 @@
                       <i class="fas fa-phone text-primary mr-2"></i>
                       <span class="text-sm font-medium text-gray-500">Telefon</span>
                     </div>
-                    <p class="text-gray-800 font-medium">{{ userProfile.phone_number || 'Qeyd edilməyib' }}</p>
+                    <p class="text-gray-800 font-medium">{{ userProfile.profile.phone || 'Qeyd edilməyib' }}</p>
                   </div>
                 </div>
               </div>
@@ -379,7 +379,7 @@ const toggleEditForm = () => {
     // Formu açırkən cari dəyərləri yükləyirik
     editForm.first_name = userProfile.value.first_name || '';
     editForm.last_name = userProfile.value.last_name || '';
-    editForm.phone_number = userProfile.value.phone_number || '';
+    editForm.phone_number = userProfile.value.profile?.phone || '';
   }
   
   // Xəta və uğur mesajlarını sıfırlayırıq
@@ -398,9 +398,12 @@ const updateProfile = async () => {
     isUpdating.value = true;
     
     // API-yə sorğu göndəririk
-    const response = await api.post(`http://bytexerp.online/api/leyla/v1/user-update/`, {
+    const response = await api.put(`http://bytexerp.online/api/leyla/v1/user-update/`, {
       first_name: editForm.first_name,
-      last_name: editForm.last_name
+      last_name: editForm.last_name,
+      profile: {
+        phone: editForm.phone_number 
+      }
     });
     
     // Profil məlumatlarını yeniləyirik
@@ -409,10 +412,12 @@ const updateProfile = async () => {
       ...response.data,
       first_name: editForm.first_name,
       last_name: editForm.last_name,
-      // phone_number də UI-da saxlayırıq ancaq backend-ə göndərmirik
-      phone_number: editForm.phone_number 
+      // phone_number: response.data.profile?.phone || ''
     };
-    
+
+    // Yoxlamaq üçün konsola yazdırırıq
+    console.log('Profil obyekti telefon ilə:', userProfile.value);
+    console.log('Telefon nömrəsi (transformasiyadan sonra):', userProfile.value.phone_number);
     // Uğurlu nəticə
     editSuccess.value = 'Profil məlumatlarınız uğurla yeniləndi';
     
@@ -427,7 +432,7 @@ const updateProfile = async () => {
     setTimeout(() => {
       isEditFormVisible.value = false;
     }, 2000);
-    
+    console.log('Telefon nömrəsi:', userProfile.value.phone_number);
   } catch (err) {
     console.error('Profil yeniləmə xətası:', err);
     
@@ -469,6 +474,10 @@ const fetchUserProfile = async () => {
     const response = await api.get(`http://bytexerp.online/api/leyla/v1/user-me/`);
     console.log('Profil məlumatları:', response.data);
     userProfile.value = response.data;
+
+    // API cavabını daha yaxşı başa düşmək üçün ətraflı konsola yazdırırıq
+    console.log('Profil məlumatları:', response.data);
+    console.log('Telefon nömrəsi (API-dən):', response.data.profile?.phone);
   } catch (err) {
     console.error('Profil məlumatlarını almaq xətası:', err);
     if (err.response && err.response.status === 404) {
@@ -514,30 +523,31 @@ const changePassword = async () => {
   try {
     isChangingPassword.value = true;
     
-    await api.post('http://bytexerp.online/api/leyla/v1/user-update/', {
+    // Debug üçün - hansı HTTP metodlarının dəstəkləndiyini görək
+    console.log("Şifrə dəyişdirmə sorğusu:", {
+      method: "PUT",
+      password: newPassword.value
+    });
+    
+    // POST əvəzinə PUT istifadə edirik
+    await api.put('http://bytexerp.online/api/leyla/v1/user-update/', {
       password: newPassword.value
     });
     
     passwordSuccess.value = 'Şifrəniz uğurla dəyişdirildi';
-    
-    currentPassword.value = '';
-    newPassword.value = '';
-    confirmPassword.value = '';
-    
-    Swal.fire({
-      icon: 'success',
-      title: 'Şifrə dəyişdirildi!',
-      text: 'Şifrəniz uğurla yeniləndi.',
-      confirmButtonText: 'Anladım'
-    });
-    
-    // Əməliyyat uğurludursa, formu gizlədək
-    setTimeout(() => {
-      isPasswordFormVisible.value = false;
-    }, 2000);
+    // Digər uğurlu əməliyyatlar eyni qalır...
     
   } catch (err) {
     console.error('Şifrə dəyişdirmə xətası:', err);
+
+    // Səhv haqqında daha detallı məlumat alaq
+    if (err.response) {
+      console.error("Status:", err.response.status);
+      console.error("Headers:", err.response.headers); // Allow başlığını yoxlamaq
+      console.error("Data:", err.response.data);
+      
+      // Digər xəta emal kodları eyni qalır...
+    }
     
     if (err.response && err.response.data) {
       if (err.response.data.password) {

@@ -63,11 +63,12 @@
                 <div class="w-full mt-6 text-center md:text-left">
                 <p class="text-main-text text-lg md:text-2xl mb-2 md:mb-3 lg:mb-4">Bizi sosial mediada izləyin:</p>
                 <div class="flex justify-center space-x-3 md:justify-start">
-                    <a href=""><i class="fa-brands fa-facebook-f text-[#B7AEAE] text-2xl duration-200 hover:text-[#1877F2]"></i></a>
-                    <a href=""><i class="fa-brands fa-x-twitter text-[#B7AEAE] text-2xl duration-200 hover:text-[#000]"></i></a>
-                    <a href=""><i class="fa-brands fa-youtube text-[#B7AEAE] text-2xl duration-200 hover:text-[#ff0000]"></i></a>
-                    <a href=""><i class="fa-brands fa-instagram text-[#B7AEAE] text-2xl duration-200 instagram-gradient"></i></a>
-                    <a href=""><i class="fa-brands fa-whatsapp text-[#B7AEAE] text-2xl duration-200 whatsapp-gradient"></i></a>
+                    <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f text-[#B7AEAE] text-2xl duration-200 hover:text-[#1877F2]"></i></a>
+                    <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram text-[#B7AEAE] text-2xl duration-200 hover:text-[#24A1DE]"></i></a>
+                    <a href="https://x.com/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter text-[#B7AEAE] text-2xl duration-200 hover:text-[#000]"></i></a>
+                    <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-[#B7AEAE] text-2xl duration-200 hover:text-[#ff0000]"></i></a>
+                    <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-[#B7AEAE] text-2xl duration-200 instagram-gradient"></i></a>
+                    <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp text-[#B7AEAE] text-2xl duration-200 whatsapp-gradient"></i></a>
                 </div>
             </div>
             <hr class="custom-hr">

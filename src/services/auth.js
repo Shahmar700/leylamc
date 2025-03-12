@@ -44,7 +44,7 @@ class AuthService {
       const refreshToken = localStorage.getItem('refresh_token');
       
       if (!refreshToken) {
-        throw new Error('Refresh token tapılmadı');
+        return Promise.reject('Yeniləmə tokeni yoxdur');
       }
       
       const response = await axios.post(`${API_URL}/token/refresh/`, {
@@ -53,12 +53,18 @@ class AuthService {
       
       if (response.data.access) {
         localStorage.setItem('access_token', response.data.access);
-        return response.data.access;
+        // Refresh token də dəyişdirilirsə:
+        if (response.data.refresh) {
+          localStorage.setItem('refresh_token', response.data.refresh);
+        }
+        return response.data;
       }
     } catch (error) {
-      // Refresh token etibarsızdırsa istifadəçini çıxış et
-      this.logout();
-      throw new Error('Sessiya müddəti bitdi. Xahiş edirik yenidən daxil olun.');
+      // Token yeniləmə zamanı xəta - istifadəçini çıxış etdirmək lazımdır
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('username');
+      throw error;
     }
   }
   

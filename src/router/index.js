@@ -293,6 +293,20 @@ import ProfileView from '@/views/ProfileView.vue'
       component: () => import('@/views/departments/surgery/SurgeryView.vue'),
       props: true
     },
+    // Pediatriya bölməsi üçün əsas marşrut - import blokundan sonra və routes massivinin içərisinə əlavə edin
+    {
+      path: '/departments/pediatrics',
+      name: 'pediatrics',
+      component: () => import('@/views/departments/pediatrics/PediatricsLayout.vue'), // Ana səhifə üçün
+      meta: { breadcrumb: 'Pediatriya' }
+    },
+    // Dinamik slug parametri ilə pediatriya alt marşrutu
+    {
+      path: '/departments/pediatrics/:slug',
+      name: 'pediatrics-detail',
+      component: () => import('@/views/departments/pediatrics/PediatricsView.vue'),
+      props: true
+    },
     // Əsas medical-services marşrutunu əlavə et
     {
       path: '/medical-services',
@@ -537,6 +551,25 @@ const fetchDepartments = async () => {
   }
 }
 
+// Dinamik pediatriya routelarını əlavə edən funksiya
+const fetchPediatricDepartments = async () => {
+  try {
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/pediatricdep-list/')
+    const pediatrics = response.data.results
+    pediatrics.forEach(pediatric => {
+      router.addRoute({
+        path: `/departments/pediatrics/${pediatric.slug}`, // :slug parametrini istifadə edirik
+        name: `pediatrics-${pediatric.slug}`,  
+        component: () => import('@/views/departments/pediatrics/PediatricsView.vue'), // PediatricsView.vue səhifəsinə yönləndirilir
+        props: true, // props olaraq ötürülməsini təmin edirik
+        meta: { breadcrumb: pediatric.name }
+      })
+    })
+  } catch (error) {
+    console.error('Pediatriya API çağırışında xəta:', error)
+  }
+}
+
 // Dinamik surgery routelarını əlavə edən funksiya
 const fetchSurgeryDepartments = async () => {
   try {
@@ -579,7 +612,8 @@ const fetchMedicalServiceRoutes = async () => {
 
 fetchMedicalServiceRoutes();
 
-fetchDepartments()
+fetchDepartments();
+fetchPediatricDepartments();
 fetchSurgeryDepartments();
 
 // Google Analytics səhifə görüntülənmə izləmə

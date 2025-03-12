@@ -115,8 +115,35 @@
 
                <!-- Department  -->
                <li class="headerParent relative group">
-                  <div :class="{'text-primary': isDepartmentRoute}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Bölmələr</div>
+                <button 
+                  @click="navigateToDepartments" 
+                  class="hidden md:inline-block cursor-pointer text-base sm:text-lg lg:text-xl"
+                  :class="{'text-primary': isDepartmentRoute}"
+                >
+                  Bölmələr
+                </button>
                   <ul class="headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
+                    <!-- Pediatrics -->
+                      <li class="mb-2 px-6 pediatricsParent relative hidden lg:block">
+                        <div :class="{'text-primary': isPediatricsRoute}" class="flex w-full h-full cursor-pointer">
+                          <span>Pediatriya</span>
+                          <span><i class="pediatricsFa fa-solid fa-angle-down"></i></span>
+                        </div>
+                        <!-- Dinamik Pediatriya -->
+                        <ul class="pediatricsDropdown shadow-xl rounded-xl z-10">
+                          <li v-for="pediatric in pediatrics" :key="pediatric.id" class="mb-2 px-6">
+                            <router-link 
+                              :to="{
+                                name: 'pediatrics-detail', 
+                                params: { slug: pediatric.slug }
+                              }" 
+                              class="block">
+                              {{ pediatric.name }}
+                            </router-link>
+                          </li>
+                        </ul>
+                      </li>
+                      <!-- Pediatrics END -->
                     <!-- Surgery -->
                     <li class="mb-2 px-6 surgeryParent relative hidden lg:block">
                       <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer">
@@ -159,7 +186,13 @@
                
               <!-- MEDİCAL SERVİCES  -->
               <li class="headerParent relative group">
-                  <div :class="{'text-primary': isMedServiceRoute}" class="hidden xl:inline-block text-base sm:text-lg lg:text-xl cursor-pointer">Tibbi xidmətlər</div>
+                <button 
+                  @click="navigateToMedicalServices" 
+                  class="hidden xl:inline-block text-base sm:text-lg lg:text-xl cursor-pointer"
+                  :class="{'text-primary': isMedServiceRoute}"
+                >
+                  Tibbi xidmətlər
+                </button>
                   <!-- MEDİCAL SERVİCES (HEADER)  -->
                   <ul class="headerDropdown absolute top-8 -right-44 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                   <li v-if="medicalServices.length === 0" class="mb-2 px-6">
@@ -278,7 +311,7 @@
                           </router-link>
                         </li>
                         <li class="px-4">
-                          <button @click="logout" class="flex w-full items-center py-1 text-red-500">
+                          <button @click="logout" class="exitBtn flex w-full items-center py-1 text-red-500">
                             <i class="fa-solid fa-sign-out-alt mr-2"></i> Çıxış
                           </button>
                         </li>
@@ -412,6 +445,29 @@
                     :class="{'rotate-180': burgerDropdowns.bolmeler_mobile}"></i>
                 </div>
                 <ul v-if="burgerDropdowns.bolmeler_mobile" class="mt-2 pl-4 space-y-2">
+                  <!-- "Pediatriya" dropdownu -->
+                  <li class="md:hidden">
+                    <div :class="{'text-primary': isPediatricsRoute}" @click="toggleBurgerDropdown('pediatrics_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                      <span>Pediatriya</span>
+                      <i class="fa-solid fa-angle-down transition-transform duration-300" 
+                        :class="{'rotate-180': burgerDropdowns.pediatrics_mobile}"></i>
+                    </div>
+                    <!-- Dinamik Pediatriya -->
+                    <ul v-if="burgerDropdowns.pediatrics_mobile" class="mt-2 pl-4 space-y-2">
+                      <li v-for="pediatric in pediatrics" :key="pediatric.id" class="mb-2 px-6">
+                        <router-link 
+                          @click="toggleBurger"
+                          :to="{
+                            name: 'pediatrics-detail', 
+                            params: { slug: pediatric.slug }
+                          }" 
+                          class="block text-lg sm:text-xl">
+                          {{ pediatric.name }}
+                        </router-link>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- "Pediatriya" END -->
                   <!-- "Cərrahiyyə" dropdownu -->
                   <li class="md:hidden">
                     <div :class="{'text-primary': isSurgeryRoute}" @click="toggleBurgerDropdown('cerrahiyye_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
@@ -565,6 +621,14 @@ const isMedServiceRoute = computed(() => {
          route.name === 'medical-servicesl' || 
          route.path.includes('/medical-services');
 });
+// Var olan computed property'lər yanına əlavə edin
+const isPediatricsRoute = computed(() => {
+  return route.name === 'pediatrics' || 
+         route.name === 'pediatrics-detail' || 
+         route.path.includes('/pediatrics');
+});
+
+const pediatrics = ref([]);
 const departments = ref([]); // Yeni ref
 const surgeries = ref([]);
 const isLoggedIn = computed(() => authStore.isLoggedIn);
@@ -619,6 +683,81 @@ const fetchSurgeries = async () => {
   }
 };
 
+const fetchPediatrics = async () => {
+  try {
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/pediatricdep-list/');
+    pediatrics.value = response.data.results;
+    console.log('Pediatriya', pediatrics.value);
+  } catch (error) {
+    console.error("Pediatriya API çağırışında xəta:", error);
+  }
+};
+
+// navigateToDepartments funksiyasını yeniləyin
+const navigateToDepartments = async () => {
+  try {
+    loading.value = true;
+    
+    // Pediatriya məlumatlarını əldə etmək üçün API sorğusu
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/pediatricdep-list/');
+    const pediatricItems = response.data.results;
+    
+    if (pediatricItems && pediatricItems.length > 0) {
+      // İlk elementin slug'ını alırıq
+      const firstPediatricSlug = pediatricItems[0].slug;
+      
+      // İstifadəçini ilk pediatriya elementinə yönləndiririk
+      router.push({
+        name: 'pediatrics-detail',
+        params: { slug: firstPediatricSlug }
+      });
+    } else {
+      // Əgər API-dən heç bir məlumat gəlməzsə, ümumi səhifəyə keçirik
+      router.push('/departments/pediatrics');
+    }
+  } catch (error) {
+    console.error('Pediatriya məlumatları yüklənmə xətası:', error);
+    // Xəta halında da ümumi səhifəyə keçin
+    router.push('/departments/pediatrics');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// loading state əlavə edin (əgər HeaderMain.vue-da əvvəldən yoxdursa)
+const loading = ref(false);
+
+// navigateToMedicalServices funksiyasını əlavə edin
+const navigateToMedicalServices = async () => {
+  try {
+    loading.value = true; // Yüklənmə indikatoru göstərmək üçün
+    
+    // Tibbi xidmətlər üçün API sorğusu
+    const response = await axios.get('http://bytexerp.online/api/leyla/v1/medical-service-list/');
+    const services = response.data.results;
+    
+    if (services && services.length > 0) {
+      // İlk elementin slug'ını alırıq
+      const firstServiceSlug = services[0].slug;
+      
+      // İstifadəçini ilk tibbi xidmət elementinə yönləndiririk
+      router.push({
+        name: 'medical-service-detail', // Route adı dəqiq olmalıdır
+        params: { slug: firstServiceSlug }
+      });
+    } else {
+      // Əgər API-dən heç bir məlumat gəlməzsə, əsas səhifəyə keçirik
+      router.push('/medical-services');
+    }
+  } catch (error) {
+    console.error('Tibbi xidmət məlumatları yüklənmə xətası:', error);
+    // Xəta halında da əsas səhifəyə keçin
+    router.push('/medical-services');
+  } finally {
+    loading.value = false; // Yüklənmə indikatorunu dayandırın
+  }
+};
+
 // Tibbi xidmətlər üçün API-dən məlumatları alın
 const medicalServices = ref([]);
 
@@ -635,6 +774,7 @@ const fetchMedicalServices = async () => {
 onMounted(() => {
 fetchDepartments();
 fetchSurgeries();  // Cərrahiyə məlumatlarını yükləyir
+fetchPediatrics();  // Pediatriya məlumatlarını yükləyir
 fetchMedicalServices(); // Yeni əlavə edilən funksiya
 checkAuthStatus(); // Auth statusunu yoxlayırıq
 });
@@ -656,6 +796,7 @@ const burgerDropdowns = reactive({
   bolmeler_mobile: false,
   tibbiXidmetler_mobile: false,
   onlaynXidmetler_mobile: false,
+  pediatrics_mobile: false,
   // digər açarlar...
 })
 const toggleBurgerDropdown = (key) => {
@@ -701,6 +842,20 @@ transition: width 0.2s;
 
 a:hover::after {
 width: 100%;
+}
+.exitBtn::after{
+content: '';
+position: absolute;
+left: 50%;
+transform: translateX(-50%);
+bottom: 10px; /* Adjust as needed */
+width: 0;
+height: 2px; /* Adjust as needed */
+background-color: #ef4444;
+transition: width 0.2s;
+}
+.exitBtn:hover::after {
+width: 80%;
 }
 #headerLogo:hover::after {
 width: 0 !important;
@@ -809,11 +964,11 @@ background-color: green;
 color: white;
 }
 
-.mediaParent, .galleryParent, .surgeryParent, .onlineParent{
+.mediaParent, .galleryParent, .surgeryParent, .pediatricsParent, .onlineParent{
 position: relative;
 }
 
-.mediaDropdown, .galleryDropdown, .surgeryDropdown{
+.mediaDropdown, .galleryDropdown, .surgeryDropdown, .pediatricsDropdown{
 position: absolute;
 right: -100px;
 top: 0px;
@@ -824,7 +979,7 @@ opacity: 0;
 transition: 0.3s;
 border-radius: 15px;
 }
-.surgeryDropdown{
+.surgeryDropdown, .pediatricsDropdown{
 right: -200px;
 }
 .mediaParent:hover .mediaDropdown{
@@ -846,6 +1001,14 @@ top: 0px;
 visibility: visible;
 opacity: 1;
 }
+
+.pediatricsParent:hover .pediatricsDropdown{
+  right: -170px;
+  top: 0px;
+  visibility: visible;
+  opacity: 1;
+}
+
 
 .onlineDropdown{
 position: absolute;
@@ -872,6 +1035,7 @@ transition: 0.4s;
 .mediaParent:hover .mediaFa,
 .galleryParent:hover .galleryFa,
 .surgeryParent:hover .surgeryFa,
+.pediatricsParent:hover .pediatricsFa,
 .onlineParent:hover .onlineFa
 {
 transform: rotate(-90deg);

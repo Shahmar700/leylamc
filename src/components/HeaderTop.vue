@@ -56,22 +56,19 @@
             
         </div>
         <!-- right side  -->
-            <div class="socialsIcons flex space-x-2 sm:space-x-3 lg:space-x-4 w-full md:w-auto justify-start screen-500:justify-end mt-1 sm:mt-0">
-                <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer">
-                    <img src="@/assets/icons/fb.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#1877F2]" />
-                </a>
-                <a href="https://x.com/referansmg" target="_blank" rel="noopener noreferrer">
-                    <img src="@/assets/icons/xcom.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#000]" />
-                </a>
-                <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer">
-                    <img src="@/assets/icons/yt.svg" alt="Facebook" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] hover:text-[#ff0000]" />
-                </a>
-                <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer">
-                    <img src="@/assets/icons/ig.svg" alt="Instagram" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] instagram-gradient" />
-                </a>
-                <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer">
-                    <img src="@/assets/icons/wp.svg" alt="WhatsApp" class="w-[15px] h-[15px] md:w-[16px] md:h-[21px] whatsapp-gradient" />
-                </a>
+            <div class="socialsIcons flex space-x-2 sm:space-x-3 w-full md:w-auto justify-start items-center screen-500:justify-end mt-1 sm:mt-0">
+
+                <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f text-white text-sm md:text-base lg:text-lg hover:text-[#1877F2] duration-200"></i></a>
+
+                <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram  text-white text-sm md:text-base lg:text-lgl hover:text-[#24A1DE] duration-200"></i></a>
+
+                <a href="https://x.com/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter text-white text-sm md:text-base lg:text-lg hover:text-[#000] duration-200"></i></a>
+
+                <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-white text-sm md:text-base lg:text-lg hover:text-[#ff0000] duration-200"></i></a>
+
+                <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-white text-sm md:text-base lg:text-lg duration-200 instagram-gradient"></i></a>
+
+                <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp text-white text-sm md:text-base lg:text-lg duration-200 whatsapp-gradient"></i></a>
             </div>
         </header>
     </div>
