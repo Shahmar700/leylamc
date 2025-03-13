@@ -565,6 +565,10 @@ const fetchDoctor = async () => {
     isLoading.value = true;
     error.value = null;
     
+    // // İlk olaraq routerdən slug parametrini əldə et
+    // const doctorSlug = route.params.id;
+    // console.log(`Həkim məlumatları çağırılır: ${doctorSlug}`);
+
     // Slug parametrini düzgün kodlayaq
     const encodedSlug = encodeURIComponent(route.params.id);
     console.log(`Həkim məlumatı çağırılır (kodlanmış): ${encodedSlug}`);
