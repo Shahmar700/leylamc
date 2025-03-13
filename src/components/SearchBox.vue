@@ -21,7 +21,7 @@
     <!-- Axtarış nəticələri - isExpandedSearch-ə bağlayırıq -->
     <div 
       v-if="isExpandedSearch && searchQuery.length > 2 && searchResults.length > 0" 
-      class="search-results absolute right-0 mt-1 w-full bg-white border rounded-md shadow-lg z-[9999]">
+      class="search-results absolute right-0 mt-1 w-full max-h-[350px] screen-500:max-h-[400px] bg-white border rounded-md shadow-lg z-[9999]">
       
       <!-- Nəticə elementləri -->
       <div 
@@ -50,7 +50,7 @@
     <div 
       v-if="isExpandedSearch && searchQuery.length > 2 && searchResults.length === 0 && !isLoading" 
       class="search-results absolute right-0 mt-1 w-full bg-white border rounded-md shadow-lg z-[9999]">
-      <div class="p-3 text-center text-gray-600">
+      <div class="p-3 text-center font-normal text-sm md:text-base lg:text-lg text-gray-600">
         Axtarışa uyğun nəticə tapılmadı
       </div>
     </div>
@@ -169,17 +169,28 @@ const selectDoctor = (doctor) => {
 /* Axtarış nəticələri paneli üçün CSS */
 .search-box {
   position: relative; /* Əmin olaq ki, relative-dir */
+  font-weight: lighter;
 }
 
 .search-results {
   position: absolute;
-  right: 0;
-  top: 45px; /* Axtarış input-unun hündürlüyünə uyğun */
+  right: -10px !important;
+  top: 37px; /* Axtarış input-unun hündürlüyünə uyğun */
   z-index: 9999;
   width: 100%;
-  max-height: 400px;
   overflow-y: scroll;
 }
+
+@media screen and (max-width: 400px) {
+.search-results  {
+    width: 270px !important;
+  }
+}
+/* @media screen and (max-width: 768px) {
+.search-results  {
+    width: 300px !important;
+  }
+} */
 
 /* Scroll çubuğu stilləri */
 .search-results::-webkit-scrollbar {

@@ -390,6 +390,7 @@ const toggleEditForm = () => {
 };
 
 // Profil məlumatlarını yeniləmək üçün funksiya
+// updateProfile funksiyasını dəyişdiririk
 const updateProfile = async () => {
   editError.value = '';
   editSuccess.value = '';
@@ -397,27 +398,39 @@ const updateProfile = async () => {
   try {
     isUpdating.value = true;
     
-    // API-yə sorğu göndəririk
-    const response = await api.put(`http://bytexerp.online/api/leyla/v1/user-update/`, {
+    // Sorğu verilənləri hazırlayırıq - telefon nömrəsini göndərmirik
+    const userData = {
       first_name: editForm.first_name,
-      last_name: editForm.last_name,
-      profile: {
-        phone: editForm.phone_number 
-      }
-    });
+      last_name: editForm.last_name
+    };
+    
+    // Telefon nömrəsini yalnız dəyişdirilmişsə göndəririk
+    if (editForm.phone_number && editForm.phone_number !== userProfile.value.profile?.phone) {
+  userData.profile = {
+    phone: editForm.phone_number
+  };
+}
+    
+    console.log('API sorğusu:', userData);
+    
+    // API-yə sorğu göndəririk
+    const response = await api.put(`http://bytexerp.online/api/leyla/v1/user-update/`, userData);
     
     // Profil məlumatlarını yeniləyirik
     userProfile.value = {
       ...userProfile.value,
-      ...response.data,
       first_name: editForm.first_name,
-      last_name: editForm.last_name,
-      // phone_number: response.data.profile?.phone || ''
+      last_name: editForm.last_name
     };
+    
+    // Telefon nömrəsini yalnız dəyişdirilmişsə yeniləyirik
+    if (editForm.phone_number && editForm.phone_number !== userProfile.value.profile?.phone) {
+      if (!userProfile.value.profile) {
+        userProfile.value.profile = {};
+      }
+      userProfile.value.profile.phone = editForm.phone_number;
+    }
 
-    // Yoxlamaq üçün konsola yazdırırıq
-    console.log('Profil obyekti telefon ilə:', userProfile.value);
-    console.log('Telefon nömrəsi (transformasiyadan sonra):', userProfile.value.phone_number);
     // Uğurlu nəticə
     editSuccess.value = 'Profil məlumatlarınız uğurla yeniləndi';
     
@@ -432,18 +445,20 @@ const updateProfile = async () => {
     setTimeout(() => {
       isEditFormVisible.value = false;
     }, 2000);
-    console.log('Telefon nömrəsi:', userProfile.value.phone_number);
   } catch (err) {
     console.error('Profil yeniləmə xətası:', err);
     
     if (err.response && err.response.data) {
+      // Daha detallı xəta məlumatını görək
+      console.log('API xəta cavabı:', err.response.data);
+      
       // Xəta mesajlarını emal edirik
-      if (err.response.data.first_name) {
-        editError.value = err.response.data.first_name[0];
+      if (err.response.data.profile && err.response.data.profile.phone) {
+        editError.value = `Telefon: ${err.response.data.profile.phone[0]}`;
+      } else if (err.response.data.first_name) {
+        editError.value = `Ad: ${err.response.data.first_name[0]}`;
       } else if (err.response.data.last_name) {
-        editError.value = err.response.data.last_name[0];
-      } else if (err.response.data.phone_number) {
-        editError.value = err.response.data.phone_number[0];
+        editError.value = `Soyad: ${err.response.data.last_name[0]}`;
       } else if (err.response.data.detail) {
         editError.value = err.response.data.detail;
       } else {
@@ -463,7 +478,6 @@ const updateProfile = async () => {
     isUpdating.value = false;
   }
 };
-
 
 const fetchUserProfile = async () => {
   isLoading.value = true;
