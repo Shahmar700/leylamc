@@ -44,7 +44,7 @@
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
             <div class="flex">
               <img :src="expIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}}il</span>
+              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}} il</span>
             </div>
             <span class="mt-1">Təcrübə</span>
           </div>

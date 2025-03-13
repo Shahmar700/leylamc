@@ -103,11 +103,11 @@ const router = useRouter();
 
 
 const goToDoctor = (doctor) => {
-  // URL-də slug saxlayaq, amma query parametrlərində ID göndərək
+  // Sadəcə slug istifadə edək, query parametrlərini ləğv edək
   router.push({ 
     name: 'doctor', 
-    params: { id: doctor.slug },
-    query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
+    params: { id: doctor.slug }
+    // query parametri silindi
   });
 };
 
