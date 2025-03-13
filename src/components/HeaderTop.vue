@@ -23,17 +23,20 @@
                 
                 <!-- Phone  -->
                 <span class="text-white hidden screen-500:block">|</span>
-                <div class=" flex items-center px-2 text-sm">
-                    <div class="mr-1">
-                    <a href="tel:*0101" class="flex items-center">
-                        <div class="relative">
-                            <img src="@/assets/icons/phone.svg" alt="phone" class="icon" />
-                            <!-- <div class="absolute inset-0 rounded-full border-2 border-white animate-pulse p-[10px] top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4"></div> -->
+                    <div class="flex items-center px-2 text-sm">
+                    <div class="mr-1 relative">
+                        <a href="tel:*0101" class="flex items-center emergency-number">
+                        <div class="emergency-light-container">
+                            <div class="emergency-light blue"></div>
+                            <div class="emergency-light red"></div>
                         </div>
-                        <span class="text-white pl-1">*0101</span>
-                    </a>
+                        <div class="relative z-10">
+                            <img src="@/assets/icons/phone.svg" alt="phone" class="icon" />
+                        </div>
+                        <span class="text-white pl-1 font-bold z-10">*0101</span>
+                        </a>
                     </div>
-                </div>
+                    </div>
                 <span class="text-white hidden screen-500:block">|</span>
                 
             </div>
@@ -133,4 +136,100 @@ const filteredLanguages = computed(() => {
   -webkit-text-fill-color: transparent;
   transition: background 0.3s;
 }
+
+/* Təcili Yardım Zəng Animasiyası */
+.emergency-number {
+  position: relative;
+  padding: 5px 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.emergency-number:hover {
+  transform: scale(1.05);
+}
+
+.emergency-light-container {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+
+.emergency-light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 2px;
+}
+
+.emergency-light.blue {
+  background-color: #1e90ff;
+  box-shadow: 0 0 10px 2px #1e90ff;
+  animation: blueLight 1s infinite alternate;
+}
+
+.emergency-light.red {
+  background-color: #ff3333;
+  box-shadow: 0 0 10px 2px #ff3333;
+  animation: redLight 1s infinite alternate;
+}
+
+@keyframes blueLight {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes redLight {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Qısa zəng nömrəsi vurğulaması */
+.emergency-number span {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Nömrə ətrafında parlaq pulsasiya dairəsi */
+.emergency-number::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: pulse-border 2s infinite;
+  z-index: 0;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+
 </style>
