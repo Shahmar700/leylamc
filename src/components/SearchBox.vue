@@ -41,7 +41,7 @@
             <p class="font-medium text-sm">{{ doctor.degree }} {{ doctor.first_name }} {{ doctor.last_name }}</p>
             <p class="text-sm text-gray-600">{{ doctor.position }}</p>
           </div>
-          <span class="text-primary text-sm ml-2">Keçid et</span>
+          <!-- <span class="text-primary text-sm ml-2">Keçid et</span> -->
         </div>
       </div>
     </div>
