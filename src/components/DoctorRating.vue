@@ -11,15 +11,15 @@
         <div class="text-main-text w-full flex flex-col justify-evenly">
             <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center">
                 <div class="mb-6">
-                    <h1 class="text-lg lg:text-xl xl:text-2xl font-bold">{{ name }}</h1>
-                    <p class="font-thin text-sm md:text-lg">{{ date }}</p>
+                    <h1 class="text-lg lg:text-xl font-bold">{{ name }}</h1>
+                    <p class="font-thin text-sm md:text-base">{{ date }}</p>
                 </div>
                 <div class="flex items-center">
                     <i v-for="n in 5" :key="n" :class="n <= Math.round(star) ? 'fa-solid fa-star text-primary' : 'fa-regular fa-star text-gray-400'" class="mr-[1px]"></i>
                 </div>
             </div>
             <div>
-                <p class="text-base md:text-lg lg:text-xl xl:text-2xl mt-2 md:mt-0">{{ review }}</p>
+                <p class="text-base md:text-lg lg:text-xl mt-2 md:mt-0">{{ review }}</p>
             </div>
         </div>
 

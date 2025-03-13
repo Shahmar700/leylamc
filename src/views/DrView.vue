@@ -52,9 +52,10 @@
           <!-- Doctor Number of patients -->
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
             <div class="flex">
-              <!-- <i class="fa-regular fa-building text-primary text-4xl"></i> -->
               <img :src="locaIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-xl sm:text-2xl md:text-3xl font-bold text-main-text ml-2">{{ doctor.institution }}</span>
+              <span class="text-xl sm:text-2xl md:text-3xl font-bold text-main-text ml-2">
+                {{ doctor.institution || 'Filial qeyd olunmayıb' }}
+              </span>
             </div>
             <span class="mt-1">Filial</span>
           </div>
@@ -128,7 +129,12 @@
         </div>
         <div v-if="selectedTab === 'articles'">
           <!-- Həkimin məqalələri kontenti -->
-         <p class="text-sm md:text-lg" v-html="formattedArticles"></p>
+          <div v-if="doctor.value?.articles && doctor.value.articles.trim()">
+            <p class="text-sm md:text-lg" v-html="formattedArticles"></p>
+          </div>
+          <div v-else class="text-center py-6">
+            <p class="text-gray-600">Bu həkimin hələ heç bir məqaləsi yoxdur.</p>
+          </div>
         </div>
 
         <!-- Rəylər kontenti -->
@@ -252,6 +258,15 @@ const goBack = () => {
     // Əgər sorğu parametrləri istifadə edirsinizsə
     // query: { page: savedState?.page || 1 } 
   });
+};
+
+// LoginModal komponenti ilə əlaqə qurmaq üçün:
+// login-success hadisəsini dinləyək və istifadəçi məlumatlarını yeniləyək
+const checkAuthStatus = async () => {
+  if (auth.isLoggedIn()) {
+    await fetchCurrentUser();  // İstifadəçi məlumatlarını təzələ
+    showCommentSection.value = true;  // Rəy yazma bölməsini göstər
+  }
 };
 
 
@@ -412,19 +427,38 @@ const toggleModal = inject('toggleModal');
 
 
 // Rəy bölməsini açan funksiya düzəldin
-const openCommentModal = () => {
+const openCommentModal = async () => {
   // İstifadəçi giriş etmişsə rəy yazma bölməsini aç
   if (auth.isLoggedIn()) {
+    // Əgər currentUser yoxdursa, əvvəlcə onu əldə edək
+    if (!currentUser.value || !currentUser.value.id) {
+      await fetchCurrentUser();
+    }
     showCommentSection.value = true;
   } else {
     // Əks halda login modalu göstər
     toggleModal();
   }
 };
-
 // Rəy göndərmə funksiyasını düzəldək
 const submitComment = async () => {
-  if (!commentText.value.trim()) {
+   // Əvvəlcə istifadəçinin varlığını yoxlayaq
+   if (!currentUser.value || !currentUser.value.id) {
+    console.error('İstifadəçi məlumatları yoxdur veya natamamdır');
+    await fetchCurrentUser(); // Yenidən məlumatları əldə etməyi sınayaq
+    
+    // Hələ də istifadəçi məlumatları yoxdursa
+    if (!currentUser.value || !currentUser.value.id) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Xəta',
+        text: 'İstifadəçi məlumatları əldə edilə bilmədi. Zəhmət olmasa səhifəni yeniləyib yenidən cəhd edin.',
+      });
+      return;
+    }
+  }
+   // Rəyin boş olub-olmadığını yoxla
+   if (!commentText.value.trim()) {
     Swal.fire({
       icon: 'warning',
       title: 'Diqqət',
@@ -432,7 +466,7 @@ const submitComment = async () => {
     });
     return;
   }
-
+  
   try {
     // Göndərilir işarəsini aktiv et
     isSubmitting.value = true;
