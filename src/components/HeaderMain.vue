@@ -219,13 +219,14 @@
           <!-- SEARCH AND BURGER MENU  -->
           <div class="flex items-center">
               
-              <div class="search-box ">
-                  <button class="btn-search z-[9999]">
-                      <img :src="searchIcon" alt="search" class="w-[20px] h-[20px] md:w-[25px] md:h-[25px] lg:w-[30px] lg:h-[30px] cursor-pointer ml-7 md:mb-1 lg:mb-0 lg:ml-0">
-                  </button>
-                  <input type="text" class="input-search" placeholder="Axtarmaq üçün yazın...">
-              </div>
-              
+            <SearchBox 
+              :searchIcon="searchIcon" 
+              :searchResults="searchResults"
+              :isLoading="isSearchLoading"
+              @search="handleSearch"
+              @select-doctor="handleDoctorSelect"
+            />
+                  
               <div class="headerParent relative group flex items-center justify-center">
                 <!-- Burger icon-ə @click əlavə olunur -->
                 <div @click="toggleBurger" class="ml-3 w-[30px] h-[20px] md:w-[40px] md:h-[30px] lg:w-[42px] lg:h-[32px] flex flex-col justify-around items-end cursor-pointer">
@@ -598,10 +599,111 @@
 import { ref, computed, inject, onMounted, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
+import SearchBox from '@/components/SearchBox.vue';
+// import { useRouter } from 'vue-router';
+
+// Axtarış nəticələri üçün state'lər
+const searchResults = ref([]);
+const isSearchLoading = ref(false);
+// Axtarış üçün handler funksiyası
+
+const router = useRouter();
+
+// Debounce funksiyası
+let searchTimeout;
+const debounce = (func, delay) => {
+  return function(...args) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+// Axtarış API sorğusu - dəqiq field'lərlə filterlənmiş
+const searchDoctors = debounce(async (query) => {
+  if (!query || query.trim().length < 3) {
+    searchResults.value = [];
+    return;
+  }
+  
+  try {
+    isSearchLoading.value = true;
+    
+    // Sorğu mətni
+    const searchText = query.trim();
+    const encodedQuery = encodeURIComponent(searchText);
+    
+    // Daha dəqiq sorğu yaradırıq, hər field üçün ayrı filter əlavə edirik
+    const url = `https://bytexerp.online/api/leyla/v1/doctor-list/?search=${encodedQuery}&fields=first_name,first_name_az,first_name_ru,last_name,last_name_az,last_name_ru,degree,degree_az,degree_ru,category,category_ru,category_en`;
+    
+    console.log('Search URL:', url); // Debug üçün
+    const response = await axios.get(url);
+    
+    if (response.data && response.data.results) {
+      // Nəticələri daha yaxşı filterləyirik
+      const results = response.data.results.filter(doctor => {
+        // Ad və ya soyadında axtarış mətni varsa
+        const firstNameMatch = 
+          (doctor.first_name && doctor.first_name.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.first_name_az && doctor.first_name_az.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.first_name_ru && doctor.first_name_ru.toLowerCase().includes(searchText.toLowerCase()));
+          
+        const lastNameMatch = 
+          (doctor.last_name && doctor.last_name.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.last_name_az && doctor.last_name_az.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.last_name_ru && doctor.last_name_ru.toLowerCase().includes(searchText.toLowerCase()));
+          
+        const degreeMatch = 
+          (doctor.degree && doctor.degree.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.degree_az && doctor.degree_az.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.degree_ru && doctor.degree_ru.toLowerCase().includes(searchText.toLowerCase()));
+          
+        const categoryMatch = 
+          (doctor.category && doctor.category.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.category_ru && doctor.category_ru.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.category_en && doctor.category_en.toLowerCase().includes(searchText.toLowerCase()));
+
+        const positionMatch = 
+          (doctor.position && doctor.position.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.position_ru && doctor.position_ru.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.position_en && doctor.position_en.toLowerCase().includes(searchText.toLowerCase()));
+          
+        return firstNameMatch || lastNameMatch || degreeMatch || categoryMatch || positionMatch;
+      });
+      
+      searchResults.value = results;
+    } else {
+      searchResults.value = [];
+    }
+  } catch (error) {
+    console.error('Həkim axtarışı zamanı xəta:', error);
+    searchResults.value = [];
+  } finally {
+    isSearchLoading.value = false;
+  }
+}, 300); // 300ms debounce delay
+
+// Axtarış handler funksiyası
+const handleSearch = (query) => {
+  searchDoctors(query);
+};
+
+// Həkim seçildikdə yönləndirmə funksiyası
+const handleDoctorSelect = (doctor) => {
+  // Doktorun səhifəsinə yönləndirmə məntiqini DoctorsView-dan kopiyalayırıq
+  router.push({ 
+    name: 'doctor', 
+    params: { id: doctor.slug },
+    query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
+  });
+  
+  // Əgər mobil menyu açıq vəziyyətdədirsə onu bağlayaq
+  if (isMenuOpen.value) {
+    isMenuOpen.value = false;
+  }
+};
 
 import { useAuthStore } from '@/store/auth'; // AuthService-i AuthStore ilə əvəz edirik
 
-const router = useRouter();
+// const router = useRouter();
 const route = useRoute();
 const toggleModal = inject('toggleModal'); // Inject the toggleModal function
 const authStore = useAuthStore(); // Auth store instance'ı yaradırıq
@@ -863,106 +965,7 @@ width: 0 !important;
 /* .headerDropdown li:hover a::after {
 width: 100%;
 } */
-.search-box {
-width: fit-content;
-height: fit-content;
-position: relative;
-}
 
-.input-search {
-height: 45px;
-width: 0px;
-/* border: 1px solid rgba(255, 255, 255, 0.5); */
-padding: 12px;
-font-size: 18px;
-letter-spacing: 2px;
-outline: none;
-border-radius: 20px;
-transition: all 0.5s ease-in-out;
-/* background-color: #22a6b3; */
-background-color: transparent;
-/* background-color: #fff; */
-padding-right: 40px;
-color: #000;
-position: absolute;
-top: -5px;
-right: 0;
-z-index: 999;
-}
-
-.input-search::placeholder {
-color: #505050;
-font-size: 18px;
-letter-spacing: 2px;
-font-weight: 400;
-}
-
-.btn-search {
-width: 36px;
-height: 36px;
-display: flex;
-justify-content: center;
-align-items: center;
-border-style: none;
-font-size: 20px;
-font-weight: bold;
-outline: none;
-cursor: pointer;
-/* border-radius: 50%; */
-/* position: absolute; */
-right: 0px;
-/* color: #ffffff; */
-/* background-color: #22a6b3; */
-pointer-events: painted;
-background: none;
-padding: 0;
-z-index: 9999;
-}
-
-.btn-search:focus ~ .input-search,
-.input-search:focus {
-width: 300px;
-border-radius: 20px;
-background-color: #fff;
-border-bottom-right-radius: 10px;
-border-bottom: 1px solid lightgray;
-transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-position: absolute;
-top: -5px;
-right: 0;
-}
-
-@media screen and (max-width: 500px) {
-  .btn-search:focus ~ .input-search,
-  .input-search:focus {
-    width: 180px;
-  }
-  .input-search::placeholder {
-  font-size: 14px;
-  letter-spacing: 1px;
-  }
-  .input-search {
-    right: -10px !important;
-  }
-}
-@media screen and (min-width: 500px) {
-  .btn-search:focus ~ .input-search,
-  .input-search:focus {
-    width: 250px;
-  }
-  .input-search::placeholder {
-  font-size: 14px;
-  letter-spacing: 1px;
-  }
-  .input-search {
-    right: -10px !important;
-  }
-}
-
-.input-search:focus ~ .btn-search {
-background-color: green;
-color: white;
-}
 
 .mediaParent, .galleryParent, .surgeryParent, .pediatricsParent, .onlineParent{
 position: relative;

@@ -73,7 +73,7 @@
             <hr class="custom-hr">
             <div class="flex justify-between items-center pt-10 pb-1 flex-col flex-auto md:flex-row">
                 <img src="@/assets/images/footer-logo.svg" alt="" class="w-[270px] sm:w-[300px] h-[30px] sm:h-[34px] lg:w-[356px] lg:h-[42px]">
-                <p class="text-main-text mt-6 md:mt-0 text-sm md:text-xl">Bütün Hüquqlar Qorunur 2025 © <span class="text-yellow-400">RMG</span> Development.</p>
+                <p class="text-main-text mt-6 md:mt-0 text-sm md:text-xl">Bütün Hüquqlar Qorunur 2025 © <span class="text-yellow-400">RMG</span> Development</p>
             </div>
             </div>
         </div>

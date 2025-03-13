@@ -1,10 +1,22 @@
 <template>
     <div class="container mt-16" >
-      <SkeletonLoader v-if="showSkeleton" :contentLines="12" :showLink="true" />
-    
-      <div v-else-if="!doctor" class="text-center py-10">
-        <p class="text-red-500">Həkim məlumatları tapılmadı.</p>
+      <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="12" :showLink="true" /> -->
+      <!-- Yüklənmə göstəricisi -->
+    <div v-if="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+    </div>
+
+      <!-- Xəta göstəricisi (əgər varsa) -->
+      <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-sm mb-6">
+        <div class="flex items-center">
+          <svg class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+          </svg>
+          <p>{{ error }}</p>
+        </div>
       </div>
+      
+      <div v-else>
       <button @click="goBack" class="flex items-center text-gray-600 mb-6 hover:text-green-600   transition-colors">
         <i class="fa-solid fa-arrow-left mr-2"></i> Geriyə
       </button>
@@ -41,17 +53,17 @@
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
             <div class="flex">
               <!-- <i class="fa-regular fa-building text-primary text-4xl"></i> -->
-              <img :src="patientIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{ patientCount }}</span>
+              <img :src="locaIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
+              <span class="text-xl sm:text-2xl md:text-3xl font-bold text-main-text ml-2">{{ doctor.institution }}</span>
             </div>
-            <span class="mt-1">Pasiyent sayı</span>
+            <span class="mt-1">Filial</span>
           </div>
           
           <!-- Doctor comments -->
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
             <div class="flex">
               <img :src="opiIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">687</span>
+              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{ comments.length }}</span>
             </div>
             <span class="mt-1">Rəylər</span>
           </div>
@@ -159,8 +171,17 @@
                 <button @click="showCommentSection = false" class="px-4 py-2 rounded-xl transition-all duration-200 border !bg-[#ef7c00] hover:shadow-lg">
                   İmtina
                 </button>
-                <button @click="submitComment" class="px-4 py-2 rounded-xl bg-primary text-white transition-all duration-200 hover:shadow-lg">
-                  Göndər
+                <button 
+                  @click="submitComment" 
+                  class="px-4 py-2 rounded-xl bg-primary text-white transition-all duration-200 hover:shadow-lg"
+                  :disabled="isSubmitting"
+                >
+                  <!-- Düymə mətnini dinamik olaraq dəyiş -->
+                  <span v-if="isSubmitting">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                    Göndərilir...
+                  </span>
+                  <span v-else>Göndər</span>
                 </button>
               </div>
             </div>
@@ -176,20 +197,21 @@
               </div>
 
               <!-- Rəylərin siyahısı -->
-                <DoctorRating 
-                  v-for="comment in comments"
-                  :key="comment.id"
-                  :image="UserPhoto || 'https://via.placeholder.com/100'"
-                  :name="comment.user_full_name || 'İstifadəçi'"
-                  :review="comment.comment"
-                  :date="formatDate(comment.created_at)"
-                  :star="comment.rating || 5"
-                />
+              <DoctorRating 
+                v-for="comment in comments"
+                :key="comment.id"
+                :image="UserPhoto || 'https://via.placeholder.com/100'"
+                :name="comment.user_full_name"
+                :review="comment.comment"
+                :date="formatDate(comment.created_at)"
+                :star="comment.star || comment.rating || 0"
+              />
             </div>
           </div>
         
       </div>
     </div>
+  </div>
     </div>
 </template>
 
@@ -206,6 +228,7 @@ import Swal from 'sweetalert2';
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
 import api from '@/services/api';
+const isSubmitting = ref(false);
 
 const route = useRoute();   
 
@@ -241,6 +264,8 @@ const showCommentSection = ref(false);
 const commentText = ref('');
 const selectedRating = ref(5); // Defolt olaraq 5 ulduz
 const hoverRating = ref(0); // Hover edilən ulduz
+const isLoading = ref(true);
+const error = ref(null);
 
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
 
@@ -280,12 +305,11 @@ const fetchCurrentUser = async () => {
   }
 };
 
-// Doktorun rəylərini əldə edən funksiya
+// Doktorun rəylərini əldə edən funksiya - düzəldilmiş
 const fetchDoctorComments = async () => {
   try {
     isLoadingComments.value = true;
     
-    // URL-dən query parametri kimi ID-ni alaq
     const doctorId = route.query.doctorId || doctor.value?.id;
     
     if (!doctorId) {
@@ -293,20 +317,79 @@ const fetchDoctorComments = async () => {
       return;
     }
     
-    console.log('Doktor ID ilə rəylər alınır:', doctorId);
-    
-    // DÜZGÜN API endpoint - "comment-list" is used with doctor_id
+    // Rəyləri əldə et
     const response = await api.get(`http://bytexerp.online/api/leyla/v1/comment-list/${doctorId}/`);
-    comments.value = response.data.results || response.data;
-    console.log('Doktor rəyləri:', comments.value);
+    const fetchedComments = response.data.results || response.data;
+    
+    console.log('API-dan gələn rəylər:', fetchedComments[0]); // Debug üçün
+    
+    // Rəyləri işləyək və ad soyadları əlavə edək
+    const processedComments = fetchedComments.map(comment => {
+      // Əgər author bir obyektdirsə və first_name və last_name varsa
+      if (comment.author && typeof comment.author === 'object') {
+        // API-dan gələn istifadəçi adını və soyadını əlavə et
+        if (comment.author.first_name && comment.author.last_name) {
+          comment.user_full_name = `${comment.author.first_name} ${comment.author.last_name}`;
+        } else if (comment.author.username) {
+          comment.user_full_name = comment.author.username;
+        } else {
+          comment.user_full_name = 'İstifadəçi';
+        }
+      } 
+      // Əgər author sadəcə bir ID isə və cari istifadəçiyə bərabərdirsə
+      else if (comment.author === currentUser.value?.id) {
+        comment.user_full_name = `${currentUser.value.first_name} ${currentUser.value.last_name}`;
+      }
+      // Əgər heç bir şərt ödənmirsə
+      else if (!comment.user_full_name) {
+        comment.user_full_name = 'İstifadəçi';
+      }
+      
+      return comment;
+    });
+    
+    // Rəyləri tarixə görə sırala - ən yeni rəylər əvvəldə olsun
+    processedComments.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    
+    comments.value = processedComments;
+    
   } catch (error) {
     console.error('Rəyləri əldə etmə xətası:', error);
-    comments.value = []; // API xəta versə də boş array ilə davam edək
+    comments.value = [];
   } finally {
     isLoadingComments.value = false;
   }
 };
 
+// Tarix formatlaşdırmaq üçün funksiya - saat və dəqiqə əlavə edildi
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  
+  const date = new Date(dateString);
+  return date.toLocaleDateString('az-AZ', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+// Tarix formatlaşdırmaq üçün funksiya - saat və dəqiqə əlavə edildi
+// const formatDate = (dateString) => {
+//   if (!dateString) return '';
+  
+//   const date = new Date(dateString);
+//   return date.toLocaleDateString('az-AZ', {
+//     day: '2-digit',
+//     month: '2-digit',
+//     year: 'numeric',
+//     hour: '2-digit',
+//     minute: '2-digit'
+//   });
+// };
 
 useHead({
   title: pageTitle,
@@ -339,7 +422,7 @@ const openCommentModal = () => {
   }
 };
 
-// Rəy göndərmə funksiyası düzəldin
+// Rəy göndərmə funksiyasını düzəldək
 const submitComment = async () => {
   if (!commentText.value.trim()) {
     Swal.fire({
@@ -351,34 +434,42 @@ const submitComment = async () => {
   }
 
   try {
+    // Göndərilir işarəsini aktiv et
+    isSubmitting.value = true;
     // Doktor ID və slug alaq
     const doctorId = route.query.doctorId || doctor.value?.id;
-    const doctorSlug = doctor.value?.slug;
+    let doctorSlug = doctor.value?.slug || '';
     
     if (!doctorId) {
       console.error('Doktor ID məlumatı mövcud deyil');
       return;
     }
     
-    console.log('Rəy göndərilir:', {
-      doctor: doctorId,
-      user: currentUser.value.id,
-      comment: commentText.value,
-      star: selectedRating.value,
-      doctor_slug: doctorSlug
-    });
+    // Slug formatını düzəlt - yalnız hərf, rəqəm, alt xətt və defis saxla
+    // Azərbaycan əlifbası kimi xüsusi simvollar varsa onları təmizlə
+    doctorSlug = doctorSlug.replace(/[^a-zA-Z0-9_-]/g, '');
     
-    await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', {
-      doctor: doctorId,
-      user: currentUser.value.id,
+    console.log('Təmizlənmiş slug:', doctorSlug);
+    
+    // API-nin gözlədiyi formatda məlumatlar hazırlayaq
+    const payload = {
+      doctor: Number(doctorId),
+      author: currentUser.value.id,
       comment: commentText.value,
       star: selectedRating.value,
-      doctor_slug: doctorSlug
-    });
+      doctor_slug: doctorSlug || `dr-${doctorId}` // Əgər slug boşdursa, fallback olaraq dr-[ID] formatını istifadə et
+    };
+    
+    console.log('Rəy göndərilir:', payload);
+    
+    // API sorğusunu göndərək
+    const response = await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', payload);
+    
+    console.log('API cavabı:', response.data);
     
     // Rəyi sıfırla və seksiyini bağla
     commentText.value = '';
-    selectedRating.value = 5; // Varsayılan olaraq yenidən 5 ulduz təyin et
+    selectedRating.value = 5; 
     showCommentSection.value = false;
     
     // Uğurlu mesaj
@@ -394,29 +485,51 @@ const submitComment = async () => {
   } catch (error) {
     console.error('Rəy göndərmə xətası:', error);
     
+    // Xəta mesajını daha dəqiq göstərək
+    let errorMessage = 'Rəyinizi göndərmək mümkün olmadı.';
+    
+    if (error.response && error.response.data) {
+      console.log('API xəta detalları:', error.response.data);
+      // Backend-dən gələn xəta mesajları varsa göstərək
+      if (typeof error.response.data === 'object') {
+        const firstError = Object.values(error.response.data)[0];
+        if (Array.isArray(firstError) && firstError.length > 0) {
+          errorMessage = firstError[0];
+        }
+      }
+    }
+    
     Swal.fire({
       icon: 'error',
       title: 'Xəta baş verdi',
-      text: 'Rəyinizi göndərmək mümkün olmadı. Zəhmət olmasa bir az sonra yenidən cəhd edin.',
+      text: errorMessage,
     });
   }
+  finally {
+    // Proses bitdi - yüklənmə göstəricisini söndür
+    isSubmitting.value = false;
+  }
 };
+
+
 // Tarix formatlaşdırmaq üçün funksiya
-const formatDate = (dateString) => {
-  if (!dateString) return '';
+// const formatDate = (dateString) => {
+//   if (!dateString) return '';
   
-  const date = new Date(dateString);
-  return date.toLocaleDateString('az-AZ', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-};
+//   const date = new Date(dateString);
+//   return date.toLocaleDateString('az-AZ', {
+//     day: '2-digit',
+//     month: '2-digit',
+//     year: 'numeric'
+//   });
+// };
 
 
 const fetchDoctor = async () => {
   try {
     startLoading();
+    isLoading.value = true;
+    error.value = null;
     
     // Slug parametrini düzgün kodlayaq
     const encodedSlug = encodeURIComponent(route.params.id);
@@ -447,13 +560,16 @@ const fetchDoctor = async () => {
         doctor.value = doctorFound;
         await fetchDoctorComments();
       } else {
+        error.value = 'Həkim məlumatı tapılmadı';
         console.error('Həkim tapılmadı');
       }
     } catch (fallbackError) {
+      error.value = 'Həkim məlumatlarını yükləmək mümkün olmadı';
       console.error('Alternativ API çağırışında xəta:', fallbackError);
     }
   } finally {
     stopLoading(); 
+    isLoading.value = false;
   }
 };
 
@@ -469,8 +585,10 @@ const preloadImage = (src) => {
   img.src = src;
 };
 
-onMounted(() => {
-  fetchDoctor(); // Bu artıq fetchDoctorComments-i də çağıracaq
+onMounted(async() => {
+  isLoading.value = true;
+  error.value = null;
+  await fetchDoctor();
   fetchCurrentUser();
   // fetchDoctorComments();
 })
@@ -495,7 +613,8 @@ const formattedArticles = computed(() => formatText(doctor.value?.articles));
 
 // Doctor Experience Icons 
 import expIcon from '@/assets/icons/dr-experience.svg'
-import patientIcon from '@/assets/icons/dr-patient.svg'
+// import patientIcon from '@/assets/icons/dr-patient.svg'
+import locaIcon from '@/assets/icons/dr-location.png'
 import opiIcon from '@/assets/icons/dr-opinion.svg'
 
 
