@@ -129,20 +129,41 @@
 
               <!-- Comment yazma bölümü -->
               <div v-if="showCommentSection" class="comment-section border rounded-xl p-4">
-                <textarea 
-                  v-model="commentText" 
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Rəyinizi buraya yazın..."
-                ></textarea>
-                <div class="flex justify-end mt-2 space-x-2">
-                  <button @click="showCommentSection = false" class="px-4 py-2 rounded-xl border border-gray-300">
-                    İmtina
-                  </button>
-                  <button @click="submitComment" class="px-4 py-2 rounded-xl bg-primary text-white">
-                    Göndər
-                  </button>
+              <!-- Reytinq ulduzları -->
+              <div class="mb-4">
+                <p class="text-gray-700 mb-2">Reytinq:</p>
+                <div class="flex">
+                  <i v-for="star in 5" 
+                    :key="star" 
+                    :class="[
+                      hoverRating >= star || (hoverRating === 0 && selectedRating >= star) 
+                        ? 'fa-solid fa-star text-primary' 
+                        : 'fa-regular fa-star text-gray-400',
+                      'text-xl cursor-pointer mr-1'
+                    ]"
+                    @click="selectedRating = star"
+                    @mouseenter="hoverRating = star"
+                    @mouseleave="hoverRating = 0"
+                  ></i>
+                  <span class="ml-2 text-sm text-gray-600">{{ selectedRating }} / 5</span>
                 </div>
               </div>
+              
+              <textarea 
+                v-model="commentText" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Rəyinizi buraya yazın..."
+              ></textarea>
+              
+              <div class="flex justify-end mt-2 space-x-2">
+                <button @click="showCommentSection = false" class="px-4 py-2 rounded-xl transition-all duration-200 border !bg-[#ef7c00] hover:shadow-lg">
+                  İmtina
+                </button>
+                <button @click="submitComment" class="px-4 py-2 rounded-xl bg-primary text-white transition-all duration-200 hover:shadow-lg">
+                  Göndər
+                </button>
+              </div>
+            </div>
 
               <!-- Rəyləri yükləmə və boş vəziyyəti -->
               <div v-if="isLoadingComments" class="text-center py-6">
@@ -218,7 +239,8 @@ const isLoadingComments = ref(false);
 const currentUser = ref(null);
 const showCommentSection = ref(false);
 const commentText = ref('');
-
+const selectedRating = ref(5); // Defolt olaraq 5 ulduz
+const hoverRating = ref(0); // Hover edilən ulduz
 
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(500);
 
@@ -263,23 +285,27 @@ const fetchDoctorComments = async () => {
   try {
     isLoadingComments.value = true;
     
-    // Slug yerinə ID istifadə edək
-    if (!doctor.value || !doctor.value.id) {
-      console.error('Doctor ID məlumatı mövcud deyil');
+    // URL-dən query parametri kimi ID-ni alaq
+    const doctorId = route.query.doctorId || doctor.value?.id;
+    
+    if (!doctorId) {
+      console.error('Doktor ID məlumatı mövcud deyil');
       return;
     }
     
-    console.log('Doktor ID ilə rəylər alınır:', doctor.value.id);
-    const response = await api.get(`http://bytexerp.online/api/leyla/v1/comment-list/${doctor.value.id}/`);
+    console.log('Doktor ID ilə rəylər alınır:', doctorId);
+    
+    // DÜZGÜN API endpoint - "comment-list" is used with doctor_id
+    const response = await api.get(`http://bytexerp.online/api/leyla/v1/comment-list/${doctorId}/`);
     comments.value = response.data.results || response.data;
     console.log('Doktor rəyləri:', comments.value);
   } catch (error) {
     console.error('Rəyləri əldə etmə xətası:', error);
+    comments.value = []; // API xəta versə də boş array ilə davam edək
   } finally {
     isLoadingComments.value = false;
   }
 };
-
 
 
 useHead({
@@ -325,19 +351,37 @@ const submitComment = async () => {
   }
 
   try {
-    const doctorSlug = route.params.id;
-    await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', {
-      doctor: doctor.value.id, // Doktor ID-si
-      user: currentUser.value.id, // İstifadəçi ID-si
-      comment: commentText.value, // Rəy mətni
-      doctor_slug: doctorSlug // Ehtiyat üçün slug da göndərək
+    // Doktor ID və slug alaq
+    const doctorId = route.query.doctorId || doctor.value?.id;
+    const doctorSlug = doctor.value?.slug;
+    
+    if (!doctorId) {
+      console.error('Doktor ID məlumatı mövcud deyil');
+      return;
+    }
+    
+    console.log('Rəy göndərilir:', {
+      doctor: doctorId,
+      user: currentUser.value.id,
+      comment: commentText.value,
+      star: selectedRating.value,
+      doctor_slug: doctorSlug
     });
     
-    // Rəyi sıfırlayıb seksiyini bağlayaq
+    await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', {
+      doctor: doctorId,
+      user: currentUser.value.id,
+      comment: commentText.value,
+      star: selectedRating.value,
+      doctor_slug: doctorSlug
+    });
+    
+    // Rəyi sıfırla və seksiyini bağla
     commentText.value = '';
+    selectedRating.value = 5; // Varsayılan olaraq yenidən 5 ulduz təyin et
     showCommentSection.value = false;
     
-    // Uğurlu məlumat göstərək
+    // Uğurlu mesaj
     Swal.fire({
       icon: 'success',
       title: 'Uğurlu əməliyyat',
@@ -357,7 +401,6 @@ const submitComment = async () => {
     });
   }
 };
-
 // Tarix formatlaşdırmaq üçün funksiya
 const formatDate = (dateString) => {
   if (!dateString) return '';

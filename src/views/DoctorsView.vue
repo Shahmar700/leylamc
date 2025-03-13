@@ -103,7 +103,12 @@ const router = useRouter();
 
 
 const goToDoctor = (doctor) => {
-  router.push({ name: 'doctor', params: { id: doctor.slug } });
+  // URL-də slug saxlayaq, amma query parametrlərində ID göndərək
+  router.push({ 
+    name: 'doctor', 
+    params: { id: doctor.slug },
+    query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
+  });
 };
 
 import DoctorCard from '@/components/DoctorCard.vue'

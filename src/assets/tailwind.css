@@ -41,6 +41,22 @@
   border-color: #6bb52b;
 }
 
+.orangeBtn {
+  font-size: 18px;
+  background-color: #ef7c00;
+  color: #fff;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.orangeBtn:hover{
+  color: #ef7c00;
+  background-color: #fff;
+  border-color: #ef7c00;
+}
+
 .router-link-active {
   color: #6bb52b !important;
 }
