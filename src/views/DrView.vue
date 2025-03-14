@@ -127,11 +127,37 @@
             </tbody>
           </table>
         </div>
-        <div v-if="selectedTab === 'articles'">
-          <!-- Həkimin məqalələri kontenti -->
-          <div v-if="doctor.value?.articles && doctor.value.articles.trim()">
+        <!-- Həkimin məqalələri kontenti -->
+        <div v-if="selectedTab === 'articles'" class="pt-2">
+          <!-- Yüklənmə vəziyyəti -->
+          <div v-if="isLoadingArticles" class="text-center py-6">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p class="mt-2 text-gray-600">Məqalələr yüklənir...</p>
+          </div>
+          
+          <!-- Məqalələr siyahısı -->
+          <div v-else-if="doctorArticles.length > 0" class="space-y-6">
+            <div v-for="article in doctorArticles" :key="article.id" class="article-item border-b pb-6 mb-6">
+              <h3 class="text-xl font-semibold mb-4">{{ article.title }}</h3>
+              <div v-if="article.text && article.text.trim()" class="mt-2 text-sm md:text-lg">
+                <p class="text-justify" v-html="formatText(article.text)"></p>
+              </div>
+              <div v-else-if="article.text_az && article.text_az.trim()" class="mt-2 text-sm md:text-lg">
+                <p class="text-justify" v-html="formatText(article.text_az)"></p>
+              </div>
+              <div v-else class="mt-2 text-sm md:text-lg text-gray-600">
+                <p>Məqalə mətni tezliklə əlavə olunacaq.</p>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">{{ formatDate(article.created_at) }}</p>
+            </div>
+          </div>
+          
+          <!-- Əvvəlki məqalə məzmunu (əgər API məqalələri tapılmazsa) -->
+          <div v-else-if="doctor.value?.articles && doctor.value.articles.trim()">
             <p class="text-sm md:text-lg" v-html="formattedArticles"></p>
           </div>
+          
+          <!-- Məqalə yoxdur mesajı -->
           <div v-else class="text-center py-6">
             <p class="text-gray-600">Bu həkimin hələ heç bir məqaləsi yoxdur.</p>
           </div>
@@ -268,14 +294,46 @@ import { watch } from 'vue';
 
 const route = useRoute();   
 
+
+// Məqalələr üçün əlavə dəyişənlər
+const doctorArticles = ref([]);
+const isLoadingArticles = ref(false);
+
+// Həkimin məqalələrini APİ-dən çəkmək funksiyası
+const fetchDoctorArticles = async () => {
+  try {
+    isLoadingArticles.value = true;
+    const doctorId = doctor.value?.id;
+    
+    if (!doctorId) {
+      console.warn('Həkim ID-si əlçatan deyil');
+      return;
+    }
+    
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/article-list/');
+    
+    // Cari həkimin ID-sinə uyğun məqalələri filterlə
+    const filteredArticles = response.data.results.filter(article => 
+      article.doctor === doctorId
+    );
+    
+    doctorArticles.value = filteredArticles;
+    console.log(`Həkim ID=${doctorId} üçün ${doctorArticles.value.length} məqalə tapıldı`);
+  } catch (error) {
+    console.error('Həkim məqalələrini yükləmə xətası:', error);
+  } finally {
+    isLoadingArticles.value = false;
+  }
+};
+
 // Route parametrlərindəki dəyişiklikləri izləyin
 watch(
   () => route.params.id,
   async (newId, oldId) => {
     if (newId !== oldId) {
       console.log(`Həkim ID/slug dəyişdi: ${oldId} -> ${newId}`);
-      // Yeni həkimin məlumatlarını yüklə
       await fetchDoctor();
+      await fetchDoctorArticles(); // Məqalələri yenilə
     }
   }
 );
@@ -284,8 +342,8 @@ watch(
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.id !== from.params.id) {
     console.log(`Marşrut yenilənir: ${from.params.id} -> ${to.params.id}`);
-    // Həkim məlumatlarını yenilə
     await fetchDoctor(to.params.id);
+    await fetchDoctorArticles(); // Məqalələri yenilə
   }
 });
 
@@ -679,6 +737,7 @@ onMounted(async() => {
   isLoading.value = true;
   error.value = null;
   await fetchDoctor();
+  await fetchDoctorArticles();
   fetchCurrentUser();
   // fetchDoctorComments();
 })
@@ -857,6 +916,23 @@ table tr div{
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+}
+
+/* DOCTOR ARTİCLES  */
+.article-item {
+  transition: all 0.3s ease;
+}
+
+.article-item:hover {
+  background-color: #f9fafb;
+}
+
+.article-item h3 {
+  color: #6ab42b;
+}
+
+.article-item:last-child {
+  border-bottom: none;
 }
 
 </style>

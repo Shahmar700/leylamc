@@ -251,6 +251,7 @@ const selectDoctor = async (doctor) => {
 }
 
 .input-search {
+  cursor: pointer;
   height: 45px;
   width: 0px;
   padding: 12px;
@@ -270,6 +271,7 @@ const selectDoctor = async (doctor) => {
 
 /* Expanded class ilə style-ı ayrı yazırıq */
 .input-search.expanded {
+  cursor: text;
   width: 300px;
   border-radius: 20px;
   background-color: #fff;

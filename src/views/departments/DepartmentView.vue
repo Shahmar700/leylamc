@@ -16,6 +16,7 @@
         <br>
         <div v-if="department.link">
           <a :href="department.link" target="_blank" class="text-green-600 hover:text-green-800 underline">
+            <i class="fas fa-external-link-alt mr-2"></i>
             Ətraflı məlumat üçün
           </a>
         </div>
@@ -36,6 +37,7 @@ import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
+import { useHead } from '@vueuse/head';
 
 import { ref, onMounted, watch, computed, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -112,6 +114,111 @@ const formattedText = computed(() => {
     ? department.value.text.replace(/\n/g, "<br>").replace(/(.*?:)/g, "<b>$1</b>") 
     : '';
 });
+
+// HTML təqləri olmayan təmiz mətn versiyası (meta açıqlamalar üçün)
+const plainText = computed(() => {
+  if (!department.value.text) return '';
+  return department.value.text
+    .replace(/<[^>]*>/g, '')
+    .replace(/\n/g, ' ')
+    .trim();
+});
+
+// Meta açıqlamalar üçün məhdud uzunluqlu təmiz mətn
+const metaDescription = computed(() => {
+  const text = plainText.value;
+  if (!text) return 'Leyla Medical Center-in peşəkar tibbi şöbəsi ilə tanış olun. Yüksək keyfiyyətli diaqnostika və müalicə xidmətləri.';
+  return text.length > 160 ? text.substring(0, 157) + '...' : text;
+});
+
+// Department şəkli (əgər varsa) və ya standart şəkil URL-si
+const departmentImage = computed(() => {
+  return department.value.photo || `https://leylamc.com/images/departments/${route.params.slug || 'department'}.jpg`;
+});
+
+// SEO meta məlumatlarını yeniləmək üçün funksiya
+const updateSEO = () => {
+  if (!department.value || !department.value.name) return;
+  
+  const departmentName = department.value.name;
+  const canonicalUrl = `https://leylamc.com/departments/${route.params.slug}`;
+  
+  useHead({
+    title: `Leyla Medical Center | ${departmentName}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription.value
+      },
+      { 
+        name: 'keywords', 
+        content: `leyla medical center, ${departmentName.toLowerCase()}, tibb mərkəzi, tibbi şöbə, xəstəxana şöbəsi, tibbi xidmətlər, ${route.params.slug}, müalicə, diaqnostika, bakı tibb mərkəzi` 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${departmentName}` 
+      },
+      { 
+        property: 'og:description', 
+        content: metaDescription.value
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: departmentImage.value },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${departmentName}` },
+      { name: 'twitter:description', content: metaDescription.value },
+      { name: 'twitter:image', content: departmentImage.value },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalBusiness",
+          "name": departmentName,
+          "description": plainText.value,
+          "url": canonicalUrl,
+          "image": departmentImage.value,
+          "medicalSpecialty": departmentName,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Yusif Səfərov küç.19",
+            "addressLocality": "Bakı",
+            "addressCountry": "Azərbaycan"
+          },
+          "telephone": "+994 12 000 00 00",
+          "isPartOf": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            }
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: canonicalUrl }
+    ]
+  });
+};
+
+// Department məlumatları dəyişdikdə SEO meta məlumatlarını yenilə
+watch(
+  department,
+  () => {
+    if (department.value && department.value.name) {
+      updateSEO();
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>

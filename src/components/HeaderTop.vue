@@ -7,22 +7,37 @@
             <div class="flex mb-2 sm:mb-0">
                 <!-- lang  -->
                 <div class="lang-selector pr-2 relative z-[999999] text-sm flex items-center justify-center">
-                      <div class="relative inline-block">
-                          <div @click="toggleDropdown" class="language-button flex items-center justify-between px-3 cursor-pointer rounded-md bg-white shadow-sm hover:shadow-md transition-all duration-300">
-                              <span class="font-medium">{{ selectedLanguage }}</span>
-                              <svg class="w-3 h-3 ml-1 transform transition-transform duration-300" :class="{'rotate-180': isOpen}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                              </svg>
-                          </div>
-                          <transition name="dropdown">
-                              <ul v-if="isOpen" class="language-dropdown absolute mt-1 w-full bg-white border border-gray-100 rounded-md shadow-lg overflow-hidden">
-                                  <li v-for="language in filteredLanguages" :key="language" @click="selectLanguage(language)" class="px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                                      {{ language }}
-                                  </li>
-                              </ul>
-                          </transition>
-                      </div>
-                  </div>
+                    <div class="relative inline-block">
+                    <!-- Burada ref əlavə et -->
+                    <div 
+                        ref="dropdownButtonRef"
+                        @click="toggleDropdown" 
+                        class="language-button flex items-center justify-between px-3 cursor-pointer rounded-md bg-white shadow-sm hover:shadow-md transition-all duration-300"
+                    >
+                        <span class="font-medium">{{ selectedLanguage }}</span>
+                        <svg class="w-3 h-3 ml-1 transform transition-transform duration-300" :class="{'rotate-180': isOpen}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <transition name="dropdown">
+                        <!-- Burada ref əlavə et -->
+                        <ul 
+                        v-if="isOpen" 
+                        ref="dropdownRef"
+                        class="language-dropdown absolute mt-1 w-full bg-white border border-gray-100 rounded-md shadow-lg overflow-hidden"
+                        >
+                        <li 
+                            v-for="language in filteredLanguages" 
+                            :key="language" 
+                            @click="selectLanguage(language)" 
+                            class="px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                        >
+                            {{ language }}
+                        </li>
+                        </ul>
+                    </transition>
+                    </div>
+                </div>
                 <!-- lang END -->
                 
                 <!-- Phone  -->
@@ -79,11 +94,15 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const languages = ref(['Az', 'Ru', 'Eng']);
 const selectedLanguage = ref('Az');
 const isOpen = ref(false);
+
+// Referanslar əlavə edildi
+const dropdownRef = ref(null);
+const dropdownButtonRef = ref(null);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
@@ -96,6 +115,40 @@ const selectLanguage = (language) => {
 
 const filteredLanguages = computed(() => {
   return languages.value.filter(language => language !== selectedLanguage.value);
+});
+
+
+// Klik xaricində bağlanma funksiyası
+const handleClickOutside = (event) => {
+  // Əvvəlcə dropdown açıq olmalıdır
+  if (!isOpen.value) return;
+  
+  // Sonra yoxlayırıq ki, klik dropdown və ya onun açma düyməsinin xaricindədir
+  if (dropdownRef.value && dropdownButtonRef.value) {
+    // Event target dropdown və ya düymə elementlərinin üstündədirsə, bağlama
+    const clickedOnDropdown = dropdownRef.value.contains(event.target);
+    const clickedOnButton = dropdownButtonRef.value.contains(event.target);
+    
+    if (!clickedOnDropdown && !clickedOnButton) {
+      console.log('Kənara klik edildi, dropdown bağlanır');
+      isOpen.value = false;
+    }
+  }
+};
+
+// Komponent yükləndikdə event listener əlavə et
+onMounted(() => {
+  // Qısa gecikmə ilə qeydiyyat et ki, refs-lər tam hazır olsun
+  setTimeout(() => {
+    document.addEventListener('click', handleClickOutside);
+    console.log('Click listener əlavə edildi');
+  }, 100);
+});
+
+// Komponent silinəcək olduqda event listener'ı təmizlə
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+  console.log('Click listener silindi');
 });
 
 

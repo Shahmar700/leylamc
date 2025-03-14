@@ -15,8 +15,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  // Development server konfiqurasiyası
   server: {
-    host: '192.168.3.29',
+    // 'true' yazanda bütün şəbəkələrdən giriş icazəsi verir
+    host: true,
     port: 3000
-  }
+  },
+  // Base path konfiqurasiyası
+  base: '/' // Əgər alt qovluqda deploy edirsinizsə, məsələn '/leylamc/' yazın
 })

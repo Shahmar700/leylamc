@@ -4,8 +4,10 @@
         <!-- Skeleton yükləməsi -->
         <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" /> -->
         <!-- Yüklənmə göstəricisi -->
-        <div v-if="isLoading" class="flex justify-center items-center py-12">
-          <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        <div v-if="isLoading">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <SkeletonDoctorCard v-for="n in 8" :key="n" class="mt-6" />
+          </div>
         </div>
 
         <!-- Xəta göstəricisi (əgər varsa) -->
@@ -59,8 +61,8 @@
           </div>
         </form>
     </div>
-      <div data-aos="zoom-out-left" data-aos-delay="1000">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-aos="flip-left">
+      <div >
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <DoctorCard
               v-for="doctor in paginatedDoctors"
               :key="doctor.id"
@@ -90,6 +92,8 @@ import axios from 'axios';
 import { useHead } from '@vueuse/head'; // Əlavə et
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
+import SkeletonDoctorCard from '@/components/SkeletonDoctorCard.vue'; // Yeni komponenti import edirik
+
 
 // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(1000);
@@ -125,7 +129,7 @@ const doctors = ref([]);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
-    startLoading();
+    // startLoading();
     isLoading.value = true;
     error.value = null;
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
@@ -133,6 +137,12 @@ const fetchDoctors = async () => {
     // Şöbələri yükləmək
     const uniqueDepartments = [...new Set(doctors.value.map(doctor => doctor.category))];
     departments.value = uniqueDepartments.filter(name => name).map(name => ({ name }));
+
+     // Yüklənmə bitdikdən sonra qısa gecikmə əlavə et ki, 
+    // UI görünən skeleton-lar üçün daha təbii olsun
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 500);
     return response.data;
   } catch (error) {
     console.error('API çağırışında xəta:', error);
@@ -333,6 +343,7 @@ const loadFilterState = () => {
 // Səhifə yükləndikdə saxlanılmış vəziyyətləri yükləyək (pagination və filtrlər)
 onMounted(async () => {
   try {
+    isLoading.value = true;
     // API çağırışlarını Promise.all ilə gözləyək
     await Promise.all([
       fetchDoctors(),
@@ -365,7 +376,7 @@ const pageTitle = computed(() => {
   } else if (selectedDepartments.value.length > 0) {
     return `${selectedDepartments.value[0].name} Şöbəsi Həkimləri | Leyla Medical Center`;
   } else {
-    return 'Həkimlərimiz | Leyla Medical Center';
+    return 'Leyla Medical Center | Həkimlərimiz';
   }
 });
 
@@ -459,4 +470,6 @@ useHead({
 ::v-deep .multiselect:hover {
   border-color: #6bb52b !important;
 }
+
+
 </style>
