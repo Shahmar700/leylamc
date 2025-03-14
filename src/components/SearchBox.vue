@@ -61,7 +61,7 @@
       class="search-results absolute right-0 mt-1 w-full bg-white border rounded-md shadow-lg z-[9999]">
       <div class="p-3 text-center text-gray-600 flex items-center justify-center">
         <div class="animate-spin mr-2 h-5 w-5 border-t-2 border-primary rounded-full"></div>
-        Axtarılır...
+        <span class="text-base">Axtarılır...</span>
       </div>
     </div>
   </div>
