@@ -1,27 +1,28 @@
 <template>
-    <div class="slider-container">
-      <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
-        <div
-          v-for="(image, index) in images"
-          :key="index"
-          class="slide h-[350px] screen-400:h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600] xl:h-[800px]"
-        >
-          <img :src="image" alt="slideImage" class="slide-image object-cover md:object-fill xl:object-cover" />
-        </div>
-      </div>
-      <button class="nav-button left top-[20%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
-      <button class="nav-button right top-[20%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
-      <div class="dots absolute bottom-[500px] screen-375:bottom-[460] screen-500:bottom-[500px] sm:bottom-[430px] md:bottom-[350px]  xl:bottom-32">
-        <span
-          v-for="(image, index) in images"
-          :key="index"
-          class="dot"
-          :class="{ active: index === currentIndex }"
-          @click="goToSlide(index)"
-        ></span>
+  <div class="slider-container">
+    <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+      <div
+        v-for="(image, index) in images"
+        :key="index"
+        class="slide h-[230px] screen-400:h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600] xl:h-[800px]"
+      >
+        <!-- Düzəliş: "slide" əvəzinə "image" dəyişəni istifadə olunmalıdır -->
+        <img :src="image.url || image" :alt="image.title || 'Slider image'" class="slide-image object-fill md:object-fill xl:object-fill" />
       </div>
     </div>
-  </template>
+    <button class="nav-button left top-[12%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
+    <button class="nav-button right top-[12%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
+    <div class="dots absolute bottom-[590px] screen-375:bottom-[460] screen-500:bottom-[500px] sm:bottom-[430px] md:bottom-[350px]  xl:bottom-32">
+      <span
+        v-for="(image, index) in images"
+        :key="index"
+        class="dot"
+        :class="{ active: index === currentIndex }"
+        @click="goToSlide(index)"
+      ></span>
+    </div>
+  </div>
+</template>
   
   <script setup>
   import { defineProps, ref, onMounted, onUnmounted } from 'vue';

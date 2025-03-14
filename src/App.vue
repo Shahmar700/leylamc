@@ -7,12 +7,12 @@
     <!-- <breadcrumb v-if="$route.path !== '/registration' && $route.path !== '/'" /> -->
     <RouterView />
     <footer-main />
-    <!-- <img src="@/assets/icons/scroll-up.svg"
+    <img src="@/assets/icons/scroll-up.svg"
       v-if="showScrollUp"
       alt="Scroll Up"
-      class="scroll-up-icon w-8 h-8 md:w-10 md:h-10"
+      class="scroll-up-icon w-8 h-8 md:w-10 md:h-10 fixed bottom-[200px] right-[20px] md:right-[40px] cursor-pointer z-[1000]"
       @click="scrollToTop"
-    /> -->
+    />
   </div>
 </template>
 
@@ -72,11 +72,5 @@ provide('headerHeight', headerHeight)
 </script>
 
 <style scoped>
-.scroll-up-icon {
-  position: fixed;
-  bottom: 200px;
-  right: 40px;
-  cursor: pointer;
-  z-index: 1000;
-}
+
 </style>

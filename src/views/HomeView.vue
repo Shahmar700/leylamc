@@ -6,7 +6,7 @@
       </div>
       <!-- ** SERVICES ** ----  -->
       <div
-        class="bg-white border rounded-t-[60px] absolute -bottom-6 screen-375:bottom-32 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full"
+        class="bg-white border rounded-t-[60px] absolute bottom-24 screen-375:bottom-32 screen-400:bottom-20 screen-500:-bottom-20 sm:-bottom-60 md:-bottom-40 lg:bottom-60 xl:-bottom-1 left-2/4 -translate-x-2/4 w-full"
       >
         <div
           class="container pt-[30px] screen-500:pt-[50px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -416,6 +416,69 @@ const isMobile = ref(false);
 const isTablet = ref(false);
 const isDesktop = ref(false);
 
+// Mövcud statik homeImages əvəzinə ref istifadə edəcəyik
+const homeImages = ref([]);
+
+// API çağırışı ilə banner şəkillərini yükləmək
+const fetchBanners = async () => {
+  try {
+    const response = await axios.get(
+      "https://bytexerp.online/api/leyla/v1/banner-list/"
+    );
+    
+    if (response.data?.results?.length > 0) {
+      // API-dan gələn şəkilləri array-a çevirək
+      const bannerImages = response.data.results.map(banner => ({
+        url: banner.photo,
+        title: banner.title,
+        source: banner.source
+      }));
+      
+      // API-dan şəkillər varsa onları istifadə edək, 
+      // yoxdursa default şəkilləri saxlayaq
+      if (bannerImages.length > 0) {
+        homeImages.value = bannerImages;
+      } else {
+        // Əgər API-dan şəkil gəlməzsə, default şəkillərdən istifadə edək
+        homeImages.value = [
+          { url: heroBanner, title: "", source: "" },
+          { url: heroBanner3, title: "", source: "" },
+          { url: heroBanner4, title: "", source: "" }
+        ];
+      }
+    } else {
+      // Əgər API-dan şəkil gəlməzsə, default şəkillərdən istifadə edək
+      homeImages.value = [
+        { url: heroBanner, title: "", source: "" },
+        { url: heroBanner3, title: "", source: "" },
+        { url: heroBanner4, title: "", source: "" }
+      ];
+    }
+    console.log("Banner şəkilləri yükləndi:", homeImages.value);
+  } catch (error) {
+    console.error("Banner şəkilləri yükləmədə xəta:", error);
+    // Xəta olduqda default şəkillərdən istifadə edək
+    homeImages.value = [
+      { url: heroBanner, title: "", source: "" },
+      { url: heroBanner3, title: "", source: "" },
+      { url: heroBanner4, title: "", source: "" }
+    ];
+  }
+};
+
+// onMounted funksiyasına bannerləri yükləmək əlavə edək
+onMounted(() => {
+  fetchDoctors();
+  fetchNews();
+  fetchDepartments();
+  fetchBanners(); // Banner şəkillərini yüklə
+  startPolling();
+
+  // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq
+  window.addEventListener("resize", handleResize);
+  handleResize();
+});
+
 // Ekran ölçülərini izləyən funksiya
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768;
@@ -566,17 +629,15 @@ const goToNews = (slug) => {
 // GET APİ DOCTORS END ________________________
 
 // images for the slider component
-import heroBanner from "@/assets/images/heroBanner.webp";
-// import heroBanner2 from '@/assets/images/heroBanner2.webp'
-import heroBanner3 from "@/assets/images/heroBanner3.webp";
-import heroBanner4 from "@/assets/images/heroBanner4.webp";
+// import heroBanner from "@/assets/images/heroBanner.webp";
+// import heroBanner3 from "@/assets/images/heroBanner3.webp";
+// import heroBanner4 from "@/assets/images/heroBanner4.webp";
 
-const homeImages = [
-  heroBanner,
-  // heroBanner2,
-  heroBanner3,
-  heroBanner4,
-];
+// const homeImages = [
+//   heroBanner,
+//   heroBanner3,
+//   heroBanner4,
+// ];
 // Services Images
 import service1 from "@/assets/images/Service1.jpg";
 import service2 from "@/assets/images/Service2.jpg";

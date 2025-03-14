@@ -49,7 +49,7 @@
             <span class="mt-1">Təcrübə</span>
           </div>
           
-          <!-- Doctor Number of patients -->
+          <!-- Doctor institution -->
           <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
             <div class="flex">
               <img :src="locaIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
@@ -204,7 +204,7 @@
 
               <!-- Rəylərin siyahısı -->
               <DoctorRating 
-                v-for="comment in comments"
+                v-for="comment in displayedComments"
                 :key="comment.id"
                 :image="UserPhoto || 'https://via.placeholder.com/100'"
                 :name="comment.user_full_name"
@@ -212,6 +212,34 @@
                 :date="formatDate(comment.created_at)"
                 :star="comment.star || comment.rating || 0"
               />
+            </div>
+            <!-- Pagination -->
+            <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+              <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                <i class="fa-solid fa-angles-left"></i>
+              </button>
+              <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                <i class="fa-solid fa-angle-left"></i>
+              </button>
+              <span 
+                v-for="page in pages" 
+                :key="page" 
+                @click="goToPage(page)" 
+                :class="{ 
+                  'font-bold': currentPage === page, 
+                  'active-page': currentPage === page, 
+                  'inactive-page': currentPage !== page && page !== '...',
+                  'pagination-dots': page === '...'
+                }"
+              >
+                {{ page }}
+              </span>
+              <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <i class="fa-solid fa-angle-right"></i>
+              </button>
+              <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <i class="fa-solid fa-angles-right"></i>
+              </button>
             </div>
           </div>
         
@@ -707,61 +735,68 @@ const tabStyle = computed(() => {
 // import UserPhoto from '@/assets/images/rating-user.jpg'
 
 
-// Həkimin təcrübə ilinə və ID-sinə görə sabit pasiyent sayını hesablayan funksiya
-const calculatePatients = (experienceYear, doctorSlug) => {
-  // Slug əsasında sabit seed yaratmaq
-  let seed = 0;
-  for (let i = 0; i < doctorSlug.length; i++) {
-    seed += doctorSlug.charCodeAt(i);
-  }
+// Rəylər üçün pagination dəyişənlərini script hissəsində əlavə edin
+const currentPage = ref(1);
+const commentsPerPage = ref(5); // Hər səhifədə 5 rəy göstəriləcək
+
+// Cari səhifədə göstəriləcək rəylər üçün computed xüsusiyyəti
+const displayedComments = computed(() => {
+  const startIndex = (currentPage.value - 1) * commentsPerPage.value;
+  const endIndex = startIndex + commentsPerPage.value;
+  return comments.value.slice(startIndex, endIndex);
+});
+
+// Ümumi səhifə sayını hesablamaq üçün computed xüsusiyyəti
+const totalPages = computed(() => {
+  return Math.ceil(comments.value.length / commentsPerPage.value);
+});
+
+// Göstəriləcək səhifə nömrələrinin siyahısı
+const pages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
   
-  // İlkin aralıqları təyin etmək
-  let min, max;
-  let dailyIncrease; // Gündəlik artım
-  
-  // Təcrübə ilinə əsasən aralığı və gündəlik artımı müəyyən et
-  if (!experienceYear || experienceYear <= 1) {
-    min = 1800;
-    max = 2000;
-    dailyIncrease = 5;
-  } else if (experienceYear <= 3) {
-    min = 3600;
-    max = 4000;
-    dailyIncrease = 5;
-  } else if (experienceYear <= 5) {
-    min = 5400;
-    max = 6000;
-    dailyIncrease = 7;
-  } else if (experienceYear <= 10) {
-    min = 9000;
-    max = 10000; // Buradakı dəyər düzəldildi (1000 deyil, 10000)
-    dailyIncrease = 12;
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  } else if (current <= 3) {
+    return [1, 2, 3, 4, 5, '...'];
+  } else if (current >= total - 2) {
+    return ['...', total - 4, total - 3, total - 2, total - 1, total];
   } else {
-    min = 15000;
-    max = 20000;
-    dailyIncrease = 17;
+    return ['...', current - 1, current, current + 1, '...'];
   }
-  
-  // Seed əsasında başlanğıc dəyərini hesablamaq
-  const range = max - min;
-  const randomOffset = seed % range;
-  let baseNumber = min + randomOffset;
-  
-  // İndiki tarixdən asılı olaraq gündəlik artımı hesablamaq
-  const startDate = new Date('2023-01-01'); // Başlanğıc tarixi (sabit)
-  const today = new Date();
-  const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-  
-  // Ümumi pasiyent sayını hesabla
-  const totalPatients = baseNumber + (daysDiff * dailyIncrease);
-  
-  return totalPatients;
+});
+
+// Pagination funksiyaları
+const goToPage = (page) => {
+  if (page === '...') return;
+  currentPage.value = page;
 };
 
-// Hesablanmış pasiyent sayı üçün computed xüsusiyyəti
-const patientCount = computed(() => {
-  if (!doctor.value || !doctor.value.slug) return 0;
-  return calculatePatients(doctor.value.experience_year, doctor.value.slug);
+const goToFirstPage = () => {
+  currentPage.value = 1;
+};
+
+const goToPreviousPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
+const goToNextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
+
+const goToLastPage = () => {
+  currentPage.value = totalPages.value;
+};
+
+// Rəyləri yükləmə funksiyası tamamlandardan sonra əlavə edin:
+watch(() => comments.value.length, () => {
+  // Rəy sayı dəyişdikdə ilk səhifəyə qayıt
+  currentPage.value = 1;
 });
 </script>
 

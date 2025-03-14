@@ -19,17 +19,27 @@
                 <h1 class="text-3xl font-semibold mb-10">
                     {{ trainingCenterData[0]?.title || 'Təlim Mərkəzi' }}
                 </h1>
-                <p class="text-base sm:text-lg" v-html="trainingCenterText"></p>
+                <p class="text-base sm:text-lg text-justify" v-html="trainingCenterText"></p>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
-                <SideBanners2 class="mb-4" /> 
+                <!-- <SideBanners2 class="mb-4" />  -->
             </div>
         </div>
          <!-- GALLERY SIDE  -->
-            <div v-if="!loading && !error" class="mt-10">
-                <GallerySection :images="images" />
+         <div class="w-full mt-12">
+            <div v-if="imagesLoading" class="flex justify-center py-8">
+              <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
             </div>
+            
+            <div v-else-if="!images.length" class="text-center py-8 bg-gray-50 rounded-lg">
+              <p class="text-gray-500">Qalereya üçün şəkil tapılmadı</p>
+            </div>
+            
+            <div v-else class="mt-4">
+              <GallerySection :images="images" />
+            </div>
+          </div>
         <Maps class="mt-14 sm:mt-24"/>
     </div>
 </template>
@@ -47,6 +57,8 @@ const trainingCenterData = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const trainingCenterText = ref('');
+const images = ref([]);
+const imagesLoading = ref(true);
 
 // Təlim mərkəzi məlumatlarını çəkmək funksiyası
 const fetchTrainingCenterData = async () => {
@@ -75,15 +87,35 @@ const fetchTrainingCenterData = async () => {
   }
 };
 
-// Qaleriya üçün şəkillər (gələcəkdə API-dan gələ bilər)
-const images = ref([
-  // Qaleriya şəkillərini buraya əlavə edin
-  // Məsələn: { src: 'https://example.com/image1.jpg', alt: 'Training Center Image 1' }
-]);
+// Qalereya şəkillərini çəkmək funksiyası 
+const fetchGalleryImages = async () => {
+  try {
+    imagesLoading.value = true;
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/trcenter-photo-list/');
+    
+    if (response.data && response.data.results) {
+      // API-dan gələn şəkilləri GallerySection üçün uyğun formata çevirir
+      images.value = response.data.results.map(item => ({
+        src: item.image,
+        alt: `Təlim mərkəzi şəkil ${item.id}`,
+        id: item.id
+      }));
+      console.log(`${images.value.length} ədəd şəkil qaleriyaya yükləndi`);
+    } else {
+      console.warn('Qalereya üçün şəkillər tapılmadı');
+    }
+  } catch (err) {
+    console.error("Qalereya şəkillərini yükləmə xətası:", err);
+    // Qalereya xətası kritik olmadığı üçün yalnız konsola çıxarırıq
+  } finally {
+    imagesLoading.value = false;
+  }
+};
 
 // Komponent yüklənəndə məlumatları çəkin
-onMounted(() => {
-  fetchTrainingCenterData();
+onMounted(async () => {
+  await fetchTrainingCenterData();
+  await fetchGalleryImages();
 });
 </script>
 
