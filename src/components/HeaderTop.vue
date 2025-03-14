@@ -6,19 +6,23 @@
             
             <div class="flex mb-2 sm:mb-0">
                 <!-- lang  -->
-                <div class="pr-2 select-none relative z-[999999] text-sm">
-                    <div class="relative inline-block w-[45px] md:w-[55px]">
-                        <div @click="toggleDropdown" class="appearance-none px-2 cursor-pointer outline-0 rounded-md bg-white border border-gray-300">
-                            {{ selectedLanguage }}
-                        </div>
-                        <ul v-if="isOpen" class="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-                            <li v-for="language in filteredLanguages" :key="language" @click="selectLanguage(language)" class="px-2 cursor-pointer hover:bg-gray-200">
-                                {{ language }}
-                            </li>
-                        </ul>
-                    </div>
-                <img src="@/assets/icons/arrowdown.svg" alt="arrow" class="arrowIcon absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer" style="pointer-events: none;" />
-                </div>
+                <div class="lang-selector pr-2 relative z-[999999] text-sm flex items-center justify-center">
+                      <div class="relative inline-block">
+                          <div @click="toggleDropdown" class="language-button flex items-center justify-between px-3 cursor-pointer rounded-md bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                              <span class="font-medium">{{ selectedLanguage }}</span>
+                              <svg class="w-3 h-3 ml-1 transform transition-transform duration-300" :class="{'rotate-180': isOpen}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                              </svg>
+                          </div>
+                          <transition name="dropdown">
+                              <ul v-if="isOpen" class="language-dropdown absolute mt-1 w-full bg-white border border-gray-100 rounded-md shadow-lg overflow-hidden">
+                                  <li v-for="language in filteredLanguages" :key="language" @click="selectLanguage(language)" class="px-3 py-2 cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                      {{ language }}
+                                  </li>
+                              </ul>
+                          </transition>
+                      </div>
+                  </div>
                 <!-- lang END -->
                 
                 <!-- Phone  -->
@@ -26,7 +30,7 @@
                     <div class="flex items-center px-2 text-sm">
                     <div class="mr-1 relative">
                         <a href="tel:*0101" class="flex items-center emergency-number">
-                        <div class="emergency-light-container">
+                        <div class="emergency-light-container flex justify-evenly">
                             <div class="emergency-light blue"></div>
                             <div class="emergency-light red"></div>
                         </div>
@@ -141,7 +145,7 @@ const filteredLanguages = computed(() => {
 .emergency-number {
   position: relative;
   padding: 5px 10px;
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   transition: transform 0.2s;
 }
@@ -152,8 +156,8 @@ const filteredLanguages = computed(() => {
 
 .emergency-light-container {
   position: absolute;
-  top: -5px;
-  left: 0;
+  top: 5px;
+  left: 20px;
   right: 0;
   display: flex;
   justify-content: center;
@@ -162,20 +166,20 @@ const filteredLanguages = computed(() => {
 
 .emergency-light {
   width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  height: 2px;
+  /* border-radius: 50%; */
   margin: 0 2px;
 }
 
 .emergency-light.blue {
   background-color: #1e90ff;
-  box-shadow: 0 0 10px 2px #1e90ff;
+  box-shadow: 0 0 10px 3px #1e90ff;
   animation: blueLight 1s infinite alternate;
 }
 
 .emergency-light.red {
   background-color: #ff3333;
-  box-shadow: 0 0 10px 2px #ff3333;
+  box-shadow: 0 0 10px 3px #ff3333;
   animation: redLight 1s infinite alternate;
 }
 
@@ -213,8 +217,8 @@ const filteredLanguages = computed(() => {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  /* border-radius: 20px; */
+  /* border: 1px solid rgba(255, 255, 255, 0.5); */
   animation: pulse-border 2s infinite;
   z-index: 0;
 }
@@ -231,5 +235,46 @@ const filteredLanguages = computed(() => {
   }
 }
 
+.language-button {
+    min-width: 55px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
 
+.language-button:hover {
+    background-color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.language-dropdown {
+    transform-origin: top center;
+    z-index: 50;
+}
+
+/* Dropdown animasiyası */
+.dropdown-enter-active, 
+.dropdown-leave-active {
+    transition: all 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+/* Dil seçilmiş və hover effektləri */
+.language-dropdown li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.language-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.language-dropdown li:hover {
+    font-weight: 500;
+    color: #6ab42b;
+}
 </style>
