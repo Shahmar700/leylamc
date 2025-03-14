@@ -8,7 +8,7 @@
     <!-- Axtarış inputu - stillərini isExpandedSearch-ə bağlayırıq -->
     <input 
       ref="searchInput"
-      v-model="searchQuery" 
+      v-model.trim="searchQuery" 
       type="text" 
       :class="['input-search', isExpandedSearch ? 'expanded' : '']"
       placeholder="Axtarmaq üçün yazın..."
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -106,6 +106,7 @@ const toggleSearch = () => {
 };
 
 const onSearch = () => {
+  
   emit('search', searchQuery.value);
   
   // Axtarış sorğusu boş deyilsə, nəticələri göstər
@@ -129,22 +130,45 @@ const search = () => {
   }
 };
 
-// Həkimi seçmək
-const selectDoctor = (doctor) => {
+// Həkimi seçmək - daha sadə yönləndirmə formatı ilə
+const selectDoctor = async (doctor) => {
   console.log('Həkim seçildi:', doctor);
   
-  // Parent komponentə seçilmiş həkimi bildir
-  emit('select-doctor', doctor);
-  
-  // Input sahəsini təmizlə və dropdown'u gizlət
-  searchQuery.value = '';
-  isExpandedSearch.value = false;
-  
-  // Həkimin səhifəsinə yönləndir
-  if (doctor.slug) {
-    router.push(`/doctor/${doctor.slug}`);
-  } else {
-    router.push(`/doctor/${doctor.id}`);
+  try {
+    // 1. İlk öncə axtarış mətni təmizlənir
+    searchQuery.value = '';
+    
+    // 2. Göstərmə şərtlərini idarə edən vəziyyətləri dəyişir
+    isExpandedSearch.value = false;
+    showResults.value = false;
+    
+    // 3. Explicit blur/unfocus the search input
+    if (searchInput.value) {
+      searchInput.value.blur();
+    }
+    
+    // 4. Vue-nun DOM yeniləməsini gözləyirik
+    await nextTick();
+    
+    // 5. Əlavə tədbir kimi DOM elementini birbaşa gizlədirik
+    const searchResults = document.querySelectorAll('.search-results');
+    if (searchResults.length) {
+      searchResults.forEach(el => {
+        el.style.display = 'none';
+      });
+    }
+    
+    // 6. Parent komponentə seçilmiş həkimi bildiririk
+    emit('select-doctor', doctor);
+    
+    // 7. ÇOX SADƏ: Həkimin səhifəsinə yönləndirmə - təmiz URL ilə
+    if (doctor.slug) {
+      router.push(`/doctor/${doctor.slug}`); // Ən sadə format
+    } else {
+      router.push(`/doctor/${doctor.id}`); // ID ilə
+    }
+  } catch (error) {
+    console.error('Həkim seçimi xətası:', error);
   }
 };
 
@@ -179,6 +203,11 @@ const selectDoctor = (doctor) => {
   z-index: 9999;
   width: 100%;
   overflow-y: scroll;
+}
+@media screen and (min-width: 768px) {
+  .search-results {
+    right: 0 !important;
+  }
 }
 
 @media screen and (max-width: 400px) {

@@ -2,7 +2,7 @@
     <div class="">
         <!-- News frame  -->
         <div class="w-full rounded-3xl h-[350px] overflow-hidden">
-            <img class="w-full h-full object-cover" :src="newsImg" alt="news-image">
+            <img class="w-full h-full object-fill" :src="newsImg" alt="news-image">
         </div>
         <div class="mt-9">
             <p class="text-main-text text-base">{{ newsDate }}</p>

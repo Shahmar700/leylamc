@@ -14,10 +14,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
+import { useHead } from '@vueuse/head';
 
 const visionTitle = ref('');
 const visionText = ref('');
@@ -36,6 +37,74 @@ const fetchOurVision = async () => {
 onMounted(() => {
   fetchOurVision();
 });
+
+// SEO meta məlumatları - reaktiv olaraq visionTitle dəyişdikdə yenilənəcək
+watch(visionTitle, (newTitle) => {
+  updateSEO();
+});
+
+// SEO məlumatlarını yeniləmək üçün funksiya
+const updateSEO = () => {
+  useHead({
+    title: `Leyla Medical Center | ${visionTitle.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: `Leyla Medical Center-in missiyası və vizyonu. ${visionText.value.substring(0, 150)}...` 
+      },
+      { 
+        name: 'keywords', 
+        content: 'leyla medical center, leyla tibb mərkəzi, vizyon, missiya, tibbi xidmətlər, səhiyyə, sağlamlıq, tibb mərkəzi, azərbaycan tibb mərkəzi' 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${visionTitle.value}` 
+      },
+      { 
+        property: 'og:description', 
+        content: `${visionTitle.value} - Leyla Medical Center-in missiyası, vizyonu və dəyərləri. ${visionText.value.substring(0, 150)}...`
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/our-vision' },
+      { property: 'og:image', content: 'https://leylamc.com/images/leyla-vision.jpg' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${visionTitle.value}` },
+      { 
+        name: 'twitter:description', 
+        content: `${visionTitle.value} - Leyla Medical Center-in missiyası və vizyonu. ${visionText.value.substring(0, 150)}...`
+      },
+      { name: 'twitter:image', content: 'https://leylamc.com/images/leyla-vision.jpg' },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalOrganization",
+          "name": "Leyla Medical Center",
+          "description": visionText.value,
+          "url": "https://leylamc.com/our-vision",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://leylamc.com/images/logo.png"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bakı",
+            "addressCountry": "Azərbaycan"
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/our-vision' }
+    ]
+  });
+};
 </script>
 
 <style scoped>

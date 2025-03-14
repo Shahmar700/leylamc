@@ -223,7 +223,7 @@
 
 <script setup>
 import { ref, onMounted, computed, inject, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import axios from 'axios';
 import auth from '@/services/auth'; 
@@ -235,8 +235,31 @@ import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
 import api from '@/services/api';
 const isSubmitting = ref(false);
+import { watch } from 'vue';
+
 
 const route = useRoute();   
+
+// Route parametrlərindəki dəyişiklikləri izləyin
+watch(
+  () => route.params.id,
+  async (newId, oldId) => {
+    if (newId !== oldId) {
+      console.log(`Həkim ID/slug dəyişdi: ${oldId} -> ${newId}`);
+      // Yeni həkimin məlumatlarını yüklə
+      await fetchDoctor();
+    }
+  }
+);
+
+// Alternativ: onBeforeRouteUpdate istifadə edə bilərsiniz
+onBeforeRouteUpdate(async (to, from) => {
+  if (to.params.id !== from.params.id) {
+    console.log(`Marşrut yenilənir: ${from.params.id} -> ${to.params.id}`);
+    // Həkim məlumatlarını yenilə
+    await fetchDoctor(to.params.id);
+  }
+});
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -559,7 +582,7 @@ const submitComment = async () => {
 // };
 
 
-const fetchDoctor = async () => {
+const fetchDoctor = async (id = null) => {
   try {
     startLoading();
     isLoading.value = true;
@@ -584,7 +607,8 @@ const fetchDoctor = async () => {
     await fetchDoctorComments();
   } catch (error) {
     console.error('API çağırışında xəta:', error);
-    
+    console.error("Həkim məlumatlarını əldə etmək xətası:", error);
+    error.value = "Həkim məlumatlarını yükləmək mümkün olmadı.";
     // Həkimi ID ilə tapmağı sınayaq
     try {
       const allResponse = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');

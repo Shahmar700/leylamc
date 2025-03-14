@@ -687,7 +687,7 @@ const handleDoctorSelect = (doctor) => {
   router.push({ 
     name: 'doctor', 
     params: { id: doctor.slug },
-    query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
+    // query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
   });
   
   // Əgər mobil menyu açıq vəziyyətdədirsə onu bağlayaq

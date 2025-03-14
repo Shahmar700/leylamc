@@ -628,7 +628,7 @@ import { inject } from "vue";
 const contactInfo = inject("contactInfo", null);
 
 useHead({
-  title: "Leyla Medical Center | Tibb Mərkəzi | Peşəkar Həkim Komandası",
+  title: "Leyla Medical Center | Əsas Səhifə ",
   meta: [
     {
       name: "description",

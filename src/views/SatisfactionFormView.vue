@@ -2,7 +2,8 @@
     <div class="container mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <!-- Satisfaction survey  -->
-            <div class="w-3/4" data-aos="zoom-out-right">
+            <div>
+                <div class="lg:w-3/4" data-aos="zoom-out-right">
                <div v-for="(question, index) in questions" :key="index" class="question flex flex-col mb-10 text-sm lg:text-lg">
                 <p class="mb-2 lg:mr-7">{{ question.text }}</p>
                 <div class="flex gap-2 md:first-letter:gap-5">
@@ -14,20 +15,13 @@
                     </label>
                 </div>
                </div>
-                    <div class="flex flex-col w-full lg:w-1/2 text-base lg:text-lg">
+                    <div class="flex flex-col w-full lg:w-2/3 text-base lg:text-lg">
                         <label for="message" class="mb-2 !text-main-text">Təklif və iradınız</label>
                         <textarea id="message" rows="4" class="border border-gray-300 p-2 rounded-md" required></textarea>
                     </div>
-            </div>
-            <!-- <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
-                <SideBanners class="mb-4" /> 
-                <SideBanners2 class="mb-4" /> 
-            </div> -->
-        </div>
-
-        <!-- GALLERY SIDE  -->
-         <div class="container mt-10">
-            <form action="" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5 text-base lg:text-lg">
+                </div>
+                <div class="mt-10">
+                <form action="" class="flex flex-col lg:flex-row lg:flex-wrap gap-4 mt-5 text-base lg:text-lg">
                     <div class="flex flex-col w-full lg:w-1/2">
                         <label for="name" class="mb-2 !text-main-text">Ad</label>
                         <input type="text" id="name" class="border border-gray-300 p-2 rounded-md" required>
@@ -45,6 +39,13 @@
                     </div>
                 </form>
          </div>
+            </div>
+            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+                <SideBanners class="mb-4" /> 
+                <SideBanners2 class="mb-4" /> 
+            </div>
+        </div>
+
 
         <Maps class="mt-24"/>
     </div>
@@ -54,7 +55,8 @@
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useHead } from '@vueuse/head';
 
 const questions =  ref([
   { text: "*0101 Çağrı Mərkəzinin operativliyi", selectedRating: null },
@@ -65,6 +67,8 @@ const questions =  ref([
   { text: '"Ünvanda Xidmət" əməkdaşlarının operativliyi', selectedRating: null },
   { text: '"E-nəticə" xidməti daxilində nəticələrinin elektron emailinizə göndərilməsi/saytdan əldə olunması', selectedRating: null },
 ])
+
+
 </script>
 
 <style scoped>

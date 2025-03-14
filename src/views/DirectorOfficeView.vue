@@ -8,16 +8,16 @@
                         <div class="w-full">
                             <img src="@/assets/images/elnur-vahabov.jpeg" alt="" class="mb-3 rounded-2xl w-full h-full object-cover">
                         </div>
-                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Direktor</h5>
-                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Dr.Elnur Vahabov</h5>
+                        <h5 class="font-bold text-main-text text-md md:text-xl">Direktor</h5>
+                        <h5 class="font-semibold text-main-text text-md md:text-xl">Dr.Elnur Vahabov</h5>
                     </div>
                     <div class="flex flex-col items-center">
                         <div>
                             <img src="@/assets/images/sevda-ceferova.jpeg" alt="" class="mb-3 rounded-2xl w-full h-full object-cover">
                         </div>
-                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Tibbi Direktor</h5>
-                        <h5 class="font-extrabold text-main-text text-md md:text-xl">MD., PhD., MBA., MSc HM., UN Physician</h5>
-                        <h5 class="font-extrabold text-main-text text-md md:text-xl">Dr.Sevda Cəfərova</h5>
+                        <h5 class="font-bold text-main-text text-md md:text-xl">Tibbi Direktor</h5>
+                        <h5 class="font-semibold text-main-text text-md md:text-xl">MD., PhD., MBA., MSc HM., UN Physician</h5>
+                        <h5 class="font-semibold text-main-text text-md md:text-xl">Dr.Sevda Cəfərova</h5>
                     </div>
                     <div></div>
                  </div>
@@ -100,10 +100,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
+import Maps from "@/components/Maps.vue";
+import { useHead } from '@vueuse/head';
+
+// Səhifə başlığını bir dəyişəndə saxlayırıq
+const pageTitle = ref('Direktor Kabineti');
 
 const countries = ref([
   { name: 'Azərbaycan', dial_code: '+994', code: 'AZ', flag: '🇦🇿' },
@@ -161,6 +166,92 @@ const submitForm = async () => {
     formError.value = 'Formu göndərərkən xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.';
     console.error('Form submission error:', error);
   }
+};
+
+// SEO meta məlumatları
+onMounted(() => {
+  setupSEO();
+});
+
+// SEO məlumatlarını yeniləmək üçün funksiya
+const setupSEO = () => {
+  useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: 'Leyla Medical Center-in Direktor Kabineti ilə əlaqə saxlayın. Öz təklif və şikayətlərinizi birbaşa klinika rəhbərliyinə çatdırın. Keyfiyyətli tibbi xidmət üçün müraciət edin.' 
+      },
+      { 
+        name: 'keywords', 
+        content: 'leyla medical center, direktor kabineti, təklif və şikayət, əlaqə, tibb mərkəzi, elnur vahabov, sevda cəfərova, tibb direktoru, pasiyent əlaqə forması, klinika rəhbərliyi' 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${pageTitle.value}` 
+      },
+      { 
+        property: 'og:description', 
+        content: 'Leyla Medical Center-in Direktor Kabineti ilə əlaqə saxlayın. Öz təklif və şikayətlərinizi birbaşa klinika rəhbərliyinə çatdırın.'
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/director-office' },
+      { property: 'og:image', content: 'https://leylamc.com/images/director-office.jpg' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
+      { 
+        name: 'twitter:description', 
+        content: 'Leyla Medical Center-in Direktor Kabineti ilə əlaqə saxlayın. Öz təklif və şikayətlərinizi birbaşa klinika rəhbərliyinə çatdırın.'
+      },
+      { name: 'twitter:image', content: 'https://leylamc.com/images/director-office.jpg' },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalOrganization",
+          "name": "Leyla Medical Center",
+          "url": "https://leylamc.com/director-office",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://leylamc.com/images/logo.png"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Yusif Səfərov küç.19",
+            "addressLocality": "Xətai rayonu, Bakı",
+            "addressCountry": "Azərbaycan"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+994124902131",
+            "contactType": "customer service"
+          },
+          "employee": [
+            {
+              "@type": "Person",
+              "name": "Dr. Elnur Vahabov",
+              "jobTitle": "Direktor"
+            },
+            {
+              "@type": "Person",
+              "name": "Dr. Sevda Cəfərova",
+              "jobTitle": "Tibbi Direktor",
+              "honorificSuffix": "MD., PhD., MBA., MSc HM., UN Physician"
+            }
+          ]
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/director-office' }
+    ]
+  });
 };
 </script>
 

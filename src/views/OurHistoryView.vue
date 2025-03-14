@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-16">
-        <h1 class="text-3xl text-main-text">Tariximiz</h1>
+      <h1 class="text-3xl text-main-text">{{ pageHeading }}</h1>
         <div class="mt-14">
             <div class="">
                 <HistoryContent 
@@ -58,14 +58,18 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import greenDot from "@/assets/icons/green-dot.svg"
 import greenTick from "@/assets/icons/green-tick.svg"
 import HistoryContent from "@/components/HistoryContent.vue";
 import { useHead } from '@vueuse/head';
 
+// Səhifə başlığını bir dəyişəndə saxlayırıq
+const pageHeading = ref('Tariximiz');
+
 // SEO meta məlumatları
 useHead({
-  title: 'Haqqımızda | Tariximiz',
+  title: `Leyla Medical Center | ${pageHeading.value}`,
   meta: [
     { 
       name: 'description', 
