@@ -9,7 +9,7 @@
             <!-- Satisfaction survey  -->
             <div>
                 <div class="lg:w-3/4" data-aos="zoom-out-right">
-                    <h1 class="text-2xl font-bold mb-6">Məmnunluq anketi</h1>
+                    <h1 class="text-2xl font-bold mb-6">{{ satisfactionHeader }}</h1>
                     
                     <!-- Uğurlu göndərmə mesajı -->
                     <div v-if="submitSuccess" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
@@ -116,7 +116,7 @@ const validationErrors = reactive({
     phone: ''
 });
 
-
+const satisfactionHeader = ref('Məmnunluq anketi')
 
 // Suallar
 const questions = ref([
@@ -278,7 +278,7 @@ const submitForm = async () => {
 
 // SEO meta məlumatları
 useHead({
-    title: 'Məmnunluq Anketi - Leyla Medical Center',
+    title: `Leyla Medical Center | ${satisfactionHeader.value}`,
     meta: [
         { name: 'description', content: 'Leyla Medical Center-in xidmətləri haqqında fikirlərinizi bizimlə bölüşün.' },
         { property: 'og:title', content: 'Məmnunluq Anketi - Leyla Medical Center' },

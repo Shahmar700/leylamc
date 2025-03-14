@@ -17,12 +17,44 @@
 </template>
 
 <script setup>
+import { useHead } from '@vueuse/head'; // Head hook əlavə et
 import CertificateImg from "@/components/CertificateImg.vue";
 import quality_certificate from "@/assets/images/quality-certificate.jpg"
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
+
+// SEO meta məlumatları
+useHead({
+    title: 'Keyfiyyətə Nəzarət - Leyla Medical Center',
+    meta: [
+        { 
+            name: 'description', 
+            content: 'Leyla Medical Center ISO 9001:2015 sertifikatına layiq görülmüşdür. Keyfiyyətə nəzarət və səhiyyə sahəsində qabaqcıl xidmətlərimiz haqqında məlumat əldə edin.' 
+        },
+        { 
+            property: 'og:title', 
+            content: 'Keyfiyyətə Nəzarət - Leyla Medical Center' 
+        },
+        { 
+            property: 'og:description', 
+            content: 'Leyla Medical Center ISO 9001:2015 sertifikatına layiq görülmüşdür. 22 illik fəaliyyətimiz çərçivəsində prioritetimiz əhaliyə yüksək keyfiyyətli səhiyyə xidmətləri təqdim etməkdir.' 
+        },
+        { 
+            property: 'og:type', 
+            content: 'website' 
+        },
+        { 
+            property: 'og:image', 
+            content: quality_certificate 
+        },
+        { 
+            name: 'keywords', 
+            content: 'keyfiyyətə nəzarət, ISO 9001:2015, tibbi xidmətlər, Leyla Medical Center, səhiyyə standartları, tibbi sertifikatlar' 
+        },
+    ],
+});
 </script>
 
 <style scoped>

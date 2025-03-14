@@ -7,7 +7,7 @@
         class="slide h-[230px] screen-400:h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600] xl:h-[800px]"
       >
         <!-- Düzəliş: "slide" əvəzinə "image" dəyişəni istifadə olunmalıdır -->
-        <img :src="image.url || image" :alt="image.title || 'Slider image'" class="slide-image object-fill md:object-fill xl:object-fill" />
+        <img :src="image.url || image" :alt="image.title || 'Slider image'" class="slide-image object-contain md:object-fill xl:object-fill" />
       </div>
     </div>
     <button class="nav-button left top-[12%] md:top-[30%] lg:top-1/3 w-[27px] h-[27px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>

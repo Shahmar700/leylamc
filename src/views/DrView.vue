@@ -771,26 +771,50 @@ const pages = computed(() => {
 const goToPage = (page) => {
   if (page === '...') return;
   currentPage.value = page;
+  // Səhifə dəyişdikdə səlis scroll etmək
+  scrollToReviewsArea();
 };
 
 const goToFirstPage = () => {
   currentPage.value = 1;
+  scrollToReviewsArea();
 };
 
 const goToPreviousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--;
+    scrollToReviewsArea();
   }
 };
+
 
 const goToNextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
+    scrollToReviewsArea();
   }
 };
 
 const goToLastPage = () => {
   currentPage.value = totalPages.value;
+  scrollToReviewsArea();
+};
+
+// Rəylər bölməsinə scroll etmək üçün yardımçı funksiya
+const scrollToReviewsArea = () => {
+  // Rəylər bölməsinin yuxarısından təxminən 100px yuxarıya scroll et
+  setTimeout(() => {
+    const tabsElement = document.querySelector('.infoContent');
+    if (tabsElement) {
+      const yOffset = -100; // 100px yuxarıya
+      const y = tabsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
+    }
+  }, 50); // Kiçik bir gecikmə ilə scroll etmək, DOM-un yenilənməsinə imkan verir
 };
 
 // Rəyləri yükləmə funksiyası tamamlandardan sonra əlavə edin:
