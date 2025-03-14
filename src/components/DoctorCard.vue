@@ -1,7 +1,7 @@
 <template>
     <a class="p-2 rounded-3xl border hover:border-2 hover:border-primary transition-all duration-300 hover:scale-1005 hover:shadow-md cursor-pointer">
-        <div class="rounded-3xl overflow-hidden w-full h-[325px] xl:h-[350px] 2xl:h-[380px] xl:object-contain">
-            <img v-lazy="image" alt="doctor" class="rounded-3xl object-cover w-full h-[380px]">
+        <div class="rounded-3xl overflow-hidden w-full h-[325px] xl:h-[370px] 2xl:h-[400px] xl:object-contain">
+            <img v-lazy="image" alt="doctor" class="rounded-3xl object-cover w-full full">
         </div>
         <div class="mt-6">
             <h1 class="text-primary text-2xl font-bold">{{ name }}</h1>

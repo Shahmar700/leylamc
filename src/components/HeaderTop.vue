@@ -27,20 +27,19 @@
                 
                 <!-- Phone  -->
                 <span class="text-white hidden screen-500:block">|</span>
-                    <div class="flex items-center px-2 text-sm">
-                    <div class="mr-1 relative">
-                        <a href="tel:*0101" class="flex items-center emergency-number">
-                        <div class="emergency-light-container flex justify-evenly">
-                            <div class="emergency-light blue"></div>
-                            <div class="emergency-light red"></div>
-                        </div>
-                        <div class="relative z-10">
-                            <img src="@/assets/icons/phone.svg" alt="phone" class="icon" />
-                        </div>
-                        <span class="text-white pl-1 font-bold z-10">*0101</span>
-                        </a>
-                    </div>
-                    </div>
+                <div class="flex items-center px-2 text-sm">
+                  <div class="mr-1 relative">
+                      <a href="tel:*0101" class="flex items-center emergency-number">
+                          <div class="relative z-10">
+                              <img src="@/assets/icons/phone.svg" alt="phone" class="icon" />
+                          </div>
+                          <!-- Nömrəni iki hissəyə bölürük və hər birinə ayrı animasiya tətbiq edirik -->
+                          <div class="pl-1 font-bold z-10 flex">
+                              <span class="emergency-blue">*01</span><span class="emergency-red">01</span>
+                          </div>
+                      </a>
+                  </div>
+              </div>
                 <span class="text-white hidden screen-500:block">|</span>
                 
             </div>
@@ -143,66 +142,53 @@ const filteredLanguages = computed(() => {
 
 /* Təcili Yardım Zəng Animasiyası */
 .emergency-number {
-  position: relative;
-  padding: 5px 10px;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.2s;
+    position: relative;
+    padding: 5px 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
 }
 
 .emergency-number:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
+}
+/* Göy rəngli birinci hissə üçün animasiya */
+.emergency-blue {
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(30, 144, 255, 0.8);
+    animation: pulseBlueText 1s infinite;
 }
 
-.emergency-light-container {
-  position: absolute;
-  top: 5px;
-  left: 20px;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 1;
+/* Qırmızı rəngli ikinci hissə üçün animasiya */
+.emergency-red {
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+    animation: pulseRedText 1s infinite;
+    animation-delay: 0.5s; /* Qırmızı animasiyanı göydən yarım saniyə sonra başlat */
 }
 
-.emergency-light {
-  width: 10px;
-  height: 2px;
-  /* border-radius: 50%; */
-  margin: 0 2px;
+/* Göy mətn üçün yanıb-sönmə animasiyası */
+@keyframes pulseBlueText {
+    0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(30, 144, 255, 0.8);
+    }
+    50% {
+        color: #1e90ff;
+        text-shadow: 0 0 15px rgba(30, 144, 255, 1), 0 0 20px rgba(30, 144, 255, 0.7);
+    }
 }
 
-.emergency-light.blue {
-  background-color: #1e90ff;
-  box-shadow: 0 0 10px 3px #1e90ff;
-  animation: blueLight 1s infinite alternate;
-}
-
-.emergency-light.red {
-  background-color: #ff3333;
-  box-shadow: 0 0 10px 3px #ff3333;
-  animation: redLight 1s infinite alternate;
-}
-
-@keyframes blueLight {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-}
-
-@keyframes redLight {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
+/* Qırmızı mətn üçün yanıb-sönmə animasiyası */
+@keyframes pulseRedText {
+    0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+    }
+    50% {
+        color: #ff3333;
+        text-shadow: 0 0 15px rgba(255, 51, 51, 1), 0 0 20px rgba(255, 51, 51, 0.7);
+    }
 }
 
 /* Qısa zəng nömrəsi vurğulaması */

@@ -7,6 +7,7 @@
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
+                <!-- <SideBanners2 class="mb-4" />  -->
             </div>
         </div>
         <Maps class="mt-14 sm:mt-24" />
@@ -17,6 +18,7 @@
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import SideBanners from "@/components/SideBanners.vue";
+import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 import { useHead } from '@vueuse/head';
 

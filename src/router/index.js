@@ -466,6 +466,14 @@ import ProfileView from '@/views/ProfileView.vue'
       meta: { breadcrumb: 'Sağlıq köşkü' }
     },
     {
+      path: '/health-kiosk/:id',
+      name: 'health-kiosk-detail',
+      component: () => import('../views/HealthKioskInnerView.vue'),
+      meta: {
+        title: 'Sağlıq köşkü'
+      }
+    },
+    {
       path: '/offers',
       name: 'offers',
       component: OffersView,

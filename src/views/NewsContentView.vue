@@ -7,8 +7,8 @@
               <img :src="newsItem.main_photo" alt="News Image" class="w-full h-auto mb-4">
             </div>
               <h1 class="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-4">{{ newsItem.title }}</h1>
-              <p class="text-sm screen-400:text-base md:text-lg">{{ newsItem.text }}</p>
-              <p class="text-sm text-gray-500 mt-4">{{ new Date(newsItem.created_at).toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' }) }}</p>
+              <p class="text-sm screen-400:text-base md:text-lg text-justify">{{ newsItem.text }}</p>
+              <p class="text-sm text-gray-500 mt-4">{{ formatDate(newsItem.created_at) }}</p>
           </div>
           <div v-else>
             <p>Yüklənir...</p>
@@ -43,6 +43,25 @@ import GallerySection from "@/components/GallerySection.vue";
   const newsItem = ref(null);
   const images = ref([]);
   
+// Tarix formatlaması üçün funksiya
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  
+  const date = new Date(dateString);
+  
+  // Azərbaycan dilində ayların adları
+  const months = [
+    'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'İyun', 
+    'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+  ];
+  
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  
+  return `${day} ${month} ${year}`;
+};
+
   const fetchNewsItem = async () => {
     try {
       const response = await axios.get(`http://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);

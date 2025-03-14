@@ -1,12 +1,12 @@
 <template>
     <div class="">
         <!-- News frame  -->
-        <div class="w-full rounded-3xl h-[350px] overflow-hidden">
-            <img class="w-full h-full object-fill" :src="newsImg" alt="news-image">
+        <div class="w-full rounded-3xl h-[280px] screen-375:h-[300px] overflow-hidden">
+            <img class="w-full h-full rounded-3xl object-cover" :src="newsImg" alt="news-image">
         </div>
-        <div class="mt-9">
-            <p class="text-main-text text-base">{{ newsDate }}</p>
-            <h1 class="text-main-text text-xl font-bold">{{ newsName }}</h1>
+        <div class="mt-5 md:mt-7">
+            <p class="text-main-text text-sm md:text-base">{{ newsDate }}</p>
+            <h1 class="text-main-text text-lg xl:text-xl font-bold">{{ newsName }}</h1>
         </div>
     </div>
 </template>

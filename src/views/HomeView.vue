@@ -15,7 +15,7 @@
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service1"
             :icon="serviceIcon1"
-            title="Ünvanda xidmət"
+            title="Ünvanda Xidmət"
             description="Ünvanda müayinə rahat, komfortlu və operativ tibbi xidmətin ən optimal üsuludur."
             @click="goToService('/medical-services/unvanda-xidmt')"
           />
@@ -23,7 +23,7 @@
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service2"
             :icon="serviceIcon2"
-            title="TƏCİLİ TİBBİ yardım"
+            title="Təcili Tibbi Yardım"
             description="Təcili və Təxirə salmaz Tibbi yardım xidməti üzrə 
             briqadamız 7/24 sizə yüksək səviyyədə diaqnostik-müalicəvi xidmət göstərir. "
             @click="goToService('/medical-services/tcili-tibbi-yardm')"
@@ -32,7 +32,7 @@
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
             :backgroundImage="service3"
             :icon="serviceIcon3"
-            title="Çağrı mərkəzimiz"
+            title="Çağrı Mərkəzimiz"
             description="*0101 çağrı mərkəzi dinləmədədir. Suallarınızı cavablandırmağa hazırıq!"
             @click="goToService('contact')"
           />
@@ -90,7 +90,7 @@
     </div>
 
     <!-- ** ABOUT **  -->
-    <div class="container grid grid-cols-1 lg:grid-cols-2 gap-6 pt-36 pb-32">
+    <div class="container grid grid-cols-1 lg:grid-cols-2 items-center gap-6 xl:gap-10 pt-36 pb-32">
       <div class="flex justify-center flex-col">
         <div class="w-full">
           <img
@@ -100,7 +100,7 @@
           />
           <div>
             <p
-              class="text-base screen-400:text-lg md:text-2xl font-normal text-justify"
+              class="text-base screen-400:text-lg md:text-xl lg:text-2xl font-normal text-justify"
             >
               1999-cu ildə ulu öndərimiz Heydər Əliyev tərəfindən açılışı baş
               tutan Leyla Medical Center fəaliyyətinin 22-ci ilində Referans
@@ -111,7 +111,7 @@
               müəssisəsi kimi uğurla fəaliyyətə başlamışdır.
             </p>
             <h4
-              class="text-base screen-400:text-lg md:text-2xl font-bold text-justify"
+              class="text-base screen-400:text-lg md:text-xl lg:text-2xl font-bold text-justify"
             >
               Bizlərə göstərilən inamı doğrultmaq və Səhiyyə sisteminin,
               xüsusilə özəl tibb sektorunun inkişaf etdirilməsi məqsədilə
@@ -127,7 +127,7 @@
       <!-- Right Side  -->
       <div class="">
         <div
-          class="w-full h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative"
+          class="w-full h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] xl:w-[600px] xl:h-[600px] relative"
         >
           <img
             class="rounded-2xl w-full h-full rounded-bl-3xl object-cover"
@@ -175,7 +175,7 @@
           </div>
         </div>
         <!-- videos  -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           <Ytvideo
             class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
             videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
@@ -233,19 +233,13 @@
           </div>
         </div>
         <!-- News Boxs -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
           <News
             v-for="item in news.slice(0, 3)"
             :key="item.id"
             class="cursor-pointer px-2 py-4 hover:shadow-md hover:rounded-3xl transition-all duration-200 hover:scale-101 will-change-transform"
             :newsImg="item.main_photo"
-            :newsDate="
-              new Date(item.created_at).toLocaleDateString('az-AZ', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })
-            "
+            :newsDate="formatDate(item.created_at)"
             :newsName="item.title"
             @click="goToNews(item.slug)"
           />
@@ -323,7 +317,7 @@
         </div>
         <!-- Doctors Imgs  -->
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-16"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-12"
         >
           <DoctorCard
             v-for="doctor in doctors.slice(0, 3)"
@@ -441,6 +435,23 @@ const slidesPerView = computed(() => {
   if (isTablet.value) return 2;
   return 3;
 });
+
+// Tarix formatlaması üçün funksiya
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  
+  // Azərbaycan dilində ayların adları
+  const months = [
+    'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'İyun', 
+    'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+  ];
+  
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  
+  return `${day} ${month} ${year}`;
+};
 
 // Modal
 const isModalOpen = ref(false);

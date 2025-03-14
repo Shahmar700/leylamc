@@ -133,4 +133,59 @@ ul {
     list-style: disc;
 }
 
+/* Şəkil hover effektləri */
+.grid > div {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.grid > div:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.grid > div img {
+    transition: transform 0.5s ease;
+    border-radius: 8px;
+}
+
+.grid > div:hover img {
+    transform: scale(1.05);
+}
+
+/* Pagination CSS-i də əlavə edək */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
 </style>

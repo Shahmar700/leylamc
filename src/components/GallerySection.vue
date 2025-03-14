@@ -1,6 +1,6 @@
 <template>
   <div>
-      <button class="greenBtn cursor-pointer mb-4">Qalereya</button>
+      <h2 class="mb-4 text-base md:text-lg xl:text-xl font-semibold text-gray-600">Qalereya</h2>
       <div v-if="normalizedImages.length > 0" class="w-full grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <img 
           v-for="(image, index) in normalizedImages"
