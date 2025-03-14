@@ -363,7 +363,7 @@
                   </li>
                   <!-- Mediada Biz -->
                   <li>
-                    <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
+                    <div @click="toggleBurgerDropdown('mediadaBiz_mobile')" class="flex justify-between items-center cursor-pointer text-lg">
                       <span>Mediada Biz</span>
                       <i class="fa-solid fa-angle-down transition-transform duration-300" 
                         :class="{'rotate-180': burgerDropdowns.mediadaBiz_mobile}"></i>
@@ -377,7 +377,7 @@
                       </li>
                       <!-- Qalereya -->
                       <li>
-                        <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-xl">
+                        <div @click="toggleBurgerDropdown('gallery_mobile')" class="flex justify-between items-center cursor-pointer text-lg">
                           <span>Qalereya</span>
                           <i class="fa-solid fa-angle-down transition-transform duration-300" 
                             :class="{'rotate-180': burgerDropdowns.gallery_mobile}"></i>
@@ -418,13 +418,13 @@
                     <router-link :to="{name: 'certificates'}" class="block text-base" @click="toggleBurger">Sertifikatlar</router-link>
                   </li>
                   <li>
-                    <router-link :to="{name: 'training-center'}" class="block text-lg sm:text-xl" @click="toggleBurger">Təlim Mərkəzi</router-link>
+                    <router-link :to="{name: 'training-center'}" class="block text-base sm:text-xl" @click="toggleBurger">Təlim Mərkəzi</router-link>
                   </li>
                 </ul>
               </li>
               <!-- Həkimlər -->
               <li class="md:hidden">
-                <div @click="toggleBurgerDropdown('hekimler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-xl">
+                <div @click="toggleBurgerDropdown('hekimler_mobile')" class="flex justify-between items-center cursor-pointer text-lg sm:text-lg">
                   <span>Həkimlər</span>
                   <i class="fa-solid fa-angle-down transition-transform duration-300" 
                     :class="{'rotate-180': burgerDropdowns.hekimler_mobile}"></i>

@@ -22,7 +22,7 @@
 
       <!-- GALLERY SIDE  -->
       <div class="mt-10">
-         <GallerySection :images="images" />
+         <GallerySection :images="galleryImages" />
       </div>
 
       <Maps class="mt-14 sm:mt-24"/>
@@ -31,18 +31,28 @@
 
   
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import { useHead } from '@vueuse/head';
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 import GallerySection from "@/components/GallerySection.vue";
   
-  const route = useRoute();
-  const newsItem = ref(null);
-  const images = ref([]);
+const route = useRoute();
+const newsItem = ref(null);
+const images = ref([]);
   
+// Qalereya üçün formatlanmış şəkillər
+const galleryImages = computed(() => {
+  return images.value.map((url, index) => ({
+    src: url,
+    alt: `${newsItem.value?.title || 'Xəbər şəkli'} - ${index + 1}`,
+    id: index
+  }));
+});
+
 // Tarix formatlaması üçün funksiya
 const formatDate = (dateString) => {
   if (!dateString) return '';
@@ -62,45 +72,148 @@ const formatDate = (dateString) => {
   return `${day} ${month} ${year}`;
 };
 
-  const fetchNewsItem = async () => {
-    try {
-      const response = await axios.get(`http://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);
-      newsItem.value = response.data;
+const fetchNewsItem = async () => {
+  try {
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);
+    newsItem.value = response.data;
 
-      // Xəbər məlumatları alındıqdan sonra şəkilləri yükləyirik
-      await fetchNewsPhotos();
-    } catch (error) {
-      console.error('API çağırışında xəta:', error);
-    }
-  };
+    // Xəbər məlumatları alındıqdan sonra şəkilləri yükləyirik
+    await fetchNewsPhotos();
+    
+    // SEO məlumatlarını yeniləyirik
+    updateSEO();
+  } catch (error) {
+    console.error('API çağırışında xəta:', error);
+  }
+};
 
-  const fetchNewsPhotos = async () => {
-    try {
-      if (!newsItem.value) return;
-      
-      const response = await axios.get('https://bytexerp.online/api/leyla/v1/news-photo-list/');
-      
-      // Cari xəbərə aid olan şəkilləri filtərləyirik
-      const filteredPhotos = response.data.results.filter(photo => 
-        photo.news.id === newsItem.value.id
-      );
-      
-      // Şəkil URL-lərini çıxarıb array şəklində saxlayırıq
-      images.value = filteredPhotos.map(photo => photo.image);
-    } catch (error) {
-      console.error('Şəkil yükləməsində xəta:', error);
-    }
-  };
+const fetchNewsPhotos = async () => {
+  try {
+    if (!newsItem.value) return;
+    
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/news-photo-list/');
+    
+    // Cari xəbərə aid olan şəkilləri filtərləyirik
+    const filteredPhotos = response.data.results.filter(photo => 
+      photo.news && photo.news.id === newsItem.value.id
+    );
+    
+    // Şəkil URL-lərini çıxarıb array şəklində saxlayırıq
+    images.value = filteredPhotos.map(photo => photo.image);
+  } catch (error) {
+    console.error('Şəkil yükləməsində xəta:', error);
+  }
+};
+
+// Meta açıqlaması üçün xəbər mətninin qısa versiyası
+const shortDescription = computed(() => {
+  if (!newsItem.value?.text) return '';
+  // 160 simvolla məhdudlaşdırılmış təmiz mətn
+  return newsItem.value.text.length > 160 
+    ? newsItem.value.text.substring(0, 157) + '...' 
+    : newsItem.value.text;
+});
+
+// SEO məlumatlarını yeniləmək funksiyası
+const updateSEO = () => {
+  if (!newsItem.value) return;
+
+  const canonicalUrl = `https://leylamc.com/news/${route.params.slug}`;
   
-  onMounted(() => {
-    fetchNewsItem();
+  useHead({
+    title: `Leyla Medical Center | ${newsItem.value.title}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: shortDescription.value 
+      },
+      { 
+        name: 'keywords', 
+        content: `leyla medical center, tibbi xəbərlər, ${newsItem.value.title}, səhiyyə xəbərləri, tibbi məqalə` 
+      },
+      { 
+        property: 'og:title', 
+        content: newsItem.value.title
+      },
+      { 
+        property: 'og:description', 
+        content: shortDescription.value
+      },
+      { property: 'og:type', content: 'article' },
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: newsItem.value.main_photo },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      { property: 'article:published_time', content: newsItem.value.created_at },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: newsItem.value.title },
+      { name: 'twitter:description', content: shortDescription.value },
+      { name: 'twitter:image', content: newsItem.value.main_photo },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          "headline": newsItem.value.title,
+          "description": shortDescription.value,
+          "image": [
+            newsItem.value.main_photo,
+            ...images.value
+          ],
+          "datePublished": newsItem.value.created_at,
+          "dateModified": newsItem.value.updated_at || newsItem.value.created_at,
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": canonicalUrl
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "Leyla Medical Center"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            }
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: canonicalUrl }
+    ]
   });
-  </script>
+};
+
+// Xəbər məlumatları dəyişdikdə SEO məlumatlarını yeniləyirik
+watch(newsItem, () => {
+  if (newsItem.value) {
+    updateSEO();
+  }
+}, { deep: true });
   
-  <style scoped>
-  /* .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  } */
-  </style>
+onMounted(() => {
+  fetchNewsItem();
+});
+</script>
+  
+<style scoped>
+h1 {
+  line-height: 1.3;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-justify {
+  text-align: justify;
+}
+</style>

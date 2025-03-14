@@ -2,10 +2,13 @@
     <div class="container mt-16 text-main-text">
         <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
+                <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="item in paginatedNews" :key="item.id" class="relative mb-4" @click="goToNews(item.slug)">
-                        <img :src="item.main_photo" class="w-full h-auto rounded-md">
-                        <p class="text-base sm:text-lg mt-2">{{ item.title }}</p>
+                    <div v-for="item in paginatedNews" :key="item.id" class="relative mb-4 news-card cursor-pointer overflow-hidden rounded-md" @click="goToNews(item.slug)">
+                        <div class="overflow-hidden">
+                            <img :src="item.main_photo" class="w-full h-auto rounded-md news-image transition-transform duration-300" :alt="item.title">
+                        </div>
+                        <p class="text-base sm:text-lg mt-2 p-2">{{ item.title }}</p>
                     </div>
                 </div>
                 <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
@@ -26,14 +29,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { useHead } from '@vueuse/head';
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 
+// Dinamik səhifə başlığı
+const pageTitle = ref('Xəbərlər');
 const news = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = 9;
@@ -43,6 +49,9 @@ const fetchAllNews = async () => {
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
     news.value = response.data.results;
+    
+    // Xəbərlər yükləndikdən sonra SEO məlumatlarını yeniləyirik
+    updateSEO();
   } catch (error) {
     console.error('API çağırışında xəta:', error);
   }
@@ -120,4 +129,165 @@ const router = useRouter();
 const goToNews = (slug) => {
   router.push({ name: 'news-content', params: { slug } });
 };
+
+// Dinamik meta description yaratmaq üçün computed xüsusiyyət
+const metaDescription = computed(() => {
+  if (!news.value || news.value.length === 0) {
+    return 'Leyla Medical Center-in ən son xəbərləri, tibbi yeniliklər, həkim məsləhətləri və tibbi kampaniyalar haqqında məlumat əldə edin.';
+  }
+  
+  // İlk 3 xəbərin başlığını birləşdiririk
+  const recentNewsTitles = news.value
+    .slice(0, 3)
+    .map(item => item.title)
+    .join(', ');
+  
+  return `Leyla Medical Center-in son tibbi xəbərləri: ${recentNewsTitles}. Yeniliklər, həkim məsləhətləri və digər tibbi məlumatlar.`;
+});
+
+// İlk şəklin URL-sini təyin edirik
+const firstNewsImage = computed(() => {
+  return news.value && news.value.length > 0 
+    ? news.value[0].main_photo 
+    : 'https://leylamc.com/images/news-default.jpg';
+});
+
+// SEO meta məlumatlarını yeniləmək üçün funksiya
+const updateSEO = () => {
+  useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription.value
+      },
+      { 
+        name: 'keywords', 
+        content: 'leyla medical center, tibbi xəbərlər, səhiyyə xəbərləri, xəstəxana yenilikləri, tibbi məsləhətlər, həkim tövsiyələri, tibbi tədbirlər, tibbi aksiyalar, yeni tibbi xidmətlər' 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${pageTitle.value}` 
+      },
+      { 
+        property: 'og:description', 
+        content: metaDescription.value 
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/news' },
+      { property: 'og:image', content: firstNewsImage.value },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
+      { name: 'twitter:description', content: metaDescription.value },
+      { name: 'twitter:image', content: firstNewsImage.value },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": pageTitle.value,
+          "description": metaDescription.value,
+          "url": "https://leylamc.com/news",
+          "publisher": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            }
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": news.value.slice(0, 10).map((item, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "item": {
+                "@type": "NewsArticle",
+                "headline": item.title,
+                "image": item.main_photo,
+                "datePublished": item.created_at || new Date().toISOString(),
+                "url": `https://leylamc.com/news/${item.slug}`
+              }
+            }))
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/news' }
+    ]
+  });
+};
+
+// Xəbər məlumatları dəyişdikdə SEO məlumatlarını yeniləyirik
+watch(news, () => {
+  updateSEO();
+}, { deep: true });
+
+// Cari səhifə dəyişdikdə də SEO məlumatlarını yeniləyə bilərik
+watch(currentPage, () => {
+  // Burada səhifə dəyişdiyində, URL-ə səhifə nömrəsi əlavə edə bilərik
+  // Məsələn: useHead içərisində canonical URL-i dəyişdirə bilərik
+});
 </script>
+
+<style scoped>
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pagination span {
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+.active-page {
+  background-color: #4F46E5;
+  color: white;
+  border-radius: 4px;
+}
+
+.inactive-page {
+  color: #4F46E5;
+}
+
+.pagination-button {
+  background: none;
+  border: none;
+  color: #4F46E5;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.pagination-button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.news-card {
+  transition: all 0.3s ease;
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.1); */
+}
+
+.news-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.news-card:hover .news-image {
+  transform: scale(1.05);
+}
+
+.news-image {
+  transform-origin: center;
+  transition: transform 0.4s ease-out;
+}
+</style>
