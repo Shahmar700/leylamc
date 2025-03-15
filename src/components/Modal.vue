@@ -4,7 +4,7 @@
       <div class="bg-gradient-to-br from-green-100 to-green-150 rounded-lg shadow-2xl overflow-hidden w-[85%] sm:w-4/5 md:w-3/5 lg:w-2/5 max-w-3xl transform transition-all duration-300 scale-100" @click.stop>
         <div class="relative">
           <!-- Close button - köşəyə yerləşdirildi -->
-          <button @click="closeModal" class="absolute top-2 right-2 md:top-2 md:right-5 z-10 bg-green-200 text-orange-600 hover:text-[#ef7c00] transition-colors duration-200 h-6 w-6 md:h-7 md:w-7 flex items-center justify-center rounded-full hover:bg-gray-200 text-base">
+          <button @click="closeModal" class="absolute top-2 right-2 md:top-2 md:right-5 z-10 bg-gray-200 text-orange-600 hover:text-[#ef7c00] transition-colors duration-200 h-6 w-6 md:h-7 md:w-7 flex items-center justify-center rounded-full hover:bg-gray-200 text-base">
             <i class="fa-solid fa-times"></i>
           </button>
           
