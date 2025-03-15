@@ -8,7 +8,7 @@
                         <input type="text" class="w-full screen-400:w-[60%] xl:w-[70%] rounded-xl sm:rounded-2xl outline-none p-2 sm:p-3 mb-4 screen-400:mb-0">
                         <button class="greenBtn !rounded-lg screen-400:ml-3">Abunə ol</button>
                     </label>
-                    <div class="mt-7 flex items-center">
+                    <div class="mt-7 flex items-center justify-between md:justify-start">
                       <p class="text-main-text flex items-center">
                           <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
                           <a href="tel:*0101" class="ml-1 font-bold text-lg sm:text-xl text-main-text hover:text-primary transition-colors">*0101</a>

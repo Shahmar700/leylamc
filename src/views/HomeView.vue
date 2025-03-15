@@ -177,35 +177,22 @@
         <!-- videos  -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           <Ytvideo
+            v-for="video in youtubeVideos"
+            :key="video.id"
             class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
-            videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
-            name="Leyla Medical Centerin Radiologiya şöbəsi"
-            @click="
-              openModal(
-                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
-              )
-            "
+            :videoUrl="video.videoUrl"
+            :name="video.name"
+            @click="openModal(video.videoUrl)"
           />
-          <Ytvideo
-            class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
-            videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
-            name="Leyla Medical Centerin Radiologiya şöbəsi"
-            @click="
-              openModal(
-                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
-              )
-            "
-          />
-          <Ytvideo
-            class="px-2 py-4 hover:shadow-md rounded-3xl transition-all duration-300 hover:scale-101 will-change-transform"
-            videoUrl="https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7"
-            name="Leyla Medical Centerin Radiologiya şöbəsi"
-            @click="
-              openModal(
-                'https://www.youtube.com/embed/Ae6bfpTJ6gc?si=mBDYzKem1zpKvRz7'
-              )
-            "
-          />
+          <!-- Əgər video sayı 3-dən azdırsa placeholder göstər -->
+          <div 
+            v-for="index in Math.max(0, 3 - youtubeVideos.length)" 
+            :key="`placeholder-${index}`"
+            class="px-2 py-4 bg-gray-100 rounded-3xl">
+            <div class="w-full h-[200px] bg-gray-200 rounded-md flex items-center justify-center">
+              <span class="text-gray-400">Video yüklənir...</span>
+            </div>
+          </div>
         </div>
       </div>
       <Modal
@@ -419,6 +406,47 @@ const isDesktop = ref(false);
 // Mövcud statik homeImages əvəzinə ref istifadə edəcəyik
 const homeImages = ref([]);
 
+// YouTube videoları əldə etmək üçün
+const youtubeVideos = ref([]);
+
+// YouTube URL-ləri embed formatına çevirmək üçün funksiya
+const convertToEmbedUrl = (url) => {
+  // YouTube video ID-sini çıxarmaq
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  const videoId = match && match[2].length === 11 ? match[2] : null;
+  
+  if (videoId) {
+    // Embed URL formatı yaratmaq
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  
+  // Əgər düzgün format deyilsə, orijinal URL-i qaytarırıq
+  return url;
+};
+
+// Videolar API-dən çəkilir və təsadüfi sıralama ilə 3 video seçilir
+const fetchYoutubeVideos = async () => {
+  try {
+    const response = await axios.get("https://bytexerp.online/api/leyla/v1/video-gallery-list/");
+    
+    if (response.data?.results?.length > 0) {
+      // API-dən gələn bütün videoları əldə edirik və embed URL formatına çeviririk
+      const allVideos = response.data.results.map(video => ({
+        id: video.id,
+        videoUrl: convertToEmbedUrl(video.link),
+        // Video adını API-dən almadığımız üçün bir standart ad təyin edirik
+        name: `Leyla Medical Center Video ${video.id}`
+      }));
+      
+      // Videoları təsadüfi sıralama və maksimum 3 video seçirik
+      youtubeVideos.value = shuffle(allVideos).slice(0, 3);
+    }
+  } catch (error) {
+    console.error("YouTube videoları yükləməkdə xəta:", error);
+  }
+};
+
 // API çağırışı ilə banner şəkillərini yükləmək
 const fetchBanners = async () => {
   try {
@@ -471,7 +499,8 @@ onMounted(() => {
   fetchDoctors();
   fetchNews();
   fetchDepartments();
-  fetchBanners(); // Banner şəkillərini yüklə
+  fetchBanners(); 
+  fetchYoutubeVideos();
   startPolling();
 
   // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq

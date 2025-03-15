@@ -6,19 +6,22 @@
               <div v-if="certificates.length === 0" class="text-center text-lg">
                   Heç bir məlumat tapılmadı
               </div>
-              <div v-else class="p-4 border cursor-pointer transition-all duration-200 certificate-card">
-                  <div 
-                      v-for="certificate in certificates" 
-                      :key="certificate.id" 
-                      class="relative mb-4"
-                      @click="openImageModal(certificate.photo)"
-                  >
-                      <div class="w-[250px] h-[150px] flex flex-col md:flex-row">
-                        <img :src="certificate.photo" class="w-full h-full rounded-md" :alt="certificate.title || 'Sertifikat şəkli'">
-                        <h2 class="text-lg font-semibold mt-2 ml-4">{{ certificate.title }}</h2>
-                      </div>
-                      <!-- <p class="text-base">{{ certificate.text }}</p> -->
+              <div v-else class="p-4 border cursor-pointer">
+                <div 
+                  v-for="certificate in certificates" 
+                  :key="certificate.id" 
+                  class="relative mb-6 p-4 transition-all duration-200 certificate-card rounded-lg hover:bg-gray-50"
+                  @click="openImageModal(certificate.photo)"
+              >
+                  <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                      <img 
+                          :src="certificate.photo" 
+                          class="w-[250px] h-[150px] object-contain rounded-md flex-shrink-0" 
+                          :alt="certificate.title || 'Sertifikat şəkli'"
+                      >
+                      <h2 class="text-lg font-semibold">{{ certificate.title }}</h2>
                   </div>
+              </div>
               </div>
           </div>
           <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">

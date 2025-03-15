@@ -220,7 +220,7 @@
           <div class="flex items-center">
               
             <SearchBox 
-              :searchIcon="searchIcon" 
+              :searchIcon="searchIcon"
               :searchResults="searchResults"
               :isLoading="isSearchLoading"
               @search="handleSearch"
@@ -747,12 +747,7 @@ const logout = () => {
 };
 
 // Search Icons
-import searchIconHome from '../assets/icons/search.svg';
-import searchIconOther from '../assets/icons/search2.svg';
-
-const searchIcon = computed(() => {
-return route.path === '/' ? searchIconHome : searchIconOther;
-});
+import searchIcon from '../assets/icons/search.svg';
 
 // OPEN VACCINES PDF
 const openPdf = () => {
