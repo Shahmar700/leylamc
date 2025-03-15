@@ -1,8 +1,8 @@
 <template>
     <div class="">
         <!-- News frame  -->
-        <div class="w-full rounded-3xl h-[280px] screen-375:h-[300px] overflow-hidden">
-            <img class="w-full h-full rounded-3xl object-cover" :src="newsImg" alt="news-image">
+        <div class="w-full rounded-3xl h-[210px] screen-375:h-[250px] overflow-hidden">
+            <img class="w-full h-full rounded-3xl object-fill lg:object-cover" :src="newsImg" alt="news-image">
         </div>
         <div class="mt-5 md:mt-7">
             <p class="text-main-text text-sm md:text-base">{{ newsDate }}</p>
