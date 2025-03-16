@@ -249,7 +249,7 @@ import ProfileView from '@/views/ProfileView.vue'
           meta: { breadcrumb: 'Həkim məqalələri' },
         },
         {
-          path: '/articles/:id',
+          path: '/articles/:slug', 
           name: 'article-detail',
           component: DoctorArticlesInner,
           props: true,

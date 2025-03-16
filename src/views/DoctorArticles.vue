@@ -2,51 +2,71 @@
     <div class="container mt-16 text-main-text">
         <div class="flex flex-col items-center md:flex-row md:items-start sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="flip-down">
-                <!-- Articles Filters  -->
-                <form @submit.prevent="filterArticles" class="flex gap-4 mt-5 items-center text-base lg:text-lg">
-                    <div class="flex flex-col w-full">
-                        <label for="author" class="mb-1 !text-main-text">Müəllif Adı</label>
-                        <input type="text" id="author" v-model="author" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Müəllif Adı">
-                    </div>
-                    <div class="flex flex-col w-full">
-                        <label for="itemsPerPage" class="mb-1 !text-main-text">Göstəriləcək Məqalə Sayı</label>
-                        <select id="itemsPerPage" v-model="itemsPerPage" class="border border-gray-300 p-2 rounded-md !h-[47px]">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                            <option value="30">30</option>
-                            <option value="all">Hamısı</option>
-                        </select>
-                    </div>
-                </form>
-                <div class="overflow-x-auto mt-4">
-                    <table class="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr class="bg-gray-200 text-left">
-                                <th class="px-6 py-3 border-b border-gray-200">Başlıq</th>
-                                <th class="px-6 py-3 border-b border-gray-200">Nəşr tarixi</th>
-                                <th class="px-6 py-3 border-b border-gray-200">Müəllif</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(article, index) in paginatedArticles" :key="article.id" class="hover:bg-green-50" :class="{'bg-gray-50': index % 2 === 0, 'bg-white': index % 2 !== 0}">
-                                <td class="px-6 py-4 border-b border-gray-200" @click="goToArticle(article)">
-                                    <span class="text-primary hover:underline cursor-pointer">{{ article.articleHeader }}</span>
-                                </td>
-                                <td class="px-6 py-4 border-b border-gray-200">{{ article.articleDate }}</td>
-                                <td class="px-6 py-4 border-b border-gray-200">{{ article.articleAuthor }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Yüklənmə göstəricisi -->
+                <!-- <div v-if="isLoading" class="py-8 text-center">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                    <p class="mt-2">Məqalələr yüklənir...</p>
                 </div>
-                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-                    <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+
+                <div v-else-if="error" class="p-4 bg-red-50 text-red-600 rounded-md">
+                    {{ error }}
+                </div> -->
+
+                <!-- Məqalə yoxdursa -->
+                <!-- <div v-else-if="!articles.length" class="p-4 text-center">
+                    <p>Məqalə tapılmadı.</p>
+                </div> -->
+
+                <!-- Məqalələr tapıldıqda -->
+                <div>
+                    <!-- Articles Filters  -->
+                    <form @submit.prevent="filterArticles" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
+                        <div class="flex flex-col w-full">
+                            <label for="author" class="mb-1 !text-main-text">Müəllif Adı</label>
+                            <input type="text" id="author" v-model="authorFilter" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Müəllif Adı">
+                        </div>
+                        <div class="flex flex-col w-full">
+                            <label for="itemsPerPage" class="mb-1 !text-main-text">Göstəriləcək Məqalə Sayı</label>
+                            <select id="itemsPerPage" v-model="itemsPerPage" class="border border-gray-300 p-2 rounded-md !h-[47px]">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="all">Hamısı</option>
+                            </select>
+                        </div>
+                    </form>
+                    
+                    <div class="overflow-x-auto mt-4">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-200 text-left">
+                                    <th class="px-6 py-3 border-b border-gray-200">Başlıq</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Nəşr tarixi</th>
+                                    <th class="px-6 py-3 border-b border-gray-200">Müəllif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(article, index) in paginatedArticles" :key="article.id" class="hover:bg-green-50 cursor-pointer" :class="{'bg-gray-50': index % 2 === 0, 'bg-white': index % 2 !== 0}">
+                                    <td class="px-6 py-4 border-b border-gray-200" @click="goToArticle(article)">
+                                        <span class="text-primary hover:underline cursor-pointer">{{ article.title_az || article.title }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 border-b border-gray-200">{{ formatDate(article.created_at) }}</td>
+                                    <td class="px-6 py-4 border-b border-gray-200">{{ getAuthorFullName(article) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
+                        <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+                        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
+                        <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
+                        <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+                        <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+                    </div>
                 </div>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
@@ -59,72 +79,81 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted  } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { useHead } from '@vueuse/head'; // Əlavə et
+import { useHead } from '@vueuse/head';
+import SideBanners from "@/components/SideBanners.vue";
+import SideBanners2 from "@/components/SideBanners2.vue";
+import Maps from "@/components/Maps.vue";
 
-const tableArticles = ref([
-    {id: 1, articleHeader: 'Hamiləliyin ilk üçaylığında ultrasəs müayinəsi', articleDate: '30-12-2020', articleAuthor: 'Yaqut Hüseyn'},
-    {id: 2, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Samirə Nəsibova'},
-    {id: 3, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Lalə Həsənova'},
-    {id: 4, articleHeader: 'Miqren xəstəliyi', articleDate: '30-01-2020', articleAuthor: 'Xanoğlan Qəmbərov'},
-    {id: 5, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-10-2020', articleAuthor: 'Leyla Ələkbərova'},
-    {id: 6, articleHeader: 'Vertigo şikayəti olan xəstələrə otonevrolojı yanaşma', articleDate: '28-11-2020', articleAuthor: 'Nigar Muradova'},
-    {id: 7, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Nübar İsmayılova'},
-    {id: 8, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '20-12-2020', articleAuthor: 'Mədinə Dilbazi'},
-    {id: 9, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '15-12-2020', articleAuthor: 'Leyla Süleymanova'},
-    {id: 10, articleHeader: 'Erkən cinsi inkişafın zərərləri', articleDate: '30-12-2020', articleAuthor: 'Almaz Nəbiyeva'},
-]);
-
-// API inteqrasiyası - aktivləşdirmək üçün şərhləri silin
-// API-dən məqalələri yükləmək üçün funksiya
-/*
-const fetchArticles = async () => {
-  try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/article-list/');
-    console.log('API-dən gələn məqalə dataları:', response.data);
-    
-    // API response formatını yoxlayın və uyğunlaşdırın
-    // Məsələn, API-nin data strukturu aşağıdakı kimi ola bilər:
-    // { results: [ { id, title, publish_date, author, ... } ] }
-    
-    // tableArticles-i API-dən gələn datalarla əvəz edin
-    // Burada API-nin data strukturuna uyğun olaraq məlumatı map etmək olar
-    tableArticles.value = response.data.results.map(item => ({
-      id: item.id,
-      articleHeader: item.title, // API-nin field adı title ola bilər
-      articleDate: item.publish_date, // API-nin field adı publish_date ola bilər
-      articleAuthor: item.author, // API-nin field adı author ola bilər
-      // Əlavə field-lər əlavə edilə bilər
-    }));
-  } catch (error) {
-    console.error('API çağırışında xəta:', error);
-    // Xəta halında istifadəçiyə mesaj göstərmək olar
-    // Bu halda statik data istifadə etməyə davam edə bilərsiniz
-  }
-};
-
-// Component mount olduqda API-ni çağır
-onMounted(() => {
-  fetchArticles();
-});
-*/
-
-const author = ref('');
+// State
+const articles = ref([]);
+const isLoading = ref(true);
+const error = ref(null);
+const authorFilter = ref('');
 const itemsPerPage = ref('5');
 const currentPage = ref(1);
 
-const filteredArticles = computed(() => {
-    let filtered = tableArticles.value;
-
-    if (author.value) {
-        filtered = filtered.filter(article => article.articleAuthor.toLowerCase().includes(author.value.toLowerCase()));
+// API'dən məqalələri gətirmək
+const fetchArticles = async () => {
+    try {
+        isLoading.value = true;
+        error.value = null;
+        
+        const response = await axios.get('https://bytexerp.online/api/leyla/v1/article-list/');
+        articles.value = response.data.results || [];
+        console.log('Yüklənən məqalələr:', articles.value);
+    } catch (err) {
+        console.error('Məqalə yükləmə xətası:', err);
+        error.value = 'Məqalələri yükləmək mümkün olmadı. Zəhmət olmasa daha sonra yenidən cəhd edin.';
+    } finally {
+        isLoading.value = false;
     }
+};
 
+// Səhifə yükləndikdə məqalələri gətir
+onMounted(() => {
+    fetchArticles();
+});
+
+// Tarix formatlaması (YYYY-MM-DD formatından DD.MM.YYYY formatına çevirmək)
+const formatDate = (dateString) => {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}.${month}.${year}`;
+};
+
+// Müəllifin tam adını almaq
+const getAuthorFullName = (article) => {
+    if (!article.doctor) return 'Bilinməyən müəllif';
+    
+    const doctorFirstName = article.doctor.first_name_az || article.doctor.first_name || '';
+    const doctorLastName = article.doctor.last_name_az || article.doctor.last_name || '';
+    
+    return `${doctorFirstName} ${doctorLastName}`.trim();
+};
+
+// Müəllif adına görə filtrələnmiş məqalələr
+const filteredArticles = computed(() => {
+    let filtered = articles.value;
+    
+    if (authorFilter.value) {
+        filtered = filtered.filter(article => {
+            const authorFullName = getAuthorFullName(article).toLowerCase();
+            return authorFullName.includes(authorFilter.value.toLowerCase());
+        });
+    }
+    
     return filtered;
 });
 
+// Səhifələrin ümumi sayı
 const totalPages = computed(() => {
     if (itemsPerPage.value === 'all') {
         return 1;
@@ -132,6 +161,7 @@ const totalPages = computed(() => {
     return Math.ceil(filteredArticles.value.length / parseInt(itemsPerPage.value));
 });
 
+// Cari səhifədəki məqalələr
 const paginatedArticles = computed(() => {
     if (itemsPerPage.value === 'all') {
         return filteredArticles.value;
@@ -141,6 +171,7 @@ const paginatedArticles = computed(() => {
     return filteredArticles.value.slice(start, end);
 });
 
+// Səhifə nömrələri göstəricisi
 const pages = computed(() => {
     const total = totalPages.value;
     const current = currentPage.value;
@@ -155,6 +186,7 @@ const pages = computed(() => {
     }
 });
 
+// Səhifələnmə funksiyaları
 const goToPage = (page) => {
     if (page === '...') return;
     currentPage.value = page;
@@ -187,25 +219,20 @@ const filterArticles = () => {
 const router = useRouter();
 
 const goToArticle = (article) => {
-    router.push({ name: 'article-detail', params: { id: article.id } });
+    router.push({ name: 'article-detail', params: { slug: article.slug } });
 };
-
-import SideBanners from "@/components/SideBanners.vue";
-import SideBanners2 from "@/components/SideBanners2.vue";
-import Maps from "@/components/Maps.vue";
-
 
 // SEO meta məlumatları
 const pageTitle = computed(() => {
-  if (author.value) {
-    return `${author.value} Məqalələri | Həkim Yazıları | Leyla Medical Center`;
+  if (authorFilter.value) {
+    return `${authorFilter.value} Məqalələri | Həkim Yazıları | Leyla Medical Center`;
   }
   return 'Həkim Məqalələri və Tibb Yazıları | Leyla Medical Center';
 });
 
 const pageDescription = computed(() => {
-  if (author.value) {
-    return `${author.value} tərəfindən yazılmış tibbi məqalələr və sağlamlıq haqqında yazılar. Leyla Medical Center həkimlərindən peşəkar məsləhət və məlumatlar.`;
+  if (authorFilter.value) {
+    return `${authorFilter.value} tərəfindən yazılmış tibbi məqalələr və sağlamlıq haqqında yazılar. Leyla Medical Center həkimlərindən peşəkar məsləhət və məlumatlar.`;
   }
   return 'Leyla Medical Center həkimləri tərəfindən yazılmış tibbi məqalələr və sağlamlıq haqqında yazılar. Xəstəliklər, diaqnostika və müalicə üsulları haqqında peşəkar məsləhətlər.';
 });
@@ -213,14 +240,17 @@ const pageDescription = computed(() => {
 const pageKeywords = computed(() => {
   let baseKeywords = 'tibbi məqalələr, həkim yazıları, sağlamlıq məsləhətləri, tibbi bloq, xəstəliklər haqqında məqalələr';
   
-  if (author.value) {
-    return `${baseKeywords}, ${author.value} məqalələri, ${author.value} yazıları`;
+  if (authorFilter.value) {
+    return `${baseKeywords}, ${authorFilter.value} məqalələri, ${authorFilter.value} yazıları`;
   }
   
   // Bütün müəlliflərə görə açar sözlər əlavə et
-  const authorNames = [...new Set(tableArticles.value.map(article => article.articleAuthor))];
+  const authorNames = articles.value
+    .map(article => getAuthorFullName(article))
+    .filter(name => name !== 'Bilinməyən müəllif');
+  
   if (authorNames.length > 0) {
-    return `${baseKeywords}, ${authorNames.join(', ')}`;
+    return `${baseKeywords}, ${[...new Set(authorNames)].join(', ')}`;
   }
   
   return baseKeywords;
@@ -240,14 +270,66 @@ useHead({
     { name: 'twitter:title', content: pageTitle },
     { name: 'twitter:description', content: pageDescription },
     { name: 'keywords', content: pageKeywords },
-    { name: 'author', content: author.value || 'Leyla Medical Center Həkimləri' },
+    { name: 'author', content: authorFilter.value || 'Leyla Medical Center Həkimləri' },
   ],
 });
 </script>
 
 <style scoped>
-ul{
-    list-style: disc;
+ul {
+  list-style: disc;
 }
 
+.pagination-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-button:not(:disabled):hover {
+  background-color: #6bb52b;
+  color: white;
+}
+
+.active-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+  border-radius: 4px;
+  background-color: #6bb52b;
+  color: white;
+  cursor: pointer;
+}
+
+.inactive-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+  color: #374151;
+  cursor: pointer;
+}
+
+.inactive-page:hover {
+  background-color: #e5e7eb;
+}
 </style>
