@@ -6,7 +6,6 @@ import OurVisionView from '@/views/OurVisionView.vue'
 import OurHistoryView from '@/views/OurHistoryView.vue'
 import OurMissionView from '@/views/OurMissionView.vue'
 import OurRelations from '@/views/OurRelations.vue'
-import NewsView from '@/views/NewsView.vue'
 import KivWritesView from '@/views/KivWritesView.vue'
 import PhotosView from '@/views/PhotosView.vue'
 import VideosView from '@/views/VideosView.vue'
@@ -135,12 +134,6 @@ import ProfileView from '@/views/ProfileView.vue'
           redirect: '/about/our-in-media/news',
           meta: { breadcrumb: 'Mediada Biz' },
           children: [
-            {
-              path: '/about/our-in-media/news',
-              name: 'news',
-              component: NewsView,
-              meta: { breadcrumb: 'Xəbərlər' },
-            },
             {
               path: '/about/our-in-media/kiv-writes',
               name: 'kiv-writes',
