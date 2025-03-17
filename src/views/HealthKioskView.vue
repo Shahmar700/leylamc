@@ -43,7 +43,7 @@ import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 
 // Səhifə başlığı
-const pageTitle = ref('Sağlamlıq Köşkləri');
+const pageTitle = ref('Sağlıq Köşkü');
 
 // API-dən məlumatları çəkmək üçün state-lər
 const healthKioskData = ref([]);

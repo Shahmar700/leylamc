@@ -217,9 +217,11 @@ watch(currentPage, () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
+const pageHeading = ref('Foto Qalereya')
+
 // SEO meta məlumatları
 useHead({
-    title: 'Qalereya - Leyla Medical Center',
+    title: `Leyla Medical Center | ${pageHeading.value}`,
     meta: [
         { name: 'description', content: 'Leyla Medical Center-in fəaliyyətindən foto qalereya.' },
         { property: 'og:title', content: 'Qalereya - Leyla Medical Center' },

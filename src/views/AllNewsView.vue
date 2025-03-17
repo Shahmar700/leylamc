@@ -48,7 +48,11 @@ const fetchAllNews = async () => {
   try {
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
     console.log(response.data); // Məlumatları konsolda göstərmək
-    news.value = response.data.results;
+    
+    // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük (ən yeni xəbərlər əvvəldə)
+    news.value = response.data.results.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
     
     // Xəbərlər yükləndikdən sonra SEO məlumatlarını yeniləyirik
     updateSEO();
@@ -238,7 +242,7 @@ watch(currentPage, () => {
 </script>
 
 <style scoped>
-.pagination {
+/* .pagination {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -271,7 +275,7 @@ watch(currentPage, () => {
 .pagination-button:disabled {
   color: #ccc;
   cursor: not-allowed;
-}
+} */
 
 .news-card {
   transition: all 0.3s ease;

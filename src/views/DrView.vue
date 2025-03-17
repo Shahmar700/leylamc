@@ -41,19 +41,22 @@
           </div>
           <div class="w-full flex flex-col md:flex-row border mt-5 lg:mt-0 py-3 md:py-5 justify-evenly border-[#c7c7c7] rounded-3xl">
           <!-- Doctor experience -->
-          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
-            <div class="flex">
+          <div class="flex flex-col px-4 sm:px-8 xl:px-10 py-3 xl:py-6 items-center tracking-wider">
+            <div class="flex md:flex-col md:items-center xl:flex-row">
               <img :src="expIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{doctor.experience_year}} il</span>
+              <div class="flex items-center">
+                <span class="text-base sm:text-xl xl:text-2xl font-bold text-main-text ml-2 md:ml-0 xl:ml-2">{{doctor.experience_year}}</span>
+                <span class="text-base sm:text-xl xl:text-2xl font-bold text-main-text ml-1 xl:ml-1">il</span>
+              </div>
             </div>
             <span class="mt-1">Təcrübə</span>
           </div>
           
           <!-- Doctor institution -->
-          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
-            <div class="flex">
+          <div class="flex flex-col px-4 sm:px-8 xl:px-10 py-3 xl:py-6 items-center tracking-wider border-0 md:border md:border-l-[#c7c7c7] md:border-r-[#c7c7c7] md:border-t-0 md:border-b-0 border-t border-b border-[#c7c7c7] my-3 md:my-0">
+            <div class="flex md:flex-col md:items-center xl:flex-row">
               <img :src="locaIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-xl sm:text-2xl md:text-3xl font-bold text-main-text ml-2">
+              <span class="text-base sm:text-xl xl:text-2xl font-bold text-main-text ml-2 md:ml-0 xl:ml-2">
                 {{ doctor.institution || 'Filial qeyd olunmayıb' }}
               </span>
             </div>
@@ -61,10 +64,10 @@
           </div>
           
           <!-- Doctor comments -->
-          <div class="flex flex-col px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 items-center tracking-wider">
-            <div class="flex">
+          <div class="flex flex-col px-4 sm:px-8 xl:px-10 py-3 xl:py-6 items-center tracking-wider">
+            <div class="flex md:flex-col md:items-center xl:flex-row">
               <img :src="opiIcon" alt="" class="w-[30px] sm:w-[35px] h-[30px] sm:h-[35px] md:w-[45px] md:h-[45px] object-cover">
-              <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-main-text ml-2">{{ comments.length }}</span>
+              <span class="text-base sm:text-xl xl:text-2xl font-bold text-main-text ml-2 md:ml-0 xl:ml-2">{{ comments.length }}</span>
             </div>
             <span class="mt-1">Rəylər</span>
           </div>

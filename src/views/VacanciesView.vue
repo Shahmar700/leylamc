@@ -41,6 +41,7 @@
 import { ref, computed, onMounted } from "vue";
 import axios from 'axios';
 import { useRouter } from "vue-router";
+import { useHead } from '@vueuse/head'; 
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
@@ -63,14 +64,102 @@ const fetchVacanciesData = async () => {
   try {
     loading.value = true;
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/vacancy-list/');
-    console.log('API cavabı:', response.data); // API cavabını konsolda görüntüləmək
+    console.log('API cavabı:', response.data);
     vacanciesData.value = response.data.results || [];
+    
+    // Məlumatlar yükləndikdən sonra SEO məlumatlarını yeniləyirik
+    updateSEO();
   } catch (err) {
     error.value = "Məlumatları yükləmək mümkün olmadı.";
     console.error("API xətası:", err);
   } finally {
     loading.value = false;
   }
+};
+
+// SEO meta məlumatlarını yeniləmək üçün funksiya
+const updateSEO = () => {
+  // Vakansiyalar haqqında qısa məlumat əldə etmək
+  const vacancyTitles = vacanciesData.value
+    .slice(0, 5)
+    .map(v => v.title)
+    .join(', ');
+    
+  const metaDescription = vacanciesData.value.length > 0 
+    ? `Leyla Medical Center-də açıq vakansiyalar: ${vacancyTitles}. Karyeranıza bizim komanda ilə başlayın.`
+    : 'Leyla Medical Center vakansiyaları səhifəsi. Karyeranızı tibb sahəsində inkişaf etdirmək üçün bizə qoşulun.';
+    
+  // İlk vakansiya şəklini istifadə edirik (əgər varsa)
+  const firstVacancyImage = vacanciesData.value.length > 0 && vacanciesData.value[0].image
+    ? vacanciesData.value[0].image
+    : 'https://leylamc.com/images/vacancy-default.jpg';
+    
+  useHead({
+    title: 'Leyla Medical Center | Vakansiyalar',
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription
+      },
+      { 
+        name: 'keywords', 
+        content: 'leyla medical center vakansiyalar, tibb sahəsində iş, həkim vakansiyaları, tibb bacısı vakansiyaları, tibb işçisi vakansiyaları, klinika vakansiyaları, iş elanları, karyera' 
+      },
+      // Open Graph meta tagları
+      { property: 'og:title', content: 'Leyla Medical Center | Vakansiyalar' },
+      { property: 'og:description', content: metaDescription },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/vacancies' },
+      { property: 'og:image', content: firstVacancyImage },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      // Twitter meta tagları
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Leyla Medical Center | Vakansiyalar' },
+      { name: 'twitter:description', content: metaDescription },
+      { name: 'twitter:image', content: firstVacancyImage },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org JobPosting)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": vacanciesData.value.map((vacancy, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "JobPosting",
+              "title": vacancy.title,
+              "description": vacancy.skills_demand || "Leyla Medical Center vakansiyası",
+              "datePosted": vacancy.created_at || new Date().toISOString(),
+              "hiringOrganization": {
+                "@type": "Organization",
+                "name": "Leyla Medical Center",
+                "sameAs": "https://leylamc.com",
+                "logo": "https://leylamc.com/images/logo.png"
+              },
+              "jobLocation": {
+                "@type": "Place",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Bakı",
+                  "addressRegion": "Bakı",
+                  "addressCountry": "Azərbaycan"
+                }
+              },
+              "url": `https://leylamc.com/vacancies/${vacancy.slug}`
+            }
+          }))
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/vacancies' }
+    ]
+  });
 };
 
 // Komponent yükləndikdə API çağırışı

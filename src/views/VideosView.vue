@@ -274,9 +274,11 @@ onMounted(() => {
     fetchVideos();
 });
 
+const pageHeading = ref('Video Qalereya')
+
 // SEO meta məlumatları
 useHead({
-    title: 'Video Qalereya - Leyla Medical Center',
+    title: `Leyla Medical Center | ${pageHeading.value}`,
     meta: [
         { name: 'description', content: 'Leyla Medical Center-in fəaliyyətindən video qalereya.' },
         { property: 'og:title', content: 'Video Qalereya - Leyla Medical Center' },

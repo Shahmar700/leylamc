@@ -46,6 +46,7 @@
   import { ref, onMounted } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import axios from 'axios';
+  import { useHead } from '@vueuse/head';
   
   import SideBanners from "@/components/SideBanners.vue";
   import SideBanners2 from "@/components/SideBanners2.vue";
@@ -58,17 +59,102 @@
   const error = ref(null);
   
   const fetchVacancyDetail = async () => {
-    try {
-      loading.value = true;
-      const response = await axios.get(`http://bytexerp.online/api/leyla/v1/vacancy-list/${route.params.slug}/`);
-      vacancy.value = response.data;
-    } catch (err) {
-      error.value = "Vakansiya məlumatlarını yükləmək mümkün olmadı.";
-      console.error("API xətası:", err);
-    } finally {
-      loading.value = false;
-    }
-  };
+  try {
+    loading.value = true;
+    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/vacancy-list/${route.params.slug}/`);
+    vacancy.value = response.data;
+    
+    // Məlumatlar uğurla yükləndikdən sonra SEO meta taglarını əlavə edirik
+    updateSEO();
+  } catch (err) {
+    error.value = "Vakansiya məlumatlarını yükləmək mümkün olmadı.";
+    console.error("API xətası:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Meta və SEO məlumatlarını əlavə etmək üçün funksiya
+const updateSEO = () => {
+  if (!vacancy.value) return;
+  
+  // Vakansiya tələblərinin mətnə çevrilmiş versiyası (HTML olmadan)
+  const plainSkills = vacancy.value.skills_demand ? 
+    vacancy.value.skills_demand.replace(/<[^>]*>/g, ' ').substring(0, 160) : '';
+  
+  // Meta description üçün mətn
+  const metaDescription = `${vacancy.value.job_position} vakansiyası: ${vacancy.value.job_salary} AZN maaş. ${plainSkills}`;
+  
+  useHead({
+    title: `Leyla Medical Center Vakansiyaları | ${vacancy.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription
+      },
+      { 
+        name: 'keywords', 
+        content: `${vacancy.value.title}, vakansiya, iş, ${vacancy.value.job_position}, tibb sahəsi, Leyla Medical Center, karyera` 
+      },
+      // Open Graph meta tagları
+      { property: 'og:title', content: `${vacancy.value.title} | Leyla Medical Center` },
+      { property: 'og:description', content: metaDescription },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: `https://leylamc.com/vacancies/${route.params.slug}` },
+      { property: 'og:image', content: vacancy.value.image },
+      { property: 'og:locale', content: 'az_AZ' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      
+      // Twitter meta tagları
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `${vacancy.value.title} | Leyla Medical Center` },
+      { name: 'twitter:description', content: metaDescription },
+      { name: 'twitter:image', content: vacancy.value.image },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": vacancy.value.title,
+          "description": vacancy.value.skills_demand || "",
+          "datePosted": new Date().toISOString(),
+          "employmentType": "FULL_TIME",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "name": "Leyla Medical Center",
+            "sameAs": "https://leylamc.com",
+            "logo": "https://leylamc.com/images/logo.png"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Bakı",
+              "addressRegion": "Bakı",
+              "addressCountry": "Azərbaycan"
+            }
+          },
+          "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "AZN",
+            "value": {
+              "@type": "QuantitativeValue",
+              "value": vacancy.value.job_salary,
+              "unitText": "MONTH"
+            }
+          },
+          "skills": plainSkills
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: `https://leylamc.com/vacancies/${route.params.slug}` }
+    ]
+  });
+};
   
   onMounted(() => {
     fetchVacancyDetail();

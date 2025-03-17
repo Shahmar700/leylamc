@@ -597,7 +597,12 @@ const fetchNews = async () => {
       "http://bytexerp.online/api/leyla/v1/news-list/"
     );
     // console.log(response.data); // Məlumatları konsolda göstərmək
-    news.value = response.data.results;
+    
+    // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük (ən yeni xəbərlər əvvəldə)
+    news.value = response.data.results.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    
   } catch (error) {
     console.error("API çağırışında xəta:", error);
   }

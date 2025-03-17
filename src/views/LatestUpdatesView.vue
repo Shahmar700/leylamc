@@ -1,12 +1,12 @@
 <template>
   <div class="container mt-16 text-main-text">
-      <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
+      <div class="flex flex-col lg:flex-row items-center md:items-start md:justify-between">
           <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
               <h1 class="text-3xl font-semibold mb-10">Son Yeniliklər</h1>
               <div>
                   <div class="flex mb-4 headingBtns border-b">
-                      <button @click="activeTab = 'med_center'" :class="{ 'font-bold': activeTab === 'med_center' }">Leyla Medical Center</button>
-                      <button @click="activeTab = 'info_lab'" :class="{ 'font-bold': activeTab === 'info_lab' }">İnfo Lab</button>
+                      <button @click="activeTab = 'med_center'" :class="{ 'font-bold': activeTab === 'med_center' }" class="text-xs md:text-base">Leyla Medical Center</button>
+                      <button @click="activeTab = 'info_lab'" :class="{ 'font-bold': activeTab === 'info_lab' }" class="text-xs md:text-base">İnfo Lab</button>
                   </div>
                   <table class="min-w-full bg-white">
                       <thead>
@@ -34,7 +34,7 @@
               </div>
           </div>
           <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
-              <SideBanners class="mb-4" /> 
+              <SideBanners class="mb-4 mt-16 lg:mt-0" /> 
           </div>
       </div>
       <Maps class="mt-14 sm:mt-24" />
@@ -42,7 +42,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useHead } from '@vueuse/head'; 
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
 
@@ -166,6 +167,94 @@ if (currentPage.value < totalPages.value) {
 const goToLastPage = () => {
 currentPage.value = totalPages.value;
 };
+
+// SEO meta məlumatlarını əlavə etmək üçün funksiya
+const updateSEO = () => {
+  // Aktiv taba əsasən başlıq yaradırıq
+  const tabName = activeTab.value === 'med_center' ? 'Leyla Medical Center' : 'İnfo Lab';
+  
+  // Aktiv tab üçün məzmun siyahısı əldə edirik
+  const currentTabContent = content.value.filter(item => item.type === activeTab.value);
+  
+  // İlk 5 elementin adlarını çıxarırıq
+  const topItemNames = currentTabContent
+    .slice(0, 5)
+    .map(item => item.name)
+    .join(', ');
+  
+  // Meta təsvir yaradırıq
+  const metaDescription = activeTab.value === 'med_center'
+    ? `Leyla Medical Center-in son yenilikləri və tibbi materialları: ${topItemNames}. Tibbi araşdırmalar və həkim məsləhətləri.`
+    : `İnfo Lab son yenilikləri və laboratoriya testləri haqqında məlumatlar: ${topItemNames}. Müasir diaqnostika və laborator müayinələr.`;
+  
+  useHead({
+    title: `Son Yeniliklər | ${tabName} | Leyla Medical Center`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription
+      },
+      { 
+        name: 'keywords', 
+        content: `leyla medical center, son yeniliklər, tibbi yeniliklər, ${tabName}, tibbi materiallar, tibbi sənədlər, pdf sənədlər, laborator müayinələr, diaqnostika, tibbi araşdırmalar`
+      },
+      // Open Graph meta tagları
+      { property: 'og:title', content: `Son Yeniliklər | ${tabName} | Leyla Medical Center` },
+      { property: 'og:description', content: metaDescription },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/latest-updates' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      // Twitter meta tagları
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Son Yeniliklər | ${tabName} | Leyla Medical Center` },
+      { name: 'twitter:description', content: metaDescription },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": `Son Yeniliklər | ${tabName}`,
+          "description": metaDescription,
+          "url": "https://leylamc.com/latest-updates",
+          "publisher": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            }
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": currentTabContent.slice(0, 10).map((item, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "name": item.name,
+              "url": `https://leylamc.com${item.pdf}`
+            }))
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/latest-updates' }
+    ]
+  });
+};
+// Tab dəyişdikdə SEO məlumatlarını yeniləmək
+watch(activeTab, () => {
+  currentPage.value = 1;
+  updateSEO();
+});
+// Səhifə yükləndikdə ilkin SEO məlumatlarını əlavə etmək
+onMounted(() => {
+  updateSEO();
+});
 </script>
 
 <style scoped>
@@ -187,5 +276,9 @@ currentPage.value = totalPages.value;
 
 tbody>tr:hover .fa-file-pdf{
   transform: scale(1.1);
+}
+
+table tr{
+  font-size: 14px;
 }
 </style>

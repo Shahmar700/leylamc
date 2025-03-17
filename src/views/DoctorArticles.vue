@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-16 text-main-text">
-        <div class="flex flex-col items-center md:flex-row md:items-start sm:justify-between">
-            <div class="w-full sm:w-3/4" data-aos="flip-down">
+        <div class="flex flex-col items-center lg:flex-row md:items-start sm:justify-between">
+            <div class="w-full lg:w-3/4" data-aos="flip-down">
                 <!-- Yüklənmə göstəricisi -->
                 <!-- <div v-if="isLoading" class="py-8 text-center">
                     <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
@@ -22,12 +22,12 @@
                     <!-- Articles Filters  -->
                     <form @submit.prevent="filterArticles" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
                         <div class="flex flex-col w-full">
-                            <label for="author" class="mb-1 !text-main-text">Müəllif Adı</label>
-                            <input type="text" id="author" v-model="authorFilter" class="border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Müəllif Adı">
+                            <label for="author" class="mb-1 !text-main-text text-sm md:text-base ">Müəllif Adı</label>
+                            <input type="text" id="author" v-model="authorFilter" class=" text-sm md:text-base border border-gray-300 p-2 rounded-md !h-[47px]" placeholder="Müəllif Adı">
                         </div>
                         <div class="flex flex-col w-full">
-                            <label for="itemsPerPage" class="mb-1 !text-main-text">Göstəriləcək Məqalə Sayı</label>
-                            <select id="itemsPerPage" v-model="itemsPerPage" class="border border-gray-300 p-2 rounded-md !h-[47px]">
+                            <label for="itemsPerPage" class="mb-1 !text-main-text text-sm md:text-base ">Göstəriləcək Məqalə Sayı</label>
+                            <select id="itemsPerPage" v-model="itemsPerPage" class=" text-sm md:text-base border border-gray-300 p-2 rounded-md !h-[47px]">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
-                <SideBanners class="mb-4" /> 
+                <SideBanners class="mb-4 mt-16 lg:mt-0" /> 
                 <SideBanners2 class="mb-4" /> 
             </div>
         </div>
@@ -280,56 +280,12 @@ ul {
   list-style: disc;
 }
 
-.pagination-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin: 0 5px;
-  border-radius: 4px;
-  background-color: #f3f4f6;
-  color: #374151;
-  transition: all 0.2s ease;
+table tr{
+    font-size: 13px;
 }
-
-.pagination-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+@media screen and (min-width: 600px){
+    table tr{
+    font-size: 15px;
 }
-
-.pagination-button:not(:disabled):hover {
-  background-color: #6bb52b;
-  color: white;
-}
-
-.active-page {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin: 0 5px;
-  border-radius: 4px;
-  background-color: #6bb52b;
-  color: white;
-  cursor: pointer;
-}
-
-.inactive-page {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin: 0 5px;
-  border-radius: 4px;
-  background-color: #f3f4f6;
-  color: #374151;
-  cursor: pointer;
-}
-
-.inactive-page:hover {
-  background-color: #e5e7eb;
 }
 </style>
