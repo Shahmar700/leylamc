@@ -8,7 +8,12 @@
                         <div class="overflow-hidden">
                             <img :src="item.main_photo" class="w-full h-auto rounded-md news-image transition-transform duration-300" :alt="item.title">
                         </div>
-                        <p class="text-base sm:text-lg mt-2 p-2">{{ item.title }}</p>
+                        <p 
+                          class="text-base sm:text-lg mt-2 p-2 truncated-title" 
+                          :title="item.title"
+                        >
+                          {{ truncateTitle(item.title) }}
+                        </p>
                     </div>
                 </div>
                 <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
@@ -59,6 +64,14 @@ const fetchAllNews = async () => {
   } catch (error) {
     console.error('API çağırışında xəta:', error);
   }
+};
+
+// Başlıq mətnini 50 simvoldan sonra kəsmək üçün funksiya
+const truncateTitle = (text) => {
+  if (text.length <= 70) {
+    return text;
+  }
+  return text.substring(0, 70) + '...';
 };
 
 onMounted(() => {
@@ -293,5 +306,38 @@ watch(currentPage, () => {
 .news-image {
   transform-origin: center;
   transition: transform 0.4s ease-out;
+}
+
+.truncated-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  position: relative;
+}
+
+/* Əgər xüsusi tooltip istəyirsinizsə (browser tooltip kifayət etmirsə) */
+.news-card:hover .truncated-title::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: normal;
+  max-width: 300px;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.news-card:hover .truncated-title:hover::after {
+  opacity: 1;
+  visibility: visible;
 }
 </style>

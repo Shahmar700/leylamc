@@ -413,7 +413,7 @@ const pageTitle = computed(() => {
 
 const pageDescription = computed(() => {
   if (!doctor.value) return 'View doctor profiles and information at Leyla Medical Center.';
-  return `${doctor.value.degree} ${doctor.value.first_name} ${doctor.value.last_name} - ${doctor.value.position} at Leyla Medical Center. ${doctor.value.experience_year} years of experience.`;
+  return `${doctor.value.degree} ${doctor.value.first_name} ${doctor.value.last_name} - ${doctor.value.position} Leyla Medical Center-də. ${doctor.value.experience_year} il təcrübə.`;
 });
 
 // -------- Komment üçün APİ lər ---------

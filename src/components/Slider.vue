@@ -4,12 +4,33 @@
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="slide h-[150px] screen-400:h-[200px] sm:h-[450px] md:h-[450px] lg:h-[600] 2xl:h-[630px]"
+        class="slide h-[150px] screen-400:h-[200px] sm:h-[450px] md:h-[450px] lg:h-[600] 2xl:h-[670px]"
       >
-        <!-- Düzəliş: "slide" əvəzinə "image" dəyişəni istifadə olunmalıdır -->
-        <img :src="image.url || image" :alt="image.title || 'Slider image'" class="slide-image object-contain md:object-fill 2xl:object-fill" />
+        <!-- Şəkili link daxilində göstərmək, əgər source varsa -->
+        <a 
+          v-if="image.source" 
+          :href="image.source" 
+          class="w-full h-full block"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            :src="image.url || image" 
+            :alt="image.title || 'Slider image'" 
+            class="slide-image object-contain md:object-fill 2xl:object-fill"
+          />
+        </a>
+        <!-- Əgər source yoxdursa, sadəcə şəkil göstərmək -->
+        <img 
+          v-else
+          :src="image.url || image" 
+          :alt="image.title || 'Slider image'" 
+          class="slide-image object-contain md:object-fill 2xl:object-fill"
+        />
       </div>
     </div>
+    
+    <!-- Naviqasiya düymələri və nöqtələr dəyişmədən qalır -->
     <button class="nav-button left top-[8%] screen-400:top-[11%] md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
     <button class="nav-button right top-[8%] screen-400:top-[11%] md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
     <div class="dots absolute bottom-[675px] screen-400:bottom-[640px] screen-375:bottom-[460] screen-500:bottom-[620px] z-[99999] sm:bottom-[430px] md:bottom-[30px] xl:bottom-14">
@@ -25,6 +46,7 @@
 </template>
   
   <script setup>
+  import car from "@/assets/images/bmw.jpg"
   import { defineProps, ref, onMounted, onUnmounted } from 'vue';
   
   const props = defineProps({
@@ -48,6 +70,13 @@
   const goToSlide = (index) => {
     currentIndex.value = index;
   };
+
+  // Xüsusi naviqasiya funksiyası - lakin əsasən a tag-dən istifadə edəcəyik
+const navigateToSource = (source) => {
+  if (source && source.trim() !== "") {
+    window.open(source, '_blank', 'noopener,noreferrer');
+  }
+};
   
   onMounted(() => {
     intervalId = setInterval(nextSlide, 7000);
@@ -59,6 +88,16 @@
   </script>
   
   <style scoped>
+  .slide a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.slide a:hover {
+  opacity: 0.95; /* Hover zamanı kiçik bir effekt */
+}
   .slider-container {
     position: relative;
     width: 100%;

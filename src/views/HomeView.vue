@@ -534,7 +534,7 @@ onMounted(() => {
   fetchDepartments();
   fetchBanners(); 
   fetchYoutubeVideos();
-  startPolling();
+  // startPolling();
 
   // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq
   window.addEventListener("resize", handleResize);
@@ -673,7 +673,7 @@ onMounted(() => {
   fetchDoctors();
   fetchNews();
   fetchDepartments();
-  startPolling();
+  // startPolling();
 
   // Resize hadisəsini izləmək və ilkin ölçüləri hesablamaq
   window.addEventListener("resize", handleResize);
@@ -681,19 +681,19 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  stopPolling();
+  // stopPolling();
   window.removeEventListener("resize", handleResize);
 });
 
 let pollingInterval;
 
-const startPolling = () => {
-  pollingInterval = setInterval(fetchNews, 5000); // Hər 5 saniyədən bir API çağırışı
-};
+// const startPolling = () => {
+//   pollingInterval = setInterval(fetchNews, 5000); // Hər 5 saniyədən bir API çağırışı
+// };
 
-const stopPolling = () => {
-  clearInterval(pollingInterval);
-};
+// const stopPolling = () => {
+//   clearInterval(pollingInterval);
+// };
 
 const router = useRouter();
 const goToDoctor = (doctor) => {
