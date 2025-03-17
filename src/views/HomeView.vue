@@ -219,8 +219,23 @@
             >
           </div>
         </div>
+        
+        <!-- Loading göstəricisi -->
+        <div v-if="isNewsLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+          <div 
+            v-for="i in 3" 
+            :key="i" 
+            class="bg-white p-4 rounded-lg shadow-sm animate-pulse"
+          >
+            <div class="bg-gray-200 h-48 rounded-lg mb-3"></div>
+            <div class="bg-gray-200 h-4 w-1/3 rounded mb-2"></div>
+            <div class="bg-gray-200 h-6 rounded mb-2"></div>
+            <div class="bg-gray-200 h-4 w-2/3 rounded"></div>
+          </div>
+        </div>
+        
         <!-- News Boxs -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
           <News
             v-for="item in news.slice(0, 3)"
             :key="item.id"
@@ -284,39 +299,57 @@
       </div>
 
     <!-- ** OUR TEAM (Doctors) ** -->
-    <div class="mt-48">
-      <div class="container">
-        <div class="flex flex-col screen-500:flex-row justify-between mb-10">
-          <div>
-            <h1
-              class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
-            >
-              Peşəkar komandamız
-            </h1>
+      <div class="mt-48">
+        <div class="container">
+          <div class="flex flex-col screen-500:flex-row justify-between mb-10">
+            <div>
+              <h1
+                class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
+              >
+                Peşəkar komandamız
+              </h1>
+            </div>
+            <div class="mt-4 sm:mt-0">
+              <router-link
+                to="/doctors"
+                class="greenBtn tracking-wide text-base screen-500:text-lg lg:text-xl"
+                >Həkimlərimiz</router-link
+              >
+            </div>
           </div>
-          <div class="mt-4 sm:mt-0">
-            <router-link
-              to="/doctors"
-              class="greenBtn tracking-wide text-base screen-500:text-lg lg:text-xl"
-              >Həkimlərimiz</router-link
+          
+          <!-- Loading göstəricisi -->
+          <div 
+            v-if="isDoctorsLoading" 
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-12"
+          >
+            <div 
+              v-for="i in 3" 
+              :key="i" 
+              class="bg-white p-4 rounded-lg shadow-sm animate-pulse"
             >
+              <div class="bg-gray-200 h-64 rounded-lg mb-3"></div>
+              <div class="bg-gray-200 h-6 rounded mb-2"></div>
+              <div class="bg-gray-200 h-4 w-2/3 rounded"></div>
+            </div>
           </div>
-        </div>
-        <!-- Doctors Imgs  -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-12"
-        >
-          <DoctorCard
-            v-for="doctor in doctors.slice(0, 3)"
-            :key="doctor.id"
-            :image="doctor.photo"
-            :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
-            :position="doctor.specialty.name"
-            @click="goToDoctor(doctor)"
-          />
+          
+          <!-- Doctors Cards -->
+          <div
+            v-else
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-12"
+          >
+            <DoctorCard
+              v-for="doctor in doctors.slice(0, 3)"
+              :key="doctor.id"
+              :image="doctor.photo"
+              :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
+              :position="doctor.specialty.name"
+              @click="goToDoctor(doctor)"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
     <!-- ** Ratings ** -->
     <!-- <div class="mt-24 sm:mt-32 md:mt-40 lg:mt-48">
@@ -573,16 +606,23 @@ const goToService = (servicePath) => {
 
 const doctors = ref([]);
 
+// State dəyişənləri arasına əlavə edin
+const isDoctorsLoading = ref(true);
 // API çağırışı ilə həkim məlumatlarını yükləmək
 const fetchDoctors = async () => {
   try {
+    isDoctorsLoading.value = true; // Yükləməyə başlayarkən true et
+    
     const response = await axios.get(
       "http://bytexerp.online/api/leyla/v1/doctor-list/"
     );
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = shuffle(response.data.results); // Doktorları təsadüfi olaraq qarışdırmaq
+    
   } catch (error) {
     console.error("API çağırışında xəta:", error);
+  } finally {
+    isDoctorsLoading.value = false; // Yükləmə bitdikdə false et
   }
 };
 
@@ -590,21 +630,25 @@ const fetchDoctors = async () => {
 
 const news = ref([]);
 
+const isNewsLoading = ref(true);
 // API çağırışı ilə xəbərləri yükləmək
 const fetchNews = async () => {
   try {
+    isNewsLoading.value = true; // Yükləməyə başlayarkən true et
+    
     const response = await axios.get(
       "http://bytexerp.online/api/leyla/v1/news-list/"
     );
-    // console.log(response.data); // Məlumatları konsolda göstərmək
     
-    // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük (ən yeni xəbərlər əvvəldə)
+    // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük
     news.value = response.data.results.sort((a, b) => {
       return new Date(b.created_at) - new Date(a.created_at);
     });
     
   } catch (error) {
     console.error("API çağırışında xəta:", error);
+  } finally {
+    isNewsLoading.value = false; // Yükləmə bitdikdə false et
   }
 };
 
@@ -865,6 +909,19 @@ useHead({
 /* Container-ı relative et ki, düymələri düzgün yerləşdirə bilək */
 .container {
   position: relative;
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 /* 
 .carousel-container {

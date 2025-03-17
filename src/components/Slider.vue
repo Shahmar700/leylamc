@@ -4,7 +4,7 @@
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="slide h-[150px] screen-400:h-[200px] sm:h-[450px] md:h-[450px] lg:h-[600] 2xl:h-[800px]"
+        class="slide h-[150px] screen-400:h-[200px] sm:h-[450px] md:h-[450px] lg:h-[600] 2xl:h-[630px]"
       >
         <!-- Düzəliş: "slide" əvəzinə "image" dəyişəni istifadə olunmalıdır -->
         <img :src="image.url || image" :alt="image.title || 'Slider image'" class="slide-image object-contain md:object-fill 2xl:object-fill" />
