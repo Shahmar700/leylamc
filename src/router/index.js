@@ -96,11 +96,6 @@ import ProfileView from '@/views/ProfileView.vue'
       component: NewsContentView
     },
     {
-      path: '/all-news',
-      name: 'all-news',
-      component: AllNewsView
-    },
-    {
       path: '/about',
       redirect: '/about/our-history',
       meta: { breadcrumb: 'Haqqımızda' },
@@ -135,7 +130,12 @@ import ProfileView from '@/views/ProfileView.vue'
           meta: { breadcrumb: 'Mediada Biz' },
           children: [
             {
-              path: '/about/our-in-media/kiv-writes',
+              path: 'news',
+              name: 'all-news',
+              component: AllNewsView
+            },
+            {
+              path: 'kiv-writes',
               name: 'kiv-writes',
               component: KivWritesView,
               meta: { breadcrumb: 'KİV yazanlar' },
