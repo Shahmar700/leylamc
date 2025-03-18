@@ -260,19 +260,19 @@
                     </router-link>
                     <ul class="onlineDropdown shadow-xl rounded-xl z-10">
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-appointment'}" class="block w-full h-full">E-növbə</router-link>
+                          <router-link :to="{name: 'e-appointment'}" class="block w-full h-full">E-Növbə</router-link>
                         </li>
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-nəticə</router-link>
+                          <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-Nəticə</router-link>
                         </li>
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-payment'}" class="block w-full h-full" @click.native="openInNewTab">E-ödəmə</router-link>
+                          <router-link :to="{name: 'e-payment'}" class="block w-full h-full" @click.native="openInNewTab">E-Ödəmə</router-link>
                         </li>
                         <!-- <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>
                         </li> -->
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-consultation'}" class="block w-full h-full">E-məsləhət</router-link>
+                          <router-link :to="{name: 'e-consultation'}" class="block w-full h-full">E-Məsləhət</router-link>
                         </li>
                     </ul>
                   </li>

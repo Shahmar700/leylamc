@@ -58,19 +58,19 @@
       >
         <Eservice
           :eService="eService1"
-          title="E - növbə"
+          title="E - Növbə"
           description="Online qəbula e - növbəyə yazılın"
           link="/online-services/e-appointment"
         />
         <Eservice
           :eService="eService2"
-          title="E - nəticə"
+          title="E - Nəticə"
           description="Analizlərin nəticələrini əldə edin"
           link="/online-services/e-result"
         />
         <Eservice
           :eService="eService3"
-          title="E - ödəmə"
+          title="E - Ödəmə"
           description="Ödənişləri e-ödəmə vasitəsiylə edin"
           link="/online-services/e-payment"
         />
@@ -82,7 +82,7 @@
           /> -->
         <Eservice
           :eService="eService5"
-          title="E - məsləhət"
+          title="E - Məsləhət"
           description="Xidmətlərimizi online sifariş edin"
           link="/online-services/e-consultation"
         />
@@ -167,7 +167,7 @@
             <h1
               class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
             >
-              Faydalı məlumatlar
+              Faydalı Məlumatlar
             </h1>
           </div>
           <div class="mt-4 sm:mt-0">
@@ -306,7 +306,7 @@
               <h1
                 class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
               >
-                Peşəkar komandamız
+                Peşəkar Komandamız
               </h1>
             </div>
             <div class="mt-4 sm:mt-0">
@@ -394,7 +394,7 @@
             <h1
               class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
             >
-              Xəritədə bax
+              Xəritədə Bax
             </h1>
           </div>
         </div>
