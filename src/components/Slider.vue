@@ -17,7 +17,7 @@
           <img 
             :src="image.url || image" 
             :alt="image.title || 'Slider image'" 
-            class="slide-image object-contain md:object-fill 2xl:object-fill"
+            class="slide-image object-fill md:object-fill 2xl:object-fill"
           />
         </a>
         <!-- Əgər source yoxdursa, sadəcə şəkil göstərmək -->
@@ -25,15 +25,15 @@
           v-else
           :src="image.url || image" 
           :alt="image.title || 'Slider image'" 
-          class="slide-image object-contain md:object-fill 2xl:object-fill"
+          class="slide-image object-fill md:object-fill 2xl:object-fill"
         />
       </div>
     </div>
     
     <!-- Naviqasiya düymələri və nöqtələr dəyişmədən qalır -->
-    <button class="nav-button left top-[8%] screen-400:top-[11%] md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
-    <button class="nav-button right top-[8%] screen-400:top-[11%] md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
-    <div class="dots absolute bottom-[675px] screen-400:bottom-[640px] screen-375:bottom-[460] screen-500:bottom-[620px] z-[99999] sm:bottom-[430px] md:bottom-[30px] xl:bottom-14">
+    <button class="nav-button left top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
+    <button class="nav-button right top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
+    <div class="dots absolute bottom-[10px] screen-375:bottom-[10px] screen-500:bottom-[620px] z-[99999] sm:bottom-[430px] md:bottom-[30px] xl:bottom-14">
       <span
         v-for="(image, index) in images"
         :key="index"
