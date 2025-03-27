@@ -2,7 +2,7 @@
     <div class="container mt-10 md:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-3xl font-semibold mb-5 md:mb-10">E-növbə</h1>
+                <h1 class="text-3xl font-semibold mb-5 md:mb-10">{{ pageTitle }}</h1>
             <p class="text-main-text text-base md:text-xl">E-randevu bölümü vasitəsilə Siz istənilən həkimin qəbuluna yazıla bilərsiniz. Bunun üçün şəxsi məlumatlarınız, qəbulunda olmaq istədiyiniz həkimin ixtisası və Adı / Soyadı, sizə uyğun olan qəbul günü və saatını qeyd etməyiniz kifayyətdir.</p>
             <br>
             <p class="text-main-text text-base md:text-xl">Qeyd etdiyiniz nömrənizə uyğun olaraq Çağrı Mərəzi operatorlarımız siznlə əlaqə saxlayacaq və qəbul günü / saatını təkrar olaraq sizinlə təsdiqlədəcək.</p>
@@ -127,6 +127,8 @@ import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import { ref } from 'vue';
 import axios from 'axios';
+import { useHead } from '@vueuse/head';
+import Maps from "@/components/Maps.vue"; 
 // DatePicker 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -201,6 +203,92 @@ const submitForm = async () => {
     console.error('Form submission error:', error);
   }
 };
+
+const pageTitle = ref('E-növbə');
+
+// useHead tətbiqi ilə SEO məlumatlarını əlavə edirik
+useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Leyla Medical Center-də onlayn randevu sistemi ilə istənilən həkimin qəbuluna rahatlıqla yazılın. Şəxsi məlumatlarınızı, qəbulunda olmaq istədiyiniz həkimin məlumatlarını və uyğun vaxtı qeyd etməklə sağlamlığınıza qayğı göstərin.'
+    },
+    { 
+      name: 'keywords', 
+      content: 'e-növbə, onlayn randevu, həkim qəbulu, Leyla Medical Center, onlayn tibbi xidmətlər, Azərbaycanda tibbi xidmətlər, həkim qəbuluna yazılmaq, tibbi randevu, elektron qeydiyyat' 
+    },
+    // Open Graph meta tagları sosial media paylaşımları üçün
+    { property: 'og:title', content: 'Leyla Medical Center | E-növbə' },
+    { property: 'og:description', content: 'Onlayn randevu sistemi ilə istənilən həkimimizin qəbuluna yazılın. Sizin sağlamlığınız – bizim dəyərimizdir!' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://leylamc.com/online-services/e-appointment' },
+    { property: 'og:image', content: 'https://leylamc.com/images/leyla-mc-logo.png' },
+    { property: 'og:site_name', content: 'Leyla Medical Center' },
+    { property: 'og:locale', content: 'az_AZ' },
+    
+    // Twitter meta tagları
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Leyla Medical Center | E-növbə' },
+    { name: 'twitter:description', content: 'Onlayn randevu sistemi ilə istənilən həkimin qəbuluna yazılmağa və vaxtınıza qənaət etməyə imkan verir.' },
+    { name: 'twitter:image', content: 'https://leylamc.com/images/leyla-mc-logo.png' },
+    
+    // Strukturlu məlumatları əlavə etmək (Schema.org)
+    {
+      name: 'script',
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "MedicalClinic",
+        "name": "Leyla Medical Center",
+        "url": "https://leylamc.com",
+        "logo": "https://leylamc.com/images/leyla-mc-logo.png",
+        "description": "Leyla Medical Center-də onlayn randevu sistemi ilə istənilən həkimin qəbuluna rahatlıqla yazılın.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Mikayıl Müşfiq küçəsi, 2B",
+          "addressLocality": "Bakı",
+          "addressRegion": "Bakı",
+          "postalCode": "AZ1005",
+          "addressCountry": "AZ"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "40.3799",
+          "longitude": "49.8469"
+        },
+        "telephone": "+994 12 310 10 10",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        ],
+        "potentialAction": {
+          "@type": "ReserveAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://leylamc.com/online-services/e-appointment",
+            "inLanguage": "az",
+            "actionPlatform": [
+              "http://schema.org/DesktopWebPlatform",
+              "http://schema.org/MobileWebPlatform"
+            ]
+          },
+          "result": {
+            "@type": "Reservation",
+            "name": "Onlayn həkim randevusu"
+          }
+        }
+      })
+    }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://leylamc.com/online-services/e-appointment' }
+  ]
+});
 </script>
 
 <style scoped>

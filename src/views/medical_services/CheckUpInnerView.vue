@@ -17,8 +17,8 @@
         
         <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ checkup.title }}</h1>
         <img v-if="checkup.photo" :src="checkup.photo" :alt="checkup.title" class="w-full h-auto rounded-md mb-4">
-        <p class="text-base sm:text-lg mt-2">Başlanğıc tarixi: {{ checkup.start_date || 'Göstərilməyib' }}</p>
-        <p class="text-base sm:text-lg mt-2">Bitmə tarixi: {{ checkup.finish_date || 'Göstərilməyib' }}</p>
+        <p class="text-base sm:text-lg mt-2">Başlanğıc tarixi: {{ formatDate(checkup.start_date) || 'Göstərilməyib' }}</p>
+        <p class="text-base sm:text-lg mt-2">Bitmə tarixi: {{ formatDate(checkup.finish_date) || 'Göstərilməyib' }}</p>
         <br>
         <ul class="ml-7 list-disc">
           <li class="font-normal text-base sm:text-lg">
@@ -66,6 +66,28 @@ const router = useRouter();
 const checkup = ref({});
 const error = ref(null);
 
+// Tarixi formatlayan metod
+const formatDate = (dateString) => {
+  if (!dateString) return 'Göstərilməyib';
+  
+  try {
+    const date = new Date(dateString);
+    
+    // Tarix etibarlıdırmı?
+    if (isNaN(date.getTime())) {
+      return 'Etibarsız tarix';
+    }
+    
+    return date.toLocaleDateString('az-AZ', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  } catch (error) {
+    console.error('Tarix formatlaması xətası:', error);
+    return 'Tarix formatı düzgün deyil';
+  }
+};
 // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
 const { loading, showSkeleton, startLoading, stopLoading, cleanupSkeleton } = useSkeleton(400);
 

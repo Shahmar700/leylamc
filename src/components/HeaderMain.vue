@@ -266,7 +266,7 @@
                           <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-Nəticə</router-link>
                         </li>
                         <li class="mb-2 px-6">
-                          <router-link :to="{name: 'e-payment'}" class="block w-full h-full" @click.native="openInNewTab">E-Ödəmə</router-link>
+                          <router-link :to="{name: 'e-payment'}" target="_blank" class="block w-full h-full" @click.native="openInNewTab">E-Ödəmə</router-link>
                         </li>
                         <!-- <li class="mb-2 px-6">
                           <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>

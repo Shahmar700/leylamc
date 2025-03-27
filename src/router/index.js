@@ -473,10 +473,11 @@ import ProfileView from '@/views/ProfileView.vue'
       meta: { breadcrumb: 'Aksiyalar' }
     },
     {
-      path: '/offers',
-      name: 'offers',
-      component: OffersView,
-      meta: { breadcrumb: 'Aksiyalar' }
+      path: '/offers/:slug',
+      name: 'offer-detail',
+      component: () => import('@/views/OffersInnerView.vue'),
+      props: true,
+      meta: { breadcrumb: 'Aksiya Detalları' }
     },
     {
       path: '/contact',

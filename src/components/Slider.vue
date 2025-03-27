@@ -16,7 +16,6 @@
         >
           <img 
             :src="image.url || image" 
-            :alt="image.title || 'Slider image'" 
             class="slide-image object-fill md:object-fill 2xl:object-fill"
           />
         </a>
@@ -24,7 +23,6 @@
         <img 
           v-else
           :src="image.url || image" 
-          :alt="image.title || 'Slider image'" 
           class="slide-image object-fill md:object-fill 2xl:object-fill"
         />
       </div>

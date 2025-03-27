@@ -1,14 +1,256 @@
 <template>
-    <div>
-        
+    <div class="container mt-16 text-main-text">
+      <div v-if="loading" class="text-center py-10">
+        <p>Yüklənir...</p>
+      </div>
+      <div v-else-if="error" class="text-center py-10">
+        <p class="text-red-500">{{ error }}</p>
+      </div>
+      <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
+        <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
+          <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div 
+              v-for="(offer, index) in paginatedOffersData" 
+              :key="index" 
+              class="relative mb-4 cursor-pointer hover:opacity-90 transition-opacity" 
+              @click="goToOffer(offer)"
+            >
+              <div class="offer-card rounded-md overflow-hidden shadow-md">
+                <img :src="offer.photo" :alt="offer.title" class="w-full h-[200px] object-cover">
+                <div class="p-3">
+                  <p class="text-base sm:text-lg font-medium mb-2">{{ offer.title }}</p>
+                  <div class="flex justify-between text-sm text-gray-600">
+                    <p>Başlama: {{ formatDate(offer.start_date) }}</p>
+                    <p>Bitmə: {{ formatDate(offer.finish_date) }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
+            <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
+            <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
+            <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
+            <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
+            <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
+          </div>
+        </div>
+        <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+          <SideBanners class="mb-4" /> 
+          <SideBanners2 class="mb-4" /> 
+        </div>
+      </div>
+      <Maps class="mt-14 sm:mt-24"/>
     </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-
-</style>
+  </template>
+  
+  <script setup>
+  import { ref, computed, onMounted, watch } from "vue";
+  import { useRouter } from 'vue-router';
+  import axios from 'axios';
+  import { useHead } from '@vueuse/head';
+  
+  import SideBanners from "@/components/SideBanners.vue";
+  import SideBanners2 from "@/components/SideBanners2.vue";
+  import Maps from "@/components/Maps.vue";
+  
+  const router = useRouter();
+  
+  // Səhifə başlığı
+  const pageTitle = ref('Aksiyalar');
+  
+  // API-dən məlumatları çəkmək üçün state-lər
+  const offersData = ref([]);
+  const loading = ref(true);
+  const error = ref(null);
+  
+const updateSEO = () => {
+  useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+    meta: [
+      {
+        name: 'description',
+        content: 'Leyla Medical Center-in cari aksiyaları, endirimlər və xüsusi təkliflər. Sağlamlığınız üçün ən yaxşı qiymətlər və imkanlar.'
+      },
+      {
+        property: 'og:title',
+        content: `Leyla Medical Center | ${pageTitle.value}`
+      },
+      {
+        property: 'og:description',
+        content: 'Leyla Medical Center-in cari aksiyaları, endirimlər və xüsusi təkliflər. Sağlamlığınız üçün ən yaxşı qiymətlər və imkanlar.'
+      },
+      {
+        name: 'keywords',
+        content: 'tibbi aksiyalar, endirimlər, sağlamlıq təklifləri, tibbi xidmətlərdə endirim, Leyla Medical Center aksiyaları'
+      }
+    ]
+  });
+};
+  
+  // Tarixi formatlayan metod
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('az-AZ', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  };
+  
+  // API-dən məlumatları çəkmək funksiyası
+  const fetchOffersData = async () => {
+    try {
+      loading.value = true;
+      const response = await axios.get('https://bytexerp.online/api/leyla/v1/offer-list/');
+      console.log("Aksiya API cavabı:", response.data);
+      offersData.value = response.data.results || [];
+      
+      // Məlumatlar yükləndikdən sonra SEO məlumatlarını yeniləyirik
+      updateSEO();
+      
+    } catch (err) {
+      error.value = "Aksiya məlumatlarını yükləmək mümkün olmadı.";
+      console.error("API xətası:", err);
+    } finally {
+      loading.value = false;
+    }
+  };
+  
+  // Aksiya detallarına keçid
+  const goToOffer = (offer) => {
+    router.push({
+      name: 'offer-detail',
+      params: { slug: offer.slug }
+    });
+  };
+  
+  // Komponent yükləndikdə API çağırışı
+  onMounted(() => {
+    fetchOffersData();
+  });
+  
+  // Pagination və digər funksiyalar
+  const itemsPerPage = 9;
+  const currentPage = ref(1);
+  
+  const filteredOffersData = computed(() => {
+    return offersData.value;
+  });
+  
+  const totalPages = computed(() => Math.ceil(filteredOffersData.value.length / itemsPerPage));
+  
+  const paginatedOffersData = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredOffersData.value.slice(start, end);
+  });
+  
+  const pages = computed(() => {
+    const total = totalPages.value;
+    const current = currentPage.value;
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    } else if (current <= 3) {
+      return [1, 2, 3, 4, 5, '...'];
+    } else if (current >= total - 2) {
+      return ['...', total - 4, total - 3, total - 2, total - 1, total];
+    } else {
+      return ['...', current - 1, current, current + 1, '...'];
+    }
+  });
+  
+  // Pagination funksiyaları
+  const goToPage = (page) => {
+    if (page === '...') return;
+    currentPage.value = page;
+  };
+  
+  const goToFirstPage = () => {
+    currentPage.value = 1;
+  };
+  
+  const goToPreviousPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+  };
+  
+  const goToNextPage = () => {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+    }
+  };
+  
+  const goToLastPage = () => {
+    currentPage.value = totalPages.value;
+  };
+  </script>
+  
+  <style scoped>
+  .offer-card {
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  .offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .active-page {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    color: white;
+    background-color: #57af39;
+    transition: background-color 0.3s;
+  }
+  
+  .inactive-page {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+  }
+  
+  .inactive-page:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .pagination-button {
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+  }
+  
+  .pagination-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  </style>

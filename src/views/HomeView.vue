@@ -2,7 +2,7 @@
   <div :style="{ marginTop: headerHeight + 'px' }">
     <div class="relative ">
       <div class="max-w-[2400px] mx-auto" data-aos="zoom-out-right">
-        <Slider :images="homeImages" />
+          <Slider :images="homeImages.length ? homeImages : [{url: '', title: ''}]" />
       </div>
       <!-- ** SERVICES ** ----  -->
       <div

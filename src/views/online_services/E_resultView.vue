@@ -29,6 +29,87 @@
 <script setup>
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
+import { ref } from 'vue';
+import { useHead } from '@vueuse/head';
+
+// Səhifə başlığını tanımlayırıq
+const pageTitle = ref('E-nəticə');
+
+// SEO meta məlumatlarını əlavə edirik
+useHead({
+  title: `Leyla Medical Center | ${pageTitle.value}`,
+  meta: [
+    { 
+      name: 'description', 
+      content: 'Leyla Medical Center-də online laboratoriya nəticələrinizi rahatlıqla əldə edin. Sənəd nömrəsi və doğum iliylə klinikaya gəlmədən nəticələrinizə dərhal baxın.'
+    },
+    { 
+      name: 'keywords', 
+      content: 'online nəticə, lab test nəticələri, tibbi nəticələr, laboratoriya nəticələri, Leyla Medical Center, online tibbi xidmətlər, sənəd nömrəsi, lab nəticələri əldə etmək, Azərbaycanda laboratoriya' 
+    },
+    // Open Graph meta tagları
+    { property: 'og:title', content: `Leyla Medical Center | ${pageTitle.value}` },
+    { property: 'og:description', content: 'Klinikaya gəlmədən online olaraq laboratoriya nəticələrinizi əldə edin. Sadəcə sənəd nömrəsi və doğum ilinizi daxil edin.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://leylamc.com/online-services/e-result' },
+    { property: 'og:image', content: 'https://leylamc.com/assets/eResult.jpg' },
+    { property: 'og:site_name', content: 'Leyla Medical Center' },
+    { property: 'og:locale', content: 'az_AZ' },
+    
+    // Twitter meta tagları
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
+    { name: 'twitter:description', content: 'Klinikaya gəlmədən online olaraq laboratoriya nəticələrinizi əldə edin. Sadəcə sənəd nömrəsi və doğum ilinizi daxil edin.' },
+    { name: 'twitter:image', content: 'https://leylamc.com/assets/eResult.jpg' },
+    
+    // Strukturlu məlumatları əlavə etmək (Schema.org)
+    {
+      name: 'script',
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": `Online Nəticə | Leyla Medical Center`,
+        "description": "Laboratoriya nəticələrinizi online əldə etmək üçün addım-addım təlimatlar",
+        "url": "https://leylamc.com/online-services/e-result",
+        "provider": {
+          "@type": "MedicalOrganization",
+          "name": "Leyla Medical Center",
+          "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+        },
+        "mainEntity": {
+          "@type": "HowTo", 
+          "name": "Online nəticəni necə əldə etmək olar?",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "name": "Sayta daxil olun",
+              "text": "leylamc.az saytına daxil olursuz və online nəticə bölümünə keçir edirsiniz."
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Sənəd nömrəsini daxil edin",
+              "text": "Daha sonra müraciət zamanı sizə təqdim olunan qəbz üzərində qeyd olunan SƏNƏD NÖMRƏSİNİ 'Sənəd nömrəsi' hissəsinə daxil edirsiniz."
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Doğum ilini daxil edin",
+              "text": "Doğum ilinizi (Gün və ay qeyd olunmadan) aidiyyattı xanaya daxil edin."
+            },
+            {
+              "@type": "HowToStep",
+              "name": "Daxil olun",
+              "text": "'Daxil olun' düyməsini basın."
+            }
+          ]
+        }
+      })
+    }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://leylamc.com/online-services/e-result' }
+  ]
+});
 </script>
 
 <style scoped>
