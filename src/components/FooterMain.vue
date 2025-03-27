@@ -3,11 +3,11 @@
         <div class="container py-10">
             <div class="flex flex-col md:flex-row justify-between">
                 <div class="w-full md:w-[50%] 2xl:w-[40%]">
-                    <h1 class="text-primary text-center screen-400:text-start text-lg screen-400:text-xl sm:text-2xl mb-5">Yeniliklərdən ilk sən xəbərdar ol!</h1>
+                    <!-- <h1 class="text-primary text-center screen-400:text-start text-lg screen-400:text-xl sm:text-2xl mb-5">Yeniliklərdən ilk sən xəbərdar ol!</h1>
                     <label class="flex flex-col screen-400:flex-row w-full">
                         <input type="text" class="w-full screen-400:w-[60%] xl:w-[70%] rounded-xl sm:rounded-2xl outline-none p-2 sm:p-3 mb-4 screen-400:mb-0">
                         <button class="greenBtn !rounded-lg screen-400:ml-3">Abunə ol</button>
-                    </label>
+                    </label> -->
                     <div class="mt-7 flex items-center justify-between md:justify-start">
                       <p class="text-main-text flex items-center">
                           <img src="@/assets/icons/phone-black.svg" alt="phone" class="icon w-5 h-5" />
@@ -18,6 +18,17 @@
                           <a href="mailto:info@leylamc.az" class="ml-1 font-bold text-lg sm:text-xl text-main-text hover:text-primary transition-colors">info@leylamc.az</a>
                       </p>
                   </div>
+
+                  <div class="w-full mt-6 text-center md:text-left">
+                  <p class="text-main-text text-lg md:text-2xl mb-2 md:mb-3 lg:mb-4">Bizi sosial mediada izləyin:</p>
+                  <div class="flex justify-center space-x-3 md:justify-start">
+                      <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f text-2xl duration-200 text-blue-400 hover:text-[#1877F2]"></i></a>
+                      <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram text-[#24a0deb0] text-2xl duration-200 hover:text-[#24A1DE]"></i></a>
+                      <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-red-400 text-2xl duration-200 hover:text-[#ff0000]"></i></a>
+                      <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-orange-400 text-2xl duration-200 instagram-gradient"></i></a>
+                      <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp text-green-400 text-2xl duration-200 whatsapp-gradient"></i></a>
+                  </div>
+                </div>
                 </div>
                 <!-- Right Side  -->
                 <div class="w-full mt-7 md:w-[45%] md:mt-0 text-center lg:text-start">
@@ -60,16 +71,16 @@
             </div>
            
             <div class="flex flex-wrap justify-between">
-                <div class="w-full mt-6 text-center md:text-left">
-                <p class="text-main-text text-lg md:text-2xl mb-2 md:mb-3 lg:mb-4">Bizi sosial mediada izləyin:</p>
-                <div class="flex justify-center space-x-3 md:justify-start">
-                    <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f text-[#B7AEAE] text-2xl duration-200 hover:text-[#1877F2]"></i></a>
-                    <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram text-[#B7AEAE] text-2xl duration-200 hover:text-[#24A1DE]"></i></a>
-                    <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-[#B7AEAE] text-2xl duration-200 hover:text-[#ff0000]"></i></a>
-                    <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-[#B7AEAE] text-2xl duration-200 instagram-gradient"></i></a>
-                    <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp text-[#B7AEAE] text-2xl duration-200 whatsapp-gradient"></i></a>
-                </div>
-            </div>
+                <!-- <div class="w-full mt-6 text-center md:text-left">
+                  <p class="text-main-text text-lg md:text-2xl mb-2 md:mb-3 lg:mb-4">Bizi sosial mediada izləyin:</p>
+                  <div class="flex justify-center space-x-3 md:justify-start">
+                      <a href="https://www.facebook.com/LeylaMedicalCenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f text-[#B7AEAE] text-2xl duration-200 hover:text-[#1877F2]"></i></a>
+                      <a href="https://t.me/referansmg" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram text-[#B7AEAE] text-2xl duration-200 hover:text-[#24A1DE]"></i></a>
+                      <a href="https://www.youtube.com/channel/UCgdhd5HG-RDd58_Dmch5NJw" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube text-[#B7AEAE] text-2xl duration-200 hover:text-[#ff0000]"></i></a>
+                      <a href="https://www.instagram.com/leylamedicalcenter/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram text-[#B7AEAE] text-2xl duration-200 instagram-gradient"></i></a>
+                      <a href="https://wa.me/994554550111" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp text-[#B7AEAE] text-2xl duration-200 whatsapp-gradient"></i></a>
+                  </div>
+                </div> -->
             <hr class="custom-hr">
             <div class="flex justify-between items-center pt-10 pb-1 flex-col flex-auto md:flex-row">
                 <img src="@/assets/images/footer-logo.svg" alt="" class="w-[270px] sm:w-[300px] h-[30px] sm:h-[34px] lg:w-[356px] lg:h-[42px]">
