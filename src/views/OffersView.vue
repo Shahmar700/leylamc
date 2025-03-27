@@ -1,49 +1,98 @@
 <template>
-    <div class="container mt-16 text-main-text">
-      <div v-if="loading" class="text-center py-10">
-        <p>Yüklənir...</p>
-      </div>
-      <div v-else-if="error" class="text-center py-10">
-        <p class="text-red-500">{{ error }}</p>
-      </div>
-      <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
-        <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-          <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div 
-              v-for="(offer, index) in paginatedOffersData" 
-              :key="index" 
-              class="relative mb-4 cursor-pointer hover:opacity-90 transition-opacity" 
-              @click="goToOffer(offer)"
-            >
-              <div class="offer-card rounded-md overflow-hidden shadow-md">
-                <img :src="offer.photo" :alt="offer.title" class="w-full h-[200px] object-cover">
-                <div class="p-3">
-                  <p class="text-base sm:text-lg font-medium mb-2">{{ offer.title }}</p>
-                  <div class="flex justify-between text-sm text-gray-600">
-                    <p>Başlama: {{ formatDate(offer.start_date) }}</p>
-                    <p>Bitmə: {{ formatDate(offer.finish_date) }}</p>
-                  </div>
+  <div class="container mt-16 text-main-text">
+    <!-- Yüklənmə göstəricisi -->
+    <div v-if="loading" class="text-center py-10">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+      <p class="mt-4">Aksiyalar yüklənir...</p>
+    </div>
+    
+    <!-- Xəta göstəricisi -->
+    <div v-else-if="error" class="text-center py-10">
+      <p class="text-red-500">{{ error }}</p>
+    </div>
+    
+    <!-- Əsas məzmun -->
+    <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
+      <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
+        <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
+        
+        <!-- Aksiyalar siyahısı -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div 
+            v-for="(offer, index) in paginatedOffersData" 
+            :key="index" 
+            class="relative mb-4 cursor-pointer hover:opacity-90 transition-opacity" 
+            @click="goToOffer(offer)"
+            :class="{ 'opacity-90': isExpired(offer.finish_date) }"
+          >
+            <div class="offer-card rounded-md overflow-hidden shadow-md">
+              <!-- Şəkil konteyner - Vaxtı Bitib funksionalı ilə -->
+              <div class="relative">
+                <img 
+                  :src="offer.photo" 
+                  :alt="offer.title" 
+                  class="w-full h-[200px] object-cover" 
+                  :class="{ 'grayscale': isExpired(offer.finish_date) }"
+                >
+                <!-- Vaxtı bitib göstəricisi -->
+                <div 
+                  v-if="isExpired(offer.finish_date)" 
+                  class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold"
+                >
+                  <span class="-rotate-[30deg] tracking-widest">VAXTI BİTİB</span>
+                </div>
+              </div>
+              
+              <!-- Aksiya məlumat bölməsi -->
+              <div class="p-3">
+                <p class="text-base sm:text-lg font-medium mb-2 truncate">{{ offer.title }}</p>
+                <div class="flex justify-between text-sm text-gray-600">
+                  <p>Başlama: {{ formatDate(offer.start_date) }}</p>
+                  <p>Bitmə: {{ formatDate(offer.finish_date) }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-            <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-            <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-            <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-            <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-            <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
-          </div>
         </div>
-        <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
-          <SideBanners class="mb-4" /> 
-          <SideBanners2 class="mb-4" /> 
+        
+        <!-- Pagination bölməsi -->
+        <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
+          <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+            <i class="fa-solid fa-angles-left"></i>
+          </button>
+          <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>
+          <span 
+            v-for="page in pages" 
+            :key="page" 
+            @click="goToPage(page)" 
+            :class="{ 
+              'font-bold': currentPage === page, 
+              'active-page': currentPage === page, 
+              'inactive-page': currentPage !== page 
+            }"
+          >{{ page }}</span>
+          <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+            <i class="fa-solid fa-angle-right"></i>
+          </button>
+          <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+            <i class="fa-solid fa-angles-right"></i>
+          </button>
         </div>
       </div>
-      <Maps class="mt-14 sm:mt-24"/>
+      
+      <!-- Yan panel -->
+      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+        <SideBanners class="mb-4" /> 
+        <SideBanners2 class="mb-4" /> 
+      </div>
     </div>
-  </template>
+    
+    <!-- Xəritə bölməsi -->
+    <Maps class="mt-14 sm:mt-24"/>
+  </div>
+</template>
   
   <script setup>
   import { ref, computed, onMounted, watch } from "vue";
@@ -57,6 +106,15 @@
   
   const router = useRouter();
   
+// Bugünkü tarixi əldə etmək
+const today = new Date().toISOString().split('T')[0]; 
+
+// Tarixi yoxlama funksiyası - vaxtı keçib-keçmədiyini yoxlayır
+const isExpired = (finish_date) => {
+  if (!finish_date) return false; // Bitmə tarixi təyin edilməyibsə, vaxtı keçməyib
+  return finish_date < today;
+};
+
   // Səhifə başlığı
   const pageTitle = ref('Aksiyalar');
   
@@ -190,6 +248,9 @@ const updateSEO = () => {
   </script>
   
   <style scoped>
+  .grayscale {
+  filter: grayscale(100%);
+}
   .offer-card {
     transition: all 0.3s ease;
     height: 100%;

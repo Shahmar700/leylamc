@@ -17,12 +17,16 @@
           <h1 class="text-2xl md:text-3xl font-semibold mb-6">{{ offer.title }}</h1>
           
           <!-- Aksiya şəkili -->
-          <div class="mb-6 aspect-video">
+          <div class="mb-6 aspect-video relative">
             <img 
               :src="offer.photo" 
               :alt="offer.title" 
               class="w-full h-auto rounded-md object-cover max-h-[600px]"
+              :class="{ 'filter grayscale opacity-90': isExpired(offer.finish_date) }"
             >
+            <div v-if="isExpired(offer.finish_date)" class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold">
+              <span class="-rotate-[30deg] tracking-widest">VAXTI BİTİB</span>
+            </div>
           </div>
           
           <!-- Aksiya məlumatları -->
@@ -73,6 +77,12 @@
   const loading = ref(true);
   const error = ref(null);
   
+  const today = new Date().toISOString().split('T')[0]; // Bugünkü tarixi əldə edirik
+  // Tarixi yoxlama funksiyası
+  const isExpired = (finish_date) => {
+    return finish_date < today;
+  };
+
   // Tarixi formatlayan metod
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -96,7 +106,6 @@
       .replace(/\*(.*?)\*/g, '<em>$1</em>');
   };
   
-  // SEO məlumatlarını yeniləmək
   const updateSEO = () => {
     let title = offer.value.title || 'Aksiya detalları';
     let description = offer.value.text?.substring(0, 160) || 'Leyla Medical Center-dən xüsusi aksiya təklifi';

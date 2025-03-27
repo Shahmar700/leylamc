@@ -16,7 +16,20 @@
         </button>
         
         <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ checkup.title }}</h1>
-        <img v-if="checkup.photo" :src="checkup.photo" :alt="checkup.title" class="w-full h-auto rounded-md mb-4">
+        <div v-if="checkup.photo" class="relative mb-4">
+        <img 
+          :src="checkup.photo" 
+          :alt="checkup.title" 
+          class="w-full h-auto rounded-md" 
+          :class="{ 'grayscale opacity-90': isExpired(checkup.finish_date) }"
+        >
+        <div 
+          v-if="isExpired(checkup.finish_date)" 
+          class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold"
+        >
+          <span class="-rotate-[30deg] tracking-widest">VAXTI BİTİB</span>
+        </div>
+      </div>
         <p class="text-base sm:text-lg mt-2">Başlanğıc tarixi: {{ formatDate(checkup.start_date) || 'Göstərilməyib' }}</p>
         <p class="text-base sm:text-lg mt-2">Bitmə tarixi: {{ formatDate(checkup.finish_date) || 'Göstərilməyib' }}</p>
         <br>
@@ -65,6 +78,15 @@ const router = useRouter();
 // null yerinə boş obyekt istifadə edin
 const checkup = ref({});
 const error = ref(null);
+
+// Bugünkü tarixi əldə edirik
+const today = new Date().toISOString().split('T')[0]; 
+
+// Tarixi yoxlama funksiyası
+const isExpired = (finish_date) => {
+  if (!finish_date) return false; // Bitmə tarixi təyin edilməyibsə, vaxtı keçməyib
+  return finish_date < today;
+};
 
 // Tarixi formatlayan metod
 const formatDate = (dateString) => {
@@ -134,5 +156,8 @@ onUnmounted(() => {
 <style scoped>
 ul{
     list-style: disc;
+}
+.grayscale {
+  filter: grayscale(100%);
 }
 </style>
