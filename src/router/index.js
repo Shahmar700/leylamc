@@ -251,7 +251,7 @@ import ProfileView from '@/views/ProfileView.vue'
       ]
     },
     {
-      path: '/doctor/:id',
+      path: '/profil/:id',
       name: 'doctor',
       component: () => import('@/views/DrView.vue'),
       props: true

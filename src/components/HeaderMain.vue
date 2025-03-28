@@ -31,75 +31,75 @@
                 </router-link>
                   <ul class="headerDropdown absolute top-8 -right-0 lg:-right-32 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary dropDownElement">
                     <li class="px-5">
-                      <router-link :to="{name: 'our-history'}" class="block w-full h-full">Tariximiz</router-link>
+                      <router-link :to="{name: 'our-history'}" class="block w-full h-full text-[18px]">Tariximiz</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'our-vision'}" class="block w-full h-full">Vizyonumuz</router-link>
+                      <router-link :to="{name: 'our-vision'}" class="block w-full h-full text-[18px]">Vizyonumuz</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'our-mission'}" class="block w-full h-full">Missiyamız</router-link>
+                      <router-link :to="{name: 'our-mission'}" class="block w-full h-full text-[18px]">Missiyamız</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'our-relations'}" class="block w-full h-full">Beynəlxalq əlaqələrimiz</router-link>
+                      <router-link :to="{name: 'our-relations'}" class="block w-full h-full text-[18px]">Beynəlxalq əlaqələrimiz</router-link>
                     </li>
                       <!-- MEDİADA BİZ  -->
                         <li class="px-5 mediaParent">
-                          <router-link to="/our-in-media/news" class="cursor-pointer flex w-full h-full justify-between">
+                          <router-link to="/our-in-media/news" class="cursor-pointer flex w-full h-full justify-between text-[18px]">
                             <span>Mediada Biz</span>
                             <span><i class="mediaFa fa-solid fa-angle-down"></i></span>
                           </router-link>
                           <ul class="mediaDropdown shadow-xl rounded-xl border border-t-primary hidden md:block dropDownElement">
                             <li class="px-5">
-                              <router-link :to="{name: 'all-news'}" class="block w-full h-full">Xəbərlər</router-link>
+                              <router-link :to="{name: 'all-news'}" class="block w-full h-full text-[18px]">Xəbərlər</router-link>
                             </li>
                             <li class="px-5">
-                              <router-link :to="{ name: 'kiv-writes' }" class="block w-full h-full">KİV Yazanlar</router-link>
+                              <router-link :to="{ name: 'kiv-writes' }" class="block w-full h-full text-[18px]">KİV Yazanlar</router-link>
                             </li>
                             <!-- GALLERY  -->
                             <li class="px-5 galleryParent">
-                              <router-link to="/about/our-in-media/gallery" class="cursor-pointer flex w-full h-full justify-between">
+                              <router-link to="/about/our-in-media/gallery" class="cursor-pointer flex w-full h-full justify-between text-[18px]" >
                                 <span>Qalereya</span>
                                 <span><i class="galleryFa fa-solid fa-angle-down"></i></span>
                               </router-link>
                               <ul class="galleryDropdown shadow-xl rounded-xl border border-t-primary">
                                 <li class="px-5">
-                                  <router-link :to="{name: 'photos-view'}" class="block w-full h-full">Foto</router-link>
+                                  <router-link :to="{name: 'photos-view'}" class="block w-full h-full text-[18px]">Foto</router-link>
                                 </li>
                                 <li class="px-5">
-                                  <router-link :to="{name: 'videos-view'}" class="block w-full h-full">Video</router-link>
+                                  <router-link :to="{name: 'videos-view'}" class="block w-full h-full text-[18px]">Video</router-link>
                                 </li>
                               </ul>
                             </li>
                             <!-- GALLERY END  -->
                             <li class="px-5">
-                              <router-link :to="{ name: 'health-kiosk' }" class="block w-full h-full">Sağlıq köşkü</router-link>
+                              <router-link :to="{ name: 'health-kiosk' }" class="block w-full h-full text-[18px]">Sağlıq köşkü</router-link>
                             </li>
                             <li class="px-5">
-                              <router-link :to="{ name: 'vacancies' }" class="block w-full h-full">Vakansiya</router-link>
+                              <router-link :to="{ name: 'vacancies' }" class="block w-full h-full text-[18px]">Vakansiya</router-link>
                             </li>
                             <li class="px-5">
-                              <router-link :to="{ name: 'latest-updates' }" class="block w-full h-full">Son yeniliklər</router-link>
+                              <router-link :to="{ name: 'latest-updates' }" class="block w-full h-full text-[18px]">Son yeniliklər</router-link>
                             </li>
                           </ul>
                         </li>
                         <!-- MEDİADA BİZ END-->
                     <li class="px-5">
-                      <router-link :to="{name: 'director-office'}" class="block w-full h-full">Direktor Kabineti</router-link>
+                      <router-link :to="{name: 'director-office'}" class="block w-full h-full text-[18px]">Direktor Kabineti</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'satisfaction-form'}" class="block w-full h-full">Məmnunluq anketi</router-link>
+                      <router-link :to="{name: 'satisfaction-form'}" class="block w-full h-full text-[18px]">Məmnunluq anketi</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'quality-policy'}" class="block w-full h-full">Keyfiyyət siyasəti</router-link>
+                      <router-link :to="{name: 'quality-policy'}" class="block w-full h-full text-[18px]">Keyfiyyət siyasəti</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'quality-control'}" class="block w-full h-full">Keyfiyyətə nəzarət</router-link>
+                      <router-link :to="{name: 'quality-control'}" class="block w-full h-full text-[18px]">Keyfiyyətə nəzarət</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'certificates'}" class="block w-full h-full">Sertifikatlar</router-link>
+                      <router-link :to="{name: 'certificates'}" class="block w-full h-full text-[18px]">Sertifikatlar</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'training-center'}" class="block w-full h-full">Təlim Mərkəzi</router-link>
+                      <router-link :to="{name: 'training-center'}" class="block w-full h-full text-[18px]">Təlim Mərkəzi</router-link>
                     </li>
                   </ul>
               </li>
@@ -113,10 +113,10 @@
                   </router-link>
                   <ul class="dropDownElement headerDropdown absolute top-8 -right-52 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="px-5">
-                      <router-link :to="{name: 'doctors'}"  class="block w-full h-full">Həkimlərimiz</router-link>
+                      <router-link :to="{name: 'doctors'}"  class="block w-full h-full text-[18px]">Həkimlərimiz</router-link>
                     </li>
                     <li class="px-5">
-                      <router-link :to="{name: 'doctor-articles'}" class="block w-full h-full">Həkim məqalələri</router-link>
+                      <router-link :to="{name: 'doctor-articles'}" class="block w-full h-full text-[18px]">Həkim məqalələri</router-link>
                     </li>
                   </ul>
               </li>
@@ -137,7 +137,7 @@
                   <ul class="dropDownElement headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Pediatrics -->
                       <li class="px-5 pediatricsParent relative hidden lg:block">
-                        <div :class="{'text-primary': isPediatricsRoute}" class="flex w-full h-full cursor-pointer">
+                        <div :class="{'text-primary': isPediatricsRoute}" class="flex w-full h-full cursor-pointer text-[18px]">
                           <span>Pediatriya</span>
                           <span><i class="pediatricsFa fa-solid fa-angle-down"></i></span>
                         </div>
@@ -149,7 +149,7 @@
                                 name: 'pediatrics-detail', 
                                 params: { slug: pediatric.slug }
                               }" 
-                              class="block">
+                              class="block text-[18px]">
                               {{ pediatric.name }}
                             </router-link>
                           </li>
@@ -158,7 +158,7 @@
                       <!-- Pediatrics END -->
                     <!-- Surgery -->
                     <li class="px-5 surgeryParent relative hidden lg:block">
-                      <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer">
+                      <div :class="{'text-primary': isSurgeryRoute}" class="flex w-full h-full cursor-pointer text-[18px]">
                         <span>Cərrahiyyə</span>
                         <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
                       </div>
@@ -170,7 +170,7 @@
                                 name: 'surgery-detail', 
                                 params: { slug: surgery.slug }
                               }" 
-                              class="block">
+                              class="block text-[18px]">
                               {{ surgery.name }}
                             </router-link>
                           </li>
@@ -186,7 +186,7 @@
                             params: { slug: department.slug }
                           }" 
                           :class="{'text-primary': isDepartmentRoute && route.params.slug === department.slug}"
-                          class="block w-full h-full">
+                          class="block w-full h-full text-[18px]">
                           {{ department.name }}
                         </router-link>
                       </li>
@@ -195,11 +195,6 @@
                   </ul>
               </li>
               <!-- -------------------------- Department END -->
-
-              <!-- Check Up   -->
-              <li class="">
-                <router-link :to="{name: 'check-up'}" class="hidden lg:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Check Up</router-link>
-              </li>
 
               <!-- MEDİCAL SERVİCES  -->
               <li class="headerParent relative group">
@@ -222,7 +217,7 @@
                         name: 'medical-service-detail',  // Burada name-i dəqiq yazırıq
                         params: { slug: service.slug }
                       }"
-                      class="block w-full h-full">
+                      class="block w-full h-full text-[18px]">
                       {{ service.title }}
                     </router-link>
                   </li>
@@ -231,6 +226,11 @@
                     <a href="#" @click.prevent="openPdf" class="block w-full h-full">Peyvəndlər</a>
                   </li>
                 </ul>
+              </li>
+
+              <!-- Check Up   -->
+              <li class="">
+                <router-link :to="{name: 'check-up'}" class="hidden xl:inline-block cursor-pointer text-base sm:text-lg lg:text-xl">Check Up</router-link>
               </li>
           </ul>
 
@@ -272,25 +272,25 @@
                   </li>
                   <!-- Digər elementlər (Onlayn Xidmətlər, Sağlıq köşkü, Vakansiyalar, Aksiyalar, Əlaqə) -->
                   <li class="px-5 onlineParent relative">
-                    <router-link to="/online-services" class="hidden w-full h-full text-base sm:text-lg lg:text-xl">
+                    <router-link to="/online-services" class="w-full h-full text-base sm:text-lg lg:text-xl">
                       <span>Onlayn Xidmətlər</span>
-                      <span><i class="onlineFa fa-solid fa-angle-down"></i></span>
+                      <span><i class="onlineFa fa-solid fa-angle-down ml-1"></i></span>
                     </router-link>
                     <ul class="onlineDropdown shadow-xl rounded-xl z-10">
                         <li class="px-5">
-                          <router-link :to="{name: 'e-appointment'}" class="block w-full h-full">E-Növbə</router-link>
+                          <router-link :to="{name: 'e-appointment'}" class="block w-full h-full text-[18px]">E-Növbə</router-link>
                         </li>
                         <li class="px-5">
-                          <router-link :to="{name: 'e-result'}" class="block w-full h-full">E-Nəticə</router-link>
+                          <router-link :to="{name: 'e-result'}" class="block w-full h-full text-[18px]">E-Nəticə</router-link>
                         </li>
                         <li class="px-5">
-                          <router-link :to="{name: 'e-payment'}" target="_blank" class="block w-full h-full" @click.native="openInNewTab">E-Ödəmə</router-link>
+                          <router-link :to="{name: 'e-payment'}" target="_blank" class="block w-full h-full text-[18px]" @click.native="openInNewTab">E-Ödəmə</router-link>
                         </li>
                         <!-- <li class="px-5">
-                          <router-link :to="{name: 'e-commerce'}" class="block w-full h-full">E-satış</router-link>
+                          <router-link :to="{name: 'e-commerce'}" class="block w-full h-full text-[18px]">E-satış</router-link>
                         </li> -->
                         <li class="px-5">
-                          <router-link :to="{name: 'e-consultation'}" class="block w-full h-full">E-Məsləhət</router-link>
+                          <router-link :to="{name: 'e-consultation'}" class="block w-full h-full text-[18px]">E-Məsləhət</router-link>
                         </li>
                     </ul>
                   </li>
@@ -918,7 +918,9 @@ const toggleBurgerDropdown = (key) => {
 
 <style scoped>
 .dropDownElement {
-  font-family: "Nunito", sans-serif;
+  /* font-family: "Nunito", sans-serif; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
 }
 /* Bu stil yalnız 768px və yuxarı ekranlarda hover effektlərini aktiv edir */
 @media (min-width: 768px) {
@@ -1010,7 +1012,7 @@ border-radius: 15px;
 right: -200px;
 }
 .mediaParent:hover .mediaDropdown{
-right: -190px;
+right: -170px;
 top: 0px;
 visibility: visible;
 opacity: 1;
@@ -1050,7 +1052,7 @@ border-radius: 15px;
 }
 
 .onlineParent:hover .onlineDropdown{
-left: -160px;
+left: -140px;
 top: 0px;
 visibility: visible;
 opacity: 1;

@@ -1,6 +1,13 @@
 <template>
   <div class="slider-container">
-    <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+    <!-- Skeleton loader - şəkillər yüklənərkən göstərilir -->
+    <div v-if="loading" class="slider-skeleton h-[300px] screen-400:h-[300px] screen-500:h-[350px] sm:h-[450px] lg:h-[500px] 2xl:h-[750px]">
+      <div class="skeleton-animation"></div>
+      <div class="skeleton-gradient"></div>
+    </div>
+
+    <!-- Əsas slider - şəkillər yükləndikdən sonra göstərilir -->
+    <div v-else class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
       <div
         v-for="(image, index) in images"
         :key="index"
@@ -20,6 +27,8 @@
           <img 
             :src="image.url || image" 
             class="slide-image"
+            @load="handleImageLoad(index)"
+            @error="handleImageError(index)"
           />
         </a>
         
@@ -28,29 +37,33 @@
           <img 
             :src="image.url || image" 
             class="slide-image"
+            @load="handleImageLoad(index)"
+            @error="handleImageError(index)"
           />
         </div>
       </div>
     </div>
     
-    <!-- Naviqasiya düymələri və nöqtələr dəyişmədən qalır -->
-    <button class="nav-button left top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
-    <button class="nav-button right top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
-    <div class="dots absolute bottom-[10px] screen-375:bottom-[10px] screen-500:bottom-[20px] z-[99999] sm:bottom-[30px] xl:bottom-14">
-      <span
-        v-for="(image, index) in images"
-        :key="index"
-        class="dot"
-        :class="{ active: index === currentIndex }"
-        @click="goToSlide(index)"
-      ></span>
-    </div>
+    <!-- Naviqasiya düymələri və nöqtələr - yalnız şəkillər yükləndikdən sonra göstərilir -->
+    <template v-if="!loading">
+      <button class="nav-button left top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="prevSlide"><span>‹</span></button>
+      <button class="nav-button right top-[50%] -translate-y-1/2 md:top-[42%] xl:top-[45%] lg:top-1/3 w-[20px] h-[20px] md:w-[35px] md:h-[35px]" @click="nextSlide"><span>›</span></button>
+      <div class="dots absolute bottom-[10px] screen-375:bottom-[10px] screen-500:bottom-[20px] z-[99999] sm:bottom-[30px] xl:bottom-14">
+        <span
+          v-for="(image, index) in images"
+          :key="index"
+          class="dot"
+          :class="{ active: index === currentIndex }"
+          @click="goToSlide(index)"
+        ></span>
+      </div>
+    </template>
   </div>
 </template>
   
   <script setup>
   import car from "@/assets/images/bmw.jpg"
-  import { defineProps, ref, onMounted, onUnmounted } from 'vue';
+  import { defineProps, ref, onMounted, onUnmounted, watch } from 'vue';
   
   const props = defineProps({
     images: {
@@ -61,29 +74,81 @@
   
   const currentIndex = ref(0);
   let intervalId;
+  const loading = ref(true);
+  const loadedImages = ref({});
   
-  const nextSlide = () => {
-    currentIndex.value = (currentIndex.value + 1) % props.images.length;
-  };
+// Şəkil yükləndikdə işləyən funksiya
+const handleImageLoad = (index) => {
+  loadedImages.value[index] = true;
   
-  const prevSlide = () => {
-    currentIndex.value = (currentIndex.value - 1 + props.images.length) % props.images.length;
-  };
-  
-  const goToSlide = (index) => {
-    currentIndex.value = index;
-  };
+  // Bütün şəkillərin yüklənib-yüklənmədiyini yoxlayırıq
+  checkAllImagesLoaded();
+};
 
-  // Xüsusi naviqasiya funksiyası - lakin əsasən a tag-dən istifadə edəcəyik
+// Şəkil yüklənməsində xəta olduqda işləyən funksiya
+const handleImageError = (index) => {
+  loadedImages.value[index] = true; // Xəta olsa belə, yüklənmiş kimi qeyd edirik ki, loader görünsün
+  
+  // Bütün şəkillərin yüklənib-yüklənmədiyini yoxlayırıq
+  checkAllImagesLoaded();
+};
+// Bütün şəkillərin yükləndiyini təsdiqləyən funksiya
+const checkAllImagesLoaded = () => {
+  // Əgər bütün şəkillər yüklənibsə, loadingi false edirik
+  if (props.images.every((_, index) => loadedImages.value[index])) {
+    setTimeout(() => {
+      loading.value = false;
+    }, 300); // Kiçik bir gecikmə əlavə edirik ki, keçiş daha hamar olsun
+  }
+};
+
+// İmages dəyişikliyi olduqda yenidən yükləməni işə salırıq
+watch(() => props.images, () => {
+  loading.value = true;
+  loadedImages.value = {};
+  
+  // Əgər şəkillər massivi boşdursa, loading-i false edirik
+  if (props.images.length === 0) {
+    loading.value = false;
+  }
+  
+  // Əgər şəkillər varsa, 3 saniyə sonra avtomatik olaraq loading-i false edirik
+  // (Bu, şəkillər yüklənməsə belə istifadəçinin gözləməsini qarşısını alır)
+  else {
+    setTimeout(() => {
+      loading.value = false;
+    }, 3000);
+  }
+}, { immediate: true });
+
+const nextSlide = () => {
+  currentIndex.value = (currentIndex.value + 1) % props.images.length;
+};
+
+const prevSlide = () => {
+  currentIndex.value = (currentIndex.value - 1 + props.images.length) % props.images.length;
+};
+
+const goToSlide = (index) => {
+  currentIndex.value = index;
+};
+
+// Xüsusi naviqasiya funksiyası - lakin əsasən a tag-dən istifadə edəcəyik
 const navigateToSource = (source) => {
   if (source && source.trim() !== "") {
     window.open(source, '_blank', 'noopener,noreferrer');
   }
 };
   
-  onMounted(() => {
-    intervalId = setInterval(nextSlide, 7000);
-  });
+onMounted(() => {
+  // Avtomatik slayd dəyişməsini başlat
+  intervalId = setInterval(nextSlide, 7000);
+  
+  // 1 saniyədən çox yüklənməsə, skeleton loader-i söndürürük
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+});
   
   onUnmounted(() => {
     clearInterval(intervalId);
@@ -96,6 +161,47 @@ const navigateToSource = (source) => {
   width: 100%;
   overflow: hidden;
   background: linear-gradient(to right, #f3f3f3, #e0e0e0, #f3f3f3); /* Şəkil ətrafına uyğun arxa fon */
+}
+
+/* Skeleton loader stilləri */
+.slider-skeleton {
+  position: relative;
+  width: 100%;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.skeleton-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.11) 20%, 
+    rgba(255, 255, 255, 0.5) 60%, 
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1s infinite;
+}
+
+.skeleton-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to bottom, transparent, rgba(240, 240, 240, 0.8));
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .slide {

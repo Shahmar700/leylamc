@@ -1,8 +1,8 @@
 <template>
     <div :style="backgroundStyle"
      class="service-container h-fit sm:h-[330px] md:h-[370px] rounded-[40px] screen-375:rounded-[60px] md:rounded-[60px] py-[40px] screen-500:py-[60px] px-[30px]">
-        <img :src="icon" alt="service icon" class="mb-4 md:mb-6 w-[50px] h-[50px] screen-400:w-[60px] screen-400:h-[60px] sm:w-[70px] sm:h-[70px] xl:w-[80px] xl:h-[80px] object-contain">
-        <h2 class="text-white text-2xl screen-400:text-3xl xl:text-4xl">{{ title }}</h2>
+        <img :src="icon" alt="service icon" class="mb-2 screen-400:mb-4 md:mb-6 w-[40px] h-[40px] screen-400:w-[60px] screen-400:h-[60px] sm:w-[70px] sm:h-[70px] xl:w-[80px] xl:h-[80px] object-contain">
+        <h2 class="text-white text-xl screen-400:text-3xl xl:text-4xl">{{ title }}</h2>
         <p class="text-white mt-2 md:mb-3 text-sm screen-400:text-base">{{ description }}</p>
     </div>
 </template>

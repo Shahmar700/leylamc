@@ -8,7 +8,7 @@
       </div>
       <div v-else class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
         <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-          <h1 class="text-3xl font-semibold mb-10">Check Up</h1>
+          <h1 class="text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div v-for="(checkup, index) in paginatedCheckups" :key="index" @click="goToCheckUp(checkup)" class="relative mb-4 rounded-md cursor-pointer hover:shadow-md hover:scale-101 transition-all duration-200" :class="{ 'opacity-90' : isExpired(checkup.finish_date) }">
               <div class="relative">
@@ -41,6 +41,8 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { useHead } from '@vueuse/head';
+
 
 import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
@@ -70,10 +72,10 @@ const fetchCheckupsData = async () => {
   }
 };
 
-// Komponent yükləndikdə API çağırışı
-onMounted(() => {
-  fetchCheckupsData();
-});
+// // Komponent yükləndikdə API çağırışı
+// onMounted(() => {
+//   fetchCheckupsData();
+// });
 
 // Pagination və digər funksiyalar
 const itemsPerPage = 9;
@@ -143,6 +145,78 @@ const router = useRouter();
 const goToCheckUp = (checkup) => {
   router.push({ name: 'check-up-inner', params: { slug: checkup.slug } });
 };
+
+const pageTitle = ref("Check Up")
+
+// Məlumatlar yükləndikdən sonra SEO məlumatlarını yeniləyən funksiya
+const updateSeoMetadata = () => {
+  useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: 'Leyla Medical Center-də müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun. Profilaktik tibbi yoxlamalar, laboratoriya analizləri və detallı müayinələr vasitəsilə sağlamlığınızı nəzarətdə saxlayın.'
+      },
+      { 
+        name: 'keywords', 
+        content: 'check up, tibbi müayinə, profilaktik yoxlama, kompleks müayinə, sağlamlıq müayinəsi, Leyla Medical Center, tibbi yoxlama paketləri, sağlamlıq paketləri, illik müayinə, profilaktik tədbir' 
+      },
+      
+      // Open Graph meta tagları (sosial mediada paylaşım üçün)
+      { property: 'og:title', content: 'Leyla Medical Center | Check Up Paketləri' },
+      { property: 'og:description', content: 'Müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun. Profilaktik tibbi yoxlamalar, laboratoriya analizləri və detallı müayinələr.' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://leylamc.com/medical-services/check-up' },
+      { property: 'og:image', content: checkups.value.length > 0 ? checkups.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      // Twitter meta tagları
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Leyla Medical Center | Check Up Paketləri' },
+      { name: 'twitter:description', content: 'Müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun. Profilaktik tibbi yoxlamalar, laboratoriya analizləri və detallı müayinələr.' },
+      { name: 'twitter:image', content: checkups.value.length > 0 ? checkups.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalWebPage",
+          "name": "Check Up Paketləri | Leyla Medical Center",
+          "description": "Leyla Medical Center-də müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun.",
+          "url": "https://leylamc.com/medical-services/check-up",
+          "provider": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": checkups.value.slice(0, 10).map((item, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "name": item.title,
+              "url": `https://leylamc.com/medical-services/check-up/${item.slug}`
+            }))
+          }
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: 'https://leylamc.com/medical-services/check-up' }
+    ]
+  });
+};
+
+// Məlumatlar yükləndikdən sonra SEO əlavə edək
+onMounted(() => {
+  fetchCheckupsData().then(() => {
+    // API sorğusu bitdikdən sonra SEO məlumatlarını yenilə
+    updateSeoMetadata();
+  });
+});
 
 // Component unmount olduqda təmizləmə
 onUnmounted(() => {

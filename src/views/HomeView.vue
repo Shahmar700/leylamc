@@ -9,7 +9,7 @@
         class="bg-white border border-b-0 rounded-t-[60px] w-full"
       >
         <div
-          class="container pt-[30px] screen-500:pt-[40px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          class="container pt-[30px] screen-500:pt-[40px] lg:pt-[90px] pb-[70px] screen-500:pb-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-[20px] screen-400:px-0" 
         >
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
@@ -90,7 +90,7 @@
     </div>
 
     <!-- ** ABOUT **  -->
-    <div class="container grid grid-cols-1 lg:grid-cols-2 items-center gap-6 xl:gap-10 pt-12 md:pt-24 pb-20 md:pb-32">
+    <div class="container grid grid-cols-1 lg:grid-cols-2 items-center gap-6 xl:gap-10 pt-12 md:pt-24 pb-20 md:pb-24">
       <div class="flex justify-center flex-col">
         <div class="w-full">
           <img
@@ -203,7 +203,7 @@
     </div>
 
     <!-- ** News **  -->
-    <div class="bg-secondary py-8 md:py-12 lg:py-16 my-12 mb-10 md:my-20 lg:my-32">
+    <div class="bg-secondary py-8 md:py-12 lg:py-14 my-12 mb-10 md:my-16">
       <div class="container">
         <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
@@ -299,7 +299,7 @@
       </div>
 
     <!-- ** OUR TEAM (Doctors) ** -->
-      <div class="mt-14 lg:mt-36 xl:mt-44 2xl:mt-48">
+      <div class="mt-14 lg:mt-36 xl:mt-32">
         <div class="container">
           <div class="flex flex-col screen-500:flex-row justify-between mb-10">
             <div>
@@ -387,9 +387,9 @@
     </div> -->
 
     <!-- ** MAP **  -->
-    <div class="mt-14 lg:mt-36 xl:mt-44 2xl:mt-48">
+    <div class="mt-14 lg:mt-36 xl:mt-32">
       <div class="container">
-        <div class="flex justify-between mb-16">
+        <div class="flex justify-between mb-11">
           <div>
             <h1
               class="text-primary text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
