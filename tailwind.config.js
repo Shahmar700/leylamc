@@ -15,8 +15,11 @@ export default {
       }
     },
     fontFamily: {
-      sans: ['AvantGarde', 'sans-serif'],
+      // sans: ['AvantGarde', 'sans-serif'],
       'poppins': ['Poppins', 'sans-serif'],
+      'roboto': ['Roboto', 'sans-serif'],
+      'quicksand': ['Quicksand', 'sans-serif'],
+      'winky': ['Winky Sans', 'sans-serif'],
     },
     container: {
       center: true,

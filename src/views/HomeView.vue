@@ -40,7 +40,7 @@
       </div>
     </div>
     <!-- ** E-SERVİCES ** ----   -->
-    <div class="bg-secondary pt-[72px] pb-24">
+    <div class="bg-secondary pt-12 md:pt-[72px] pb-20 md:pb-24">
       <div>
         <h1
           class="text-xl screen-500::text-2xl lg:text-3xl text-center text-primary font-semibold tracking-wide"
@@ -90,7 +90,7 @@
     </div>
 
     <!-- ** ABOUT **  -->
-    <div class="container grid grid-cols-1 lg:grid-cols-2 items-center gap-6 xl:gap-10 pt-36 pb-32">
+    <div class="container grid grid-cols-1 lg:grid-cols-2 items-center gap-6 xl:gap-10 pt-12 md:pt-24 pb-20 md:pb-32">
       <div class="flex justify-center flex-col">
         <div class="w-full">
           <img
@@ -157,7 +157,7 @@
     </div>
 
     <!-- ** Our Youtube Channel ** -->
-    <div class="bg-secondary py-16">
+    <div class="bg-secondary py-10 md:py-16">
       <div class="container">
         <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
@@ -203,7 +203,7 @@
     </div>
 
     <!-- ** News **  -->
-    <div class="bg-secondary py-16 my-32">
+    <div class="bg-secondary py-8 md:py-12 lg:py-16 my-12 mb-10 md:my-20 lg:my-32">
       <div class="container">
         <div class="flex flex-col screen-500:flex-row justify-between mb-10">
           <div>
@@ -251,11 +251,11 @@
 
     <!-- ** Departments ** -->
     <div
-        class="py-16 bg-cover bg-center"
+        class="py-10 lg:py-16 bg-cover bg-center"
         :style="{ backgroundImage: `url(${departmentsBg})` }"
       >
         <div class="container relative">
-          <div class="flex justify-between mb-16">
+          <div class="flex justify-between mb-10 lg:mb-16">
             <h1
               class="text-white text-xl screen-500::text-2xl lg:text-3xl font-semibold tracking-wide"
             >
@@ -299,7 +299,7 @@
       </div>
 
     <!-- ** OUR TEAM (Doctors) ** -->
-      <div class="mt-48">
+      <div class="mt-14 lg:mt-36 xl:mt-44 2xl:mt-48">
         <div class="container">
           <div class="flex flex-col screen-500:flex-row justify-between mb-10">
             <div>
@@ -352,7 +352,7 @@
       </div>
 
     <!-- ** Ratings ** -->
-    <!-- <div class="mt-24 sm:mt-32 md:mt-40 lg:mt-48">
+    <!-- <div class="mt-24 sm:mt-32 md:mt-40 lg:mt-14 lg:mt-36 xl:mt-44 2xl:mt-48">
       <div class="container">
         <div class="flex justify-between mb-32 md:mb-24 lg:mb-16">
           <div>
@@ -387,7 +387,7 @@
     </div> -->
 
     <!-- ** MAP **  -->
-    <div class="mt-48">
+    <div class="mt-14 lg:mt-36 xl:mt-44 2xl:mt-48">
       <div class="container">
         <div class="flex justify-between mb-16">
           <div>

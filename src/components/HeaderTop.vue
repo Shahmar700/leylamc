@@ -44,15 +44,19 @@
                 <span class="text-white hidden screen-500:block">|</span>
                 <div class="flex items-center px-2 text-sm">
                   <div class="mr-1 relative">
-                      <a href="tel:*0101" class="flex items-center emergency-number">
-                          <div class="relative z-10">
-                              <img src="@/assets/icons/phone.svg" alt="phone" class="icon" />
-                          </div>
-                          <!-- Nömrəni iki hissəyə bölürük və hər birinə ayrı animasiya tətbiq edirik -->
-                          <div class="pl-1 font-bold z-10 flex">
-                              <span class="emergency-blue">*01</span><span class="emergency-red">01</span>
-                          </div>
-                      </a>
+                    <a href="tel:*0101" class="flex items-center emergency-number">
+                      <div class="relative z-10">
+                          <!-- Şəkli SVG ikonu ilə əvəz edirik ki, birbaşa rəngləndirə bilək -->
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" 
+                              class="icon emergency-icon" width="20" height="20">
+                              <path class="emergency-red-icon" d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.045 15.045 0 0 1-6.59-6.59l2.2-2.21a.96.96 0 0 0 .25-1A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+                          </svg>
+                      </div>
+                      <!-- Nömrə artıq animasiyasız normal görünəcək -->
+                      <div class="font-bold z-10 flex">
+                          <span class="text-white">*0101</span>
+                      </div>
+                  </a>
                   </div>
               </div>
                 <span class="text-white hidden screen-500:block">|</span>
@@ -193,56 +197,44 @@ onBeforeUnmount(() => {
   transition: background 0.3s;
 }
 
-/* Təcili Yardım Zəng Animasiyası */
-.emergency-number {
-    position: relative;
-    padding: 5px 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s;
+/* Telefon ikonu üçün animasiyalar */
+.emergency-icon {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+    animation: pulseIcon 1s infinite;
 }
 
-.emergency-number:hover {
-    transform: scale(1.05);
-}
-/* Göy rəngli birinci hissə üçün animasiya */
-.emergency-blue {
-    color: #ffffff;
-    text-shadow: 0 0 5px rgba(30, 144, 255, 0.8);
-    animation: pulseBlueText 1s infinite;
+.emergency-red-icon {
+    animation: pulseColorIcon 1s infinite;
 }
 
-/* Qırmızı rəngli ikinci hissə üçün animasiya */
-.emergency-red {
-    color: #ffffff;
-    text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
-    animation: pulseRedText 1s infinite;
-    animation-delay: 0.5s; /* Qırmızı animasiyanı göydən yarım saniyə sonra başlat */
+/* İkon üçün rəng dəyişmə animasiyası */
+@keyframes pulseColorIcon {
+    0%, 50% {
+        fill: #ff0000;
+        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+    }
+    50%, 100% {
+        fill: #1e90ff;
+        filter: drop-shadow(0 0 10px rgba(30, 144, 255, 0.8));
+    }
+    100% {
+        fill: #ff0000;
+        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+    }
 }
 
-/* Göy mətn üçün yanıb-sönmə animasiyası */
-@keyframes pulseBlueText {
-    0%, 100% {
-        color: #ffffff;
-        text-shadow: 0 0 5px rgba(30, 144, 255, 0.8);
+/* İkon ölçü animasiyası */
+/* @keyframes pulseIcon {
+    0% {
+        transform: scale(1);
     }
     50% {
-        color: #1e90ff;
-        text-shadow: 0 0 15px rgba(30, 144, 255, 1), 0 0 20px rgba(30, 144, 255, 0.7);
+        transform: scale(1.1);
     }
-}
-
-/* Qırmızı mətn üçün yanıb-sönmə animasiyası */
-@keyframes pulseRedText {
-    0%, 100% {
-        color: #ffffff;
-        text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+    100% {
+        transform: scale(1);
     }
-    50% {
-        color: #ff3333;
-        text-shadow: 0 0 15px rgba(255, 51, 51, 1), 0 0 20px rgba(255, 51, 51, 0.7);
-    }
-}
+} */
 
 /* Qısa zəng nömrəsi vurğulaması */
 .emergency-number span {
@@ -251,15 +243,9 @@ onBeforeUnmount(() => {
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-/* Nömrə ətrafında parlaq pulsasiya dairəsi */
+/* Emergency number border animasiyasını ləğv edirik */
 .emergency-number::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  /* border-radius: 20px; */
-  /* border: 1px solid rgba(255, 255, 255, 0.5); */
-  animation: pulse-border 2s infinite;
-  z-index: 0;
+  display: none;
 }
 
 @keyframes pulse-border {

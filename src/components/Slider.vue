@@ -4,27 +4,32 @@
       <div
         v-for="(image, index) in images"
         :key="index"
-        class="slide h-[150px] screen-400:h-[200px] screen-500:h-[300px] sm:h-[450px] md:h-[450px] lg:h-[500px] 2xl:h-[670px]"
+        class="slide h-[300px] screen-400:h-[300px] screen-500:h-[350px] sm:h-[450px] lg:h-[500px] 2xl:h-[750px]"
       >
-        <!-- Şəkili link daxilində göstərmək, əgər source varsa -->
+        <!-- İki qatlı arxa fon həlli - həm arxa fonu doldurur, həm də şəkili tam göstərir -->
+        <div class="slide-background" :style="{ backgroundImage: `url(${image.url || image})` }"></div>
+        
+        <!-- Əsas şəkil - link varsa -->
         <a 
           v-if="image.source" 
           :href="image.source" 
-          class="w-full h-full block"
+          class="slide-content"
           target="_blank"
           rel="noopener noreferrer"
         >
           <img 
             :src="image.url || image" 
-            class="slide-image object-fill md:object-fill 2xl:object-fill"
+            class="slide-image"
           />
         </a>
-        <!-- Əgər source yoxdursa, sadəcə şəkil göstərmək -->
-        <img 
-          v-else
-          :src="image.url || image" 
-          class="slide-image object-fill md:object-fill 2xl:object-fill"
-        />
+        
+        <!-- Əsas şəkil - link yoxdursa -->
+        <div v-else class="slide-content">
+          <img 
+            :src="image.url || image" 
+            class="slide-image"
+          />
+        </div>
       </div>
     </div>
     
@@ -86,6 +91,56 @@ const navigateToSource = (source) => {
   </script>
   
   <style scoped>
+  .slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(to right, #f3f3f3, #e0e0e0, #f3f3f3); /* Şəkil ətrafına uyğun arxa fon */
+}
+
+.slide {
+  min-width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+/* Arxa fon təbəqəsi - genişlənmiş blur şəkil effekti ilə dolduracaq */
+.slide-background {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  opacity: 0.4;
+  z-index: 1;
+}
+
+/* Əsas görüntü təbəqəsi */
+.slide-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Əsas şəkil - heç vaxt kəsilmir, bütün banneri göstərir */
+.slide-image {
+  max-width: 98%;
+  max-height: 98%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Hover effekti */
+.slide-content:hover .slide-image {
+  transform: scale(1.01);
+  transition: transform 0.3s ease;
+}
   .slide a {
   display: block;
   width: 100%;

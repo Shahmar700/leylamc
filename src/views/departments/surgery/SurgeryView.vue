@@ -25,50 +25,67 @@
   </template>
   
   <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import axios from 'axios';
-import SideBanners from "@/components/SideBanners.vue";
-import SideBanners2 from "@/components/SideBanners2.vue";
-import Maps from "@/components/Maps.vue";
-import GallerySection from "@/components/GallerySection.vue";
-
-const route = useRoute();
-const surgery = ref(null);
-
-const fetchSurgeryDetails = async () => {
-  try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/surgeondep-list/');
-    const surgeries = response.data.results;
-    surgery.value = surgeries.find(s => s.slug === route.params.slug);
-    if (!surgery.value) {
-      throw new Error('Surgery not found');
+  import { ref, onMounted, computed, watch } from 'vue';
+  import { useRoute } from 'vue-router';
+  import axios from 'axios';
+  import SideBanners from "@/components/SideBanners.vue";
+  import SideBanners2 from "@/components/SideBanners2.vue";
+  import Maps from "@/components/Maps.vue";
+  import GallerySection from "@/components/GallerySection.vue";
+  
+  const route = useRoute();
+  const surgery = ref(null);
+  const surgeryPhotos = ref([]);
+  
+  const fetchSurgeryDetails = async () => {
+    try {
+      const response = await axios.get('http://bytexerp.online/api/leyla/v1/surgeondep-list/');
+      const surgeries = response.data.results;
+      surgery.value = surgeries.find(s => s.slug === route.params.slug);
+      if (!surgery.value) {
+        throw new Error('Surgery not found');
+      }
+    } catch (error) {
+      console.error("Surgery details API çağırışında xəta:", error);
     }
-  } catch (error) {
-    console.error("Surgery details API çağırışında xəta:", error);
-  }
-};
-
-onMounted(() => {
-  fetchSurgeryDetails();
-});
-
-watch(() => route.params.slug, () => {
-  fetchSurgeryDetails();
-});
-
-const surgeryText = computed(() => {
-  return surgery.value ? surgery.value.text : '';
-});
-
-// Gallery General Surgery 
-import gs1 from "@/assets/images/general_surgery/gs1.jpg"
-import gs2 from "@/assets/images/general_surgery/gs2.jpg"
-
-const images = [
-  { src: gs1, alt: 'Image 1' },
-  { src: gs2, alt: 'Image 2' },
-  { src: gs1, alt: 'Image 3' },
-  { src: gs2, alt: 'Image 4' },
-];
-</script>
+  };
+  
+  const fetchSurgeryPhotos = async () => {
+    try {
+      const response = await axios.get('https://bytexerp.online/api/leyla/v1/surgeonphoto-list/');
+      // Yalnız cari cərrahiyyəyə aid şəkilləri filterlə
+      if (surgery.value) {
+        const photos = response.data.results.filter(
+          photo => photo.surgeon_cat.id === surgery.value.id
+        );
+        
+        // Şəkilləri alt atributu ilə obyektlərə çevir
+        surgeryPhotos.value = photos.map(photo => ({
+          src: photo.image,
+          alt: `${surgery.value.name} - ${photo.id}`
+        }));
+      }
+    } catch (error) {
+      console.error("Surgery photos API çağırışında xəta:", error);
+    }
+  };
+  
+  onMounted(async () => {
+    await fetchSurgeryDetails();
+    await fetchSurgeryPhotos();
+  });
+  
+  watch(() => route.params.slug, async () => {
+    await fetchSurgeryDetails();
+    await fetchSurgeryPhotos();
+  });
+  
+  const surgeryText = computed(() => {
+    return surgery.value ? surgery.value.text : '';
+  });
+  
+  // Sadəcə API-dən gələn şəkilləri qaytarırıq
+  const images = computed(() => {
+    return surgeryPhotos.value;
+  });
+  </script>

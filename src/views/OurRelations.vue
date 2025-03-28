@@ -19,7 +19,7 @@
             <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
                 <div class="w-[90%] md:w-3/4" data-aos="zoom-out-right">
                     <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ relationsTitle }}</h1>
-                    <p v-if="formattedRelationsText" class="mt-4 text-xl font-thin text-justify" v-html="formattedRelationsText"></p>
+                    <p v-if="formattedRelationsText" class="mt-4 text-xl font-normal text-justify" v-html="formattedRelationsText"></p>
                     <p v-else class="mt-4 text-xl font-thin text-justify">Məlumat hazırlanır...</p>
                 </div>
                 <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
