@@ -158,7 +158,7 @@ useHead({
       content: metaDescription.value
     },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/training-center' },
+    { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/təlim-mərkəzi' },
     { property: 'og:image', content: firstImageUrl },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -177,7 +177,7 @@ useHead({
         "@type": "EducationalOrganization",
         "name": pageTitle.value,
         "description": plainText.value,
-        "url": "https://leylamc.com/training-center",
+        "url": "https://leylamc.com/az/haqqımızda/təlim-mərkəzi",
         "image": images.value.map(img => img.src),
         "address": {
           "@type": "PostalAddress",
@@ -197,7 +197,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/training-center' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/təlim-mərkəzi' }
   ]
 });
 };

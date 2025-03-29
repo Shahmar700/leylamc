@@ -73,15 +73,36 @@
               class="mt-6"
           />
         </div>
-        <div v-if="totalPages > 1" class="z-[99] pagination mt-4 flex justify-center lg:justify-start">
-          <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-          <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-          <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-          <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-          <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
-        </div>
+        <!-- Pagination -->
+        <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+                        <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                            <i class="fa-solid fa-angles-left"></i>
+                        </button>
+                        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                            <i class="fa-solid fa-angle-left"></i>
+                        </button>
+                        <span 
+                            v-for="page in pages" 
+                            :key="page" 
+                            @click="goToPage(page)" 
+                            :class="{ 
+                                'font-bold': currentPage === page, 
+                                'active-page': currentPage === page, 
+                                'inactive-page': currentPage !== page && page !== '...',
+                                'pagination-dots': page === '...'
+                            }"
+                        >
+                            {{ page }}
+                        </span>
+                        <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                            <i class="fa-solid fa-angle-right"></i>
+                        </button>
+                        <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                            <i class="fa-solid fa-angles-right"></i>
+                        </button>
+                    </div>
+          </div>
       </div>
-  </div>
 </template>
 
 <script setup>
@@ -411,21 +432,67 @@ const specialtyCustomLabel = (option) => {
   return option.specialty;
 };
 
-// useHead hooku ilə meta etiketlərini əlavə et
+// SEO və meta tagların təkmilləşdirilmiş versiyası
 useHead({
   title: pageTitle,
   meta: [
     { name: 'description', content: pageDescription },
+    { name: 'keywords', content: pageKeywords },
+    
+    // Open Graph meta tagları - düzəltilmiş URL yolu
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/doctors' },
+    { property: 'og:url', content: 'https://leylamc.com/az/həkimlər/' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-doctors.jpg' },
+    { property: 'og:site_name', content: 'Leyla Medical Center' },
+    { property: 'og:locale', content: 'az_AZ' },
+    
+    // Twitter meta tagları
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: pageTitle },
     { name: 'twitter:description', content: pageDescription },
-    { name: 'keywords', content: pageKeywords },
+    { name: 'twitter:image', content: 'https://leylamc.com/images/leyla-doctors.jpg' },
+    
+    // Strukturlu məlumatları əlavə etmək (Schema.org)
+    {
+      name: 'script',
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": pageTitle.value || "Həkimlərimiz",
+        "description": pageDescription.value,
+        "url": "https://leylamc.com/az/həkimlər/",
+        "publisher": {
+          "@type": "MedicalOrganization",
+          "name": "Leyla Medical Center",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://leylamc.com/images/logo.png"
+          }
+        },
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": paginatedDoctors.value.map((doctor, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "Person",
+              "name": `${doctor.degree} ${doctor.first_name} ${doctor.last_name}`,
+              "image": doctor.photo || "https://leylamc.com/images/doctor-placeholder.jpg",
+              "jobTitle": doctor.position,
+              "url": `https://leylamc.com/az/həkimlər/${doctor.slug}`
+            }
+          }))
+        }
+      })
+    }
   ],
+  // Canonical link əlavə edirik
+  link: [
+    { rel: 'canonical', href: 'https://leylamc.com/az/həkimlər/' }
+  ]
 });
 </script>
 
@@ -472,4 +539,58 @@ useHead({
 }
 
 
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
+}
 </style>

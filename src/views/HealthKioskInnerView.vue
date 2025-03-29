@@ -86,12 +86,7 @@ const fetchHealthKioskDetail = async () => {
         healthKioskItem.value = item;
         
         // SEO meta məlumatlarını yeniləyək
-        useHead({
-          title: `${healthKioskItem.value.title} - Leyla Medical Center`,
-          meta: [
-            { name: 'description', content: healthKioskItem.value.text ? healthKioskItem.value.text.substring(0, 160) : 'Sağlıq köşkü məlumatları' }
-          ]
-        });
+        updateSEO();
       } else {
         error.value = "Məlumat tapılmadı.";
       }
@@ -127,9 +122,85 @@ const fetchHealthKioskDetail = async () => {
   
   // Geri qayıtmaq üçün funksiya
   const goBack = () => {
-    router.back();
-  };
+  // router.back(); - bu bəzən gözlənilməz nəticələrə səbəb ola bilər
   
+  // Bunun əvəzinə köşk siyahısı səhifəsinə yönləndirək
+  router.push({ 
+    name: 'health-kiosk'
+  });
+  };
+
+  const updateSEO = () => {
+  // Köşk mətnindən təsvir yaradırıq (ilk 160 simvol)
+  const description = healthKioskItem.value.text 
+    ? healthKioskItem.value.text.substring(0, 160) + '...' 
+    : `${healthKioskItem.value.title} - Leyla Medical Center Sağlıq Köşkündən məlumatlar`;
+  
+  useHead({
+    title: `${healthKioskItem.value.title} - Leyla Medical Center`,
+    meta: [
+      // Əsas meta taglar
+      { 
+        name: 'description', 
+        content: description
+      },
+      { 
+        name: 'keywords', 
+        content: `${healthKioskItem.value.title}, sağlamlıq köşkü, tibbi məlumatlar, leyla medical center, səhiyyə məlumatları, sağlamlıq məsləhətləri` 
+      },
+      
+      // Open Graph meta tagları - sosial mediada paylaşım üçün
+      { property: 'og:title', content: `${healthKioskItem.value.title} - Leyla Medical Center` },
+      { property: 'og:description', content: description },
+      { property: 'og:type', content: 'article' },
+      { property: 'og:url', content: `https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü/${route.params.id}` },
+      { property: 'og:image', content: healthKioskItem.value.photo || 'https://leylamc.com/images/leyla-mc-logo.png' },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      { property: 'article:published_time', content: healthKioskItem.value.created_at },
+      { property: 'article:modified_time', content: healthKioskItem.value.updated_at || healthKioskItem.value.created_at },
+      
+      // Twitter meta tagları
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `${healthKioskItem.value.title} - Leyla Medical Center` },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: healthKioskItem.value.photo || 'https://leylamc.com/images/leyla-mc-logo.png' },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HealthTopicContent",
+          "headline": healthKioskItem.value.title,
+          "description": description,
+          "image": healthKioskItem.value.photo,
+          "url": `https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü/${route.params.id}`,
+          "datePublished": healthKioskItem.value.created_at,
+          "dateModified": healthKioskItem.value.updated_at || healthKioskItem.value.created_at,
+          "publisher": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/leyla-mc-logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü/${route.params.id}`
+          }
+        })
+      }
+    ],
+    link: [
+      // Canonical link
+      { rel: 'canonical', href: `https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü/${route.params.id}` }
+    ]
+  });
+};
+
   // Komponentin yüklənməsi zamanı
   onMounted(() => {
     fetchHealthKioskDetail();

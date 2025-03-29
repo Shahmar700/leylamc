@@ -81,7 +81,7 @@ useHead({
       content: `${policyTitle.value} - Leyla Medical Center-in keyfiyyət idarəetmə sistemi və standartları. ${plainPolicyText.value.substring(0, 150)}...`
     },
     { property: 'og:type', content: 'article' },
-    { property: 'og:url', content: 'https://leylamc.com/quality-policy' },
+    { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/keyfiyyət-siyasəti' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-quality-policy.jpg' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -103,7 +103,7 @@ useHead({
         "@type": "WebPage",
         "name": policyTitle.value,
         "description": plainPolicyText.value.substring(0, 150),
-        "url": "https://leylamc.com/quality-policy",
+        "url": "https://leylamc.com/az/haqqımızda/keyfiyyət-siyasəti",
         "publisher": {
           "@type": "MedicalOrganization",
           "name": "Leyla Medical Center",
@@ -129,7 +129,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/quality-policy' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/keyfiyyət-siyasəti' }
   ]
 });
 };

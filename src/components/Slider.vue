@@ -240,12 +240,13 @@ onMounted(() => {
   max-height: 98%;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease; /* Transition burada olmalıdır ki, həm giriş, həm çıxış zamanı işləsin */
 }
 
 /* Hover effekti */
 .slide-content:hover .slide-image {
   transform: scale(1.01);
-  transition: transform 0.3s ease;
 }
   .slide a {
   display: block;

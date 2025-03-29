@@ -119,7 +119,7 @@ const updateSEO = () => {
         content: plainText.value ? plainText.value.substring(0, 160) : defaultDescription 
       },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/quality-control' },
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/keyfiyyətə-nəzarət' },
       { property: 'og:image', content: photoUrl.value || 'https://leylamc.com/images/quality-certificate.jpg' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
@@ -138,7 +138,7 @@ const updateSEO = () => {
           "@type": "WebPage",
           "name": title.value,
           "description": plainText.value || defaultDescription,
-          "url": "https://leylamc.com/quality-control",
+          "url": "https://leylamc.com/az/haqqımızda/keyfiyyətə-nəzarət",
           "image": photoUrl.value || 'https://leylamc.com/images/quality-certificate.jpg',
           "publisher": {
             "@type": "MedicalOrganization",
@@ -158,7 +158,7 @@ const updateSEO = () => {
       }
     ],
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/quality-control' }
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/keyfiyyətə-nəzarət' }
     ]
   });
 };

@@ -45,28 +45,33 @@
                             </tbody>
                         </table>
                     </div>
-                  <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-                      <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
-                          <i class="fa-solid fa-angles-left"></i>
-                      </button>
-                      <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
-                          <i class="fa-solid fa-angle-left"></i>
-                      </button>
-                      <span 
-                          v-for="page in pages" 
-                          :key="page" 
-                          @click="goToPage(page)" 
-                          :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }"
-                      >
-                          {{ page }}
-                      </span>
-                      <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
-                          <i class="fa-solid fa-angle-right"></i>
-                      </button>
-                      <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
-                          <i class="fa-solid fa-angles-right"></i>
-                      </button>
-                  </div>
+                    <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angle-left"></i>
+                </button>
+                <span 
+                    v-for="page in pages" 
+                    :key="page" 
+                    @click="goToPage(page)" 
+                    :class="{ 
+                        'font-bold': currentPage === page, 
+                        'active-page': currentPage === page, 
+                        'inactive-page': currentPage !== page && page !== '...',
+                        'pagination-dots': page === '...'
+                    }"
+                >
+                    {{ page }}
+                </span>
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
               </div>
           </div>
           <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
@@ -219,7 +224,7 @@ useHead({
     { property: 'og:title', content: 'Leyla Medical Center | KİV yazıları' },
     { property: 'og:description', content: metaDescription.value },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/kiv-yazilari' },
+    { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/mediada-biz/ki̇v-yazanlar' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
     
@@ -236,7 +241,7 @@ useHead({
         "@type": "CollectionPage",
         "name": "KİV yazıları",
         "description": metaDescription.value,
-        "url": "https://leylamc.com/kiv-yazilari",
+        "url": "https://leylamc.com/az/haqqımızda/mediada-biz/ki̇v-yazanlar",
         "publisher": {
           "@type": "MedicalOrganization",
           "name": "Leyla Medical Center"
@@ -249,7 +254,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/kiv-yazilari' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/ki̇v-yazanlar' }
   ]
 });
 };
@@ -261,6 +266,64 @@ fetchMediaItems();
 </script>
 
 <style scoped>
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
+}
+
+
 .headingBtns {
 display: flex;
 flex-wrap: wrap;

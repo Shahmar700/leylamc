@@ -132,113 +132,134 @@ currentPage.value = totalPages.value;
 const router = useRouter();
 
 const goToHealthKiosk = (item) => {
-router.push({ name: 'health-kiosk-detail', params: { id: item.id } });
+  // ID-nin etibarlı olduğunu yoxlayırıq
+  if (!item || !item.id) {
+    console.error('Səhv köşk ID-si:', item);
+    return;
+  }
+  
+  // İki fərqli üsul ilə naviqasiya etmək mümkündür:
+  
+  // 1. Adla naviqasiya - daha güvənli, parametrlərlə işləyir
+  router.push({ 
+    name: 'health-kiosk-detail', 
+    params: { id: item.id }
+  });
+  
+  // VEYA
+  
+  // 2. Tam yolla naviqasiya - daha aydın amma daha az çevik
+  // router.push(`/az/haqqımızda/mediada-biz/sağlıq-köşkü/${item.id}`);
 };
 
 // Dinamik meta description üçün
 const metaDescription = computed(() => {
-if (!healthKioskData.value || healthKioskData.value.length === 0) {
-  return 'Leyla Medical Center-in Sağlamlıq Köşkləri haqqında məlumat əldə edin. Preventiv sağlamlıq xidmətləri və tibbi məsləhətlər.';
-}
+  if (!healthKioskData.value || healthKioskData.value.length === 0) {
+    return 'Leyla Medical Center-in Sağlamlıq Köşkləri haqqında məlumat əldə edin. Preventiv sağlamlıq xidmətləri və tibbi məsləhətlər.';
+  }
 
-// İlk 3 köşkün adını birləşdiririk
-const kioskNames = healthKioskData.value
-  .slice(0, 3)
-  .map(item => item.title)
-  .join(', ');
+  // İlk 3 köşkün adını birləşdiririk
+  const kioskNames = healthKioskData.value
+    .slice(0, 3)
+    .map(item => item.title)
+    .join(', ');
 
-return `Leyla Medical Center Sağlamlıq Köşkləri: ${kioskNames}. Preventiv tibbi xidmətlər və sağlamlıq məsləhətləri.`;
+  return `Leyla Medical Center Sağlamlıq Köşkləri: ${kioskNames}. Preventiv tibbi xidmətlər və sağlamlıq məsləhətləri üçün müraciət edin.`;
 });
 
 // İlk şəklin URL-sini təyin edirik
 const firstKioskImage = computed(() => {
-return healthKioskData.value && healthKioskData.value.length > 0 
-  ? healthKioskData.value[0].photo 
-  : 'https://leylamc.com/images/health-kiosk-default.jpg';
+  return healthKioskData.value && healthKioskData.value.length > 0 
+    ? healthKioskData.value[0].photo 
+    : 'https://leylamc.com/images/health-kiosk-default.jpg';
 });
 
 // Köşk başlıqlarını birləşdirib keywords üçün hazırlayırıq
 const kioskKeywords = computed(() => {
-if (!healthKioskData.value || healthKioskData.value.length === 0) {
-  return '';
-}
+  if (!healthKioskData.value || healthKioskData.value.length === 0) {
+    return '';
+  }
 
-return healthKioskData.value
-  .slice(0, 5) // İlk 5 köşkü götürürük
-  .map(item => item.title.toLowerCase())
-  .join(', ');
+  return healthKioskData.value
+    .slice(0, 5) // İlk 5 köşkü götürürük
+    .map(item => item.title.toLowerCase())
+    .join(', ');
 });
 
 // SEO meta məlumatlarını yeniləmək funksiyası
 const updateSEO = () => {
-useHead({
-  title: `Leyla Medical Center | ${pageTitle.value}`,
-  meta: [
-    { 
-      name: 'description', 
-      content: metaDescription.value
-    },
-    { 
-      name: 'keywords', 
-      content: `sağlamlıq köşkləri, leyla medical center, preventiv tibb, sağlamlıq xidmətləri, ${kioskKeywords.value}` 
-    },
-    { 
-      property: 'og:title', 
-      content: `Leyla Medical Center | ${pageTitle.value}` 
-    },
-    { 
-      property: 'og:description', 
-      content: metaDescription.value
-    },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/health-kiosks' },
-    { property: 'og:image', content: firstKioskImage.value },
-    { property: 'og:site_name', content: 'Leyla Medical Center' },
-    { property: 'og:locale', content: 'az_AZ' },
-    
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
-    { name: 'twitter:description', content: metaDescription.value },
-    { name: 'twitter:image', content: firstKioskImage.value },
-    
-    // Strukturlu məlumatları əlavə etmək (Schema.org)
-    {
-      name: 'script',
-      type: 'application/ld+json',
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": pageTitle.value,
-        "description": metaDescription.value,
-        "url": "https://leylamc.com/health-kiosks",
-        "publisher": {
-          "@type": "MedicalOrganization",
-          "name": "Leyla Medical Center",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://leylamc.com/images/logo.png"
-          }
-        },
-        "mainEntity": {
-          "@type": "ItemList",
-          "itemListElement": healthKioskData.value.slice(0, 10).map((item, index) => ({
+  useHead({
+    title: `Leyla Medical Center | ${pageTitle.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription.value
+      },
+      { 
+        name: 'keywords', 
+        content: `sağlamlıq köşkləri, leyla medical center, preventiv tibb, sağlamlıq xidmətləri, ${kioskKeywords.value}` 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${pageTitle.value}` 
+      },
+      { 
+        property: 'og:description', 
+        content: metaDescription.value
+      },
+      { property: 'og:type', content: 'website' },
+      // URL yolunu yeniləyirik
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü' },
+      { property: 'og:image', content: firstKioskImage.value },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
+      { name: 'twitter:description', content: metaDescription.value },
+      { name: 'twitter:image', content: firstKioskImage.value },
+      
+      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": pageTitle.value,
+          "description": metaDescription.value,
+          // URL yolunu yeniləyirik
+          "url": "https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü",
+          "publisher": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            }
+          },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListElement": healthKioskData.value.slice(0, 10).map((item, index) => ({
             "@type": "ListItem",
             "position": index + 1,
             "item": {
               "@type": "MedicalClinic",
               "name": item.title,
               "image": item.photo,
-              "url": `https://leylamc.com/health-kiosks/${item.id}`
+              // Detay URL yolunu da düzəldirik:
+              "url": `https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü/${item.id}`
             }
           }))
-        }
-      })
-    }
-  ],
-  link: [
-    { rel: 'canonical', href: 'https://leylamc.com/health-kiosks' }
-  ]
-});
+          }
+        })
+      }
+    ],
+    link: [
+      // Canonical link-i yeniləyirik
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/sağlıq-köşkü' }
+    ]
+  });
 };
 
 // Köşk məlumatları dəyişdikdə SEO məlumatlarını yeniləyirik

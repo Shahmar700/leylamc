@@ -3,7 +3,18 @@
         <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
             <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
                 <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                 <!-- Skeleton loaders for news cards during loading -->
+                 <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div v-for="i in 9" :key="i" class="relative mb-4 news-card-skeleton">
+                        <div class="w-full h-[180px] bg-gray-200 rounded-md animate-pulse"></div>
+                        <div class="mt-2 p-2">
+                            <div class="h-5 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2 mt-2 animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Actual news cards when data is loaded -->
+                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div v-for="item in paginatedNews" :key="item.id" class="relative mb-4 news-card cursor-pointer overflow-hidden rounded-md" @click="goToNews(item.slug)">
                         <div class="overflow-hidden">
                             <img :src="item.main_photo" class="w-full h-auto rounded-md news-image transition-transform duration-300" :alt="item.title">
@@ -16,13 +27,33 @@
                         </p>
                     </div>
                 </div>
-                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-                    <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
-                </div>
+                <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angle-left"></i>
+                </button>
+                <span 
+                    v-for="page in pages" 
+                    :key="page" 
+                    @click="goToPage(page)" 
+                    :class="{ 
+                        'font-bold': currentPage === page, 
+                        'active-page': currentPage === page, 
+                        'inactive-page': currentPage !== page && page !== '...',
+                        'pagination-dots': page === '...'
+                    }"
+                >
+                    {{ page }}
+                </span>
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
@@ -48,11 +79,14 @@ const pageTitle = ref('Xəbərlər');
 const news = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = 9;
+const isLoading = ref(true);
 
 const fetchAllNews = async () => {
   try {
+    isLoading.value = true; // Start loading
+    
     const response = await axios.get('http://bytexerp.online/api/leyla/v1/news-list/');
-    console.log(response.data); // Məlumatları konsolda göstərmək
+    console.log(response.data);
     
     // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük (ən yeni xəbərlər əvvəldə)
     news.value = response.data.results.sort((a, b) => {
@@ -63,6 +97,11 @@ const fetchAllNews = async () => {
     updateSEO();
   } catch (error) {
     console.error('API çağırışında xəta:', error);
+  } finally {
+    // Add a small delay to make transition smoother
+    setTimeout(() => {
+      isLoading.value = false; // End loading
+    }, 500);
   }
 };
 
@@ -76,22 +115,22 @@ const truncateTitle = (text) => {
 
 onMounted(() => {
   fetchAllNews();
-  startPolling();
+  // startPolling();
 });
 
-onUnmounted(() => {
-  stopPolling();
-});
+// onUnmounted(() => {
+//   stopPolling();
+// });
 
-let pollingInterval;
+// let pollingInterval;
 
-const startPolling = () => {
-  pollingInterval = setInterval(fetchAllNews, 5000); // Hər 5 saniyədən bir API çağırışı
-};
+// const startPolling = () => {
+//   pollingInterval = setInterval(fetchAllNews, 5000); 
+// };
 
-const stopPolling = () => {
-  clearInterval(pollingInterval);
-};
+// const stopPolling = () => {
+//   clearInterval(pollingInterval);
+// };
 
 
 const totalPages = computed(() => Math.ceil(news.value.length / itemsPerPage));
@@ -115,30 +154,50 @@ const pages = computed(() => {
         return ['...', current - 1, current, current + 1, '...'];
     }
 });
-
 const goToPage = (page) => {
     if (page === '...') return;
-    currentPage.value = page;
+
+    isLoading.value = true; // Start loading
+    setTimeout(() => {
+        currentPage.value = page;
+        isLoading.value = false; // End loading after 500ms
+    }, 500);
 };
 
 const goToFirstPage = () => {
-    currentPage.value = 1;
+    isLoading.value = true; // Start loading
+    setTimeout(() => {
+        currentPage.value = 1;
+        isLoading.value = false; // End loading after 500ms
+    }, 500);
 };
 
 const goToPreviousPage = () => {
     if (currentPage.value > 1) {
-        currentPage.value--;
+        isLoading.value = true; // Start loading
+        setTimeout(() => {
+            currentPage.value--;
+            isLoading.value = false; // End loading after 500ms
+        }, 500);
     }
 };
 
 const goToNextPage = () => {
     if (currentPage.value < totalPages.value) {
-        currentPage.value++;
+        isLoading.value = true; // Start loading
+        setTimeout(() => {
+            currentPage.value++;
+            isLoading.value = false; // End loading after 500ms
+        }, 500);
     }
 };
 
 const goToLastPage = () => {
-    currentPage.value = totalPages.value;
+    isLoading.value = true; // Start loading
+    setTimeout(() => {
+        currentPage.value = totalPages.value;
+        isLoading.value = false; // End loading after 500ms
+    }, 500);
 };
 
 const router = useRouter();
@@ -210,7 +269,7 @@ const updateSEO = () => {
           "@type": "CollectionPage",
           "name": pageTitle.value,
           "description": metaDescription.value,
-          "url": "https://leylamc.com/news",
+          "url": "https://leylamc.com/az/haqqımızda/mediada-biz/xəbərlər",
           "publisher": {
             "@type": "MedicalOrganization",
             "name": "Leyla Medical Center",
@@ -229,7 +288,7 @@ const updateSEO = () => {
                 "headline": item.title,
                 "image": item.main_photo,
                 "datePublished": item.created_at || new Date().toISOString(),
-                "url": `https://leylamc.com/news/${item.slug}`
+                "url": `https://leylamc.com/az/haqqımızda/mediada-biz/xəbərlər/${item.slug}`
               }
             }))
           }
@@ -237,7 +296,7 @@ const updateSEO = () => {
       }
     ],
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/news' }
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/xəbərlər' }
     ]
   });
 };
@@ -255,40 +314,87 @@ watch(currentPage, () => {
 </script>
 
 <style scoped>
-/* .pagination {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
 }
 
-.pagination span {
-  cursor: pointer;
-  padding: 8px 12px;
-}
-
-.active-page {
-  background-color: #4F46E5;
-  color: white;
-  border-radius: 4px;
-}
-
-.inactive-page {
-  color: #4F46E5;
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .pagination-button {
-  background: none;
-  border: none;
-  color: #4F46E5;
-  cursor: pointer;
-  padding: 8px;
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
 }
 
 .pagination-button:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-} */
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
+}
+
+
+
+
+
+/* Add these styles to your existing CSS */
+.news-card-skeleton {
+  border-radius: 0.375rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 .news-card {
   transition: all 0.3s ease;

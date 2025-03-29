@@ -150,6 +150,8 @@ const pageTitle = ref("Check Up")
 
 // Məlumatlar yükləndikdən sonra SEO məlumatlarını yeniləyən funksiya
 const updateSeoMetadata = () => {
+  const canonicalUrl = 'https://leylamc.com/az/tibbi-xidmətlər/check-uplar';
+  
   useHead({
     title: `Leyla Medical Center | ${pageTitle.value}`,
     meta: [
@@ -162,11 +164,11 @@ const updateSeoMetadata = () => {
         content: 'check up, tibbi müayinə, profilaktik yoxlama, kompleks müayinə, sağlamlıq müayinəsi, Leyla Medical Center, tibbi yoxlama paketləri, sağlamlıq paketləri, illik müayinə, profilaktik tədbir' 
       },
       
-      // Open Graph meta tagları (sosial mediada paylaşım üçün)
+      // Open Graph meta tagları (sosial mediada paylaşım üçün) - yenilənmiş URL
       { property: 'og:title', content: 'Leyla Medical Center | Check Up Paketləri' },
       { property: 'og:description', content: 'Müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun. Profilaktik tibbi yoxlamalar, laboratoriya analizləri və detallı müayinələr.' },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/medical-services/check-up' },
+      { property: 'og:url', content: canonicalUrl },
       { property: 'og:image', content: checkups.value.length > 0 ? checkups.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
@@ -177,7 +179,7 @@ const updateSeoMetadata = () => {
       { name: 'twitter:description', content: 'Müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun. Profilaktik tibbi yoxlamalar, laboratoriya analizləri və detallı müayinələr.' },
       { name: 'twitter:image', content: checkups.value.length > 0 ? checkups.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
       
-      // Strukturlu məlumatları əlavə etmək (Schema.org)
+      // Strukturlu məlumatları əlavə etmək (Schema.org) - yenilənmiş URL-lər
       {
         name: 'script',
         type: 'application/ld+json',
@@ -186,11 +188,19 @@ const updateSeoMetadata = () => {
           "@type": "MedicalWebPage",
           "name": "Check Up Paketləri | Leyla Medical Center",
           "description": "Leyla Medical Center-də müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun.",
-          "url": "https://leylamc.com/medical-services/check-up",
+          "url": canonicalUrl,
+          "inLanguage": "az",
           "provider": {
             "@type": "MedicalOrganization",
             "name": "Leyla Medical Center",
-            "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+            "logo": "https://leylamc.com/images/leyla-mc-logo.png",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Yusif Səfərov küç.19, Xətai rayonu",
+              "addressLocality": "Bakı",
+              "addressCountry": "Azərbaycan"
+            },
+            "telephone": "+994124902131"
           },
           "mainEntity": {
             "@type": "ItemList",
@@ -198,14 +208,28 @@ const updateSeoMetadata = () => {
               "@type": "ListItem",
               "position": index + 1,
               "name": item.title,
-              "url": `https://leylamc.com/medical-services/check-up/${item.slug}`
+              "url": `https://leylamc.com/az/tibbi-xidmətlər/check-uplar/${item.slug}`
             }))
+          },
+          "specialty": [
+            {
+              "@type": "MedicalSpecialty",
+              "name": "Profilaktik Təbabət"
+            },
+            {
+              "@type": "MedicalSpecialty",
+              "name": "Diaqnostika"
+            }
+          ],
+          "audience": {
+            "@type": "MedicalAudience",
+            "audienceType": "Public"
           }
         })
       }
     ],
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/medical-services/check-up' }
+      { rel: 'canonical', href: canonicalUrl }
     ]
   });
 };

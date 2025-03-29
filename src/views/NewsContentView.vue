@@ -2,6 +2,10 @@
   <div class="container mt-16 text-main-text">
       <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
         <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
+          <!-- Geri butonu -->
+          <button @click="goBack" class="flex items-center text-gray-600 mb-6 hover:text-green-600 transition-colors">
+          <i class="fa-solid fa-arrow-left mr-2"></i> Geriyə
+          </button>
           <div v-if="newsItem">
             <div class="w-[70%]">
               <img :src="newsItem.main_photo" alt="News Image" class="w-full h-auto mb-4">
@@ -32,7 +36,7 @@
   
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useHead } from '@vueuse/head';
 import SideBanners from "@/components/SideBanners.vue";
@@ -43,6 +47,12 @@ import GallerySection from "@/components/GallerySection.vue";
 const route = useRoute();
 const newsItem = ref(null);
 const images = ref([]);
+
+const router = useRouter();
+const goBack = () => {
+  // Əvvəlki səhifəyə qayıt
+  router.push({ name: 'all-news' });
+};
   
 // Qalereya üçün formatlanmış şəkillər
 const galleryImages = computed(() => {

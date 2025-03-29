@@ -67,7 +67,7 @@ const updateSEO = () => {
         content: `${visionTitle.value} - Leyla Medical Center-in missiyası, vizyonu və dəyərləri. ${visionText.value.substring(0, 150)}...`
       },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/our-vision' },
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/vizyonumuz' },
       { property: 'og:image', content: 'https://leylamc.com/images/leyla-vision.jpg' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
@@ -103,7 +103,7 @@ const updateSEO = () => {
       }
     ],
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/our-vision' }
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/vizyonumuz' }
     ]
   });
 };

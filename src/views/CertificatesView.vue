@@ -112,7 +112,7 @@ const updateSEO = () => {
         content: `Leyla Medical Center-in aldığı sertifikatlar və mükafatlar. Keyfiyyətli tibbi xidmət üçün beynəlxalq standartlara cavab verən tibb mərkəzi.`
       },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/certificates' },
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/sertifikatlar' },
       { property: 'og:image', content: firstImage },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
@@ -156,7 +156,7 @@ const updateSEO = () => {
       }
     ],
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/certificates' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/sertifikatlar' }
     ]
   });
 };

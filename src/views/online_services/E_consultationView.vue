@@ -231,7 +231,7 @@ useHead({
     { property: 'og:title', content: `Leyla Medical Center | ${pageTitle.value}` },
     { property: 'og:description', content: 'Tibbi suallarınıza online cavab alın. Xəstəliklər, müalicə və diaqnostika üsulları haqqında mütəxəssis məsləhəti üçün müraciət edin.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/online-services/e-consultation' },
+    { property: 'og:url', content: 'https://leylamc.com/az/online-xidmətlər/e-məsləhət' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-mc-logo.png' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -251,7 +251,7 @@ useHead({
         "@type": "MedicalWebPage",
         "name": `${pageTitle.value} | Leyla Medical Center`,
         "description": "Tibbi suallarınıza online cavab almaq üçün E-məsləhət xidməti",
-        "url": "https://leylamc.com/online-services/e-consultation",
+        "url": "https://leylamc.com/az/online-xidmətlər/e-məsləhət",
         "provider": {
           "@type": "MedicalOrganization",
           "name": "Leyla Medical Center",
@@ -279,7 +279,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/online-services/e-consultation' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/online-xidmətlər/e-məsləhət' }
   ]
 });
 </script>

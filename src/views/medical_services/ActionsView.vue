@@ -8,13 +8,33 @@
                         <p class="text-base sm:text-lg mt-2">{{ checkup.checkupName }}</p>
                     </div>
                 </div>
-                <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-                    <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">First</button>
-                    <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">Previous</button>
-                    <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                    <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">Next</button>
-                    <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">Last</button>
-                </div>
+                <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angle-left"></i>
+                </button>
+                <span 
+                    v-for="page in pages" 
+                    :key="page" 
+                    @click="goToPage(page)" 
+                    :class="{ 
+                        'font-bold': currentPage === page, 
+                        'active-page': currentPage === page, 
+                        'inactive-page': currentPage !== page && page !== '...',
+                        'pagination-dots': page === '...'
+                    }"
+                >
+                    {{ page }}
+                </span>
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
             </div>
             <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
@@ -136,5 +156,63 @@ span {
     padding: 5px 10px;
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
 }
 </style>

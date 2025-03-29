@@ -24,13 +24,33 @@
                           </tr>
                       </tbody>
                   </table>
-                  <div v-if="totalPages > 1" class="pagination mt-4 flex justify-center lg:justify-start">
-                      <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angles-left"></i></button>
-                      <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button"><i class="fa-solid fa-angle-left"></i></button>
-                      <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ 'font-bold': currentPage === page, 'active-page': currentPage === page, 'inactive-page': currentPage !== page }">{{ page }}</span>
-                      <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angle-right"></i></button>
-                      <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button"><i class="fa-solid fa-angles-right"></i></button>
-                  </div>
+                  <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angle-left"></i>
+                </button>
+                <span 
+                    v-for="page in pages" 
+                    :key="page" 
+                    @click="goToPage(page)" 
+                    :class="{ 
+                        'font-bold': currentPage === page, 
+                        'active-page': currentPage === page, 
+                        'inactive-page': currentPage !== page && page !== '...',
+                        'pagination-dots': page === '...'
+                    }"
+                >
+                    {{ page }}
+                </span>
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+            </div>
               </div>
           </div>
           <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
@@ -46,8 +66,12 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useHead } from '@vueuse/head'; 
 import SideBanners from "@/components/SideBanners.vue";
 import Maps from "@/components/Maps.vue";
+import { useRouter, useRoute } from 'vue-router';
 
 const activeTab = ref('med_center');
+
+const router = useRouter();
+const route = useRoute(); // Bu xətt əlavə edilməlidir
 
 const content = ref([
 { id: 1, name: 'Bəhruz Ağayev', pdf: '/assets/innovationsPdfs/Behruz_Agayev.pdf', type: 'med_center' },
@@ -198,11 +222,12 @@ const updateSEO = () => {
         name: 'keywords', 
         content: `leyla medical center, son yeniliklər, tibbi yeniliklər, ${tabName}, tibbi materiallar, tibbi sənədlər, pdf sənədlər, laborator müayinələr, diaqnostika, tibbi araşdırmalar`
       },
-      // Open Graph meta tagları
+      // Open Graph meta tagları - URL yolunu yeniləyirik
       { property: 'og:title', content: `Son Yeniliklər | ${tabName} | Leyla Medical Center` },
       { property: 'og:description', content: metaDescription },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/latest-updates' },
+      // Yeni URL strukturu
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/mediada-biz/son-yeniliklər' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
       
@@ -210,6 +235,8 @@ const updateSEO = () => {
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: `Son Yeniliklər | ${tabName} | Leyla Medical Center` },
       { name: 'twitter:description', content: metaDescription },
+      // Twitter üçün şəkil əlavə edirik
+      { name: 'twitter:image', content: 'https://leylamc.com/images/latest-updates-cover.jpg' },
       
       // Strukturlu məlumatları əlavə etmək (Schema.org)
       {
@@ -220,7 +247,8 @@ const updateSEO = () => {
           "@type": "WebPage",
           "name": `Son Yeniliklər | ${tabName}`,
           "description": metaDescription,
-          "url": "https://leylamc.com/latest-updates",
+          // Yeni URL strukturu
+          "url": "https://leylamc.com/az/haqqımızda/mediada-biz/son-yeniliklər",
           "publisher": {
             "@type": "MedicalOrganization",
             "name": "Leyla Medical Center",
@@ -241,18 +269,32 @@ const updateSEO = () => {
         })
       }
     ],
+    // Canonical link-də URL-i yeniləyirik
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/latest-updates' }
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/son-yeniliklər' }
     ]
   });
 };
-// Tab dəyişdikdə SEO məlumatlarını yeniləmək
-watch(activeTab, () => {
+
+
+// Tab dəyişdikdə URL query parametrini yeniləmək
+watch(activeTab, (newTab) => {
   currentPage.value = 1;
   updateSEO();
+  
+  // URL state-ni yeniləyirik, səhifə yenilənmədən
+  router.replace({ 
+    path: '/az/haqqımızda/mediada-biz/son-yeniliklər',
+    query: { tab: newTab } 
+  });
 });
+
 // Səhifə yükləndikdə ilkin SEO məlumatlarını əlavə etmək
 onMounted(() => {
+  const tabParam = route.query.tab;
+  if (tabParam && ['med_center', 'info_lab'].includes(tabParam)) {
+    activeTab.value = tabParam;
+  }
   updateSEO();
 });
 </script>
@@ -281,4 +323,63 @@ tbody>tr:hover .fa-file-pdf{
 table tr{
   font-size: 14px;
 }
+
+
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
+}
+
 </style>

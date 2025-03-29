@@ -51,7 +51,7 @@ useHead({
     { property: 'og:title', content: `Leyla Medical Center | ${pageTitle.value}` },
     { property: 'og:description', content: 'Klinikaya gəlmədən online olaraq laboratoriya nəticələrinizi əldə edin. Sadəcə sənəd nömrəsi və doğum ilinizi daxil edin.' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/online-services/e-result' },
+    { property: 'og:url', content: 'https://leylamc.com/az/online-xidmətlər/e-nəticə' },
     { property: 'og:image', content: 'https://leylamc.com/assets/eResult.jpg' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -71,7 +71,7 @@ useHead({
         "@type": "WebPage",
         "name": `Online Nəticə | Leyla Medical Center`,
         "description": "Laboratoriya nəticələrinizi online əldə etmək üçün addım-addım təlimatlar",
-        "url": "https://leylamc.com/online-services/e-result",
+        "url": "https://leylamc.com/az/online-xidmətlər/e-nəticə",
         "provider": {
           "@type": "MedicalOrganization",
           "name": "Leyla Medical Center",
@@ -107,7 +107,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/online-services/e-result' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/online-xidmətlər/e-nəticə' }
   ]
 });
 </script>

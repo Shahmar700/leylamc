@@ -77,7 +77,7 @@ import ProfileView from '@/views/ProfileView.vue'
       component: HomeView,
     },
     {
-      path: '/profile',
+      path: '/az/şəxsi-kabinet/profil',
       name: 'profile',
       component: ProfileView,
       meta: {
@@ -86,73 +86,74 @@ import ProfileView from '@/views/ProfileView.vue'
       }
     },
     {
-      path: '/registration',
+      path: '/şəxsi-kabinet/qeydiyyat',
       name: 'registration',
       component: RegistrationView,
     },
     {
-      path: '/news/:slug',
-      name: 'news-content',
-      component: NewsContentView
-    },
-    {
-      path: '/about',
-      redirect: '/about/our-history',
+      path: '/az/haqqımızda/',
+      redirect: '/az/haqqımızda/tariximiz',
       meta: { breadcrumb: 'Haqqımızda' },
       children: [
         {
-          path: '/about/our-history',
+          path: '/az/haqqımızda/tariximiz',
           name: 'our-history',
           component: OurHistoryView,
           meta: { breadcrumb: 'Tariximiz' },
         },
         {
-          path: '/about/our-vision',
+          path: '/az/haqqımızda/vizyonumuz',
           name: 'our-vision',
           component: OurVisionView,
           meta: { breadcrumb: 'Vizyonumuz' },
         },
         {
-          path: '/about/our-mission',
+          path: '/az/haqqımızda/missiyamız',
           name: 'our-mission',
           component: OurMissionView,
           meta: { breadcrumb: 'Missiyazmız' },
         },
         {
-          path: '/about/our-relations',
+          path: '/az/haqqımızda/beynəlxalq-əlaqələrimiz',
           name: 'our-relations',
           component: OurRelations,
           meta: { breadcrumb: 'Beynəlxalq əlaqələrimiz' },
         },
+
         {
-          path: '/our-in-media',
-          redirect: '/about/our-in-media/news',
+          path: '/az/haqqımızda/mediada-biz',
+          redirect: '/az/haqqımızda/mediada-biz/xəbərlər',
           meta: { breadcrumb: 'Mediada Biz' },
           children: [
             {
-              path: 'news',
+              path: '/az/haqqımızda/mediada-biz/xəbərlər',
               name: 'all-news',
               component: AllNewsView
             },
             {
-              path: 'kiv-writes',
+              path: '/az/haqqımızda/mediada-biz/xəbərlər/:slug',
+              name: 'news-content',
+              component: NewsContentView
+            },
+            {
+              path: '/az/haqqımızda/mediada-biz/ki̇v-yazanlar',
               name: 'kiv-writes',
               component: KivWritesView,
               meta: { breadcrumb: 'KİV yazanlar' },
             },
             {
-              path: '/about/our-in-media/gallery',
-              redirect: '/about/our-in-media/gallery/photos-view',
+              path: '/az/haqqımızda/mediada-biz/qalereya',
+              redirect: '/az/haqqımızda/mediada-biz/qalereya/foto',
               meta: { breadcrumb: 'Qalereya' },
               children: [
                 {
-                  path: '/about/our-in-media/gallery/photos-view',
+                  path: '/az/haqqımızda/mediada-biz/qalereya/foto',
                   name: 'photos-view',
                   component: PhotosView,
                   meta: { breadcrumb: 'Foto' },
                 },
                 {
-                  path: '/about/our-in-media/gallery/videos-view',
+                  path: '/az/haqqımızda/mediada-biz/qalereya/video',
                   name: 'videos-view',
                   component: VideosView,
                   meta: { breadcrumb: 'Video' },
@@ -160,26 +161,34 @@ import ProfileView from '@/views/ProfileView.vue'
               ],
             },
             {
-              path: '/about/our-in-media/health-kiosk',
+              path: '/az/haqqımızda/mediada-biz/sağlıq-köşkü',
               name: 'health-kiosk',
               component: HealthKioskView,
-              meta: { breadcrumb: 'Sağlıq köşkü' },
+              meta: { breadcrumb: 'Sağlıq köşkü' }
             },
             {
-              path: '/about/our-in-media/vacancies',
+              path: '/az/haqqımızda/mediada-biz/sağlıq-köşkü/:id',
+              name: 'health-kiosk-detail',
+              component: () => import('../views/HealthKioskInnerView.vue'),
+              meta: {
+                title: 'Sağlıq köşkü'
+              }
+            },
+            {
+              path: '/az/haqqımızda/mediada-biz/vakansiya',
               name: 'vacancies',
               component: VacanciesView,
               meta: { breadcrumb: 'Vakansiya' },
             },
             {
-              path: '/about/our-in-media/vacancies/:slug',
+              path: '/az/haqqımızda/mediada-biz/vakansiya/:slug',
               name: 'vacancy-detail',
               component: () => import('@/views/VacancyInner.vue'),
               props: true,
               meta: { breadcrumb: 'Vakansiya Detalları' },
             },
             {
-              path: '/about/our-in-media/latest-updates',
+              path: '/az/haqqımızda/mediada-biz/son-yeniliklər',
               name: 'latest-updates',
               component: LatestUpdatesView,
               meta: { breadcrumb: 'Son yeniliklər' },
@@ -187,62 +196,69 @@ import ProfileView from '@/views/ProfileView.vue'
           ],
         },
         {
-          path: '/about/director-office',
+          path: '/about/az/haqqımızda/direktor-kabineti',
           name: 'director-office',
           component: DirectorOfficeView,
           meta: { breadcrumb: 'Direktor kabineti' },
         },
         {
-          path: '/about/satisfaction-form',
+          path: '/az/haqqımızda/məmnunluq-anketi',
           name: 'satisfaction-form',
           component: SatisfactionFormView,
           meta: { breadcrumb: 'Məmnunluq anketi' },
         },
         {
-          path: '/about/quality-policy',
+          path: '/az/haqqımızda/keyfiyyət-siyasəti',
           name: 'quality-policy',
           component: QualityPolicyView,
           meta: { breadcrumb: 'Keyfiyyət siyasəti' },
         },
         {
-          path: '/about/quality-control',
+          path: '/az/haqqımızda/keyfiyyətə-nəzarət',
           name: 'quality-control',
           component: QualityControlView,
           meta: { breadcrumb: 'Keyfiyyətə nəzarət' },
         },
         {
-          path: '/about/certificates',
+          path: '/az/haqqımızda/sertifikatlar',
           name: 'certificates',
           component: CertificatesView,
           meta: { breadcrumb: 'Sertifikatlar' },
         },
         {
-          path: '/about/training-center',
+          path: '/az/haqqımızda/təlim-mərkəzi',
           name: 'training-center',
           component: TrainingCenterView,
           meta: { breadcrumb: 'Təllim Mərkəzi' },
         }
       ],
     },
+
     {
-      path: '/doctors',
-      redirect: '/doctors/list',
+      path: '/az/həkimlər/',
+      redirect: '/az/həkimlər/',
       meta: { breadcrumb: 'Həkimlər' },
       children: [
         {
-          path: 'list',
+          path: 'həkimlərimiz',
           name: 'doctors',
           component: DoctorsView,
           meta: { breadcrumb: 'Həkimlərimiz' },
         },
         {
-          path: 'articles',
+          path: '/az/profil/:id',
+          name: 'doctor',
+          component: () => import('@/views/DrView.vue'),
+          props: true
+        },
+        {
+          path: '/az/həkimlər/həkim-məqalələri',
           name: 'doctor-articles',
           component: DoctorArticles,
           meta: { breadcrumb: 'Həkim məqalələri' },
         },
         {
-          path: '/articles/:slug', 
+          path: '/az/həkimlər/həkim-məqalələri/:slug', 
           name: 'article-detail',
           component: DoctorArticlesInner,
           props: true,
@@ -250,15 +266,9 @@ import ProfileView from '@/views/ProfileView.vue'
         }
       ]
     },
-    {
-      path: '/profil/:id',
-      name: 'doctor',
-      component: () => import('@/views/DrView.vue'),
-      props: true
-    },
     // Əsas departments (bölmələr) marşrutu
     {
-      path: '/departments',
+      path: '/az/bölmələr',
       name: 'departments',
       component: () => import('@/views/departments/DepartmentsLayout.vue'), // Ümumi layout
       meta: { breadcrumb: 'Bölmələr' },
@@ -266,7 +276,7 @@ import ProfileView from '@/views/ProfileView.vue'
     },
     // Dinamik slug parametri ilə department alt marşrutu
     {
-      path: '/departments/:slug',
+      path: '/az/bölmələr/:slug',
       name: 'department-detail',
       component: () => import('@/views/departments/DepartmentView.vue'), 
       props: true,
@@ -274,14 +284,14 @@ import ProfileView from '@/views/ProfileView.vue'
     },
     // Surgery bölməsi üçün əsas marşrut
     {
-      path: '/departments/surgery',
+      path: '/az/bölmələr/cərrahiyyə',
       name: 'surgery',
       component: () => import('@/views/departments/surgery/SurgeryLayout.vue'), // Ana səhifə üçün
       meta: { breadcrumb: 'Cərrahiyyə' }
     },
     // Dinamik slug parametri ilə surgery alt marşrutu
     {
-      path: '/departments/surgery/:slug',
+      path: '/az/bölmələr/cərrahiyyə/:slug',
       name: 'surgery-detail',
       component: () => import('@/views/departments/surgery/SurgeryView.vue'),
       props: true
@@ -302,7 +312,7 @@ import ProfileView from '@/views/ProfileView.vue'
     },
     // Əsas medical-services marşrutunu əlavə et
     {
-      path: '/medical-services',
+      path: '/az/tibbi-xidmətlər',
       name: 'medical-services',
       component: () => import('@/views/medical_services/MedicalServiceView.vue'),
       meta: { breadcrumb: 'Tibbi xidmətlər' },
@@ -310,7 +320,7 @@ import ProfileView from '@/views/ProfileView.vue'
       // komponentin hansında olduğunu bilməsi lazımdır
     },
     {
-      path: '/medical-services/:slug',
+      path: '/az/tibbi-xidmətlər/:slug',
       name: 'medical-service-detail',
       component: () => import('@/views/medical_services/MedicalServiceView.vue'),
       meta: { breadcrumb: '' },
@@ -397,20 +407,20 @@ import ProfileView from '@/views/ProfileView.vue'
     //   ],
     // },
     {
-      path: '/check-up',
+      path: '/az/tibbi-xidmətlər/check-uplar',
       name: 'check-up',
       component: CheckUpView,
       meta: { breadcrumb: 'Check-up' },
     },
     {
-      path: '/check-up/:slug',
+      path: '/az/tibbi-xidmətlər/check-uplar/:slug',
       name: 'check-up-inner',
       component: () => import('@/views/medical_services/CheckUpInnerView.vue'),
       props: true
     },
       {
-      path: '/online-services',
-      redirect: '/online-services/e-appointment',
+      path: '/az/online-xidmətlər',
+      redirect: '/az/online-xidmətlər/e-randevu',
       meta: { breadcrumb: 'Onlayn xidmətlər' },
       children: [
         {
@@ -420,52 +430,38 @@ import ProfileView from '@/views/ProfileView.vue'
           meta: { breadcrumb: 'E-növbə' }
         },
         {
-          path: 'e-result',
+          path: 'e-nəticə',
           name: 'e-result',
           component: E_resultView,
           meta: { breadcrumb: 'E-nəticə' }
         },
         {
-          path: '/online-services/e-payment',
+          path: '/az/online-xidmətlər/e-payment',
           name: 'e-payment',
           beforeEnter() {
             window.location.href = 'https://referans.io/services/onlayn-odenis/';
           }
         },
+        // {
+        //   path: 'e-commerce',
+        //   name: 'e-commerce',
+        //   component: E_commerceView,
+        //   meta: { breadcrumb: 'E-satış' }
+        // },
         {
-          path: 'e-commerce',
-          name: 'e-commerce',
-          component: E_commerceView,
-          meta: { breadcrumb: 'E-satış' }
-        },
-        {
-          path: 'e-consultation',
+          path: 'e-məsləhət',
           name: 'e-consultation',
           component: E_consultationView,
           meta: { breadcrumb: 'E-məsləhət' }
         },
       ]
     },
-    {
-    path: '/cart',
-    name: 'CartView',
-    component: CartView,
-    meta: { breadcrumb: 'Səbət' }
-    },
-    {
-      path: '/health-kiosk',
-      name: 'health-kiosk',
-      component: HealthKioskView,
-      meta: { breadcrumb: 'Sağlıq köşkü' }
-    },
-    {
-      path: '/health-kiosk/:id',
-      name: 'health-kiosk-detail',
-      component: () => import('../views/HealthKioskInnerView.vue'),
-      meta: {
-        title: 'Sağlıq köşkü'
-      }
-    },
+    // {
+    // path: '/cart',
+    // name: 'CartView',
+    // component: CartView,
+    // meta: { breadcrumb: 'Səbət' }
+    // },
     {
       path: '/offers',
       name: 'offers',
@@ -485,6 +481,7 @@ import ProfileView from '@/views/ProfileView.vue'
       component: ContactView,
       meta: { breadcrumb: 'Əlaqə' }
     },
+    
   ]
 
  
@@ -505,6 +502,17 @@ import ProfileView from '@/views/ProfileView.vue'
       return { top: 0 }
     }
   })
+
+  router.beforeEach((to, from, next) => {
+    // URL enkodlaşdırılmış simvollarını normallaşdır
+    const normalizedPath = decodeURIComponent(to.path);
+    
+    if (normalizedPath !== to.path) {
+      next({ path: normalizedPath, query: to.query, hash: to.hash });
+    } else {
+      next();
+    }
+  });
 
   router.beforeEach((to, from, next) => {
     if (from.meta.saveScrollPosition) {

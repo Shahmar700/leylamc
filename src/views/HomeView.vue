@@ -60,7 +60,7 @@
           :eService="eService1"
           title="E - Növbə"
           description="Online qəbula e - növbəyə yazılın"
-          link="/online-services/e-appointment"
+          link="/online-services/e-randevu"
         />
         <Eservice
           :eService="eService2"
@@ -84,7 +84,7 @@
           :eService="eService5"
           title="E - Məsləhət"
           description="Xidmətlərimizi online sifariş edin"
-          link="/online-services/e-consultation"
+          link="/online-services/e-məsləhət"
         />
       </div>
     </div>

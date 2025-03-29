@@ -17,7 +17,7 @@
 
         <div v-else class="flex flex-col md:flex-row items-start justify-between">
             <div class="w-full md:w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-2xl md:text-3xl font-semibold mb-6">Qalereya</h1>
+                <h1 class="text-2xl md:text-3xl font-semibold mb-6">{{ pageHeading }}</h1>
                 
                 <!-- Şəkil yoxdursa -->
                 <div v-if="photos.length === 0" class="text-center py-10 bg-gray-100 rounded-lg">
@@ -221,13 +221,61 @@ const pageHeading = ref('Foto Qalereya')
 
 // SEO meta məlumatları
 useHead({
+    // Başlıq - H1 ilə uyğunlaşdırılıb
     title: `Leyla Medical Center | ${pageHeading.value}`,
     meta: [
-        { name: 'description', content: 'Leyla Medical Center-in fəaliyyətindən foto qalereya.' },
-        { property: 'og:title', content: 'Qalereya - Leyla Medical Center' },
-        { property: 'og:description', content: 'Leyla Medical Center-in fəaliyyətindən foto qalereya.' },
+        // Əsas meta taglər
+        { 
+            name: 'description', 
+            content: 'Leyla Medical Center-in fəaliyyəti və tibbi xidmətlərindən foto qalereya. Müasir tibbi avadanlıqlar, peşəkar həkim heyəti və klinika ilə bağlı şəkillər.' 
+        },
+        { 
+            name: 'keywords', 
+            content: 'foto qalereya, tibb mərkəzi şəkilləri, Leyla Medical Center, klinika fotoları, tibbi xidmətlər, Azərbaycan tibb mərkəzi, səhiyyə qalereya' 
+        },
+        
+        // Canonical URL - yeni URL yolunu əks etdirir
+        { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/foto' },
+        
+        // Open Graph meta tagları - sosial mediada paylaşım üçün
+        { property: 'og:title', content: `${pageHeading.value} | Leyla Medical Center` },
+        { property: 'og:description', content: 'Leyla Medical Center-in fəaliyyəti və tibbi xidmətlərindən foto qalereya. Müasir tibbi avadanlıqlar və peşəkar həkim heyəti.' },
         { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/foto' },
+        { property: 'og:image', content: photos.value.length > 0 ? photos.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
+        { property: 'og:site_name', content: 'Leyla Medical Center' },
+        { property: 'og:locale', content: 'az_AZ' },
+        
+        // Twitter meta tagları
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: `${pageHeading.value} | Leyla Medical Center` },
+        { name: 'twitter:description', content: 'Leyla Medical Center-in fəaliyyəti və tibbi xidmətlərindən foto qalereya.' },
+        { name: 'twitter:image', content: photos.value.length > 0 ? photos.value[0].photo : 'https://leylamc.com/images/leyla-mc-logo.png' },
+        
+        // Strukturlu məlumatları əlavə etmək (Schema.org)
+        {
+            name: 'script',
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ImageGallery",
+                "name": pageHeading.value,
+                "description": "Leyla Medical Center-in fəaliyyəti və tibbi xidmətlərindən foto qalereya.",
+                "url": "https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/foto",
+                "image": photos.value.slice(0, 10).map(photo => photo.photo), // İlk 10 şəkli əlavə edirik
+                "numberOfItems": totalItems.value,
+                "provider": {
+                    "@type": "MedicalOrganization",
+                    "name": "Leyla Medical Center",
+                    "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+                }
+            })
+        }
     ],
+    // Canonical link - meta taglər bölməsində də var, burada təkrarlamaq lazım deyil
+    link: [
+        { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/foto' }
+    ]
 });
 </script>
 

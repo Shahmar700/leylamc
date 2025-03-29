@@ -5,7 +5,7 @@
                 <h1 class="text-3xl font-semibold mb-10">Əlaqə</h1>
                 <!-- CONTACTS -->
                 <div class="contact-item mb-6">
-                <h3 class="text-xl font-semibold mb-2">Leyla Medical Center</h3>
+                <h3 class="text-xl font-semibold mb-2">Leyla Medical Center (Əsas bina)</h3>
                 <p><i class="fa-solid fa-location-dot"></i> <a href="https://maps.app.goo.gl/NXFG3HEEtR4GHnmV8" target="_blank" class="text-primary">Xətai rayonu, Yusif Səfərov küç.19</a></p>
                 <p><i class="fa-solid fa-phone"></i> *0101 və ya (+994 12) 490 21 31 // (+994 12) 490 18 58</p>
                 <p><i class="fa-solid fa-mobile-screen"></i> (+994 50) 225 73 30 // (+994 50) 225 44 54</p>

@@ -126,6 +126,9 @@ const updateSeoMetadata = () => {
   // Vaxtın keçib-keçmədiyini yoxlayırıq
   const expired = isExpired(checkup.value?.finish_date);
   
+  // Doğru URL strukturunu təyin edirik
+  const canonicalUrl = `https://leylamc.com/az/tibbi-xidmətlər/check-uplar/${route.params.slug}`;
+  
   useHead({
     title: `Leyla Medical Center | ${pageTitle.value}${expired ? ' (Vaxtı bitib)' : ''}`,
     meta: [
@@ -142,7 +145,7 @@ const updateSeoMetadata = () => {
       { property: 'og:title', content: `Leyla Medical Center | ${pageTitle.value}${expired ? ' (Vaxtı bitib)' : ''}` },
       { property: 'og:description', content: `${checkup.value?.description?.substring(0, 150) || 'Leyla Medical Center-də müxtəlif check-up paketləri ilə sağlamlığınızı qoruyun.'}${expired ? ' (Bu check-up paketinin vaxtı bitib)' : ''}` },
       { property: 'og:type', content: 'article' },
-      { property: 'og:url', content: `https://leylamc.com/medical-services/check-up/${route.params.slug}` },
+      { property: 'og:url', content: canonicalUrl },
       { property: 'og:image', content: checkup.value?.photo || 'https://leylamc.com/images/leyla-mc-logo.png' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
@@ -163,28 +166,42 @@ const updateSeoMetadata = () => {
           "@type": "MedicalProcedure",
           "name": pageTitle.value,
           "description": checkup.value?.description || `Leyla Medical Center-də ${pageTitle.value} paketi ilə sağlamlığınızı qoruyun.`,
-          "url": `https://leylamc.com/medical-services/check-up/${route.params.slug}`,
+          "url": canonicalUrl,
           "image": checkup.value?.photo,
           "procedureType": "Check-up müayinəsi",
           "howPerformed": "Bu check-up paketi tibbi müayinələr və analizlər vasitəsilə həyata keçirilir",
           "preparation": "Öncədən qeydiyyat mütləqdir",
-          "status": expired ? "Vaxtı bitib" : "Aktiv",
+          "status": expired ? "https://schema.org/EventCancelled" : "https://schema.org/EventScheduled",
           "validFrom": checkup.value?.start_date,
           "validThrough": checkup.value?.finish_date,
           "provider": {
             "@type": "MedicalOrganization",
             "name": "Leyla Medical Center",
-            "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+            "logo": "https://leylamc.com/images/leyla-mc-logo.png",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Yusif Səfərov küç.19, Xətai rayonu",
+              "addressLocality": "Bakı", 
+              "addressCountry": "Azərbaycan"
+            },
+            "telephone": "+994124902131"
+          },
+          "offers": {
+            "@type": "Offer",
+            "availability": expired ? "https://schema.org/Discontinued" : "https://schema.org/InStock",
+            "validFrom": checkup.value?.start_date,
+            "validThrough": checkup.value?.finish_date,
+            "price": checkup.value?.price || "0",
+            "priceCurrency": "AZN"
           }
         })
       }
     ],
     link: [
-      { rel: 'canonical', href: `https://leylamc.com/medical-services/check-up/${route.params.slug}` }
+      { rel: 'canonical', href: canonicalUrl }
     ]
   });
 };
-
 const fetchCheckupData = async (slug) => {
   try {
     startLoading();
@@ -210,11 +227,15 @@ watch(() => checkup.value, () => {
 
 // Geri qayıtmaq funksiyası
 const goBack = () => {
-  // Əvvəlki səhifəyə qayıt
-  router.go(-1);
+  // Birbaşa əsas check-up səhifəsinə yönləndir
+  router.push({ name: 'check-up' });
   
-  // Alternativ olaraq bütün check-uplara qayıtmaq istəsəniz:
-  // router.push({ name: 'check-up' });
+  // Alternativ həll: Əgər browser tarixçəsinin yoxlanması lazımdırsa:
+  // if (window.history.length > 1) {
+  //   router.go(-1);
+  // } else {
+  //   router.push({ name: 'check-up' });
+  // }
 };
 
 const route = useRoute();

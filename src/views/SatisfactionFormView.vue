@@ -215,6 +215,27 @@ const resetForm = () => {
 const submitForm = async () => {
     // Form validasiyası
     if (!validateForm()) {
+        // Validasiya xətası üçün SweetAlert bildirişi
+        Swal.fire({
+            title: 'Diqqət!',
+            text: 'Zəhmət olmasa, bütün tələb olunan sahələri doldurun.',
+            icon: 'warning',
+            confirmButtonText: 'Bağla',
+            confirmButtonColor: '#6ab42b'
+        });
+        return;
+    }
+    
+    // Əgər heç bir sual cavablandırılmayıbsa
+    const hasAnyRating = questions.value.some(q => q.selectedRating !== null);
+    if (!hasAnyRating) {
+        Swal.fire({
+            title: 'Diqqət!',
+            text: 'Zəhmət olmasa, ən azı bir xidməti qiymətləndirin.',
+            icon: 'warning',
+            confirmButtonText: 'Bağla',
+            confirmButtonColor: '#6ab42b'
+        });
         return;
     }
     
@@ -228,13 +249,24 @@ const submitForm = async () => {
     submitError.value = null;
     
     try {
+        // Göndərmə bildirişi
+        Swal.fire({
+            title: 'Göndərilir...',
+            text: 'Zəhmət olmasa, gözləyin',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
         // API sorğusu
         const response = await axios.post('https://bytexerp.online/api/leyla/v1/satisfactionsurvey-create/', formData);
         
         // Uğurlu nəticə - SweetAlert ilə bildiriş
         Swal.fire({
-            title: 'Uğurlu!',
-            text: 'Məmnunluq anketi uğurla göndərildi. Təşəkkür edirik!',
+            title: 'Təşəkkür edirik!',
+            text: 'Məmnunluq anketini doldurduğunuz üçün təşəkkür edirik. Rəyiniz bizim üçün dəyərlidir!',
             icon: 'success',
             confirmButtonText: 'Bağla',
             confirmButtonColor: '#6ab42b'
@@ -265,8 +297,8 @@ const submitForm = async () => {
             title: 'Xəta!',
             text: errorMessage,
             icon: 'error',
-            confirmButtonText: 'Bağla',
-            confirmButtonColor: '#6ab42b'
+            confirmButtonText: 'Yenidən cəhd edin',
+            confirmButtonColor: '#d33'
         });
         
         submitError.value = errorMessage;

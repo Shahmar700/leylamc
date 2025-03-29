@@ -17,7 +17,7 @@
 
         <div v-else class="flex flex-col md:flex-row items-start justify-between">
             <div class="w-full md:w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-2xl md:text-3xl font-semibold mb-6">Video Qalereya</h1>
+                <h1 class="text-2xl md:text-3xl font-semibold mb-6">{{ pageHeading }}</h1>
                 
                 <!-- Video yoxdursa -->
                 <div v-if="videos.length === 0" class="text-center py-10 bg-gray-100 rounded-lg">
@@ -278,13 +278,68 @@ const pageHeading = ref('Video Qalereya')
 
 // SEO meta məlumatları
 useHead({
+    // Başlıq - H1 ilə uyğunlaşdırılıb
     title: `Leyla Medical Center | ${pageHeading.value}`,
     meta: [
-        { name: 'description', content: 'Leyla Medical Center-in fəaliyyətindən video qalereya.' },
-        { property: 'og:title', content: 'Video Qalereya - Leyla Medical Center' },
-        { property: 'og:description', content: 'Leyla Medical Center-in fəaliyyətindən video qalereya.' },
+        // Əsas meta taglər
+        { 
+            name: 'description', 
+            content: 'Leyla Medical Center-in fəaliyyətindən video qalereya. Müasir tibbi avadanlıqlar, peşəkar həkim heyəti və klinika ilə bağlı videolar.' 
+        },
+        { 
+            name: 'keywords', 
+            content: 'video qalereya, tibb mərkəzi videoları, Leyla Medical Center, klinika videoları, tibbi xidmətlər, Azərbaycan tibb mərkəzi, səhiyyə videolar' 
+        },
+        
+        // Canonical URL - yeni URL yolunu əks etdirir
+        { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/video' },
+        
+        // Open Graph meta tagları - sosial mediada paylaşım üçün
+        { property: 'og:title', content: `${pageHeading.value} | Leyla Medical Center` },
+        { property: 'og:description', content: 'Leyla Medical Center-in fəaliyyətindən video qalereya. Müasir tibbi avadanlıqlar və peşəkar həkim heyəti.' },
         { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/video' },
+        { property: 'og:image', content: 'https://leylamc.com/images/video-gallery-cover.jpg' }, // Video qalerayası üçün örtük şəkli
+        { property: 'og:site_name', content: 'Leyla Medical Center' },
+        { property: 'og:locale', content: 'az_AZ' },
+        
+        // Twitter meta tagları
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: `${pageHeading.value} | Leyla Medical Center` },
+        { name: 'twitter:description', content: 'Leyla Medical Center-in fəaliyyətindən video qalereya.' },
+        { name: 'twitter:image', content: 'https://leylamc.com/images/video-gallery-cover.jpg' },
+        
+        // Strukturlu məlumatları əlavə etmək (Schema.org)
+        {
+            name: 'script',
+            type: 'application/ld+json',
+            children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": pageHeading.value,
+                "description": "Leyla Medical Center-in fəaliyyətindən video qalereya.",
+                "url": "https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/video",
+                "numberOfItems": totalItems.value,
+                "itemListElement": videos.value.slice(0, 5).map((video, index) => ({
+                    "@type": "VideoObject",
+                    "position": index + 1,
+                    "name": `Leyla Medical Center Video ${index + 1}`,
+                    "url": video.link || "",
+                    "embedUrl": getEmbedUrl(video.link),
+                    "thumbnailUrl": "https://leylamc.com/images/video-thumbnail.jpg", // Default thumbnail
+                    "uploadDate": video.created_at
+                })),
+                "provider": {
+                    "@type": "MedicalOrganization",
+                    "name": "Leyla Medical Center",
+                    "logo": "https://leylamc.com/images/leyla-mc-logo.png"
+                }
+            })
+        }
     ],
+    link: [
+        { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/mediada-biz/qalereya/video' }
+    ]
 });
 </script>
 
@@ -325,6 +380,8 @@ iframe {
 .pagination {
     margin-top: 2rem;
     user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
 }
 
 .pagination > * {

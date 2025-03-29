@@ -80,7 +80,7 @@ useHead({
       content: `${missionTitle.value} - Leyla Medical Center-in missiyası və məqsədləri. ${plainMissionText.value.substring(0, 150)}...`
     },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/our-mission' },
+    { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/missiyamız' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-mission.jpg' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -102,7 +102,7 @@ useHead({
         "@type": "MedicalOrganization",
         "name": "Leyla Medical Center",
         "description": plainMissionText.value,
-        "url": "https://leylamc.com/our-mission",
+        "url": "https://leylamc.com/az/haqqımızda/missiyamız",
         "logo": {
           "@type": "ImageObject",
           "url": "https://leylamc.com/images/logo.png"
@@ -116,7 +116,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/our-mission' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/missiyamız' }
   ]
 });
 };

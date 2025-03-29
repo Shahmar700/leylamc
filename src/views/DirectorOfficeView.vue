@@ -106,6 +106,7 @@ import SideBanners from "@/components/SideBanners.vue";
 import SideBanners2 from "@/components/SideBanners2.vue";
 import Maps from "@/components/Maps.vue";
 import { useHead } from '@vueuse/head';
+import Swal from 'sweetalert2'; 
 
 // Səhifə başlığını bir dəyişəndə saxlayırıq
 const pageTitle = ref('Direktor Kabineti');
@@ -134,19 +135,62 @@ const onInput = (event) => {
 };
 
 const submitForm = async () => {
-  formSubmitted.value = true;
-  formSuccess.value = false;
-  formError.value = '';
+  // Formu yoxlayaq
+  if (!patient_fullname.value.trim()) {
+    Swal.fire({
+      title: 'Diqqət!',
+      text: 'Zəhmət olmasa, adınızı və soyadınızı daxil edin',
+      icon: 'warning',
+      confirmButtonColor: '#36A873'
+    });
+    return;
+  }
+
+  if (!patient_phone_number.value.trim()) {
+    Swal.fire({
+      title: 'Diqqət!',
+      text: 'Zəhmət olmasa, telefon nömrənizi daxil edin',
+      icon: 'warning',
+      confirmButtonColor: '#36A873'
+    });
+    return;
+  }
+
+  if (!e_mail.value.trim() || !e_mail.value.includes('@')) {
+    Swal.fire({
+      title: 'Diqqət!',
+      text: 'Zəhmət olmasa, düzgün e-poçt ünvanı daxil edin',
+      icon: 'warning',
+      confirmButtonColor: '#36A873'
+    });
+    return;
+  }
+
+  if (!patient_comment.value.trim()) {
+    Swal.fire({
+      title: 'Diqqət!',
+      text: 'Zəhmət olmasa, təklif və ya şikayətinizi daxil edin',
+      icon: 'warning',
+      confirmButtonColor: '#36A873'
+    });
+    return;
+  }
 
   try {
     const fullPhoneNumber = `${selectedCountry.value.dial_code}${patient_phone_number.value}`;
-    console.log({
-      patient_fullname: patient_fullname.value,
-      patient_phone_number: fullPhoneNumber,
-      e_mail: e_mail.value,
-      patient_comment: patient_comment.value,
-    }); // Göndərilən məlumatları konsolda göstərmək
-
+    
+    // Loading bildirişi göstərək
+    Swal.fire({
+      title: 'Göndərilir...',
+      text: 'Zəhmət olmasa, gözləyin',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+    
     const response = await axios.post('http://bytexerp.online/api/leyla/v1/directoroffice-api/', {
       patient_fullname: patient_fullname.value,
       patient_phone_number: fullPhoneNumber,
@@ -155,7 +199,15 @@ const submitForm = async () => {
     });
 
     if (response.status === 201) {
-      formSuccess.value = true;
+      // Uğurlu göndərmə mesajı
+      Swal.fire({
+        title: 'Uğurlu!',
+        text: 'Müraciətiniz uğurla göndərildi. Ən qısa zamanda sizinlə əlaqə saxlanılacaq.',
+        icon: 'success',
+        confirmButtonText: 'Bağla',
+        confirmButtonColor: '#36A873'
+      });
+      
       // Formu təmizləmək
       patient_fullname.value = '';
       patient_phone_number.value = '';
@@ -163,7 +215,15 @@ const submitForm = async () => {
       patient_comment.value = '';
     }
   } catch (error) {
-    formError.value = 'Formu göndərərkən xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.';
+    // Xəta mesajı
+    Swal.fire({
+      title: 'Xəta!',
+      text: 'Müraciətinizi göndərərkən xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.',
+      icon: 'error',
+      confirmButtonText: 'Yenidən cəhd et',
+      confirmButtonColor: '#d33'
+    });
+    
     console.error('Form submission error:', error);
   }
 };
@@ -186,6 +246,7 @@ const setupSEO = () => {
         name: 'keywords', 
         content: 'leyla medical center, direktor kabineti, təklif və şikayət, əlaqə, tibb mərkəzi, elnur vahabov, sevda cəfərova, tibb direktoru, pasiyent əlaqə forması, klinika rəhbərliyi' 
       },
+      // Open Graph meta tagları - URL yolunu yeniləyirik
       { 
         property: 'og:title', 
         content: `Leyla Medical Center | ${pageTitle.value}` 
@@ -195,11 +256,13 @@ const setupSEO = () => {
         content: 'Leyla Medical Center-in Direktor Kabineti ilə əlaqə saxlayın. Öz təklif və şikayətlərinizi birbaşa klinika rəhbərliyinə çatdırın.'
       },
       { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: 'https://leylamc.com/director-office' },
+      // Yeni URL strukturu
+      { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/direktor-kabineti' },
       { property: 'og:image', content: 'https://leylamc.com/images/director-office.jpg' },
       { property: 'og:site_name', content: 'Leyla Medical Center' },
       { property: 'og:locale', content: 'az_AZ' },
       
+      // Twitter meta tagları
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: `Leyla Medical Center | ${pageTitle.value}` },
       { 
@@ -216,7 +279,8 @@ const setupSEO = () => {
           "@context": "https://schema.org",
           "@type": "MedicalOrganization",
           "name": "Leyla Medical Center",
-          "url": "https://leylamc.com/director-office",
+          // Yeni URL strukturu
+          "url": "https://leylamc.com/az/haqqımızda/direktor-kabineti",
           "logo": {
             "@type": "ImageObject",
             "url": "https://leylamc.com/images/logo.png"
@@ -248,8 +312,9 @@ const setupSEO = () => {
         })
       }
     ],
+    // Canonical link-də URL-i yeniləyirik
     link: [
-      { rel: 'canonical', href: 'https://leylamc.com/director-office' }
+      { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/direktor-kabineti' }
     ]
   });
 };

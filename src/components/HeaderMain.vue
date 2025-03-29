@@ -25,9 +25,9 @@
               </li>
               <!-- ---------- ABOUT US ----------  -->
               <li class="headerParent relative group">
-                <router-link to="/about" active-class="router-link-active" class="hidden md:inline-block cursor-pointer text-base sm:text-lg lg:text-xl about-header">
+                <router-link to="/az/haqqımızda" active-class="router-link-active" class="hidden md:inline-block cursor-pointer text-base sm:text-lg lg:text-xl about-header">
                   <span>Haqqımızda</span>
-                  <i class="aboutFa fa-solid fa-angle-down ml-1 transition-transform duration-300"></i>
+                  <i class="aboutFa fa-solid fa-angle-down ml-1 transition-transform duration-300 hidden lg:inline-block"></i>
                 </router-link>
                   <ul class="headerDropdown absolute top-8 -right-0 lg:-right-32 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary dropDownElement">
                     <li class="px-5">
@@ -44,7 +44,7 @@
                     </li>
                       <!-- MEDİADA BİZ  -->
                         <li class="px-5 mediaParent">
-                          <router-link to="/our-in-media/news" class="cursor-pointer flex w-full h-full justify-between text-[18px]">
+                          <router-link to="/az/haqqımızda/mediada-biz/xəbərlər" class="cursor-pointer flex w-full h-full justify-between text-[18px]">
                             <span>Mediada Biz</span>
                             <span><i class="mediaFa fa-solid fa-angle-down"></i></span>
                           </router-link>
@@ -57,7 +57,7 @@
                             </li>
                             <!-- GALLERY  -->
                             <li class="px-5 galleryParent">
-                              <router-link to="/about/our-in-media/gallery" class="cursor-pointer flex w-full h-full justify-between text-[18px]" >
+                              <router-link to="/az/haqqımızda/mediada-biz/qalereya/" class="cursor-pointer flex w-full h-full justify-between text-[18px]" >
                                 <span>Qalereya</span>
                                 <span><i class="galleryFa fa-solid fa-angle-down"></i></span>
                               </router-link>
@@ -107,9 +107,9 @@
 
               <!-- DOCTOS  -->
               <li class="headerParent relative group">
-                  <router-link to="/doctors" active-class="router-link-active" class="hidden md:inline-block cursor-pointer text-base sm:text-lg lg:text-xl doctors-header">
+                  <router-link to="/az/həkimlər/həkimlərimiz" active-class="router-link-active" class="hidden md:inline-block cursor-pointer text-base sm:text-lg lg:text-xl doctors-header">
                   <span>Həkimlər</span>
-                  <i class="doctorsFa fa-solid fa-angle-down ml-1 transition-transform duration-300"></i>
+                  <i class="doctorsFa fa-solid fa-angle-down ml-1 transition-transform duration-300 hidden lg:inline-block"></i>
                   </router-link>
                   <ul class="dropDownElement headerDropdown absolute top-8 -right-52 z-30 bg-white min-w-[320px] py-3 xl:py-5 shadow-xl rounded-xl  opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <li class="px-5">
@@ -132,7 +132,7 @@
                   :class="{'text-primary': isDepartmentRoute}"
                 >
                   <span>Bölmələr</span>
-                  <i class="departmentsFa fa-solid fa-angle-down ml-1 transition-transform duration-300"></i>
+                  <i class="departmentsFa fa-solid fa-angle-down ml-1 transition-transform duration-300 hidden lg:inline-block"></i>
                 </button>
                   <ul class="dropDownElement headerDropdown absolute top-8 -right-14 xl:-right-40 z-30 bg-white py-3 xl:py-5 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                     <!-- Pediatrics -->
@@ -223,7 +223,7 @@
                   </li>
                   <!-- Peyvəndlər linki statik olaraq qalsın -->
                   <li class="px-5">
-                    <a href="#" @click.prevent="openPdf" class="block w-full h-full">Peyvəndlər</a>
+                    <a href="#" @click.prevent="openPdf" class="block w-full h-full text-[18px]">Peyvəndlər</a>
                   </li>
                 </ul>
               </li>
@@ -272,7 +272,7 @@
                   </li>
                   <!-- Digər elementlər (Onlayn Xidmətlər, Sağlıq köşkü, Vakansiyalar, Aksiyalar, Əlaqə) -->
                   <li class="px-5 onlineParent relative">
-                    <router-link to="/online-services" class="w-full h-full text-base sm:text-lg lg:text-xl">
+                    <router-link to="/az/online-xidmətlər" class="w-full h-full text-base sm:text-lg lg:text-xl">
                       <span>Onlayn Xidmətlər</span>
                       <span><i class="onlineFa fa-solid fa-angle-down ml-1"></i></span>
                     </router-link>
@@ -325,7 +325,7 @@
                       
                       <ul class="headerDropdown absolute top-8 right-0 z-30 bg-white w-48 py-3 shadow-xl rounded-xl opacity-0 invisible transition-all duration-500 group-hover:!top-9 group-hover:opacity-100 group-hover:visible border border-t-primary">
                         <li class="mb-2 px-4">
-                          <router-link to="/profile" class="block py-1 w-full">
+                          <router-link :to="{name: 'profile'}" class="block py-1 w-full">
                             <i class="fa-solid fa-user mr-2"></i> Profilim
                           </router-link>
                         </li>
@@ -724,17 +724,17 @@ const authStore = useAuthStore(); // Auth store instance'ı yaradırıq
 const isDepartmentRoute = computed(() => {
   return route.name === 'departments' || 
          route.name === 'department-detail' || 
-         route.path.includes('/departments');
+         route.path.includes('/az/bölmələr');
 });
 const isSurgeryRoute = computed(() => {
   return route.name === 'surgery' || 
          route.name === 'surgery-detail' || 
-         route.path.includes('/surgery');
+         route.path.includes('/az/bölmələr/cərrahiyyə');
 });
 const isMedServiceRoute = computed(() => {
   return route.name === 'medical-services' || 
          route.name === 'medical-servicesl' || 
-         route.path.includes('/medical-services');
+         route.path.includes('/az/tibbi-xidmətlər');
 });
 // Var olan computed property'lər yanına əlavə edin
 const isPediatricsRoute = computed(() => {
@@ -823,12 +823,12 @@ const navigateToDepartments = async () => {
       });
     } else {
       // Əgər API-dən heç bir məlumat gəlməzsə, ümumi səhifəyə keçirik
-      router.push('/departments/pediatrics');
+      router.push('/az/bölmələr/pediatrics');
     }
   } catch (error) {
     console.error('Pediatriya məlumatları yüklənmə xətası:', error);
     // Xəta halında da ümumi səhifəyə keçin
-    router.push('/departments/pediatrics');
+    router.push('/az/bölmələr/pediatrics');
   } finally {
     loading.value = false;
   }
@@ -857,12 +857,12 @@ const navigateToMedicalServices = async () => {
       });
     } else {
       // Əgər API-dən heç bir məlumat gəlməzsə, əsas səhifəyə keçirik
-      router.push('/medical-services');
+      router.push('/az/tibbi-xidmətlər');
     }
   } catch (error) {
     console.error('Tibbi xidmət məlumatları yüklənmə xətası:', error);
     // Xəta halında da əsas səhifəyə keçin
-    router.push('/medical-services');
+    router.push('/az/tibbi-xidmətlər');
   } finally {
     loading.value = false; // Yüklənmə indikatorunu dayandırın
   }

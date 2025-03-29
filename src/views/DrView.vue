@@ -244,31 +244,31 @@
             </div>
             <!-- Pagination -->
             <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
-              <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
-                <i class="fa-solid fa-angles-left"></i>
-              </button>
-              <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
-                <i class="fa-solid fa-angle-left"></i>
-              </button>
-              <span 
-                v-for="page in pages" 
-                :key="page" 
-                @click="goToPage(page)" 
-                :class="{ 
-                  'font-bold': currentPage === page, 
-                  'active-page': currentPage === page, 
-                  'inactive-page': currentPage !== page && page !== '...',
-                  'pagination-dots': page === '...'
-                }"
-              >
-                {{ page }}
-              </span>
-              <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
-                <i class="fa-solid fa-angle-right"></i>
-              </button>
-              <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
-                <i class="fa-solid fa-angles-right"></i>
-              </button>
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                    <i class="fa-solid fa-angle-left"></i>
+                </button>
+                <span 
+                    v-for="page in pages" 
+                    :key="page" 
+                    @click="goToPage(page)" 
+                    :class="{ 
+                        'font-bold': currentPage === page, 
+                        'active-page': currentPage === page, 
+                        'inactive-page': currentPage !== page && page !== '...',
+                        'pagination-dots': page === '...'
+                    }"
+                >
+                    {{ page }}
+                </span>
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
             </div>
           </div>
         
@@ -293,7 +293,10 @@ import { useSkeleton } from "@/composables/useSkeleton";
 import api from '@/services/api';
 const isSubmitting = ref(false);
 import { watch } from 'vue';
+import { watchEffect } from 'vue';
 
+// Schema.org üçün JSON məlumatlarını saxlamaq üçün ref dəyişəni
+const schemaOrgData = ref('');
 
 const route = useRoute();   
 
@@ -518,6 +521,40 @@ const formatDate = (dateString) => {
 //   });
 // };
 
+// watchEffect ilə sxema məlumatlarını dinamik şəkildə yeniləmək
+watchEffect(() => {
+  if (doctor.value) {
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Physician",
+      "name": `${doctor.value?.degree || ''} ${doctor.value?.first_name || ''} ${doctor.value?.last_name || ''}`,
+      "description": pageDescription.value,
+      "image": doctor.value?.photo || 'https://leylamc.com/images/doctor-placeholder.jpg',
+      "url": `https://leylamc.com/az/profil/${route.params.id}`,
+      "jobTitle": doctor.value?.position || '',
+      "worksFor": {
+        "@type": "MedicalOrganization",
+        "name": "Leyla Medical Center",
+        "url": "https://leylamc.com"
+      },
+      "medicalSpecialty": doctor.value?.category || '',
+      "workLocation": {
+        "@type": "Hospital",
+        "name": `Leyla Medical Center - ${doctor.value?.institution || 'Bakı'}`,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bakı",
+          "addressCountry": "Azərbaycan"
+        }
+      }
+    };
+    
+    // JSON-a çeviririk
+    schemaOrgData.value = JSON.stringify(schemaData);
+  }
+});
+
+// useHead funksiyasını yeniləyirik
 useHead({
   title: pageTitle,
   meta: [
@@ -525,14 +562,25 @@ useHead({
     { property: 'og:title', content: pageTitle },
     { property: 'og:description', content: pageDescription },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: computed(() => `https://yourwebsite.com/doctor/${route.params.id}`) },
-    { property: 'og:image', content: computed(() => doctor.value?.photo || 'https://yourwebsite.com/default-doctor-image.jpg') },
+    // URL strukturu yeniləndi
+    { property: 'og:url', content: computed(() => `https://leylamc.com/az/profil/${route.params.id}`) },
+    { property: 'og:image', content: computed(() => doctor.value?.photo || 'https://leylamc.com/images/doctor-placeholder.jpg') },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: pageTitle },
     { name: 'twitter:description', content: pageDescription },
-    { name: 'twitter:image', content: computed(() => doctor.value?.photo || 'https://yourwebsite.com/default-doctor-image.jpg') },
-    { name: 'keywords', content: computed(() => `doctor, healthcare, ${doctor.value?.category || ''}, ${doctor.value?.position || ''}, medical center`) },
+    { name: 'twitter:image', content: computed(() => doctor.value?.photo || 'https://leylamc.com/images/doctor-placeholder.jpg') },
+    { name: 'keywords', content: computed(() => `həkim, tibbi xidmət, ${doctor.value?.category || ''}, ${doctor.value?.position || ''}, Leyla Medical Center`) },
+    // Schema.org məlumatlarını dinamik ref-dən istifadə edərək əlavə edirik
+    {
+      name: 'script',
+      type: 'application/ld+json',
+      children: schemaOrgData
+    }
   ],
+  // Canonical link əlavə edirik
+  link: [
+    { rel: 'canonical', href: computed(() => `https://leylamc.com/az/profil/${route.params.id}`) }
+  ]
 });
 
 const toggleModal = inject('toggleModal'); 
@@ -936,6 +984,64 @@ table tr div{
 
 .article-item:last-child {
   border-bottom: none;
+}
+
+
+/* Pagination CSS */
+.pagination {
+    margin-top: 2rem;
+    user-select: none;
+    padding: 10px 0;
+    z-index: 999999;
+}
+
+.pagination > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-button {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-page {
+    background-color: #6ab42b;
+    color: white;
+    font-weight: bold;
+    padding: 0 0.75rem;
+}
+
+.inactive-page {
+    padding: 0 0.75rem;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.inactive-page:hover {
+    background-color: #e5e7eb;
+}
+
+.pagination-dots {
+    cursor: default;
+    color: #6b7280;
 }
 
 </style>

@@ -88,7 +88,7 @@ useHead({
       content: '1999-cu ildən başlayan inkişaf yolumuz - Leyla Medical Center-in fəaliyyət tarixi, əldə etdiyimiz nailiyyətlər və mühüm hadisələr.'
     },
     { property: 'og:type', content: 'article' },
-    { property: 'og:url', content: 'https://leylamc.com/our-history' },
+    { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/tariximiz' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-history.jpg' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -122,7 +122,7 @@ useHead({
             "url": "https://leylamc.com/images/logo.png"
           }
         },
-        "url": "https://leylamc.com/our-history",
+        "url": "https://leylamc.com/az/haqqımızda/tariximiz",
         "datePublished": "2020-05-01T00:00:00+04:00",
         "dateModified": new Date().toISOString(),
         "author": {
@@ -134,7 +134,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/our-history' }
+  { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/tariximiz' }
   ]
 });
 </script>

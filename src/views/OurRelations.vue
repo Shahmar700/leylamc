@@ -169,7 +169,7 @@ const updateSEO = () => {
                 content: `${relationsTitle.value} - Leyla Medical Center-in beynəlxalq əməkdaşlıq və əlaqələri. ${plainRelationsText.value.substring(0, 150)}...`
             },
             { property: 'og:type', content: 'article' },
-            { property: 'og:url', content: 'https://leylamc.com/our-relations' },
+            { property: 'og:url', content: 'https://leylamc.com/az/haqqımızda/beynəlxalq-əlaqələrimiz' },
             { property: 'og:image', content: firstImageUrl },
             { property: 'og:site_name', content: 'Leyla Medical Center' },
             { property: 'og:locale', content: 'az_AZ' },
@@ -191,7 +191,7 @@ const updateSEO = () => {
                     "@type": "WebPage",
                     "name": relationsTitle.value,
                     "description": plainRelationsText.value.substring(0, 150),
-                    "url": "https://leylamc.com/our-relations",
+                    "url": "https://leylamc.com/az/haqqımızda/beynəlxalq-əlaqələrimiz",
                     "image": galleryImages.value.map(img => img.src),
                     "publisher": {
                         "@type": "MedicalOrganization",
@@ -219,7 +219,7 @@ const updateSEO = () => {
             }
         ],
         link: [
-            { rel: 'canonical', href: 'https://leylamc.com/our-relations' }
+            { rel: 'canonical', href: 'https://leylamc.com/az/haqqımızda/beynəlxalq-əlaqələrimiz' }
         ]
     });
 };

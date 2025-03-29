@@ -222,7 +222,7 @@ useHead({
     { property: 'og:title', content: 'Leyla Medical Center | E-növbə' },
     { property: 'og:description', content: 'Onlayn randevu sistemi ilə istənilən həkimimizin qəbuluna yazılın. Sizin sağlamlığınız – bizim dəyərimizdir!' },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/online-services/e-appointment' },
+    { property: 'og:url', content: 'https://leylamc.com/az/online-xidmətlər/e-randevu' },
     { property: 'og:image', content: 'https://leylamc.com/images/leyla-mc-logo.png' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -270,7 +270,7 @@ useHead({
           "@type": "ReserveAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": "https://leylamc.com/online-services/e-appointment",
+            "urlTemplate": "https://leylamc.com/az/online-xidmətlər/e-randevu",
             "inLanguage": "az",
             "actionPlatform": [
               "http://schema.org/DesktopWebPlatform",
@@ -286,7 +286,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/online-services/e-appointment' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/online-xidmətlər/e-randevu' }
   ]
 });
 </script>

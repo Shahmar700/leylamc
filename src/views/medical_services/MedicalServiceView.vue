@@ -145,76 +145,86 @@ return serviceData.value?.photo || `https://leylamc.com/images/medical-services/
 
 // SEO məlumatlarını yeniləmək funksiyası
 const updateSEO = () => {
-if (!serviceData.value) return;
+  if (!serviceData.value) return;
 
-const canonicalUrl = `https://leylamc.com/medical-services/${route.params.slug}`;
+  // Yeni URL strukturunu tətbiq edirik
+  const canonicalUrl = `https://leylamc.com/az/tibbi-xidmətlər/${route.params.slug}`;
 
-useHead({
-  title: `Leyla Medical Center | ${serviceName.value}`,
-  meta: [
-    { 
-      name: 'description', 
-      content: metaDescription.value
-    },
-    { 
-      name: 'keywords', 
-      content: `leyla medical center, ${serviceName.value.toLowerCase()}, tibbi xidmət, ${route.params.slug}, müalicə xidməti, diaqnostika, tibb mərkəzi, bakı tibbi xidmətlər, həkim xidməti` 
-    },
-    { 
-      property: 'og:title', 
-      content: `Leyla Medical Center | ${serviceName.value}` 
-    },
-    { 
-      property: 'og:description', 
-      content: metaDescription.value
-    },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: canonicalUrl },
-    { property: 'og:image', content: serviceImage.value },
-    { property: 'og:site_name', content: 'Leyla Medical Center' },
-    { property: 'og:locale', content: 'az_AZ' },
-    
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: `Leyla Medical Center | ${serviceName.value}` },
-    { name: 'twitter:description', content: metaDescription.value },
-    { name: 'twitter:image', content: serviceImage.value },
-    
-    // Strukturlu məlumatları əlavə etmək (Schema.org)
-    {
-      name: 'script',
-      type: 'application/ld+json',
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "MedicalProcedure",
-        "name": serviceName.value,
-        "description": plainText.value,
-        "url": canonicalUrl,
-        "image": serviceImage.value,
-        "performerType": "Medical Organization",
-        "procedureType": "Therapeutic",
-        "followup": "Follow up as directed by your healthcare provider.",
-        "isPartOf": {
-          "@type": "MedicalOrganization",
-          "name": "Leyla Medical Center",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://leylamc.com/images/logo.png"
+  useHead({
+    title: `Leyla Medical Center | ${serviceName.value}`,
+    meta: [
+      { 
+        name: 'description', 
+        content: metaDescription.value
+      },
+      { 
+        name: 'keywords', 
+        content: `leyla medical center, ${serviceName.value.toLowerCase()}, tibbi xidmət, ${route.params.slug}, müalicə xidməti, diaqnostika, tibb mərkəzi, bakı tibbi xidmətlər, həkim xidməti` 
+      },
+      { 
+        property: 'og:title', 
+        content: `Leyla Medical Center | ${serviceName.value}` 
+      },
+      { 
+        property: 'og:description', 
+        content: metaDescription.value
+      },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: serviceImage.value },
+      { property: 'og:site_name', content: 'Leyla Medical Center' },
+      { property: 'og:locale', content: 'az_AZ' },
+      
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Leyla Medical Center | ${serviceName.value}` },
+      { name: 'twitter:description', content: metaDescription.value },
+      { name: 'twitter:image', content: serviceImage.value },
+      
+      // Strukturlu məlumatları təkmilləşdirilmiş şəkildə əlavə edirik (Schema.org)
+      {
+        name: 'script',
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalProcedure",
+          "name": serviceName.value,
+          "description": plainText.value,
+          "url": canonicalUrl,
+          "image": serviceImage.value,
+          "performerType": "Medical Organization",
+          "procedureType": "Therapeutic",
+          "followup": "Həkiminizin təyin etdiyi müddətdə nəzarət üçün müraciət edin.",
+          "isPartOf": {
+            "@type": "MedicalOrganization",
+            "name": "Leyla Medical Center",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://leylamc.com/images/logo.png"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Yusif Səfərov küç.19",
+              "addressLocality": "Bakı",
+              "addressCountry": "Azərbaycan"
+            },
+            "telephone": "+994124902131"
           },
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Yusif Səfərov küç.19",
-            "addressLocality": "Bakı",
-            "addressCountry": "Azərbaycan"
-          },
-          "telephone": "+994 12 000 00 00"
-        }
-      })
-    }
-  ],
-  link: [
-    { rel: 'canonical', href: canonicalUrl }
-  ]
-});
+          "medicalSpecialty": [
+            "https://schema.org/MedicalSpecialty"
+          ],
+          "relevantSpecialty": [
+            {
+              "@type": "MedicalSpecialty",
+              "name": serviceData.value.category || "Tibbi xidmət"
+            }
+          ]
+        })
+      }
+    ],
+    link: [
+      { rel: 'canonical', href: canonicalUrl }
+    ]
+  });
 };
 
 // URL dəyişdiyində yeni məlumat çək
