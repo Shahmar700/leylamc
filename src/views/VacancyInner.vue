@@ -179,7 +179,7 @@
   const fetchVacancyDetail = async () => {
   try {
     loading.value = true;
-    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/vacancy-list/${route.params.slug}/`);
+    const response = await axios.get(`https://bytexerp.online/api/leyla/v1/vacancy-list/${route.params.slug}/`);
     vacancy.value = response.data;
     
     // Məlumatlar uğurla yükləndikdən sonra SEO meta taglarını əlavə edirik

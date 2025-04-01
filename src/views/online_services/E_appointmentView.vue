@@ -181,7 +181,7 @@ const submitForm = async () => {
 
   try {
     const fullPhoneNumber = `${selectedCountry.value.dial_code}${phoneNumber.value}`;
-    const response = await axios.post('http://bytexerp.online/api/leyla/v1/directoroffice-api/', {
+    const response = await axios.post('https://bytexerp.online/api/leyla/v1/directoroffice-api/', {
       name: name.value,
       idCard: idCard.value,
       phone: fullPhoneNumber,

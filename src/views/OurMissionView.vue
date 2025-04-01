@@ -28,7 +28,7 @@ const missionText = ref('');
 
 const fetchOurMission = async () => {
 try {
-  const response = await axios.get('http://bytexerp.online/api/leyla/v1/ourmission-list/');
+  const response = await axios.get('https://bytexerp.online/api/leyla/v1/ourmission-list/');
   const missionData = response.data.results[0];
   missionTitle.value = missionData.title;
   missionText.value = missionData.text;

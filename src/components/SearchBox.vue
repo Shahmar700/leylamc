@@ -25,23 +25,30 @@
       
       <!-- Nəticə elementləri -->
       <div 
-        v-for="doctor in searchResults" 
-        :key="doctor.id" 
+        v-for="result in searchResults" 
+        :key="result.id" 
         class="result-item flex items-center p-2 hover:bg-gray-100"
-        @mousedown.prevent="selectDoctor(doctor)">
+        @mousedown.prevent="selectDoctor(result)">
         
         <div class="flex items-center w-full cursor-pointer">
+          <!-- Şəkil varsa göstər, yoxdursa göstərmə -->
           <img 
-            :src="doctor.photo" 
-            :alt="doctor.first_name + ' ' + doctor.last_name"
+            v-if="result.photo"
+            :src="result.photo" 
+            :alt="result.first_name + ' ' + result.last_name"
             class="w-12 h-12 rounded-full object-cover"
             onerror="this.src='https://via.placeholder.com/48?text=Şəkil+yoxdur'"
           >
-          <div class="ml-3 flex-grow">
-            <p class="font-medium text-sm">{{ doctor.degree }} {{ doctor.first_name }} {{ doctor.last_name }}</p>
-            <p class="text-sm text-gray-600">{{ doctor.position }}</p>
+          
+          <!-- Şəkilsiz nəticələr üçün məlumat hissəsi (soldan boşluq olmadan) -->
+          <div :class="[result.photo ? 'ml-3' : '', 'flex-grow']">
+            <p class="font-medium text-sm">
+            <!-- Tipi rəngli göstəririk -->
+            <span v-if="result.degree" class="text-primary font-semibold">{{ result.degree }}</span>
+            {{ result.first_name }} {{ result.last_name }}
+          </p>
+            <p class="text-sm text-gray-600">{{ result.position }}</p>
           </div>
-          <!-- <span class="text-primary text-sm ml-2">Keçid et</span> -->
         </div>
       </div>
     </div>

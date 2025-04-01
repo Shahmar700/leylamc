@@ -69,7 +69,7 @@ const fetchRelations = async () => {
         isLoading.value = true;
         error.value = null;
         
-        const response = await axios.get('http://bytexerp.online/api/leyla/v1/internationalrelation-list/');
+        const response = await axios.get('https://bytexerp.online/api/leyla/v1/internationalrelation-list/');
         const relationsData = response.data.results[0];
         
         if (relationsData) {
@@ -101,7 +101,7 @@ const fetchRelations = async () => {
 // Qalereya şəkillərini almaq üçün yeni və təkmilləşdirilmiş funksiya
 const fetchGalleryImages = async () => {
     try {
-        const response = await axios.get('http://bytexerp.online/api/leyla/v1/ir-photo-list/');
+        const response = await axios.get('https://bytexerp.online/api/leyla/v1/ir-photo-list/');
         
         if (response.data && response.data.results && response.data.results.length > 0) {
             // API-dən gələn şəkilləri işləyirik

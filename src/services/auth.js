@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://bytexerp.online/api';
+const API_URL = 'https://bytexerp.online/api';
 
 class AuthService {
   /**

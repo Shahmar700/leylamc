@@ -44,11 +44,12 @@
                               </tr>
                             </tbody>
                           </table>
+                          
                           <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
-                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angles-left"></i>
                 </button>
-                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angle-left"></i>
                 </button>
                 <span 
@@ -56,18 +57,18 @@
                     :key="page" 
                     @click="goToPage(page)" 
                     :class="{ 
-                        'font-bold': currentPage === page, 
-                        'active-page': currentPage === page, 
-                        'inactive-page': currentPage !== page && page !== '...',
-                        'pagination-dots': page === '...'
+                        'font-bold !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+                        'active-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+                        'inactive-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage !== page && page !== '...',
+                        'pagination-dots !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': page === '...'
                     }"
                 >
                     {{ page }}
                 </span>
-                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angle-right"></i>
                 </button>
-                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angles-right"></i>
                 </button>
             </div>
@@ -120,7 +121,7 @@ const router = useRouter();
 
 const fetchMainCategories = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-main-cat-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/online-sales-main-cat-list/');
     mainCategories.value = response.data.results;
   } catch (error) {
     console.error('Error fetching main categories:', error);
@@ -129,7 +130,7 @@ const fetchMainCategories = async () => {
 
 const fetchSubCategories = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-cat-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/online-sales-cat-list/');
     subCategories.value = response.data.results;
   } catch (error) {
     console.error('Error fetching subcategories:', error);
@@ -138,7 +139,7 @@ const fetchSubCategories = async () => {
 
 const fetchServices = async () => {
   try {
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/online-sales-product-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/online-sales-product-list/');
     services.value = response.data.results;
     services.value.forEach(service => {
       if (!service.quantity) {

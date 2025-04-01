@@ -191,7 +191,7 @@ const submitForm = async () => {
       }
     });
     
-    const response = await axios.post('http://bytexerp.online/api/leyla/v1/directoroffice-api/', {
+    const response = await axios.post('https://bytexerp.online/api/leyla/v1/directoroffice-api/', {
       patient_fullname: patient_fullname.value,
       patient_phone_number: fullPhoneNumber,
       e_mail: e_mail.value,

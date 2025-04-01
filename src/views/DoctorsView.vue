@@ -82,10 +82,10 @@
 
     <!-- Pagination - ALWAYS VISIBLE when needed, regardless of loading state -->
     <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center sticky bottom-0 bg-white py-2 shadow-md z-10">
-      <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+      <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
         <i class="fa-solid fa-angles-left"></i>
       </button>
-        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
           <i class="fa-solid fa-angle-left"></i>
         </button>
       <span 
@@ -93,18 +93,18 @@
         :key="page" 
         @click="goToPage(page)" 
         :class="{ 
-          'font-bold': currentPage === page, 
-          'active-page': currentPage === page, 
-          'inactive-page': currentPage !== page && page !== '...',
-          'pagination-dots': page === '...'
+          'font-bold !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+          'active-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+          'inactive-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage !== page && page !== '...',
+          'pagination-dots !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': page === '...'
         }"
       >
         {{ page }}
       </span>
-      <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+      <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
         <i class="fa-solid fa-angle-right"></i>
       </button>
-      <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+      <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
         <i class="fa-solid fa-angles-right"></i>
       </button>
     </div>
@@ -159,7 +159,7 @@ const fetchDoctors = async () => {
     // startLoading();
     isLoading.value = true;
     error.value = null;
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/doctor-list/');
     doctors.value = response.data.results;
     // Şöbələri yükləmək
     const uniqueDepartments = [...new Set(doctors.value.map(doctor => doctor.category))];
@@ -185,7 +185,7 @@ const fetchDoctors = async () => {
 const fetchSpecializations = async () => {
   try {
     startLoading();
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/drspecialty-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/drspecialty-list/');
     specializations.value = response.data.results.map(specialty => ({ specialty: specialty.name }));
     return response.data;
   } catch (error) {

@@ -301,6 +301,7 @@
               <div
                 :class="{ 'text-primary': isPediatricsRoute }"
                 class="flex w-full h-full cursor-pointer text-[18px]"
+                @click="navigateToPediatrics"
               >
                 <span>Pediatriya</span>
                 <span><i class="pediatricsFa fa-solid fa-angle-down"></i></span>
@@ -330,6 +331,7 @@
               <div
                 :class="{ 'text-primary': isSurgeryRoute }"
                 class="flex w-full h-full cursor-pointer text-[18px]"
+                @click="navigateToSurgery"
               >
                 <span>Cərrahiyyə</span>
                 <span><i class="surgeryFa fa-solid fa-angle-down"></i></span>
@@ -867,7 +869,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'doctors' }"
-                    class="block text-lg"
+                    class="block text-lg font-normal"
                     @click="toggleBurger"
                     >Həkimlərimiz</router-link
                   >
@@ -875,7 +877,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'doctor-articles' }"
-                    class="block text-lg"
+                    class="block text-lg font-normal"
                     @click="toggleBurger"
                     >Həkim məqalələri</router-link
                   >
@@ -906,7 +908,7 @@
                     @click="toggleBurgerDropdown('pediatrics_mobile')"
                     class="flex justify-between items-center cursor-pointer text-lg"
                   >
-                    <span class="font-roboto">Pediatriya</span>
+                    <span class="font-roboto font-normal">Pediatriya</span>
                     <i
                       class="fa-solid fa-angle-down transition-transform duration-300"
                       :class="{
@@ -926,7 +928,7 @@
                           name: 'pediatrics-detail',
                           params: { slug: pediatric.slug },
                         }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                       >
                         {{ pediatric.name }}
                       </router-link>
@@ -951,7 +953,7 @@
                   <!-- Dinamik Cərrahiyə -->
                   <ul
                     v-if="burgerDropdowns.cerrahiyye_mobile"
-                    class="pl-2 space-y-1"
+                    class="pl-2 space-y-1 font-normal"
                   >
                     <li v-for="surgery in surgeries" :key="surgery.id">
                       <router-link
@@ -974,7 +976,7 @@
                       name: 'department-detail',
                       params: { slug: department.slug },
                     }"
-                    class="block text-lg"
+                    class="block text-lg font-normal"
                     @click="toggleBurger"
                   >
                     {{ department.name }}
@@ -1029,7 +1031,7 @@
                       name: 'medical-service-detail',
                       params: { slug: service.slug },
                     }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                   >
                     {{ service.title }}
@@ -1043,7 +1045,7 @@
                       openPdf;
                       toggleBurger;
                     "
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     >Peyvəndlər</a
                   >
                 </li>
@@ -1071,21 +1073,21 @@
                 <li @click="toggleBurger">
                   <router-link
                     :to="{ name: 'e-appointment' }"
-                    class="block w-full h-full text-base sm:text-lg lg:text-xl"
+                    class="block w-full h-full font-normal text-base sm:text-lg lg:text-xl"
                     >E-növbə</router-link
                   >
                 </li>
                 <li @click="toggleBurger">
                   <router-link
                     :to="{ name: 'e-result' }"
-                    class="block w-full h-full text-lg lg:text-xl"
+                    class="block w-full h-full font-normal text-lg lg:text-xl"
                     >E-nəticə</router-link
                   >
                 </li>
                 <li @click="toggleBurger">
                   <router-link
                     :to="{ name: 'e-payment' }"
-                    class="block w-full h-full text-lg lg:text-xl"
+                    class="block w-full font-normal h-full text-lg lg:text-xl"
                     @click.native="openInNewTab"
                     >E-ödəmə</router-link
                   >
@@ -1096,7 +1098,7 @@
                 <li @click="toggleBurger">
                   <router-link
                     :to="{ name: 'e-consultation' }"
-                    class="block w-full h-full text-lg lg:text-xl"
+                    class="block w-full h-full font-normal text-lg lg:text-xl"
                     >E-məsləhət</router-link
                   >
                 </li>
@@ -1177,7 +1179,8 @@ const debounce = (func, delay) => {
   };
 };
 // Axtarış API sorğusu - dəqiq field'lərlə filterlənmiş
-const searchDoctors = debounce(async (query) => {
+// Axtarış API sorğusu - həkimlər və vakansiyalar üçün kombinə olunmuş
+const combinedSearch = debounce(async (query) => {
   if (!query || query.trim().length < 3) {
     searchResults.value = [];
     return;
@@ -1190,17 +1193,27 @@ const searchDoctors = debounce(async (query) => {
     const searchText = query.trim();
     const encodedQuery = encodeURIComponent(searchText);
 
-    // Daha dəqiq sorğu yaradırıq, hər field üçün ayrı filter əlavə edirik
-    const url = `https://bytexerp.online/api/leyla/v1/doctor-list/?search=${encodedQuery}&fields=first_name,first_name_az,first_name_ru,last_name,last_name_az,last_name_ru,degree,degree_az,degree_ru,category,category_ru,category_en`;
+    // Paralel sorğular göndəririk
+    const [doctorResponse, vacancyResponse, articleResponse, checkupResponse] = await Promise.all([
+      // Həkim sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/doctor-list/?search=${encodedQuery}&fields=first_name,first_name_az,first_name_ru,last_name,last_name_az,last_name_ru,degree,degree_az,degree_ru,category,category_ru,category_en`),
+      
+      // Vakansiya sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/vacancy-list/?search=${encodedQuery}`),
+      
+      // Həkim məqalələri sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/article-list/?search=${encodedQuery}`),
+      
+      // Checkup paketləri sorğusu 
+      axios.get(`https://bytexerp.online/api/leyla/v1/checkup-list/?search=${encodedQuery}`)
+    ]);
 
-    console.log("Search URL:", url); // Debug üçün
-    const response = await axios.get(url);
-
-    if (response.data && response.data.results) {
-      // Nəticələri daha yaxşı filterləyirik
-      const results = response.data.results.filter((doctor) => {
-        // Ad və ya soyadında axtarış mətni varsa
-        const firstNameMatch =
+    // Həkim nəticələrini emal edirik
+    let doctorResults = [];
+    if (doctorResponse.data && doctorResponse.data.results) {
+      doctorResults = doctorResponse.data.results.filter((doctor) => {
+        // Mövcud həkim filter məntiqi
+        const firstNameMatch = 
           (doctor.first_name &&
             doctor.first_name
               .toLowerCase()
@@ -1269,38 +1282,174 @@ const searchDoctors = debounce(async (query) => {
           categoryMatch ||
           positionMatch
         );
-      });
-
-      searchResults.value = results;
-    } else {
-      searchResults.value = [];
+      }).map(doctor => ({
+        ...doctor,
+        resultType: 'doctor' // Doctor tipini qeyd edirik
+      }));
     }
-  } catch (error) {
-    console.error("Həkim axtarışı zamanı xəta:", error);
-    searchResults.value = [];
-  } finally {
-    isSearchLoading.value = false;
+
+    // Vakansiya nəticələrini emal edirik
+    let vacancyResults = [];
+    if (vacancyResponse.data && vacancyResponse.data.results) {
+      // "Vakansiya" sözü yazıldıqda bütün vakansiyaları göstər
+      const isVacancySearch = searchText.toLowerCase().includes('vakansiya');
+      
+      if (isVacancySearch) {
+        vacancyResults = vacancyResponse.data.results;
+      } else {
+        // Nəticələri filter et
+        vacancyResults = vacancyResponse.data.results.filter((vacancy) => {
+          // skills_demand, job_position və title ilə yoxlayırıq
+          const skillsMatch = vacancy.skills_demand && 
+            vacancy.skills_demand.toLowerCase().includes(searchText.toLowerCase());
+          
+          const positionMatch = vacancy.job_position && 
+            vacancy.job_position.toLowerCase().includes(searchText.toLowerCase());
+          
+          // Title sahəsini də yoxlayırıq - YENİ
+          const titleMatch = vacancy.title && 
+            vacancy.title.toLowerCase().includes(searchText.toLowerCase());
+
+          return skillsMatch || positionMatch || titleMatch;
+        });
+      }
+  
+      // Vakansiyaları SearchBox komponentində göstərmək üçün uyğun formata çeviririk
+      vacancyResults = vacancyResults.map(vacancy => ({
+        id: vacancy.id,
+        slug: `vacancy-${vacancy.id}`, // Unikal slug
+        first_name: vacancy.job_position || "Vakansiya", 
+        last_name: "",
+        degree: "", 
+        position: vacancy.skills_demand || "",
+        photo: "", // Vakansiyaların şəkli olmadığı üçün boş saxlayırıq
+        resultType: 'vacancy' // Vakansiya tipini qeyd edirik
+      }));
+    }
+
+    // Həkim məqalələrini emal edirik 
+    let articleResults = [];
+    if (articleResponse.data && articleResponse.data.results) {
+      // "Məqalə" sözü yazıldıqda bütün məqalələri göstər
+      const searchLower = searchText.toLowerCase();
+      const isArticleSearch = searchLower === 'məqalə' || 
+                              searchLower.includes('məqalə') ||
+                              searchLower === 'meqale' || 
+                          searchLower.includes('meqale');
+
+      console.log("Məqalə axtarışı yoxlanılır:", searchLower, isArticleSearch);
+
+      if (isArticleSearch) {
+        // Məqalə sözü yazıldıqda bütün nəticələri göstər
+        articleResults = articleResponse.data.results;
+        console.log("Bütün məqalələr göstərilir:", articleResults.length);
+      } else {
+        // Məqalələri title sahəsi üzrə filterdən keçiririk
+        articleResults = articleResponse.data.results.filter((article) => {
+          // Başlıq üzrə axtarış
+          const titleMatch = article.title && 
+            article.title.toLowerCase().includes(searchText.toLowerCase());
+          
+          return titleMatch;
+        });
+      }
+
+      // Məqalələri SearchBox komponentində göstərmək üçün uyğun formata çeviririk
+      articleResults = articleResults.map(article => ({
+        id: article.id,
+        slug: article.slug, // API-dən gələn slug-ı istifadə edirik
+        first_name: article.title || "Məqalə", // title-ı first_name kimi göstəririk 
+        last_name: "",
+        degree: "Məqalə: ", // Məqalə olduğunu göstərmək üçün
+        position: "",
+        photo: article.image || "", // Məqalə şəkli varsa göstəririk
+        resultType: 'article' // Məqalə tipini qeyd edirik
+      }));
+    }
+
+    // Checkup nəticələrini emal edirik
+    let checkupResults = [];
+    if (checkupResponse.data && checkupResponse.data.results) {
+      // "Checkup" sözü yazıldıqda bütün checkup-ları göstər
+      const searchLower = searchText.toLowerCase();
+      const isCheckupSearch = searchLower === 'checkup' || 
+                             searchLower.includes('checkup') ||
+                             searchLower === 'check up' || 
+                             searchLower.includes('check up') ||
+                             searchLower === 'check-up' || 
+                             searchLower.includes('check-up');
+      
+      if (isCheckupSearch) {
+        // Checkup sözü yazıldıqda bütün nəticələri göstər
+        checkupResults = checkupResponse.data.results;
+      } else {
+        // Checkup-ları title sahəsi üzrə filterdən keçiririk
+        checkupResults = checkupResponse.data.results.filter((checkup) => {
+          // Başlıq üzrə axtarış
+          const titleMatch = checkup.title && 
+            checkup.title.toLowerCase().includes(searchText.toLowerCase());
+          
+          return titleMatch;
+        });
+      }
+      
+      // Checkup-ları SearchBox komponentində göstərmək üçün uyğun formata çeviririk
+      checkupResults = checkupResults.map(checkup => ({
+        id: checkup.id,
+        slug: checkup.slug, // API-dən gələn slug-ı istifadə edirik
+        first_name: checkup.title || "Checkup", // title-ı first_name kimi göstəririk 
+        last_name: "",
+        degree: "Checkup: ", // Checkup olduğunu göstərmək üçün
+        position: "",
+        photo: checkup.image || "", // Checkup şəkli varsa göstəririk
+        resultType: 'checkup' // Checkup tipini qeyd edirik
+      }));
+    }
+
+    // Nəticələri birləşdiririk
+    searchResults.value = [...doctorResults, ...vacancyResults, ...articleResults, ...checkupResults];
+    } catch (error) {
+      console.error("Axtarış zamanı xəta:", error);
+      searchResults.value = [];
+    } finally {
+      isSearchLoading.value = false;
+    }
+  }, 300);
+
+// // Axtarış handler funksiyası
+// const handleSearch = (query) => {
+//   searchDoctors(query);
+// };
+
+// Seçim nəticəsini idarə edən funksiya
+const handleDoctorSelect = (result) => {
+  if (result.resultType === 'vacancy') {
+    // Vakansiya seçildikdə
+    if (result.id === 1) {
+      router.push(`/az/haqqımızda/mediada-biz/vakansiya/vakansiya`);
+    } else {
+      router.push(`/az/haqqımızda/mediada-biz/vakansiya/vakansiya-${result.id - 1}`);
+    }
+  } else if (result.resultType === 'article') {
+    // YENİ: Məqalə seçildikdə
+    router.push(`/az/həkimlər/həkim-məqalələri/${result.slug}`);
+  } else {
+    // Həkim seçildikdə (mövcud funksional)
+    router.push({
+      name: "doctor", 
+      params: { id: result.slug },
+    });
   }
-}, 300); // 300ms debounce delay
 
-// Axtarış handler funksiyası
-const handleSearch = (query) => {
-  searchDoctors(query);
-};
-
-// Həkim seçildikdə yönləndirmə funksiyası
-const handleDoctorSelect = (doctor) => {
-  // Doktorun səhifəsinə yönləndirmə məntiqini DoctorsView-dan kopiyalayırıq
-  router.push({
-    name: "doctor",
-    params: { id: doctor.slug },
-    // query: { doctorId: doctor.id }  // ID-ni query parametri kimi göndəririk
-  });
-
-  // Əgər mobil menyu açıq vəziyyətdədirsə onu bağlayaq
-  if (isMenuOpen.value) {
+  // Menyu açıqdırsa bağla
+  if (isMenuOpen && isMenuOpen.value) {
     isMenuOpen.value = false;
   }
+};
+
+// Axtarış handler funksiyasını yeniləyirik
+const handleSearch = (query) => {
+  combinedSearch(query);
 };
 
 import { useAuthStore } from "@/store/auth"; // AuthService-i AuthStore ilə əvəz edirik
@@ -1375,7 +1524,7 @@ const openPdf = () => {
 const fetchDepartments = async () => {
   try {
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/department-list/"
+      "https://bytexerp.online/api/leyla/v1/department-list/"
     );
     departments.value = response.data.results.filter(
       (department) => department.category !== "Surgery"
@@ -1388,12 +1537,57 @@ const fetchDepartments = async () => {
 const fetchSurgeries = async () => {
   try {
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/surgeondep-list/"
+      "https://bytexerp.online/api/leyla/v1/surgeondep-list/"
     );
     surgeries.value = response.data.results;
     console.log("Cerahiye" + surgeries);
   } catch (error) {
     console.error("HeaderView API çağırışında xəta:", error);
+  }
+};
+
+// Cərrahiyyə naviqasiya funksiyası
+const navigateToSurgery = async () => {
+  try {
+    loading.value = true;
+
+    // Əgər cərrahiyyə məlumatları artıq yüklənibsə
+    if (surgeries.value && surgeries.value.length > 0) {
+      // İlk elementin slug'ını alırıq
+      const firstSurgerySlug = surgeries.value[0].slug;
+      
+      // İstifadəçini ilk cərrahiyyə elementinə yönləndiririk
+      router.push({
+        name: "surgery-detail",
+        params: { slug: firstSurgerySlug },
+      });
+    } else {
+      // Məlumatları yükləyirik
+      const response = await axios.get(
+        "https://bytexerp.online/api/leyla/v1/surgeondep-list/"
+      );
+      const surgeryItems = response.data.results;
+
+      if (surgeryItems && surgeryItems.length > 0) {
+        // İlk elementin slug'ını alırıq
+        const firstSurgerySlug = surgeryItems[0].slug;
+        
+        // İstifadəçini ilk cərrahiyyə elementinə yönləndiririk
+        router.push({
+          name: "surgery-detail",
+          params: { slug: firstSurgerySlug },
+        });
+      } else {
+        // Əgər API-dən heç bir məlumat gəlməzsə, ümumi cərrahiyyə səhifəsinə keçirik
+        router.push("/az/bölmələr/cərrahiyyə");
+      }
+    }
+  } catch (error) {
+    console.error("Cərrahiyyə məlumatları yüklənmə xətası:", error);
+    // Xəta halında da ümumi cərrahiyyə səhifəsinə keçin
+    router.push("/az/bölmələr/cərrahiyyə");
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -1406,6 +1600,51 @@ const fetchPediatrics = async () => {
     console.log("Pediatriya", pediatrics.value);
   } catch (error) {
     console.error("Pediatriya API çağırışında xəta:", error);
+  }
+};
+
+// Pediatriya naviqasiya funksiyası
+const navigateToPediatrics = async () => {
+  try {
+    loading.value = true;
+
+    // Əgər pediatrics məlumatları artıq yüklənibsə
+    if (pediatrics.value && pediatrics.value.length > 0) {
+      // İlk elementin slug'ını alırıq
+      const firstPediatricSlug = pediatrics.value[0].slug;
+      
+      // İstifadəçini ilk pediatriya elementinə yönləndiririk
+      router.push({
+        name: "pediatrics-detail",
+        params: { slug: firstPediatricSlug },
+      });
+    } else {
+      // Məlumatları yükləyirik
+      const response = await axios.get(
+        "https://bytexerp.online/api/leyla/v1/pediatricdep-list/"
+      );
+      const pediatricItems = response.data.results;
+
+      if (pediatricItems && pediatricItems.length > 0) {
+        // İlk elementin slug'ını alırıq
+        const firstPediatricSlug = pediatricItems[0].slug;
+        
+        // İstifadəçini ilk pediatriya elementinə yönləndiririk
+        router.push({
+          name: "pediatrics-detail",
+          params: { slug: firstPediatricSlug },
+        });
+      } else {
+        // Əgər API-dən heç bir məlumat gəlməzsə, ümumi pediatriya səhifəsinə keçirik
+        router.push("/az/bölmələr/pediatrics");
+      }
+    }
+  } catch (error) {
+    console.error("Pediatriya məlumatları yüklənmə xətası:", error);
+    // Xəta halında da ümumi pediatriya səhifəsinə keçin
+    router.push("/az/bölmələr/pediatrics");
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -1452,7 +1691,7 @@ const navigateToMedicalServices = async () => {
 
     // Tibbi xidmətlər üçün API sorğusu
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/medical-service-list/"
+      "https://bytexerp.online/api/leyla/v1/medical-service-list/"
     );
     const services = response.data.results;
 
@@ -1484,7 +1723,7 @@ const medicalServices = ref([]);
 const fetchMedicalServices = async () => {
   try {
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/medical-service-list/"
+      "https://bytexerp.online/api/leyla/v1/medical-service-list/"
     );
     medicalServices.value = response.data.results;
   } catch (error) {

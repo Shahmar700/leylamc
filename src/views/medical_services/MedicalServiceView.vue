@@ -83,10 +83,10 @@ try {
   startLoading();
   error.value = null;
   
-  console.log(`API sorğusu göndərilir: http://bytexerp.online/api/leyla/v1/medical-service-list/${slug}/`);
+  console.log(`API sorğusu göndərilir: https://bytexerp.online/api/leyla/v1/medical-service-list/${slug}/`);
   
   // Əsas məlumatları əldə edirik
-  const response = await axios.get(`http://bytexerp.online/api/leyla/v1/medical-service-list/${slug}/`);
+  const response = await axios.get(`https://bytexerp.online/api/leyla/v1/medical-service-list/${slug}/`);
   
   console.log("API cavabı:", response);
   

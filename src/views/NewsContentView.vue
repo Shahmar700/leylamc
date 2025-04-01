@@ -84,7 +84,7 @@ const formatDate = (dateString) => {
 
 const fetchNewsItem = async () => {
   try {
-    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);
+    const response = await axios.get(`https://bytexerp.online/api/leyla/v1/news-list/${route.params.slug}/`);
     newsItem.value = response.data;
 
     // Xəbər məlumatları alındıqdan sonra şəkilləri yükləyirik

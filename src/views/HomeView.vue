@@ -614,7 +614,7 @@ const fetchDoctors = async () => {
     isDoctorsLoading.value = true; // Yükləməyə başlayarkən true et
     
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/doctor-list/"
+      "https://bytexerp.online/api/leyla/v1/doctor-list/"
     );
     console.log(response.data); // Məlumatları konsolda göstərmək
     doctors.value = shuffle(response.data.results); // Doktorları təsadüfi olaraq qarışdırmaq
@@ -637,7 +637,7 @@ const fetchNews = async () => {
     isNewsLoading.value = true; // Yükləməyə başlayarkən true et
     
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/news-list/"
+      "https://bytexerp.online/api/leyla/v1/news-list/"
     );
     
     // Xəbərləri yaranma tarixinə görə azalan sıra ilə düzürük
@@ -660,7 +660,7 @@ const departments = ref([]);
 const fetchDepartments = async () => {
   try {
     const response = await axios.get(
-      "http://bytexerp.online/api/leyla/v1/department-list/"
+      "https://bytexerp.online/api/leyla/v1/department-list/"
     );
     // console.log(response.data); // Məlumatları konsolda göstərmək
     departments.value = response.data.results;

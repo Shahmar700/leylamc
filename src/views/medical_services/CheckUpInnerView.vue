@@ -205,7 +205,7 @@ const updateSeoMetadata = () => {
 const fetchCheckupData = async (slug) => {
   try {
     startLoading();
-    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/checkup-list/${slug}/`);
+    const response = await axios.get(`https://bytexerp.online/api/leyla/v1/checkup-list/${slug}/`);
     checkup.value = response.data || {};
     
     // Məlumatlar əldə edildikdən sonra SEO məlumatlarını yeniləyirik

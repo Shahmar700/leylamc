@@ -142,7 +142,7 @@ const updateSEO = () => {
 
   const fetchSurgeryDetails = async () => {
     try {
-      const response = await axios.get('http://bytexerp.online/api/leyla/v1/surgeondep-list/');
+      const response = await axios.get('https://bytexerp.online/api/leyla/v1/surgeondep-list/');
       const surgeries = response.data.results;
       surgery.value = surgeries.find(s => s.slug === route.params.slug);
       if (!surgery.value) {

@@ -63,7 +63,7 @@ const fetchDepartment = async () => {
       return;
     }
     
-    const apiUrl = `http://bytexerp.online/api/leyla/v1/department-list/${route.params.slug}/`;
+    const apiUrl = `https://bytexerp.online/api/leyla/v1/department-list/${route.params.slug}/`;
     const response = await axios.get(apiUrl);
     
     department.value = response.data;

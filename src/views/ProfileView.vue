@@ -414,7 +414,7 @@ const updateProfile = async () => {
     console.log('API sorğusu:', userData);
     
     // API-yə sorğu göndəririk
-    const response = await api.put(`http://bytexerp.online/api/leyla/v1/user-update/`, userData);
+    const response = await api.put(`https://bytexerp.online/api/leyla/v1/user-update/`, userData);
     
     // Profil məlumatlarını yeniləyirik
     userProfile.value = {
@@ -485,7 +485,7 @@ const fetchUserProfile = async () => {
   
   try {
     // Profil məlumatlarını əldə edirik
-    const response = await api.get(`http://bytexerp.online/api/leyla/v1/user-me/`);
+    const response = await api.get(`https://bytexerp.online/api/leyla/v1/user-me/`);
     console.log('Profil məlumatları:', response.data);
     userProfile.value = response.data;
 
@@ -544,7 +544,7 @@ const changePassword = async () => {
     });
     
     // POST əvəzinə PUT istifadə edirik
-    await api.put('http://bytexerp.online/api/leyla/v1/user-update/', {
+    await api.put('https://bytexerp.online/api/leyla/v1/user-update/', {
       password: newPassword.value
     });
     

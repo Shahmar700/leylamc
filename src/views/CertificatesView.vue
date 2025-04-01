@@ -67,7 +67,7 @@ const certificateTitles = computed(() => {
 const fetchCertificates = async () => {
   try {
     isLoading.value = true;
-    const response = await axios.get('http://bytexerp.online/api/leyla/v1/certificate-list/');
+    const response = await axios.get('https://bytexerp.online/api/leyla/v1/certificate-list/');
     certificates.value = response.data.results;
   } catch (error) {
     console.error('API çağırışında xəta:', error);

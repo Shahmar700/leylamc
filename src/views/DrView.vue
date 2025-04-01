@@ -244,10 +244,10 @@
             </div>
             <!-- Pagination -->
             <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
-                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angles-left"></i>
                 </button>
-                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angle-left"></i>
                 </button>
                 <span 
@@ -255,18 +255,18 @@
                     :key="page" 
                     @click="goToPage(page)" 
                     :class="{ 
-                        'font-bold': currentPage === page, 
-                        'active-page': currentPage === page, 
-                        'inactive-page': currentPage !== page && page !== '...',
-                        'pagination-dots': page === '...'
+                        'font-bold !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+                        'active-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage === page, 
+                        'inactive-page !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': currentPage !== page && page !== '...',
+                        'pagination-dots !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base': page === '...'
                     }"
                 >
                     {{ page }}
                 </span>
-                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angle-right"></i>
                 </button>
-                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button !m-[2px] screen-500:!m-1 text-xs screen-400:text-sm md:text-base">
                     <i class="fa-solid fa-angles-right"></i>
                 </button>
             </div>
@@ -426,7 +426,7 @@ const fetchCurrentUser = async () => {
   try {
     // Yalnız istifadəçi giriş etdiyi halda
     if (auth.isLoggedIn()) {
-      const response = await api.get('http://bytexerp.online/api/leyla/v1/user-me/');
+      const response = await api.get('https://bytexerp.online/api/leyla/v1/user-me/');
       currentUser.value = response.data;
       console.log('İstifadəçi məlumatları:', currentUser.value);
     }
@@ -448,7 +448,7 @@ const fetchDoctorComments = async () => {
     }
     
     // Rəyləri əldə et
-    const response = await api.get(`http://bytexerp.online/api/leyla/v1/comment-list/${doctorId}/`);
+    const response = await api.get(`https://bytexerp.online/api/leyla/v1/comment-list/${doctorId}/`);
     const fetchedComments = response.data.results || response.data;
     
     console.log('API-dan gələn rəylər:', fetchedComments[0]); // Debug üçün
@@ -657,7 +657,7 @@ const submitComment = async () => {
     console.log('Rəy göndərilir:', payload);
     
     // API sorğusunu göndərək
-    const response = await api.post('http://bytexerp.online/api/leyla/v1/comment-create/', payload);
+    const response = await api.post('https://bytexerp.online/api/leyla/v1/comment-create/', payload);
     
     console.log('API cavabı:', response.data);
     
@@ -733,7 +733,7 @@ const fetchDoctor = async (id = null) => {
     const encodedSlug = encodeURIComponent(route.params.id);
     console.log(`Həkim məlumatı çağırılır (kodlanmış): ${encodedSlug}`);
     
-    const response = await axios.get(`http://bytexerp.online/api/leyla/v1/doctor-list/${encodedSlug}/`);
+    const response = await axios.get(`https://bytexerp.online/api/leyla/v1/doctor-list/${encodedSlug}/`);
     doctor.value = response.data;
 
     // Şəkli öncədən yükləyək
@@ -748,7 +748,7 @@ const fetchDoctor = async (id = null) => {
     error.value = "Həkim məlumatlarını yükləmək mümkün olmadı.";
     // Həkimi ID ilə tapmağı sınayaq
     try {
-      const allResponse = await axios.get('http://bytexerp.online/api/leyla/v1/doctor-list/');
+      const allResponse = await axios.get('https://bytexerp.online/api/leyla/v1/doctor-list/');
       const doctorFound = allResponse.data.results.find(d => 
         d.slug === route.params.id || 
         d.slug === decodeURIComponent(route.params.id)

@@ -164,7 +164,7 @@ import { useAuthStore } from '@/store/auth';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const API_URL = 'http://bytexerp.online/api';
+const API_URL = 'https://bytexerp.online/api';
 
 const router = useRouter();
 const emit = defineEmits(['close', 'login-success']);
