@@ -21,7 +21,11 @@
         <p class="text-base sm:text-lg" v-html="pediatricText"></p>
         <br>
         <div v-if="pediatric.service_link">
-          <a target="_blank" :href="pediatric.service_link">{{ pediatric.service_link }}</a>
+          <a :href="pediatric.service_link" target="_blank" class="text-green-600 hover:text-green-800 underline">
+            <i class="fas fa-external-link-alt mr-2"></i>
+            Ətraflı məlumat üçün
+            <!-- {{ pediatric.service_link }} -->
+          </a>
         </div>
       </div>
       <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
@@ -32,7 +36,7 @@
 
     <!-- GALLERY SIDE  -->
     <div v-if="!loading && !error && pediatric" class="mt-10">
-      <GallerySection :images="images" />
+      <!-- <GallerySection :images="images" /> -->
     </div>
 
     <Maps v-if="!loading && !error && pediatric" class="mt-14 sm:mt-24"/>

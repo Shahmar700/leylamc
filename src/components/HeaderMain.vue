@@ -1324,11 +1324,13 @@ const isSurgeryRoute = computed(() => {
     route.path.includes("/az/bölmələr/cərrahiyyə")
   );
 });
+// CHeck up lar aktiv olduqda Tibbi xidmətlər deaktiv (öz rəngində) olsun 
 const isMedServiceRoute = computed(() => {
   return (
-    route.name === "medical-services" ||
+    (route.name === "medical-services" ||
     route.name === "medical-servicesl" ||
-    route.path.includes("/az/tibbi-xidmətlər")
+    route.path.includes("/az/tibbi-xidmətlər")) &&
+    !route.path.includes("/check-uplar")
   );
 });
 // Var olan computed property'lər yanına əlavə edin

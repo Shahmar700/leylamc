@@ -1,5 +1,5 @@
 <template>
-  <a class="p-2 rounded-3xl border hover:border-2 hover:border-primary transition-all duration-300 hover:scale-1005 hover:shadow-md cursor-pointer">
+  <a class="p-2 rounded-3xl border-2 hover:border-2 hover:border-primary transition-all duration-300 hover:scale-1005 hover:shadow-md cursor-pointer">
       <div class="rounded-3xl overflow-hidden w-full h-[325px] xl:h-[370px] 2xl:h-[400px] xl:object-contain relative">
           <!-- Overlay to hide alt text during loading -->
           <div v-if="!imageLoaded" 

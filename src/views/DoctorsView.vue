@@ -1,108 +1,114 @@
 <template>
   <div class="container mt-17">
-
-        <!-- Skeleton yükləməsi -->
-        <!-- <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" /> -->
-        <!-- Yüklənmə göstəricisi -->
-        <div v-if="isLoading">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <SkeletonDoctorCard v-for="n in 8" :key="n" class="mt-6" />
-          </div>
+    <!-- Filters Section - Conditional -->
+    <div v-if="!isLoading && !error"> 
+      <!-- Doctor Filters  -->
+      <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
+        <!-- Form content remains the same -->
+        <div class="flex flex-col w-full ">
+            <label for="name" class="mb-1 !text-main-text">Həkimin Adı, Soyadı</label>
+            <input type="text" id="name" v-model="name" class="border border-gray-300 p-2 rounded-md !h-[47px] outline-primary" placeholder="Həkimin Adı, Soyadı">
         </div>
-
-        <!-- Xəta göstəricisi (əgər varsa) -->
-        <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-sm mb-6">
-          <div class="flex items-center">
-            <svg class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-            </svg>
-            <p>{{ error }}</p>
-          </div>
+        <!-- Specializations -->
+        <div class="flex flex-col w-full ">
+            <label for="specializations" class="mb-1 !text-main-text">İxtisas seçin</label>
+            <multiselect 
+            v-model="selectedSpecializations" 
+              :options="filteredSpecializations" 
+              :multiple="true" 
+              placeholder="İxtisas seçin" 
+              label="specialty" 
+              track-by="specialty" 
+              class="rounded-md !h-[47px]"
+              selectLabel="Seçmək üçün Enter düyməsini basın"
+              selectedLabel="Seçildi"
+              deselectLabel="Çıxarmaq üçün Enter basın"
+              :customLabel="specialtyCustomLabel"
+            ></multiselect>
         </div>
-      <div v-else> 
-       <!-- Doctor Filters  -->
-       <form @submit.prevent="filterDoctors" class="flex flex-col md:flex-row gap-4 mt-5 items-center text-base lg:text-lg">
-          <div class="flex flex-col w-full ">
-              <label for="name" class="mb-1 !text-main-text">Həkimin Adı, Soyadı</label>
-              <input type="text" id="name" v-model="name" class="border border-gray-300  p-2 rounded-md !h-[47px] outline-primary" placeholder="Həkimin Adı, Soyadı">
-          </div>
-          <!-- Specializations -->
-          <div class="flex flex-col w-full ">
-              <label for="specializations" class="mb-1 !text-main-text">İxtisas seçin</label>
-              <multiselect 
-              v-model="selectedSpecializations" 
-                :options="filteredSpecializations" 
-                :multiple="true" 
-                placeholder="İxtisas seçin" 
-                label="specialty" 
-                track-by="specialty" 
-                class="rounded-md !h-[47px]"
-                selectLabel="Seçmək üçün Enter düyməsini basın"
-                selectedLabel="Seçildi"
-                deselectLabel="Çıxarmaq üçün Enter basın"
-                :customLabel="specialtyCustomLabel"
-              ></multiselect>
-          </div>
-          <!-- Select a department  -->
-          <div class="flex flex-col w-full ">
-              <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
-              <multiselect v-model="selectedDepartments" 
-                :options="filteredDepartments" 
-                :multiple="true" 
-                placeholder="Şöbə seçin" 
-                label="name" 
-                track-by="name" 
-                class="rounded-md !h-[47px]"
-                selectLabel="Seçmək üçün Enter düyməsini basın"
-                selectedLabel="Seçildi"
-                deselectLabel="Çıxarmaq üçün Enter basın"
-                :customLabel="customLabel">
-              </multiselect>
-          </div>
-        </form>
+        <!-- Select a department  -->
+        <div class="flex flex-col w-full ">
+            <label for="department" class="mb-1 !text-main-text">Şöbə seçin</label>
+            <multiselect v-model="selectedDepartments" 
+              :options="filteredDepartments" 
+              :multiple="true" 
+              placeholder="Şöbə seçin" 
+              label="name" 
+              track-by="name" 
+              class="rounded-md !h-[47px]"
+              selectLabel="Seçmək üçün Enter düyməsini basın"
+              selectedLabel="Seçildi"
+              deselectLabel="Çıxarmaq üçün Enter basın"
+              :customLabel="customLabel">
+            </multiselect>
+        </div>
+      </form>
     </div>
-      <div >
+
+    <!-- Error Indicator Section - Conditional -->
+    <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-sm mb-6">
+      <div class="flex items-center">
+        <svg class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+        </svg>
+        <p>{{ error }}</p>
+      </div>
+    </div>
+
+    <!-- Content Container - Fixed Min Height -->
+    <div class="doctors-content-container" style="min-height: 600px">
+      <!-- Loading State -->
+      <div v-if="isLoading">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <SkeletonDoctorCard v-for="n in 8" :key="n" class="mt-6" />
+        </div>
+      </div>
+      
+      <!-- Loaded Content -->
+      <div v-else>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <DoctorCard
-              v-for="doctor in paginatedDoctors"
-              :key="doctor.id"
-              :image="doctor.photo"
-              :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
-              :position="doctor.position"
-              @click="goToDoctor(doctor)"
-              class="mt-6"
+            v-for="doctor in paginatedDoctors"
+            :key="doctor.id"
+            :image="doctor.photo"
+            :name="`${doctor.degree} ${doctor.first_name} ${doctor.last_name}`"
+            :position="doctor.position"
+            @click="goToDoctor(doctor)"
+            class="mt-6"
           />
         </div>
-        <!-- Pagination -->
-        <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
-                        <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
-                            <i class="fa-solid fa-angles-left"></i>
-                        </button>
-                        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
-                            <i class="fa-solid fa-angle-left"></i>
-                        </button>
-                        <span 
-                            v-for="page in pages" 
-                            :key="page" 
-                            @click="goToPage(page)" 
-                            :class="{ 
-                                'font-bold': currentPage === page, 
-                                'active-page': currentPage === page, 
-                                'inactive-page': currentPage !== page && page !== '...',
-                                'pagination-dots': page === '...'
-                            }"
-                        >
-                            {{ page }}
-                        </span>
-                        <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
-                            <i class="fa-solid fa-angle-right"></i>
-                        </button>
-                        <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
-                            <i class="fa-solid fa-angles-right"></i>
-                        </button>
-                    </div>
-          </div>
       </div>
+    </div>
+
+    <!-- Pagination - ALWAYS VISIBLE when needed, regardless of loading state -->
+    <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center sticky bottom-0 bg-white py-2 shadow-md z-10">
+      <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+        <i class="fa-solid fa-angles-left"></i>
+      </button>
+        <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+      <span 
+        v-for="page in pages" 
+        :key="page" 
+        @click="goToPage(page)" 
+        :class="{ 
+          'font-bold': currentPage === page, 
+          'active-page': currentPage === page, 
+          'inactive-page': currentPage !== page && page !== '...',
+          'pagination-dots': page === '...'
+        }"
+      >
+        {{ page }}
+      </span>
+      <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+        <i class="fa-solid fa-angle-right"></i>
+      </button>
+      <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+        <i class="fa-solid fa-angles-right"></i>
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -253,16 +259,29 @@ const pages = computed(() => {
     }
 });
 
+// Pagination funksiyalarını yenilə
 const goToPage = (page) => {
     if (page === '...') return;
+    isLoading.value = true;
     currentPage.value = page;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Qısa gecikdirmə ilə yükləməni tamamla ki, UI daha hamar görünsün
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 300);
 };
 
 const goToFirstPage = () => {
+    if (currentPage.value === 1) return;
+    isLoading.value = true;
     currentPage.value = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 300);
 };
+
 
 const goToPreviousPage = () => {
     if (currentPage.value > 1) {
@@ -543,6 +562,12 @@ useHead({
 .pagination {
     margin-top: 2rem;
     user-select: none;
+    position: sticky !important; /* !important əlavə edərək digər CSS qaydalarını override edir */
+  bottom: 0 !important;
+  z-index: 10;
+  width: 100%;
+  padding: 0.5rem 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .pagination > * {
@@ -593,4 +618,10 @@ useHead({
     cursor: default;
     color: #6b7280;
 }
+.doctors-content-container {
+  position: relative;
+  z-index: 1;
+  min-height: 600px; /* Kartların ölçüsünə görə uyğunlaşdırın */
+}
+
 </style>

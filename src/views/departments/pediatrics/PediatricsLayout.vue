@@ -32,7 +32,7 @@
 
         <!-- GALLERY SIDE  -->
         <div v-if="images.length > 0" class="mt-10">
-           <GallerySection :images="images" />
+           <!-- <GallerySection :images="images" /> -->
         </div>
 
         <Maps class="mt-14 sm:mt-24"/>

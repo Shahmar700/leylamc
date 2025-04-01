@@ -74,6 +74,14 @@ body{
 }
 
 /* PAGINATION  */
+.pagination {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  padding: 5px 10px;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
 .pagination button {
   margin: 0 5px;
   background-color: #6bb52b;
@@ -107,14 +115,7 @@ body{
   padding: 5px 10px;
   border-radius: 5px;
 }
-.pagination {
-  position: sticky;
-  bottom: 0;
-  background-color: white;
-  padding: 5px 10px;
-  width: 100%;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-}
+
 
 
 @media screen and (max-width: 500px) {

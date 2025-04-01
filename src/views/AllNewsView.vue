@@ -1,67 +1,75 @@
 <template>
-    <div class="container mt-16 text-main-text">
-        <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
-            <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
-                <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
-                 <!-- Skeleton loaders for news cards during loading -->
-                 <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="i in 9" :key="i" class="relative mb-4 news-card-skeleton">
-                        <div class="w-full h-[180px] bg-gray-200 rounded-md animate-pulse"></div>
-                        <div class="mt-2 p-2">
-                            <div class="h-5 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                            <div class="h-4 bg-gray-200 rounded w-1/2 mt-2 animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Actual news cards when data is loaded -->
-                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="item in paginatedNews" :key="item.id" class="relative mb-4 news-card cursor-pointer overflow-hidden rounded-md" @click="goToNews(item.slug)">
-                        <div class="overflow-hidden">
-                            <img :src="item.main_photo" class="w-full h-auto rounded-md news-image transition-transform duration-300" :alt="item.title">
-                        </div>
-                        <p 
-                          class="text-base sm:text-lg mt-2 p-2 truncated-title" 
-                          :title="item.title"
-                        >
-                          {{ truncateTitle(item.title) }}
-                        </p>
-                    </div>
-                </div>
-                <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center">
-                <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
-                    <i class="fa-solid fa-angles-left"></i>
-                </button>
-                <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
-                    <i class="fa-solid fa-angle-left"></i>
-                </button>
-                <span 
-                    v-for="page in pages" 
-                    :key="page" 
-                    @click="goToPage(page)" 
-                    :class="{ 
-                        'font-bold': currentPage === page, 
-                        'active-page': currentPage === page, 
-                        'inactive-page': currentPage !== page && page !== '...',
-                        'pagination-dots': page === '...'
-                    }"
-                >
-                    {{ page }}
-                </span>
-                <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
-                    <i class="fa-solid fa-angle-right"></i>
-                </button>
-                <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
-                    <i class="fa-solid fa-angles-right"></i>
-                </button>
-            </div>
-            </div>
-            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
-                <SideBanners class="mb-4" /> 
-                <SideBanners2 class="mb-4" /> 
-            </div>
-        </div>
-        <Maps class="mt-14 sm:mt-24"/>
-    </div>
+  <div class="container mt-16 text-main-text">
+      <div class="flex flex-col md:flex-row md:items-start items-center sm:justify-between">
+          <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
+              <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ pageTitle }}</h1>
+              
+              <!-- Fixed height news container to prevent layout shifts -->
+              <div class="news-content-container" style="min-height: 800px">
+                  <!-- Skeleton loaders for news cards during loading -->
+                  <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div v-for="i in 9" :key="i" class="relative mb-4 news-card-skeleton">
+                          <div class="w-full h-[180px] bg-gray-200 rounded-md animate-pulse"></div>
+                          <div class="mt-2 p-2">
+                              <div class="h-5 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                              <div class="h-4 bg-gray-200 rounded w-1/2 mt-2 animate-pulse"></div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- Actual news cards when data is loaded -->
+                  <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div v-for="item in paginatedNews" :key="item.id" class="relative mb-4 news-card cursor-pointer overflow-hidden rounded-md" @click="goToNews(item.slug)">
+                          <div class="overflow-hidden">
+                              <img :src="item.main_photo" class="w-full h-auto rounded-md news-image transition-transform duration-300" :alt="item.title">
+                          </div>
+                          <p 
+                            class="text-base sm:text-lg mt-2 p-2 truncated-title" 
+                            :title="item.title"
+                          >
+                            {{ truncateTitle(item.title) }}
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Pagination - added sticky positioning and shadow -->
+              <div v-if="totalPages > 1" class="pagination mt-8 flex justify-center sticky bottom-0 bg-white py-2 shadow-md z-10">
+                  <button @click="goToFirstPage" :disabled="currentPage === 1" class="pagination-button">
+                      <i class="fa-solid fa-angles-left"></i>
+                  </button>
+                  <button @click="goToPreviousPage" :disabled="currentPage === 1" class="pagination-button">
+                      <i class="fa-solid fa-angle-left"></i>
+                  </button>
+                  <span 
+                      v-for="page in pages" 
+                      :key="page" 
+                      @click="goToPage(page)" 
+                      :class="{ 
+                          'font-bold': currentPage === page, 
+                          'active-page': currentPage === page, 
+                          'inactive-page': currentPage !== page && page !== '...',
+                          'pagination-dots': page === '...'
+                      }"
+                  >
+                      {{ page }}
+                  </span>
+                  <button @click="goToNextPage" :disabled="currentPage === totalPages" class="pagination-button">
+                      <i class="fa-solid fa-angle-right"></i>
+                  </button>
+                  <button @click="goToLastPage" :disabled="currentPage === totalPages" class="pagination-button">
+                      <i class="fa-solid fa-angles-right"></i>
+                  </button>
+              </div>
+          </div>
+          
+          <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+              <SideBanners class="mb-4" /> 
+              <SideBanners2 class="mb-4" /> 
+          </div>
+      </div>
+      <Maps class="mt-14 sm:mt-24"/>
+  </div>
 </template>
 
 <script setup>
@@ -157,47 +165,55 @@ const pages = computed(() => {
 const goToPage = (page) => {
     if (page === '...') return;
 
-    isLoading.value = true; // Start loading
+    isLoading.value = true; // Yükləmə başladı
+    currentPage.value = page;
+    
+    // Qısa gecikmə ilə yükləməni bitir
     setTimeout(() => {
-        currentPage.value = page;
-        isLoading.value = false; // End loading after 500ms
-    }, 500);
+        isLoading.value = false; // Yükləmə bitdi
+    }, 300);
 };
 
 const goToFirstPage = () => {
-    isLoading.value = true; // Start loading
+    if (currentPage.value === 1) return;
+    
+    isLoading.value = true; // Yükləmə başladı
+    currentPage.value = 1;
+    
     setTimeout(() => {
-        currentPage.value = 1;
-        isLoading.value = false; // End loading after 500ms
-    }, 500);
+        isLoading.value = false; // Yükləmə bitdi
+    }, 300);
 };
 
 const goToPreviousPage = () => {
     if (currentPage.value > 1) {
-        isLoading.value = true; // Start loading
+        isLoading.value = true; // Yükləmə başladı
+        currentPage.value--;
+        
         setTimeout(() => {
-            currentPage.value--;
-            isLoading.value = false; // End loading after 500ms
-        }, 500);
+            isLoading.value = false; // Yükləmə bitdi
+        }, 300);
     }
 };
 
 const goToNextPage = () => {
     if (currentPage.value < totalPages.value) {
-        isLoading.value = true; // Start loading
+        isLoading.value = true; // Yükləmə başladı
+        currentPage.value++;
+        
         setTimeout(() => {
-            currentPage.value++;
-            isLoading.value = false; // End loading after 500ms
-        }, 500);
+            isLoading.value = false; // Yükləmə bitdi
+        }, 300);
     }
 };
 
 const goToLastPage = () => {
-    isLoading.value = true; // Start loading
+    isLoading.value = true; // Yükləmə başladı
+    currentPage.value = totalPages.value;
+    
     setTimeout(() => {
-        currentPage.value = totalPages.value;
-        isLoading.value = false; // End loading after 500ms
-    }, 500);
+        isLoading.value = false; // Yükləmə bitdi
+    }, 300);
 };
 
 const router = useRouter();
@@ -321,18 +337,33 @@ watch(currentPage, () => {
     padding: 10px 0;
     z-index: 999999;
 }
-
-.pagination > * {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
-    margin: 0 0.25rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
+.news-content-container {
+  position: relative;
+  z-index: 1;
+  min-height: 800px; /* Kartların ölçüsünə görə uyğunlaşdırın */
 }
+.pagination {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 10;
+  background-color: white;
+  padding: 0.5rem 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+.pagination > * {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
 
 .pagination-button {
     background-color: #f3f4f6;
