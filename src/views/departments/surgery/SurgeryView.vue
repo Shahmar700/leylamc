@@ -5,9 +5,9 @@
           <h1 class="text-3xl font-semibold mb-10">{{ surgery?.name }}</h1>
           <p class="text-base sm:text-lg" v-html="surgeryText"></p>
           <br>
-          <div>
+          <!-- <div>
             <a target="_blank" :href="surgery?.service_link">{{ surgery?.service_link }}</a>
-          </div>
+          </div> -->
         </div>
         <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
           <SideBanners class="mb-4" /> 

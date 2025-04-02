@@ -52,6 +52,51 @@
                 data-aos="fade-up"
                 data-aos-delay="200"
                 />
+                <HistoryContent 
+                :dotImg="greenDot"
+                :tickImg="greenTick"
+                year="2023"
+                heading="Mart 2023-cü il"
+                prog1="Azərbaycanda ilk lisenziyalı Səyyar Anestezioloji xidməti fəaəliyyətə başladı."
+                data-aos="fade-up"
+                data-aos-delay="200"
+                />
+                <HistoryContent 
+                :dotImg="greenDot"
+                :tickImg="greenTick"
+                year="2024"
+                heading="Fevral 2024-cü il"
+                prog1="KT və MRT şöbəsi fəaliyyətə başladı."
+                data-aos="fade-up"
+                data-aos-delay="200"
+                />
+                <HistoryContent 
+                :dotImg="greenDot"
+                :tickImg="greenTick"
+                year="2024"
+                heading="İyun 2024-cü il"
+                prog1="Leyla Medical Center-in Pediatriya Mərkəzinin açılışı."
+                data-aos="fade-up"
+                data-aos-delay="200"
+                />
+                <HistoryContent 
+                :dotImg="greenDot"
+                :tickImg="greenTick"
+                year="2024"
+                heading="Dekabr 2024-cü il"
+                prog1="Regen Kök Hüceyrə Mərkəzinin açılışı."
+                data-aos="fade-up"
+                data-aos-delay="200"
+                />
+                <HistoryContent 
+                :dotImg="greenDot"
+                :tickImg="greenTick"
+                year="2025"
+                heading="Fevral 2025-ci il"
+                prog1="Leyla Medical Center-in Pediatriya 2 Mərkəzinin açılışı."
+                data-aos="fade-up"
+                data-aos-delay="200"
+                />
             </div>
         </div>
     </div>

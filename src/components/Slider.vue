@@ -76,6 +76,41 @@
   let intervalId;
   const loading = ref(true);
   const loadedImages = ref({});
+  const preloadedImages = ref([]);
+
+  
+  // Şəkilləri öncədən yükləmək üçün
+const preloadImages = () => {
+  preloadedImages.value = [];
+  
+  // Öncədən yükləmə prosesini başlat
+  props.images.forEach((image, index) => {
+    const img = new Image();
+    const imageUrl = image.url || image;
+    
+    img.onload = () => {
+      // Şəkil yükləndikdə
+      loadedImages.value[index] = true;
+      preloadedImages.value[index] = imageUrl;
+      checkAllImagesLoaded();
+    };
+    
+    img.onerror = () => {
+      // Şəkil yüklənməsində xəta olduqda
+      loadedImages.value[index] = true;
+      checkAllImagesLoaded();
+    };
+    
+    // Yükləməni başlat
+    if (imageUrl) {
+      img.src = imageUrl;
+    } else {
+      // Əgər şəkil URL-i yoxdursa, yüklənmiş hesab et
+      loadedImages.value[index] = true;
+      checkAllImagesLoaded();
+    }
+  });
+};
   
 // Şəkil yükləndikdə işləyən funksiya
 const handleImageLoad = (index) => {
@@ -334,5 +369,25 @@ onMounted(() => {
   
   .dot.active {
     background: green;
+  }
+
+  /* Şəkil yüklənmə xətası ikonlarını gizlətmək üçün əlavə CSS */
+  img {
+    /* Yüklənməmiş şəkillərin broken image ikonunu gizlətmək */
+    min-height: 100px; /* Minimum hündürlük təyin edin */
+  }
+
+  img.slide-image {
+    /* Yüklənə bilməyən şəkilləri gizlətmək üçün */
+    font-size: 0; /* Text alternativi gizlədir */
+    color: transparent; /* Text rəngini şəffaf edir */
+  }
+
+  img.slide-image::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0; /* Arxa fon rəngi */
   }
   </style>

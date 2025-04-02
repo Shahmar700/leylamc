@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap'); */
+
+
+* {
+  scroll-behavior: smooth;
+  /* font-family: 'Roboto', sans-serif; */
+  /* font-family: 'Open Sans', sans-serif; */
+  /* font-family: 'Montserrat', sans-serif; */
+  /* font-family: 'Merriweather', sans-serif; */
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+}
+  
+.greenBtn {
+  font-size: 18px;
+  background-color: #6bb52b;
+  color: #fff;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+@media screen and (min-width: 320px) {
+  .greenBtn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+.greenBtn:hover{
+  color: #6bb52b;
+  background-color: #fff;
+  border-color: #6bb52b;
+}
+
+.orangeBtn {
+  font-size: 18px;
+  background-color: #ef7c00;
+  color: #fff;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.orangeBtn:hover{
+  color: #ef7c00;
+  background-color: #fff;
+  border-color: #ef7c00;
+}
+
+.router-link-active {
+  color: #6bb52b !important;
+}
+
+
+.header-white {
+  background-color: white;
+}
+
+.header-gray {
+  background-color: #fafafa;
+}
+
+/* PAGINATION  */
+.pagination {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  padding: 5px 10px;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.pagination button {
+  margin: 0 5px;
+  background-color: #6bb52b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.pagination button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+.pagination span {
+  margin: 0 3px;
+  cursor: pointer;
+  border: 1px solid #6bb52b;
+  border-radius: 3px;
+}
+.font-bold {
+  font-weight: bold;
+}
+.pagination .active-page {
+  background-color: #6bb52b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.inactive-page {
+  color: #a5d6a7;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
+
+@media screen and (max-width: 500px) {
+  .pagination button {
+    margin: 0 2px;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .pagination span {
+    margin: 0 2px;
+    border-radius: 3px;
+  }
+  .pagination .active-page {
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .inactive-page {
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .pagination {
+    padding: 3px 8px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .pagination button {
+    margin: 0 1px;
+    padding: 1px 6px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .pagination span {
+    margin: 0 2px;
+    border-radius: 3px;
+  }
+  .pagination .active-page {
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .inactive-page {
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .pagination {
+    padding: 1px 6px;
+  }
+}

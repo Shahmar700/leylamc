@@ -13,7 +13,7 @@
         <br>
         
         <!-- Service links if available -->
-        <div class="flex flex-col flex-wrap gap-4 mt-4">
+        <!-- <div class="flex flex-col flex-wrap gap-4 mt-4">
             <a v-if="serviceData?.service_link" target="_blank" 
               :href="serviceData.service_link" 
               class="text-green-600 hover:text-green-800 text-[14px] screen-400:text-base flex items-center">
@@ -31,7 +31,7 @@
               class="text-green-600 hover:text-green-800  text-[14px] screen-400:text-base flex items-center">
               <i class="fas fa-external-link-alt mr-2"></i> Ətraflı məlumat üçün
             </a>
-          </div>
+          </div> -->
         <!-- Service photo if available -->
         <div v-if="serviceData?.photo" class="mt-10">
           <img :src="serviceData.photo" :alt="serviceData.title" class="w-full max-w-3xl mx-auto rounded-lg">

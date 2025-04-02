@@ -17,7 +17,7 @@
             :icon="serviceIcon1"
             title="Ünvanda Xidmət"
             description="Ünvanda müayinə rahat, komfortlu və operativ tibbi xidmətin ən optimal üsuludur."
-            @click="goToService('/medical-services/unvanda-xidmt')"
+            @click="goToService('/az/tibbi-xidmətlər/unvanda-xidmt')"
           />
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
@@ -26,7 +26,7 @@
             title="Təcili Tibbi Yardım"
             description="Təcili və Təxirə salmaz Tibbi yardım xidməti üzrə 
             briqadamız 7/24 sizə yüksək səviyyədə diaqnostik-müalicəvi xidmət göstərir. "
-            @click="goToService('/medical-services/tcili-tibbi-yardm')"
+            @click="goToService('/az/tibbi-xidmətlər/tcili-tibbi-yardm')"
           />
           <Service
             class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-200"
@@ -34,7 +34,7 @@
             :icon="serviceIcon3"
             title="Çağrı Mərkəzimiz"
             description="*0101 çağrı mərkəzi dinləmədədir. Suallarınızı cavablandırmağa hazırıq!"
-            @click="goToService('contact')"
+            @click="goToService('/az/əlaqə')"
           />
         </div>
       </div>
@@ -60,19 +60,19 @@
           :eService="eService1"
           title="E - Növbə"
           description="Online qəbula e - növbəyə yazılın"
-          link="/online-services/e-randevu"
+          link="/az/online-xidmətlər/e-appointment"
         />
         <Eservice
           :eService="eService2"
           title="E - Nəticə"
           description="Analizlərin nəticələrini əldə edin"
-          link="/online-services/e-result"
+          link="/az/online-xidmətlər/e-nəticə"
         />
         <Eservice
           :eService="eService3"
           title="E - Ödəmə"
           description="Ödənişləri e-ödəmə vasitəsiylə edin"
-          link="/online-services/e-payment"
+          link="/az/online-xidmətlər/e-payment"
         />
         <!-- <Eservice 
           :eService="eService4" 
@@ -84,7 +84,7 @@
           :eService="eService5"
           title="E - Məsləhət"
           description="Xidmətlərimizi online sifariş edin"
-          link="/online-services/e-məsləhət"
+          link="/az/online-xidmətlər/e-məsləhət"
         />
       </div>
     </div>
@@ -311,7 +311,7 @@
             </div>
             <div class="mt-4 sm:mt-0">
               <router-link
-                to="/doctors"
+                to="/az/həkimlər/həkimlərimiz"
                 class="greenBtn tracking-wide text-base screen-500:text-lg lg:text-xl"
                 >Həkimlərimiz</router-link
               >

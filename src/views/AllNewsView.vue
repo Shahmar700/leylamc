@@ -167,7 +167,7 @@ const goToPage = (page) => {
 
     isLoading.value = true; // Yükləmə başladı
     currentPage.value = page;
-    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     // Qısa gecikmə ilə yükləməni bitir
     setTimeout(() => {
         isLoading.value = false; // Yükləmə bitdi
@@ -179,7 +179,7 @@ const goToFirstPage = () => {
     
     isLoading.value = true; // Yükləmə başladı
     currentPage.value = 1;
-    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
         isLoading.value = false; // Yükləmə bitdi
     }, 300);
@@ -189,7 +189,7 @@ const goToPreviousPage = () => {
     if (currentPage.value > 1) {
         isLoading.value = true; // Yükləmə başladı
         currentPage.value--;
-        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => {
             isLoading.value = false; // Yükləmə bitdi
         }, 300);
@@ -200,7 +200,7 @@ const goToNextPage = () => {
     if (currentPage.value < totalPages.value) {
         isLoading.value = true; // Yükləmə başladı
         currentPage.value++;
-        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setTimeout(() => {
             isLoading.value = false; // Yükləmə bitdi
         }, 300);
@@ -210,7 +210,7 @@ const goToNextPage = () => {
 const goToLastPage = () => {
     isLoading.value = true; // Yükləmə başladı
     currentPage.value = totalPages.value;
-    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
         isLoading.value = false; // Yükləmə bitdi
     }, 300);

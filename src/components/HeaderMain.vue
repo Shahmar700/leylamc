@@ -353,7 +353,7 @@
             </li>
             <!-- Surgery END -->
             <!-- DEPARTMENT (HEADER)  -->
-            <ul class="max-h-[620px] overflow-y-scroll overflow-x-hidden">
+            <ul class="max-h-[500px] overflow-y-scroll overflow-x-hidden">
               <li
                 v-for="department in departments"
                 :key="department.id"
@@ -1431,8 +1431,23 @@ const handleDoctorSelect = (result) => {
       router.push(`/az/haqqımızda/mediada-biz/vakansiya/vakansiya-${result.id - 1}`);
     }
   } else if (result.resultType === 'article') {
-    // YENİ: Məqalə seçildikdə
+    // Məqalə seçildikdə
     router.push(`/az/həkimlər/həkim-məqalələri/${result.slug}`);
+  } else if (result.resultType === 'checkup') {
+    // Checkup seçildikdə - DÜZƏLDILMIŞ KOD
+    const targetUrl = `/az/tibbi-xidmətlər/check-uplar/${result.slug}`;
+    
+    // Əgər artıq bir checkup səhifəsindəyiksə
+    if (router.currentRoute.value.path.includes('/check-uplar/')) {
+      // Əvvəlcə başqa bir ünvana yönləndirib, sonra hədəf ünvana keçirik
+      // Bu, komponentin tamamilə yenidən yüklənməsini təmin edir
+      router.replace('/az').then(() => {
+        router.push(targetUrl);
+      });
+    } else {
+      // Normal naviqasiya - ilk dəfə checkup-a keçid
+      router.push(targetUrl);
+    }
   } else {
     // Həkim seçildikdə (mövcud funksional)
     router.push({
@@ -1517,7 +1532,7 @@ import searchIcon from "../assets/icons/search.svg";
 
 // OPEN VACCINES PDF
 const openPdf = () => {
-  window.open("/src/assets/peyvend/peyvend-kitabcasi.pdf", "_blank");
+  window.open("/assets/peyvend/peyvend-kitabcasi.pdf", "_blank");
 };
 
 // API çağırışı

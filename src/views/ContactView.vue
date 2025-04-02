@@ -80,7 +80,7 @@ useHead({
       content: 'Leyla Medical Center və bütün filiallarının əlaqə məlumatları, ünvanlar və telefon nömrələri. Bizə zəng edin, yazın və ya birbaşa ziyarət edin.' 
     },
     { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://leylamc.com/contact' },
+    { property: 'og:url', content: 'https://leylamc.com/az/əlaqə' },
     { property: 'og:image', content: 'https://leylamc.com/images/contact-header.jpg' },
     { property: 'og:site_name', content: 'Leyla Medical Center' },
     { property: 'og:locale', content: 'az_AZ' },
@@ -210,7 +210,7 @@ useHead({
     }
   ],
   link: [
-    { rel: 'canonical', href: 'https://leylamc.com/contact' }
+    { rel: 'canonical', href: 'https://leylamc.com/az/əlaqə' }
   ]
 });
 </script>

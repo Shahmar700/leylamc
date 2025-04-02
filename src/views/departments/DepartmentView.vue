@@ -14,12 +14,12 @@
         <h1 class="text-3xl font-semibold mb-10">{{ department.name }}</h1>
         <div class="text-base sm:text-lg" v-html="formattedText"></div>
         <br>
-        <div v-if="department.link">
+        <!-- <div v-if="department.link">
           <a :href="department.link" target="_blank" class="text-green-600 hover:text-green-800 underline">
             <i class="fas fa-external-link-alt mr-2"></i>
             Ətraflı məlumat üçün
           </a>
-        </div>
+        </div> -->
       </div>
       <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
         <SideBanners class="mb-4" /> 

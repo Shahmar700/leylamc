@@ -210,25 +210,30 @@ const pages = computed(() => {
 const goToPage = (page) => {
     if (page === '...') return;
     currentPage.value = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToFirstPage = () => {
     currentPage.value = 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToPreviousPage = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (currentPage.value > 1) {
         currentPage.value--;
     }
 };
 
 const goToNextPage = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
     }
 };
 
 const goToLastPage = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     currentPage.value = totalPages.value;
 };
 

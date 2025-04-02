@@ -476,7 +476,7 @@ import ProfileView from '@/views/ProfileView.vue'
       meta: { breadcrumb: 'Aksiya Detalları' }
     },
     {
-      path: '/contact',
+      path: '/az/əlaqə',
       name: 'contact',
       component: ContactView,
       meta: { breadcrumb: 'Əlaqə' }
