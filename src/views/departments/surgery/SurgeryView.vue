@@ -189,9 +189,11 @@ const updateSEO = () => {
   });
   
   const surgeryText = computed(() => {
-    return surgery.value ? surgery.value.text : '';
-  });
-  
+  return surgery.value?.text
+    ? surgery.value.text.replace(/\n/g, "<br>").replace(/(.*?:)/g, "<b>$1</b>")
+    : '';
+});
+
   // Sadəcə API-dən gələn şəkilləri qaytarırıq
   const images = computed(() => {
     return surgeryPhotos.value;

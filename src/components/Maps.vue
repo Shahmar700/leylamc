@@ -1,7 +1,11 @@
 <template>
   <div class="relative">
-    <!-- Location Buttons - Daim görünən -->
-    <div class="absolute flex gap-2 bottom-5 left-1/2 transform -translate-x-1/2 md:bottom-auto md:top-5 lg:top-10 z-10">
+    <!-- Location Buttons - Xəritə yükləndikdən sonra görünəcək -->
+    <div 
+      v-show="isIframeLoaded" 
+      class="absolute flex gap-2 bottom-5 left-1/2 transform -translate-x-1/2 md:bottom-auto md:top-5 lg:top-10 z-10 transition-opacity duration-300"
+      :class="{'opacity-0': !isIframeLoaded, 'opacity-100': isIframeLoaded}"
+    >
       <button 
         v-for="(location, index) in locations" 
         :key="index"
@@ -18,8 +22,12 @@
       </button>
     </div>
     
-    <!-- Map/Satellite Buttons - Daim görünən -->
-    <div class="absolute flex top-3 right-3 lg:top-10 lg:right-10 z-10">
+    <!-- Map/Satellite Buttons - Xəritə yükləndikdən sonra görünəcək -->
+    <div 
+      v-show="isIframeLoaded" 
+      class="absolute flex top-3 right-3 lg:top-10 lg:right-10 z-10 transition-opacity duration-300"
+      :class="{'opacity-0': !isIframeLoaded, 'opacity-100': isIframeLoaded}"
+    >
       <button 
         @click="showMap" 
         :class="[
@@ -44,12 +52,12 @@
       </button>
     </div>
     
-    <!-- Xəritə və Skeleton konteyner -->
+    <!-- Xəritə konteyner -->
     <div class="relative overflow-hidden rounded-2xl">
       <!-- Xəritə iframe -->
       <iframe 
-        v-show="!isChanging"
         :src="currentMapUrl" 
+        @load="handleIframeLoad"
         class="w-full h-80 sm:h-96 md:h-[480px] lg:h-[600px] xl:h-[720px] 2xl:h-[840px]"
         style="border:0;" 
         allowfullscreen="" 
@@ -57,26 +65,17 @@
         referrerpolicy="no-referrer-when-downgrade"
       ></iframe>
       
-      <!-- Təkmilləşdirilmiş Xəritə Skeleton -->
+      <!-- Yükləmə göstəricisi -->
       <div 
-        v-show="isChanging" 
-        class="w-full h-80 sm:h-96 md:h-[480px] lg:h-[600px] xl:h-[720px] 2xl:h-[840px] bg-gray-100 rounded-2xl flex items-center justify-center"
+        :class="{'opacity-0': !isIframeLoaded, 'opacity-100': isIframeLoaded}"
+        v-if="isChanging || !isIframeLoaded" 
+        class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center"
       >
-        <!-- Təmiz və sadə yükləmə göstəricisi -->
         <div class="flex flex-col items-center">
-          <div class="relative w-16 h-16">
-            <!-- Dairəvi yükləmə animasiyası -->
-            <div class="absolute inset-0 rounded-full border-4 border-gray-200"></div>
-            <div class="absolute inset-0 rounded-full border-4 border-t-primary animate-spin"></div>
-            
-            <!-- Xəritə ikonu - mərkəzdə -->
-            <div class="absolute inset-0 flex items-center justify-center text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </div>
-          </div>
-          <span class="mt-4 text-gray-600 font-medium">Xəritə yüklənir...</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+          </svg>
+          <span class="text-gray-600 font-medium text-lg">Xəritə yüklənir...</span>
         </div>
       </div>
     </div>
@@ -84,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 // Xəritə yerləşimləri
 const locations = [
@@ -112,6 +111,27 @@ const locations = [
 const currentLocation = ref(0);
 const isMapMode = ref(true);
 const isChanging = ref(false);
+const isIframeLoaded = ref(false);
+
+// iframe yüklənməsi tamamlandığında çağırılan handler
+const handleIframeLoad = () => {
+  console.log('Iframe loaded');
+  
+  // İlkin yüklənmə zamanı
+  if (!isIframeLoaded.value) {
+    // Kiçik gecikmə ilə buttonları göstər
+    setTimeout(() => {
+      isIframeLoaded.value = true;
+    }, 300);
+  }
+  
+  // Xəritə dəyişikliyi zamanı
+  if (isChanging.value) {
+    setTimeout(() => {
+      isChanging.value = false;
+    }, 300);
+  }
+};
 
 // Enhanced location selection with skeleton loading
 const selectLocation = (index) => {

@@ -94,7 +94,9 @@ watch(() => route.params.slug, (newSlug) => {
 }, { immediate: true });
 
 const pediatricText = computed(() => {
-  return pediatric.value ? pediatric.value.text : '';
+  return pediatric.value.text
+    ? pediatric.value.text.replace(/\n/g, "<br>").replace(/(.*?:)/g, "<b>$1</b>") 
+    : '';
 });
 
 // Gallery Pediatrics - Şəkillər dəyişdirilə bilər

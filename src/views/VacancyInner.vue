@@ -50,10 +50,10 @@
             </span>
           </div>
           
-          <h3 class="text-lg mb-6">Leyla Medical Center aşağıda qeyd edilən ixtisaslar üzrə vakant yerlər elan edir:</h3>
-          
+          <!-- <h3 class="text-lg mb-6">Leyla Medical Center aşağıda qeyd edilən ixtisaslar üzrə vakant yerlər elan edir:</h3> -->
+          <div class="vacancy-content prose max-w-none" v-html="formatText(vacancy.skills_demand)"></div>
           <!-- Vakansiya detalları -->
-          <div class="vacancy-details mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg">
+          <!-- <div class="vacancy-details mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-lg">
             <div>
               <h2 class="text-lg font-semibold mb-2 text-primary">Vəzifə</h2>
               <p>{{ vacancy.job_position }}</p>
@@ -64,7 +64,6 @@
               <p>{{ vacancy.job_salary }} AZN</p>
             </div>
             
-            <!-- Tarixi məlumatlar -->
             <div>
               <h2 class="text-lg font-semibold mb-2 text-primary">Vakansiya tarixləri</h2>
               <p v-if="vacancy.created_at" class="mb-1">
@@ -76,18 +75,17 @@
               </p>
             </div>
             
-            <!-- Əlaqə məlumatları (əgər API-dən gəlirsə) -->
             <div v-if="vacancy.contact_info">
               <h2 class="text-lg font-semibold mb-2 text-primary">Əlaqə</h2>
               <p>{{ vacancy.contact_info }}</p>
             </div>
-          </div>
+          </div> -->
           
           <!-- Tələb olunan bacarıqlar -->
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <h2 class="text-xl font-semibold mb-4 text-primary border-b pb-2">Tələb olunan bacarıqlar</h2>
             <div class="vacancy-content prose max-w-none" v-html="formatText(vacancy.skills_demand)"></div>
-          </div>
+          </div> -->
           
           <!-- Əlavə məlumatlar (əgər varsa) -->
           <div v-if="vacancy.additional_info" class="mt-8">

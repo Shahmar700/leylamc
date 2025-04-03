@@ -1194,7 +1194,7 @@ const combinedSearch = debounce(async (query) => {
     const encodedQuery = encodeURIComponent(searchText);
 
     // Paralel sorğular göndəririk
-    const [doctorResponse, vacancyResponse, articleResponse, checkupResponse] = await Promise.all([
+    const [doctorResponse, vacancyResponse, articleResponse, checkupResponse, authorResponse, certificateResponse, healthPavilionResponse] = await Promise.all([
       // Həkim sorğusu
       axios.get(`https://bytexerp.online/api/leyla/v1/doctor-list/?search=${encodedQuery}&fields=first_name,first_name_az,first_name_ru,last_name,last_name_az,last_name_ru,degree,degree_az,degree_ru,category,category_ru,category_en`),
       
@@ -1205,7 +1205,16 @@ const combinedSearch = debounce(async (query) => {
       axios.get(`https://bytexerp.online/api/leyla/v1/article-list/?search=${encodedQuery}`),
       
       // Checkup paketləri sorğusu 
-      axios.get(`https://bytexerp.online/api/leyla/v1/checkup-list/?search=${encodedQuery}`)
+      axios.get(`https://bytexerp.online/api/leyla/v1/checkup-list/?search=${encodedQuery}`),
+
+      // Müəllif sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/latestnews-list/?search=${encodedQuery}`),
+
+      // Sertifikat sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/certificate-list/?search=${encodedQuery}`),
+
+      // Sağlıq köşkü sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/health-pavilion-list/?search=${encodedQuery}`)
     ]);
 
     // Həkim nəticələrini emal edirik
@@ -1406,15 +1415,93 @@ const combinedSearch = debounce(async (query) => {
       }));
     }
 
-    // Nəticələri birləşdiririk
-    searchResults.value = [...doctorResults, ...vacancyResults, ...articleResults, ...checkupResults];
-    } catch (error) {
-      console.error("Axtarış zamanı xəta:", error);
-      searchResults.value = [];
-    } finally {
-      isSearchLoading.value = false;
+    // Müəllif nəticələrini emal edirik
+    let authorResults = [];
+    if (authorResponse.data && authorResponse.data.results) {
+      // Müəllifləri filter edirik
+      authorResults = authorResponse.data.results.filter((author) => {
+        const authorMatch = author.author && 
+          author.author.toLowerCase().includes(searchText.toLowerCase());
+        
+        return authorMatch;
+      });
+
+      // Müəllifləri SearchBox komponentində göstərmək üçün uyğun formata çeviririk
+      authorResults = authorResults.map(author => ({
+        id: author.id,
+        slug: author.id, // ID-ni slug kimi istifadə edirik
+        first_name: author.author || "Müəllif",
+        last_name: "",
+        degree: "PDF: ",
+        position: "",
+        photo: "",
+        resultType: 'author',
+        isAuthor: true,
+        pdfFile: author.pdf_file // PDF faylının URL-ni saxlayırıq
+      }));
     }
-  }, 300);
+
+    // Sertifikat nəticələrini emal edirik
+    let certificateResults = [];
+    if (certificateResponse.data && certificateResponse.data.results) {
+      // "Sertifikat" sözü yazıldıqda yalnız bir nəticə göstər
+      const searchLower = searchText.toLowerCase();
+      const isCertificateSearch = searchLower === 'sertifikat' || 
+                                searchLower.includes('sertifikat') ||
+                                searchLower === 'sertifikatlar' || 
+                                searchLower.includes('sertifikatlar');
+      
+      if (isCertificateSearch) {
+        // Sertifikat sözü yazıldıqda yalnız bir nəticə göstər
+        certificateResults = [{
+          id: 'certificates',
+          slug: 'sertifikatlar',
+          first_name: "Sertifikatlar",
+          last_name: "",
+          degree: "Sertifikatlar: ",
+          position: "",
+          photo: "",
+          resultType: 'certificate'
+        }];
+      } else {
+        // Digər axtarışlar üçün boş array qaytar
+        certificateResults = [];
+      }
+    }
+
+    // Sağlıq köşkü nəticələrini emal edirik
+    let healthPavilionResults = [];
+    if (healthPavilionResponse.data && healthPavilionResponse.data.results) {
+      // Sağlıq köşkü nəticələrini title sahəsi üzrə filterdən keçiririk
+      healthPavilionResults = healthPavilionResponse.data.results.filter((pavilion) => {
+        const titleMatch = pavilion.title && 
+          pavilion.title.toLowerCase().includes(searchText.toLowerCase());
+        
+        return titleMatch;
+      });
+
+      // Sağlıq köşkü nəticələrini SearchBox komponentində göstərmək üçün uyğun formata çeviririk
+      healthPavilionResults = healthPavilionResults.map(pavilion => ({
+        id: pavilion.id,
+        slug: pavilion.id, // ID-ni slug kimi istifadə edirik
+        first_name: pavilion.title || "Sağlıq köşkü",
+        last_name: "",
+        degree: "Sağlıq köşkü: ",
+        position: "",
+        photo: pavilion.photo || "", // Şəkil varsa göstəririk
+        resultType: 'healthPavilion' // Sağlıq köşkü tipini qeyd edirik
+      }));
+    }
+
+    // Nəticələri birləşdiririk
+    searchResults.value = [...doctorResults, ...vacancyResults, ...articleResults, ...checkupResults, ...authorResults, ...certificateResults, ...healthPavilionResults];
+  } catch (error) {
+    console.error("Axtarış zamanı xəta:", error);
+    searchResults.value = [];
+  } finally {
+    isSearchLoading.value = false;
+  }
+}, 300);
 
 // // Axtarış handler funksiyası
 // const handleSearch = (query) => {
@@ -1434,22 +1521,27 @@ const handleDoctorSelect = (result) => {
     // Məqalə seçildikdə
     router.push(`/az/həkimlər/həkim-məqalələri/${result.slug}`);
   } else if (result.resultType === 'checkup') {
-    // Checkup seçildikdə - DÜZƏLDILMIŞ KOD
+    // Checkup seçildikdə
     const targetUrl = `/az/tibbi-xidmətlər/check-uplar/${result.slug}`;
     
-    // Əgər artıq bir checkup səhifəsindəyiksə
     if (router.currentRoute.value.path.includes('/check-uplar/')) {
-      // Əvvəlcə başqa bir ünvana yönləndirib, sonra hədəf ünvana keçirik
-      // Bu, komponentin tamamilə yenidən yüklənməsini təmin edir
       router.replace('/az').then(() => {
         router.push(targetUrl);
       });
     } else {
-      // Normal naviqasiya - ilk dəfə checkup-a keçid
       router.push(targetUrl);
     }
+  } else if (result.resultType === 'author') {
+    // Müəllif seçildikdə PDF faylını yeni pəncərədə açırıq
+    window.open(result.pdfFile, '_blank');
+  } else if (result.resultType === 'certificate') {
+    // Sertifikat seçildikdə
+    router.push('/az/haqqımızda/sertifikatlar');
+  } else if (result.resultType === 'healthPavilion') {
+    // Sağlıq köşkü seçildikdə
+    router.push('/az/haqqımızda/mediada-biz/sağlıq-köşkü');
   } else {
-    // Həkim seçildikdə (mövcud funksional)
+    // Həkim seçildikdə
     router.push({
       name: "doctor", 
       params: { id: result.slug },

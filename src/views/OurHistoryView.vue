@@ -99,6 +99,7 @@
                 />
             </div>
         </div>
+        <Maps class="mt-14 sm:mt-24" />
     </div>
 </template>
 
@@ -108,6 +109,7 @@ import greenDot from "@/assets/icons/green-dot.svg"
 import greenTick from "@/assets/icons/green-tick.svg"
 import HistoryContent from "@/components/HistoryContent.vue";
 import { useHead } from '@vueuse/head';
+import Maps from "@/components/Maps.vue";
 
 // Səhifə başlığını bir dəyişəndə saxlayırıq
 const pageHeading = ref('Tariximiz');

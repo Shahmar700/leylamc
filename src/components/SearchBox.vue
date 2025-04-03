@@ -43,10 +43,12 @@
           <!-- Şəkilsiz nəticələr üçün məlumat hissəsi (soldan boşluq olmadan) -->
           <div :class="[result.photo ? 'ml-3' : '', 'flex-grow']">
             <p class="font-medium text-sm">
-            <!-- Tipi rəngli göstəririk -->
-            <span v-if="result.degree" class="text-primary font-semibold">{{ result.degree }}</span>
-            {{ result.first_name }} {{ result.last_name }}
-          </p>
+              <!-- Tipi rəngli göstəririk -->
+              <span v-if="result.degree" class="text-primary font-semibold">{{ result.degree }}</span>
+              {{ result.first_name }} {{ result.last_name }}
+              <!-- PDF icon - müəllif nəticələri üçün -->
+              <i v-if="result.isAuthor" class="fas fa-file-pdf text-red-500 ml-2"></i>
+            </p>
             <p class="text-sm text-gray-600">{{ result.position }}</p>
           </div>
         </div>

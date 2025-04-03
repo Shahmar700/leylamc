@@ -150,7 +150,7 @@ const fetchPhotos = async () => {
         const response = await axios.get('https://bytexerp.online/api/leyla/v1/photo-gallery-list/');
         
         if (response.data && response.data.results) {
-            photos.value = response.data.results;
+            photos.value = response.data.results.reverse(); // Şəkilləri tərsinə çevir
             totalItems.value = response.data.count || photos.value.length;
             console.log(`${photos.value.length} ədəd şəkil yükləndi`);
         } else {

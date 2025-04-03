@@ -207,17 +207,19 @@ const fetchVideos = async () => {
         const response = await axios.get('https://bytexerp.online/api/leyla/v1/video-gallery-list/');
         
         if (response.data && response.data.results) {
-            // Sadəcə validli linkləri saxlayırıq
-            videos.value = response.data.results.filter(video => {
-                if (!video.link) {
-                    console.warn(`ID: ${video.id} olan videoda link yoxdur`);
-                    return false;
-                }
-                
-                // YouTube linkini yoxlayırıq
-                const embedUrl = getEmbedUrl(video.link);
-                return embedUrl !== '';
-            });
+            // Sadəcə validli linkləri saxlayırıq və tərsinə çeviririk
+            videos.value = response.data.results
+                .filter(video => {
+                    if (!video.link) {
+                        console.warn(`ID: ${video.id} olan videoda link yoxdur`);
+                        return false;
+                    }
+                    
+                    // YouTube linkini yoxlayırıq
+                    const embedUrl = getEmbedUrl(video.link);
+                    return embedUrl !== '';
+                })
+                .reverse(); // Videoları tərsinə çevir
             
             totalItems.value = videos.value.length;
             console.log(`${videos.value.length} ədəd video yükləndi`);

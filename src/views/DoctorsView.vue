@@ -108,6 +108,7 @@
         <i class="fa-solid fa-angles-right"></i>
       </button>
     </div>
+    <Maps class="mt-14 sm:mt-24" />
   </div>
 </template>
 
@@ -119,7 +120,8 @@ import axios from 'axios';
 import { useHead } from '@vueuse/head'; // Əlavə et
 import SkeletonLoader from "@/components/SkeletonLoader.vue";
 import { useSkeleton } from "@/composables/useSkeleton";
-import SkeletonDoctorCard from '@/components/SkeletonDoctorCard.vue'; // Yeni komponenti import edirik
+import SkeletonDoctorCard from '@/components/SkeletonDoctorCard.vue';
+import Maps from "@/components/Maps.vue"; // Yeni komponenti import edirik
 
 
 // Skeleton loading hookunu 400ms gecikdirmə ilə çağırırıq
