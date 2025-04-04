@@ -464,12 +464,12 @@ const fetchYoutubeVideos = async () => {
     const response = await axios.get("https://bytexerp.online/api/leyla/v1/video-gallery-list/");
     
     if (response.data?.results?.length > 0) {
-      // API-dən gələn bütün videoları əldə edirik və embed URL formatına çeviririk
-      const allVideos = response.data.results.map(video => ({
+      // API-dən gələn bütün videoları əldə edirik, tərsinə çeviririk və embed URL formatına çeviririk
+      const allVideos = response.data.results.reverse().map(video => ({
         id: video.id,
         videoUrl: convertToEmbedUrl(video.link),
         // Video adını API-dən almadığımız üçün bir standart ad təyin edirik
-        name: `Leyla Medical Center Video ${video.id}`
+        name: `${video.title}`
       }));
       
       // Videoları təsadüfi sıralama və maksimum 3 video seçirik

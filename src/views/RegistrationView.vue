@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="font-[sans-serif] bg-white md:h-screen">
       <div class="grid md:grid-cols-2 items-center gap-8 h-full">

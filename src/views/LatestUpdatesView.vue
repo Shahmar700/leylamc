@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-16 text-main-text">
+  <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
     <div class="flex flex-col lg:flex-row items-center md:items-start md:justify-between">
       <div class="w-full sm:w-3/4" data-aos="zoom-out-right">
         <h1 class="text-3xl font-semibold mb-10">Son Yeniliklər</h1>
@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
         <SideBanners class="mb-4 mt-16 lg:mt-0" /> 
       </div>
     </div>
@@ -122,26 +122,31 @@ const pages = computed(() => {
 const goToPage = (page) => {
   if (page === '...') return;
   currentPage.value = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToFirstPage = () => {
   currentPage.value = 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToPreviousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--;
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToNextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToLastPage = () => {
   currentPage.value = totalPages.value;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // SEO meta məlumatlarını əlavə etmək üçün funksiya

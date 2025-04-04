@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
         <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between">
             <div class="w-3/4" data-aos="zoom-out-right">
                 <!-- Directors  -->

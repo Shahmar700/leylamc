@@ -22,7 +22,7 @@
                     <p v-if="formattedRelationsText" class="mt-4 text-xl font-normal text-justify" v-html="formattedRelationsText"></p>
                     <p v-else class="mt-4 text-xl font-thin text-justify">Məlumat hazırlanır...</p>
                 </div>
-                <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+                <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
                     <SideBanners class="mb-4" /> 
                     <SideBanners2 class="mb-4" /> 
                 </div>

@@ -80,7 +80,7 @@
             <!-- LEFT SIDE END -->
 
             <!-- RIGHT SIDE  -->
-            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
                 <!-- CART SIDE  -->
                   <div class="border flex flex-col items-center justify-center rounded-lg mb-5 hover:shadow-md transition-all duration-200">
                     <div class="flex items-center text-xl text-white bg-[#ef7c00] py-4 w-full justify-center">

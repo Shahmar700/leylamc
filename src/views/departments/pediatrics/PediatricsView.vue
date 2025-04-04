@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-16 text-main-text">
+  <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
     <!-- Yüklənmə indikatoru -->
     <div v-if="loading" class="flex justify-center items-center py-10">
       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -27,7 +27,7 @@
           </a>
         </div> -->
       </div>
-      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
         <SideBanners class="mb-4" /> 
         <SideBanners2 class="mb-4" /> 
       </div>

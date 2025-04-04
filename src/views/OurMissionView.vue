@@ -5,7 +5,7 @@
               <h1 class="text-2xl md:text-3xl font-semibold mb-10">{{ missionTitle }}</h1>
               <p class="mt-4 text-base md:text-lg lg:text-xl text-justify" v-html="formattedMissionText"></p>
           </div>
-          <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+          <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
               <SideBanners class="mb-4" /> 
               <SideBanners2 class="mb-4" /> 
           </div>

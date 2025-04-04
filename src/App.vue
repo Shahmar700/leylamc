@@ -5,7 +5,7 @@
     <LoginModal v-if="showModal" @close="toggleModal" @login-success="checkAuthStatus" />
 
     <!-- <breadcrumb v-if="$route.path !== '/registration' && $route.path !== '/'" /> -->
-    <RouterView />
+    <RouterView :key="$route.fullPath" />
     <footer-main />
     <img src="@/assets/icons/scroll-up.svg"
       v-if="showScrollUp"

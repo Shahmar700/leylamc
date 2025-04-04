@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-16 text-main-text">
+  <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
     <!-- Skeleton yükləməsi -->
     <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
   
@@ -47,7 +47,7 @@
           <a target="_blank" :href="checkup.link" class="text-green-600 hover:text-green-800 underline">Ətraflı məlumat</a>
         </div>
       </div>
-      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+      <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
         <SideBanners class="mb-4" /> 
         <SideBanners2 class="mb-4" /> 
       </div>
@@ -218,6 +218,7 @@ const fetchCheckupData = async (slug) => {
   }
 };
 
+const route = useRoute();
 // watch ilə checkup dəyişdikdə SEO məlumatlarını yeniləyirik
 watch(() => checkup.value, () => {
   if (checkup.value && checkup.value.title) {
@@ -225,6 +226,24 @@ watch(() => checkup.value, () => {
   }
 }, { deep: true });
 
+// Slug dəyişdikdə məlumatları yenidən yükləyirik
+watch(
+  () => route.params.slug,
+  (newSlug, oldSlug) => {
+    if (newSlug !== oldSlug) {
+      fetchDataForSlug(newSlug); // Yeni slug üçün məlumatları yükləyin
+    }
+  }
+);
+// Yeni slug üçün məlumatları yükləyən funksiya
+const fetchDataForSlug = async (slug) => {
+  try {
+    console.log("Yeni slug üçün məlumatlar yüklənir:", slug);
+    // Burada slug-a uyğun məlumatları yükləyin
+  } catch (error) {
+    console.error("Məlumat yükləmə xətası:", error);
+  }
+};
 // Geri qayıtmaq funksiyası
 const goBack = () => {
   // Birbaşa əsas check-up səhifəsinə yönləndir
@@ -237,8 +256,6 @@ const goBack = () => {
   //   router.push({ name: 'check-up' });
   // }
 };
-
-const route = useRoute();
 
 onMounted(() => {
   const slug = route.params.slug;

@@ -24,7 +24,7 @@
         </div>
         
         <!-- Sidebar bölməsi -->
-        <div v-if="showSidebar" class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0">
+        <div v-if="showSidebar" class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center">
           <div v-for="i in sidebarItems" :key="`sidebar-${i}`" 
                class="bg-gray-200 rounded w-full animate-pulse mb-4"
                :class="{ 'h-40': true }"></div>

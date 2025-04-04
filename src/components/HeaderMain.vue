@@ -443,7 +443,7 @@
           :searchResults="searchResults"
           :isLoading="isSearchLoading"
           @search="handleSearch"
-          @select-doctor="handleDoctorSelect"
+          @select-result="handleResultSelect"
         />
 
         <div
@@ -486,7 +486,7 @@
                   </li> -->
             <li class="px-5">
               <router-link
-                to="/medical-services"
+                to="/tibbi-xidmətlər"
                 class="block xl:hidden w-full h-full text-base sm:text-lg lg:text-xl"
                 >Tibbi Xidmətlər</router-link
               >
@@ -609,7 +609,8 @@
         class="block py-1 w-full"
         @click="closeProfileDropdown"
       >
-        <i class="fa-solid fa-user mr-2"></i> Profilim
+        <i class="fa-solid fa-user mr-2 text-[#f97316]"></i> 
+        <span>Profilim</span>
       </router-link>
     </li>
     <li class="px-4">
@@ -675,7 +676,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'our-history' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Tariximiz</router-link
                   >
@@ -683,7 +684,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'our-vision' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Vizyonumuz</router-link
                   >
@@ -691,7 +692,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'our-mission' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Missiyamız</router-link
                   >
@@ -699,7 +700,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'our-relations' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Beynəlxalq əlaqələrimiz</router-link
                   >
@@ -708,7 +709,7 @@
                 <li>
                   <div
                     @click="toggleBurgerDropdown('mediadaBiz_mobile')"
-                    class="flex justify-between items-center cursor-pointer text-lg"
+                    class="flex justify-between items-center cursor-pointer text-lg font-normal"
                   >
                     <span>Mediada Biz</span>
                     <i
@@ -725,7 +726,7 @@
                     <li>
                       <router-link
                         :to="{ name: 'all-news' }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                         @click="toggleBurger"
                         >Xəbərlər</router-link
                       >
@@ -733,7 +734,7 @@
                     <li>
                       <router-link
                         :to="{ name: 'kiv-writes' }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                         @click="toggleBurger"
                         >KİV Yazanlar</router-link
                       >
@@ -742,7 +743,7 @@
                     <li>
                       <div
                         @click="toggleBurgerDropdown('gallery_mobile')"
-                        class="flex justify-between items-center cursor-pointer text-lg"
+                        class="flex justify-between items-center cursor-pointer text-lg font-normal"
                       >
                         <span>Qalereya</span>
                         <i
@@ -759,7 +760,7 @@
                         <li>
                           <router-link
                             :to="{ name: 'photos-view' }"
-                            class="block text-lg"
+                            class="block text-lg font-normal"
                             @click="toggleBurger"
                             >Foto</router-link
                           >
@@ -767,7 +768,7 @@
                         <li>
                           <router-link
                             :to="{ name: 'videos-view' }"
-                            class="block text-lg"
+                            class="block text-lg font-normal"
                             @click="toggleBurger"
                             >Video</router-link
                           >
@@ -777,7 +778,7 @@
                     <li>
                       <router-link
                         :to="{ name: 'health-kiosk' }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                         @click="toggleBurger"
                         >Sağlıq köşkü</router-link
                       >
@@ -785,7 +786,7 @@
                     <li>
                       <router-link
                         :to="{ name: 'vacancies' }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                         @click="toggleBurger"
                         >Vakansiyalar</router-link
                       >
@@ -793,7 +794,7 @@
                     <li>
                       <router-link
                         :to="{ name: 'latest-updates' }"
-                        class="block text-base sm:text-lg"
+                        class="block text-base sm:text-lg font-normal"
                         @click="toggleBurger"
                         >Son yeniliklər</router-link
                       >
@@ -803,7 +804,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'director-office' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Direktor Kabineti</router-link
                   >
@@ -811,7 +812,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'satisfaction-form' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Məmnunluq anketi</router-link
                   >
@@ -827,7 +828,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'quality-control' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Keyfiyyətə nəzarət</router-link
                   >
@@ -835,7 +836,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'certificates' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal"
                     @click="toggleBurger"
                     >Sertifikatlar</router-link
                   >
@@ -843,7 +844,7 @@
                 <li>
                   <router-link
                     :to="{ name: 'training-center' }"
-                    class="block text-base sm:text-lg"
+                    class="block text-base sm:text-lg font-normal text"
                     @click="toggleBurger"
                     >Təlim Mərkəzi</router-link
                   >
@@ -942,7 +943,7 @@
                     @click="toggleBurgerDropdown('cerrahiyye_mobile')"
                     class="flex justify-between items-center cursor-pointer text-lg"
                   >
-                    <span class="font-roboto">Cərrahiyyə</span>
+                    <span class="font-roboto font-normal">Cərrahiyyə</span>
                     <i
                       class="fa-solid fa-angle-down transition-transform duration-300"
                       :class="{
@@ -976,7 +977,7 @@
                       name: 'department-detail',
                       params: { slug: department.slug },
                     }"
-                    class="block text-lg font-normal"
+                    class="block text-sm md:text-lg font-normal"
                     @click="toggleBurger"
                   >
                     {{ department.name }}
@@ -1031,7 +1032,7 @@
                       name: 'medical-service-detail',
                       params: { slug: service.slug },
                     }"
-                    class="block text-base sm:text-lg font-normal"
+                    class="block text-sm sm:text-lg font-normal"
                     @click="toggleBurger"
                   >
                     {{ service.title }}
@@ -1153,6 +1154,9 @@ import SearchBox from "@/components/SearchBox.vue";
 
 const isProfileDropdownVisible = ref(false); // State for profile dropdown visibility
 
+// Menyu açıq/qapalı vəziyyətini idarə edən dəyişən
+const isMenuOpen = ref(false);
+
 // Function to toggle the dropdown visibility
 const toggleProfileDropdown = () => {
   isProfileDropdownVisible.value = !isProfileDropdownVisible.value;
@@ -1194,7 +1198,7 @@ const combinedSearch = debounce(async (query) => {
     const encodedQuery = encodeURIComponent(searchText);
 
     // Paralel sorğular göndəririk
-    const [doctorResponse, vacancyResponse, articleResponse, checkupResponse, authorResponse, certificateResponse, healthPavilionResponse] = await Promise.all([
+    const [doctorResponse, vacancyResponse, articleResponse, checkupResponse, authorResponse, certificateResponse, healthPavilionResponse, mediaResponse] = await Promise.all([
       // Həkim sorğusu
       axios.get(`https://bytexerp.online/api/leyla/v1/doctor-list/?search=${encodedQuery}&fields=first_name,first_name_az,first_name_ru,last_name,last_name_az,last_name_ru,degree,degree_az,degree_ru,category,category_ru,category_en`),
       
@@ -1214,7 +1218,10 @@ const combinedSearch = debounce(async (query) => {
       axios.get(`https://bytexerp.online/api/leyla/v1/certificate-list/?search=${encodedQuery}`),
 
       // Sağlıq köşkü sorğusu
-      axios.get(`https://bytexerp.online/api/leyla/v1/health-pavilion-list/?search=${encodedQuery}`)
+      axios.get(`https://bytexerp.online/api/leyla/v1/health-pavilion-list/?search=${encodedQuery}`),
+
+      // KİV sorğusu
+      axios.get(`https://bytexerp.online/api/leyla/v1/media-list/?search=${encodedQuery}`)
     ]);
 
     // Həkim nəticələrini emal edirik
@@ -1344,6 +1351,10 @@ const combinedSearch = debounce(async (query) => {
       const isArticleSearch = searchLower === 'məqalə' || 
                               searchLower.includes('məqalə') ||
                               searchLower === 'meqale' || 
+                              searchLower === 'meq' ||
+                              searchLower === 'məq' ||
+                              searchLower === 'məqa' ||
+                              searchLower === 'məqal' ||
                           searchLower.includes('meqale');
 
       console.log("Məqalə axtarışı yoxlanılır:", searchLower, isArticleSearch);
@@ -1386,6 +1397,10 @@ const combinedSearch = debounce(async (query) => {
                              searchLower === 'check up' || 
                              searchLower.includes('check up') ||
                              searchLower === 'check-up' || 
+                             searchLower === 'cekap' || 
+                             searchLower === 'çekap' || 
+                             searchLower === 'çekup' || 
+                             searchLower === 'çek' || 
                              searchLower.includes('check-up');
       
       if (isCheckupSearch) {
@@ -1446,10 +1461,12 @@ const combinedSearch = debounce(async (query) => {
     if (certificateResponse.data && certificateResponse.data.results) {
       // "Sertifikat" sözü yazıldıqda yalnız bir nəticə göstər
       const searchLower = searchText.toLowerCase();
-      const isCertificateSearch = searchLower === 'sertifikat' || 
-                                searchLower.includes('sertifikat') ||
-                                searchLower === 'sertifikatlar' || 
-                                searchLower.includes('sertifikatlar');
+      const certificateKeywords = [
+        'sertifikat', 'sertifikatlar', 'ser', 'sert', 'serti', 'sertif', 'sertifi',
+        'sertifik', 'sertifika', 'cer', 'cert', 'certi', 'certif', 'certifi',
+        'certific', 'certifica', 'certificat', 'certificate'
+      ];
+      const isCertificateSearch = certificateKeywords.some(keyword => searchLower.includes(keyword));
       
       if (isCertificateSearch) {
         // Sertifikat sözü yazıldıqda yalnız bir nəticə göstər
@@ -1493,8 +1510,30 @@ const combinedSearch = debounce(async (query) => {
       }));
     }
 
+    // KİV nəticələrini emal edirik
+    let mediaResults = [];
+    if (mediaResponse.data && mediaResponse.data.results) {
+      mediaResults = mediaResponse.data.results.filter((media) => {
+        // "source" sahəsini axtarış mətni ilə müqayisə edirik
+        return media.source && media.source.toLowerCase().includes(searchText.toLowerCase());
+      });
+
+      // Nəticələri uyğun formata çeviririk
+      mediaResults = mediaResults.map((media) => ({
+        id: media.id,
+        slug: media.id, // ID-ni slug kimi istifadə edirik
+        first_name: media.source || "KİV",
+        last_name: "",
+        degree: "KİV: ", // KİV olduğunu göstərmək üçün
+        position: "",
+        photo: "", // Şəkil əlavə etmək istəyirsinizsə, buraya URL əlavə edin
+        resultType: "media", // KİV tipini qeyd edirik
+        url: media.url // URL-ni saxlayırıq
+      }));
+    }
+
     // Nəticələri birləşdiririk
-    searchResults.value = [...doctorResults, ...vacancyResults, ...articleResults, ...checkupResults, ...authorResults, ...certificateResults, ...healthPavilionResults];
+    searchResults.value = [...doctorResults, ...vacancyResults, ...articleResults, ...checkupResults, ...authorResults, ...certificateResults, ...healthPavilionResults, ...mediaResults ];
   } catch (error) {
     console.error("Axtarış zamanı xəta:", error);
     searchResults.value = [];
@@ -1509,46 +1548,31 @@ const combinedSearch = debounce(async (query) => {
 // };
 
 // Seçim nəticəsini idarə edən funksiya
-const handleDoctorSelect = (result) => {
-  if (result.resultType === 'vacancy') {
-    // Vakansiya seçildikdə
-    if (result.id === 1) {
-      router.push(`/az/haqqımızda/mediada-biz/vakansiya/vakansiya`);
+const handleResultSelect = (result) => {
+  const routes = {
+    doctor: { name: "doctor", params: { id: result.slug } },
+    vacancy: `/az/haqqımızda/mediada-biz/vakansiya/vakansiya-${result.id - 1}`,
+    article: `/az/həkimlər/həkim-məqalələri/${result.slug}`,
+    checkup: `/az/tibbi-xidmətlər/check-uplar/${result.slug}`,
+    author: result.pdfFile, // PDF faylını açmaq üçün URL
+    certificate: "/az/haqqımızda/sertifikatlar",
+    healthPavilion: "/az/haqqımızda/mediada-biz/sağlıq-köşkü",
+  };
+
+  if (result.resultType === "media") {
+  window.open(result.url, "_blank"); // KİV üçün URL-ə yönləndiririk
+  } else if (result.resultType === "author") {
+    window.open(routes[result.resultType], "_blank");
+  } else if (routes[result.resultType]) {
+    if (typeof routes[result.resultType] === "string") {
+      router.replace(routes[result.resultType]);
     } else {
-      router.push(`/az/haqqımızda/mediada-biz/vakansiya/vakansiya-${result.id - 1}`);
+      router.replace(routes[result.resultType]);
     }
-  } else if (result.resultType === 'article') {
-    // Məqalə seçildikdə
-    router.push(`/az/həkimlər/həkim-məqalələri/${result.slug}`);
-  } else if (result.resultType === 'checkup') {
-    // Checkup seçildikdə
-    const targetUrl = `/az/tibbi-xidmətlər/check-uplar/${result.slug}`;
-    
-    if (router.currentRoute.value.path.includes('/check-uplar/')) {
-      router.replace('/az').then(() => {
-        router.push(targetUrl);
-      });
-    } else {
-      router.push(targetUrl);
-    }
-  } else if (result.resultType === 'author') {
-    // Müəllif seçildikdə PDF faylını yeni pəncərədə açırıq
-    window.open(result.pdfFile, '_blank');
-  } else if (result.resultType === 'certificate') {
-    // Sertifikat seçildikdə
-    router.push('/az/haqqımızda/sertifikatlar');
-  } else if (result.resultType === 'healthPavilion') {
-    // Sağlıq köşkü seçildikdə
-    router.push('/az/haqqımızda/mediada-biz/sağlıq-köşkü');
   } else {
-    // Həkim seçildikdə
-    router.push({
-      name: "doctor", 
-      params: { id: result.slug },
-    });
+    console.error("Naməlum nəticə tipi:", result.resultType);
   }
 
-  // Menyu açıqdırsa bağla
   if (isMenuOpen && isMenuOpen.value) {
     isMenuOpen.value = false;
   }
@@ -1998,7 +2022,7 @@ width: 100%;
 }
 
 .pediatricsParent:hover .pediatricsDropdown {
-  right: -150px;
+  right: -130px;
   top: 0px;
   visibility: visible;
   opacity: 1;

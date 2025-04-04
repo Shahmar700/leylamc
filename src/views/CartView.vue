@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
       <div class="flex items-center text-primary cursor-pointer lg:text-lg mb-4" @click="goBack">
         <i class="fa-solid fa-arrow-left mr-1"></i>
         <p>Geri</p>

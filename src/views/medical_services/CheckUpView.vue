@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
       <!-- Skeleton yükləməsi -->
       <SkeletonLoader v-if="showSkeleton" :contentLines="8" :showLink="true" />
     
@@ -48,7 +48,7 @@
                 </button>
             </div>
         </div>
-        <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+        <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
           <SideBanners class="mb-4" /> 
           <SideBanners2 class="mb-4" /> 
         </div>
@@ -134,27 +134,32 @@ const pages = computed(() => {
 const goToPage = (page) => {
   if (page === '...') return;
   currentPage.value = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToFirstPage = () => {
   currentPage.value = 1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToPreviousPage = () => {
   if (currentPage.value > 1) {
     currentPage.value--;
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToNextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const goToLastPage = () => {
   currentPage.value = totalPages.value;
 };
+window.scrollTo({ top: 0, behavior: 'smooth' });
 
 const isExpired = (finish_date) => {
   return finish_date < today;

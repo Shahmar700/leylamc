@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-16 text-main-text">
+    <div class="container mt-5 md:mt-10 lg:mt-16 text-main-text">
         <div class="flex flex-col items-center lg:flex-row md:items-start sm:justify-between">
             <div class="w-full lg:w-3/4" data-aos="flip-down">
                 <!-- Yüklənmə göstəricisi -->
@@ -89,7 +89,7 @@
                 </div>
                 </div>
             </div>
-            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
                 <SideBanners class="mb-4 mt-16 lg:mt-0" /> 
                 <SideBanners2 class="mb-4" /> 
             </div>

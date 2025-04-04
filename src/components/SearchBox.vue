@@ -28,8 +28,8 @@
         v-for="result in searchResults" 
         :key="result.id" 
         class="result-item flex items-center p-2 hover:bg-gray-100"
-        @mousedown.prevent="selectDoctor(result)">
-        
+        @click="handleResultSelect(result)"
+      >
         <div class="flex items-center w-full cursor-pointer">
           <!-- Şəkil varsa göstər, yoxdursa göstərmə -->
           <img 
@@ -77,7 +77,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, defineProps, defineEmits, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -95,7 +95,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['search', 'select-doctor']);
+const emit = defineEmits(['search', 'select-result']);
 
 const router = useRouter();
 const searchInput = ref(null);
@@ -114,11 +114,10 @@ const toggleSearch = () => {
   }
 };
 
+// Axtarış sorğusunu parent komponentə göndərir
 const onSearch = () => {
-  
   emit('search', searchQuery.value);
-  
-  // Axtarış sorğusu boş deyilsə, nəticələri göstər
+
   if (searchQuery.value.trim().length > 2) {
     showResults.value = true;
   } else {
@@ -139,47 +138,17 @@ const search = () => {
   }
 };
 
-// Həkimi seçmək - daha sadə yönləndirmə formatı ilə
-const selectDoctor = async (doctor) => {
-  console.log('Həkim seçildi:', doctor);
-  
-  try {
-    // 1. İlk öncə axtarış mətni təmizlənir
-    searchQuery.value = '';
-    
-    // 2. Göstərmə şərtlərini idarə edən vəziyyətləri dəyişir
-    isExpandedSearch.value = false;
-    showResults.value = false;
-    
-    // 3. Explicit blur/unfocus the search input
-    if (searchInput.value) {
-      searchInput.value.blur();
-    }
-    
-    // 4. Vue-nun DOM yeniləməsini gözləyirik
-    await nextTick();
-    
-    // 5. Əlavə tədbir kimi DOM elementini birbaşa gizlədirik
-    const searchResults = document.querySelectorAll('.search-results');
-    if (searchResults.length) {
-      searchResults.forEach(el => {
-        el.style.display = 'none';
-      });
-    }
-    
-    // 6. Parent komponentə seçilmiş həkimi bildiririk
-    emit('select-doctor', doctor);
-    
-    // 7. ÇOX SADƏ: Həkimin səhifəsinə yönləndirmə - təmiz URL ilə
-    if (doctor.slug) {
-      router.push(`/doctor/${doctor.slug}`); // Ən sadə format
-    } else {
-      router.push(`/doctor/${doctor.id}`); // ID ilə
-    }
-  } catch (error) {
-    console.error('Həkim seçimi xətası:', error);
-  }
+// Nəticəni seçmək
+const handleResultSelect = (result) => {
+  emit('select-result', result); // Parent komponentə nəticəni bildiririk
 };
+
+// isExpandedSearch dəyişənini izləyirik
+watch(isExpandedSearch, (newValue) => {
+  if (!newValue) {
+    searchQuery.value = ''; // isExpandedSearch false olduqda axtarış mətni silinir
+  }
+});
 
 // Axtarış qutusu xaricində klik edildikdə dropdown'u bağla - buna ehtiyac yoxdur artıq
 // const closeDropdown = (event) => {

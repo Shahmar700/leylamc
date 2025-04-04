@@ -18,7 +18,7 @@
                 <a href="http://31.171.110.19:8080/login.aspx?ReturnUrl=onlineislemler%2flabsonuc.aspx" target="_blank" class="greenBtn">Online nəticəni əldə edin</a>
                 <img src="/assets/eResult.jpg" alt="" class="my-8">
             </div>
-            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0" data-aos="zoom-in-left">
+            <div class="w-[290px] mt-10 md:mt-0 md:ml-4 2xl:ml-0 flex flex-col items-center" data-aos="zoom-in-left">
                 <SideBanners class="mb-4" /> 
             </div>
         </div>
